@@ -26,6 +26,6 @@ examples:
 start: Start with the riskiest question, not a full feature list.
 order: 2
 seo:
-  title: Proof of Concept — Digvation
+  title: Proof of Concept | Digvation
   description: For ideas with enough technical or business uncertainty that a full build would be premature.
 ---

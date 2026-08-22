@@ -2,6 +2,28 @@
 
 For the current sales-focused version, Digvation does not maintain a public Insights/blog section. Organic growth should first come from high-quality pages that directly support commercial intent and real evidence.
 
+## Commercial message
+
+Digvation does not sell technology as the starting point. The message starts from a business that is becoming harder to run: slow processes, scattered data, repeated manual work, unclear customer journeys, or teams that cannot see the same status.
+
+The reason to contact Digvation must remain clear:
+
+1. The client can start with a business problem, not a technical brief.
+2. Digvation helps decide what should change first.
+3. Digvation designs, builds, launches, and can continue improving the solution.
+4. The value is a business that is easier to run, not simply another application.
+
+## Voice and wording
+
+- Write like an experienced partner speaking directly to a business owner.
+- Use short sentences and concrete situations.
+- Prefer verbs such as clarify, connect, reduce, monitor, and improve.
+- Use technology names only after the business need is clear.
+- Avoid inflated claims, vague transformation language, and generic agency promises.
+- Do not use em dashes in public-facing copy. Use a full stop, comma, colon, or rewrite the sentence.
+- Avoid stacking symmetrical phrases only because they sound polished.
+- Keep Indonesian natural. The English version should preserve the intent rather than translate word for word.
+
 ## Priority content surfaces
 
 1. Solution pages for real business problems.

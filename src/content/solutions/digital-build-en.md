@@ -4,7 +4,7 @@ locale: en
 title: Digital Build
 eyebrow: Solution 03
 summary: For solutions whose problem and direction are clear enough to design and build.
-problem: Digital Build turns a sufficiently clear scope into an operable system—not just a prototype that looks good in a demo.
+problem: Digital Build turns a sufficiently clear scope into an operable system. It is not just a prototype that looks good in a demo.
 when:
   - The business outcome is clear
   - Scope can be bounded and measured
@@ -27,6 +27,6 @@ examples:
 start: Start with the outcome, known scope, and remaining uncertainties.
 order: 3
 seo:
-  title: Digital Build — Digvation
+  title: Digital Build | Digvation
   description: For solutions whose problem and direction are clear enough to design and build.
 ---

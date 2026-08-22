@@ -26,6 +26,6 @@ examples:
 start: Mulai dari satu alur yang paling sering membuang waktu atau menimbulkan error.
 order: 4
 seo:
-  title: Automation & Integration — Digvation
+  title: Automation & Integration | Digvation
   description: Untuk proses berulang dan sistem yang membuat orang memindahkan data secara manual.
 ---
