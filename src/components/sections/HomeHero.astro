@@ -69,7 +69,6 @@ const proofFlow =
     >
       <div class="proof-meta">
         <span>{copy.proofLabel}</span>
-        <span>{copy.proofMeta}</span>
       </div>
 
       <div class="proof-stage">
@@ -198,7 +197,7 @@ const proofFlow =
   .proof-meta {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     margin-bottom: 0.8rem;
     color: rgba(11, 13, 16, 0.45);
@@ -372,9 +371,6 @@ const proofFlow =
   @media (max-width: 699px) {
     .hero-title {
       font-size: clamp(2.9rem, 13vw, 4.25rem);
-    }
-    .proof-meta span:last-child {
-      display: none;
     }
     .proof-stage {
       padding: 0.7rem;

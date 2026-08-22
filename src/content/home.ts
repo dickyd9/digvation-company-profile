@@ -11,7 +11,6 @@ export type HomeCopy = {
     secondaryCta: string;
     note: string;
     proofLabel: string;
-    proofMeta: string;
     proofTitle: string;
     proofBody: string;
     outcomeLabel: string;
@@ -69,7 +68,6 @@ const id: HomeCopy = {
     secondaryCta: 'Lihat Hasil Kerja',
     note: 'Mulai dari hambatan bisnis. Detail digitalnya kami yang urus.',
     proofLabel: 'Contoh solusi digital',
-    proofMeta: 'Ilustrasi, bukan data client',
     proofTitle: 'Satu sistem. Satu status.',
     proofBody: 'Order, stok, approval, dan laporan terhubung dalam satu alur.',
     outcomeLabel: 'Mengapa Digvation',
@@ -201,7 +199,6 @@ const en: HomeCopy = {
     secondaryCta: 'See Our Work',
     note: 'Start with the business bottleneck. We will handle the digital details.',
     proofLabel: 'Digital solution example',
-    proofMeta: 'Illustration, not client data',
     proofTitle: 'One system. One status.',
     proofBody: 'Orders, stock, approvals, and reports move through one connected flow.',
     outcomeLabel: 'Why Digvation',

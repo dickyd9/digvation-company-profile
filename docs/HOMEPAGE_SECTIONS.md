@@ -61,8 +61,8 @@ A visitor should understand these ideas in order:
 - Rotating hero language must keep one descriptive accessible H1, reserve its layout space, pause when motion is reduced, and never delay the primary CTA.
 - Sliders use native horizontal scrolling, scroll snapping, visible continuation, keyboard-accessible controls, and current/total status.
 - Desktop slider cards prioritize one readable story at a time. Narrow multi-card layouts that crop headings or split sentences are not allowed.
-- Scenario previews use recognizable interface detail, layered context, and purposeful annotations instead of generic box diagrams. They must remain labelled as illustration and must not imply measured client results.
+- Scenario previews use recognizable interface detail, layered context, and purposeful annotations instead of generic box diagrams. They must remain clearly introduced as examples and must not imply measured client results.
 - Do not turn every content group into a slider. Use one only when it materially shortens a long vertical sequence.
-- Illustrative interface data must be labelled as illustration; it is never presented as a client result.
+- Example interface data must be introduced as example content; it is never presented as a client result.
 - Do not use fake performance metrics, fake testimonials, or placeholder clients as proof.
 - The experience must remain clear with JavaScript or motion disabled.
