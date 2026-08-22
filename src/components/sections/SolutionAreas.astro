@@ -2,6 +2,7 @@
 import type { Locale } from '@/config/site';
 import { getLocalizedPath } from '@/config/navigation';
 import type { HomeCopy } from '@/content/home';
+import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Props = { copy: HomeCopy['solutions']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
@@ -19,34 +20,35 @@ const { copy, locale = 'id' } = Astro.props;
       </div>
       <div>
         <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.intro}</p>
-        <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-3 sm:grid-cols-4">
-          {
-            copy.signals.map((signal, index) => (
-              <div class="border-ink/12 border-t pt-3">
-                <span class="text-indigo-deep/45 text-[.58rem] font-extrabold tracking-[.08em]">
-                  0{index + 1}
-                </span>
-                <p class="text-ink/52 mt-2 text-xs leading-5 font-semibold">{signal}</p>
-              </div>
-            ))
-          }
-        </div>
       </div>
     </div>
 
-    <div class="mt-2" data-reveal="up" style="--reveal-delay:70ms">
+    <div class="solution-controls" data-reveal="up" style="--reveal-delay:60ms">
+      <SliderControls
+        controls={`solutions-slider-${locale}`}
+        count={copy.items.length}
+        locale={locale}
+      />
+    </div>
+
+    <div
+      class="solution-list"
+      id={`solutions-slider-${locale}`}
+      data-slider-rail
+      data-reveal="up"
+      style="--reveal-delay:70ms"
+    >
       {
         copy.items.map((item) => (
-          <article class="solution-row group border-ink/12 grid gap-5 border-b py-8 sm:py-9 lg:grid-cols-[5rem_.8fr_1.2fr_auto] lg:items-start lg:gap-9">
-            <span class="text-indigo-deep/45 pt-1 text-[.68rem] font-extrabold tracking-[.1em] uppercase">
-              {item.index}
-            </span>
-            <h3 class="font-display max-w-[18ch] text-[clamp(1.65rem,2.6vw,2.55rem)] leading-[1.02] font-semibold tracking-[-.05em]">
-              {item.title}
-            </h3>
-            <div>
-              <p class="text-ink/58 m-0 max-w-2xl text-sm leading-7">{item.body}</p>
-              <div class="text-ink/34 mt-4 flex flex-wrap gap-x-3 gap-y-2 text-[.63rem] font-extrabold tracking-[.04em] uppercase">
+          <article class="solution-card group" data-slider-slide>
+            <div class="solution-card__top">
+              <span>{item.index}</span>
+              <span aria-hidden="true">↗</span>
+            </div>
+            <h3>{item.title}</h3>
+            <div class="solution-card__body">
+              <p>{item.body}</p>
+              <div class="solution-card__outputs">
                 {item.outputs.map((output, outputIndex) => (
                   <>
                     <span>{output}</span>
@@ -55,12 +57,6 @@ const { copy, locale = 'id' } = Astro.props;
                 ))}
               </div>
             </div>
-            <span
-              class="solution-arrow text-ink/22 hidden pt-1 text-2xl font-light lg:block"
-              aria-hidden="true"
-            >
-              ↗
-            </span>
           </article>
         ))
       }
@@ -86,27 +82,104 @@ const { copy, locale = 'id' } = Astro.props;
 </section>
 
 <style>
-  .solution-row {
+  .solution-controls {
+    padding-block: 1.25rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .solution-list {
+    display: grid;
+    grid-auto-columns: min(82vw, 30rem);
+    grid-auto-flow: column;
+    gap: 0.9rem;
+    overflow-x: auto;
+    padding: 1.1rem calc(100% - min(82vw, 30rem)) 1.6rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+  .solution-list::-webkit-scrollbar {
+    display: none;
+  }
+  .solution-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: clamp(22rem, 31vw, 27rem);
+    gap: 1.5rem;
+    padding: clamp(1.45rem, 2.4vw, 2rem);
+    border: 1px solid rgba(11, 13, 16, 0.14);
+    background: #fff;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     transition:
-      padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 220ms ease;
+      transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms ease,
+      border-color 220ms ease;
   }
-  .solution-arrow {
-    transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 220ms ease;
+  .solution-card:nth-child(2) {
+    background: #f3f4f7;
   }
-  .solution-row:hover {
-    padding-left: 0.7rem;
-    background: rgba(147, 166, 255, 0.055);
+  .solution-card:nth-child(3) {
+    background: #e8ebff;
   }
-  .solution-row:hover .solution-arrow {
-    transform: translate(3px, -3px);
-    color: var(--color-indigo-deep);
+  .solution-card:nth-child(4) {
+    background: #f0ede7;
+  }
+  .solution-card:hover {
+    border-color: rgba(18, 26, 47, 0.36);
+    transform: translateY(-0.35rem);
+  }
+  .solution-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: rgba(18, 26, 47, 0.48);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .solution-card__top span:last-child {
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+  .solution-card h3 {
+    max-width: 16ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.1vw, 3.25rem);
+    font-weight: 630;
+    line-height: 1;
+    letter-spacing: -0.052em;
+  }
+  .solution-card__body {
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .solution-card__body > p {
+    max-width: 30rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.58);
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+  .solution-card__outputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.8rem;
+    margin-top: 1rem;
+    color: rgba(11, 13, 16, 0.38);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 1024px) {
+    .solution-list {
+      grid-auto-columns: calc((100% - 1.8rem) / 2.45);
+      padding-right: calc(100% - ((100% - 1.8rem) / 2.45));
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .solution-row,
-    .solution-arrow {
+    .solution-card {
       transition: none;
     }
   }

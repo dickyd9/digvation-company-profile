@@ -26,6 +26,6 @@ examples:
 start: Start with the symptoms that hurt operations most and the evidence available.
 order: 7
 seo:
-  title: Digital Improvement & Care — Digvation
+  title: Digital Improvement & Care | Digvation
   description: For systems already running that need to become more reliable, maintainable, or continuously improved.
 ---

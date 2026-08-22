@@ -26,6 +26,6 @@ examples:
 start: Start with the decision or event you want to produce and the evidence available in the data.
 order: 5
 seo:
-  title: AI, Computer Vision & Data — Digvation
+  title: AI, Computer Vision & Data | Digvation
   description: For data, images, video, or events that can help the business see patterns and make decisions.
 ---

@@ -28,6 +28,6 @@ examples:
 start: Mulai dengan percakapan singkat tentang proses yang sekarang berjalan.
 order: 1
 seo:
-  title: Digital Discovery — Digvation
+  title: Digital Discovery | Digvation
   description: Untuk saat masalahnya nyata, tapi belum jelas apa yang seharusnya dibangun.
 ---

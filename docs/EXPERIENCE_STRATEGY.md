@@ -1,4 +1,4 @@
-# Digvation Experience Strategy — Current Direction
+# Digvation Experience Strategy: Current Direction
 
 ## Core UX goal
 
@@ -53,12 +53,12 @@ Avoid:
 
 ## Signature Digvation components
 
-1. **Digitalization-partner hero** — immediately communicates the business outcome and uses one concrete operational-flow illustration to make it tangible.
-2. **What Can Be Digitalized?** — concrete day-to-day examples such as orders, approvals, and reporting.
-3. **Why Partner With Digvation** — context, clear decisions, and continuity after launch.
-4. **Working With Digvation** — Understand → Prioritize → Design → Build & Launch → Operate & Improve.
-5. **Solution possibilities** — technology appears after the business need is understood.
-6. **Selected Work** — real project proof with case-study/live-preview options.
+1. **Digitalization-partner hero:** immediately communicates the business outcome and uses one concrete operational-flow illustration to make it tangible.
+2. **What Can Be Digitalized?:** concrete day-to-day examples such as orders, approvals, and reporting.
+3. **Why Partner With Digvation:** context, clear decisions, and continuity after launch.
+4. **Working With Digvation:** understand the context → set the priority → design the solution → build and launch → monitor and improve.
+5. **Solution possibilities:** technology appears after the business need is understood.
+6. **Selected Work:** real project proof with case-study/live-preview options.
 
 ## Typography
 
@@ -100,3 +100,11 @@ The Process page should reinforce the partnership model:
 - Continuous floating animation is not part of the core visual language.
 - Astro route transitions remain subtle.
 - `prefers-reduced-motion` removes non-essential motion.
+
+## Horizontal content
+
+- Use horizontal sliders only for long sequences that would otherwise create excessive page depth.
+- Keep part of the next item visible so the interaction is discoverable before JavaScript runs.
+- Always provide a current/total counter and accessible previous/next controls.
+- Preserve native touch scrolling and scroll snapping.
+- On desktop, keep enough of the next card visible to signal continuation without hiding the current card's content.

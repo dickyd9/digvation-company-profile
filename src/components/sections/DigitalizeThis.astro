@@ -2,6 +2,7 @@
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
+import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Props = { copy: HomeCopy['digitalize']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
@@ -28,20 +29,29 @@ const { copy, locale = 'id' } = Astro.props;
       </div>
     </header>
 
-    <div class="signal-list">
+    <div class="signal-controls" data-reveal="up" style="--reveal-delay:60ms">
+      <SliderControls
+        controls={`digitalize-slider-${locale}`}
+        count={copy.items.length}
+        locale={locale}
+      />
+    </div>
+
+    <div class="signal-list" id={`digitalize-slider-${locale}`} data-slider-rail>
       {
         copy.items.map((item, index) => (
           <article
             class="signal-row"
+            data-slider-slide
             data-reveal="up"
             style={`--reveal-delay:${Math.min(index * 60, 120)}ms`}
           >
-            <span class="signal-number">{item.index}</span>
-            <div>
+            <div class="signal-topline">
+              <span class="signal-number">{item.index}</span>
               <p>{copy.signalLabel}</p>
-              <h3>{item.signal}</h3>
             </div>
-            <div>
+            <h3>{item.signal}</h3>
+            <div class="signal-response">
               <p>{copy.responseLabel}</p>
               <strong>{item.response}</strong>
             </div>
@@ -61,17 +71,47 @@ const { copy, locale = 'id' } = Astro.props;
     padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
     border-bottom: 1px solid rgba(11, 13, 16, 0.13);
   }
-  .signal-list {
+  .signal-controls {
+    padding-block: 1.25rem;
     border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .signal-list {
+    display: grid;
+    grid-auto-columns: min(82vw, 33rem);
+    grid-auto-flow: column;
+    gap: 0.9rem;
+    overflow-x: auto;
+    padding: 1.1rem calc(100% - min(82vw, 33rem)) 1.6rem 0;
+    scroll-padding-inline: 0.1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+  .signal-list::-webkit-scrollbar {
+    display: none;
   }
   .signal-row {
     display: grid;
-    gap: 1.35rem;
-    padding: clamp(2rem, 3.5vw, 3.2rem) 0;
-    border-bottom: 1px solid rgba(11, 13, 16, 0.11);
+    grid-template-rows: auto 1fr auto;
+    min-height: clamp(22rem, 34vw, 29rem);
+    gap: 1.7rem;
+    padding: clamp(1.5rem, 2.5vw, 2.2rem);
+    border: 1px solid rgba(11, 13, 16, 0.14);
+    background: #fff;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
-  .signal-row:last-child {
-    border-bottom: 0;
+  .signal-row:nth-child(2) {
+    background: #f3f4f7;
+  }
+  .signal-row:nth-child(3) {
+    background: #e8ebff;
+  }
+  .signal-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
   .signal-number {
     color: rgba(78, 101, 243, 0.52);
@@ -88,10 +128,10 @@ const { copy, locale = 'id' } = Astro.props;
     text-transform: uppercase;
   }
   .signal-row h3 {
-    max-width: 22ch;
-    margin-top: 0.7rem;
+    max-width: 19ch;
+    margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.65rem, 2.8vw, 2.8rem);
+    font-size: clamp(1.85rem, 3vw, 3.25rem);
     font-weight: 620;
     line-height: 1.04;
     letter-spacing: -0.047em;
@@ -104,6 +144,10 @@ const { copy, locale = 'id' } = Astro.props;
     font-size: 0.88rem;
     font-weight: 550;
     line-height: 1.75;
+  }
+  .signal-response {
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(11, 13, 16, 0.13);
   }
   .scope-note {
     max-width: 54rem;
@@ -120,10 +164,9 @@ const { copy, locale = 'id' } = Astro.props;
       align-items: end;
       gap: 5rem;
     }
-    .signal-row {
-      grid-template-columns: 5rem minmax(0, 0.95fr) minmax(0, 1.05fr);
-      align-items: start;
-      gap: 2.5rem;
+    .signal-list {
+      grid-auto-columns: calc((100% - 1.8rem) / 2.45);
+      padding-right: calc(100% - ((100% - 1.8rem) / 2.45));
     }
   }
 </style>

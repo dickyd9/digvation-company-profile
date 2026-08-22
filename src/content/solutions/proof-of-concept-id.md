@@ -26,6 +26,6 @@ examples:
 start: Mulai dari pertanyaan yang paling berisiko, bukan dari membangun semua fitur.
 order: 2
 seo:
-  title: Proof of Concept — Digvation
+  title: Proof of Concept | Digvation
   description: Untuk ide yang punya ketidakpastian teknis atau bisnis yang terlalu besar untuk langsung dibangun penuh.
 ---

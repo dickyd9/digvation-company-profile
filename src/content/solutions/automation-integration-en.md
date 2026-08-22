@@ -26,6 +26,6 @@ examples:
 start: Start with one workflow that repeatedly consumes time or creates errors.
 order: 4
 seo:
-  title: Automation & Integration — Digvation
+  title: Automation & Integration | Digvation
   description: For repetitive processes and disconnected systems that force people to move data manually.
 ---

@@ -1,0 +1,259 @@
+---
+type Props = {
+  controls: string;
+  count: number;
+  locale: 'id' | 'en';
+  tone?: 'light' | 'dark';
+};
+
+const { controls, count, locale, tone = 'light' } = Astro.props;
+const label = locale === 'id' ? 'Navigasi slide' : 'Slide navigation';
+const hint = locale === 'id' ? 'Geser untuk melihat lainnya' : 'Swipe to see more';
+---
+
+<div
+  class:list={['slider-controls', tone === 'dark' && 'slider-controls--dark']}
+  data-slider-controls
+  data-slider-target={controls}
+>
+  <div class="slider-status">
+    <p aria-live="polite">
+      <strong data-slider-current>01</strong>
+      <span>/ {String(count).padStart(2, '0')}</span>
+    </p>
+    <span>{hint}</span>
+  </div>
+
+  <div class="slider-dots" aria-label={label}>
+    {
+      Array.from({ length: count }, (_, index) => (
+        <button
+          type="button"
+          aria-label={`${locale === 'id' ? 'Buka slide' : 'Open slide'} ${index + 1}`}
+          aria-controls={controls}
+          aria-current={index === 0 ? 'true' : undefined}
+          data-slider-dot={index}
+        >
+          <span />
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="slider-actions" aria-label={label}>
+    <button
+      type="button"
+      aria-label={locale === 'id' ? 'Slide sebelumnya' : 'Previous slide'}
+      aria-controls={controls}
+      data-slider-prev
+      disabled
+    >
+      <span aria-hidden="true">←</span>
+    </button>
+    <button
+      type="button"
+      aria-label={locale === 'id' ? 'Slide berikutnya' : 'Next slide'}
+      aria-controls={controls}
+      data-slider-next
+    >
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .slider-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    color: rgba(11, 13, 16, 0.58);
+  }
+  .slider-status {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: 0.85rem;
+  }
+  .slider-status p {
+    display: flex;
+    flex: none;
+    gap: 0.25rem;
+    margin: 0;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .slider-status strong {
+    color: var(--color-indigo-deep);
+  }
+  .slider-status > span {
+    overflow: hidden;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .slider-dots {
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .slider-dots button {
+    width: 2.2rem;
+    height: 1.4rem;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .slider-dots span {
+    display: block;
+    width: 100%;
+    height: 0.16rem;
+    background: rgba(11, 13, 16, 0.16);
+    transition:
+      height 180ms ease,
+      background-color 180ms ease;
+  }
+  .slider-dots button[aria-current='true'] span {
+    height: 0.28rem;
+    background: var(--color-indigo-deep);
+  }
+  .slider-actions {
+    display: flex;
+    gap: 0.45rem;
+  }
+  .slider-actions button {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid rgba(11, 13, 16, 0.18);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease,
+      color 180ms ease;
+  }
+  .slider-actions button:hover:not(:disabled) {
+    border-color: var(--color-indigo-deep);
+    background: var(--color-indigo-deep);
+    color: white;
+  }
+  .slider-actions button:disabled {
+    opacity: 0.28;
+    cursor: default;
+  }
+  .slider-controls--dark {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .slider-controls--dark .slider-status strong {
+    color: var(--color-accent);
+  }
+  .slider-controls--dark .slider-dots span {
+    background: rgba(255, 255, 255, 0.18);
+  }
+  .slider-controls--dark .slider-dots button[aria-current='true'] span {
+    background: var(--color-accent);
+  }
+  .slider-controls--dark .slider-actions button {
+    border-color: rgba(255, 255, 255, 0.22);
+    color: white;
+  }
+  .slider-controls--dark .slider-actions button:hover:not(:disabled) {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+  @media (min-width: 640px) {
+    .slider-controls {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+    }
+    .slider-dots {
+      display: flex;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slider-dots span,
+    .slider-actions button {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const setupSliderControls = () => {
+    document.querySelectorAll<HTMLElement>('[data-slider-controls]').forEach((controls) => {
+      if (controls.dataset.sliderReady === 'true') return;
+
+      const targetId = controls.dataset.sliderTarget;
+      const rail = targetId ? document.getElementById(targetId) : null;
+      if (!rail) return;
+
+      const slides = Array.from(rail.querySelectorAll<HTMLElement>('[data-slider-slide]'));
+      const dots = Array.from(controls.querySelectorAll<HTMLButtonElement>('[data-slider-dot]'));
+      const current = controls.querySelector<HTMLElement>('[data-slider-current]');
+      const previous = controls.querySelector<HTMLButtonElement>('[data-slider-prev]');
+      const next = controls.querySelector<HTMLButtonElement>('[data-slider-next]');
+      if (!slides.length || !current || !previous || !next) return;
+
+      controls.dataset.sliderReady = 'true';
+      let activeIndex = 0;
+      let scrollFrame = 0;
+
+      const setActive = (index: number) => {
+        activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+        current.textContent = String(activeIndex + 1).padStart(2, '0');
+        previous.disabled = activeIndex === 0;
+        next.disabled = activeIndex === slides.length - 1;
+        dots.forEach((dot, dotIndex) => {
+          if (dotIndex === activeIndex) dot.setAttribute('aria-current', 'true');
+          else dot.removeAttribute('aria-current');
+        });
+      };
+
+      const getSlideLeft = (slide: HTMLElement) =>
+        slide.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
+
+      const goTo = (index: number) => {
+        const target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+        if (!target) return;
+        rail.scrollTo({
+          left: getSlideLeft(target),
+          behavior: reducedMotion.matches ? 'auto' : 'smooth',
+        });
+        setActive(slides.indexOf(target));
+      };
+
+      const updateFromScroll = () => {
+        cancelAnimationFrame(scrollFrame);
+        scrollFrame = requestAnimationFrame(() => {
+          const railLeft = rail.getBoundingClientRect().left;
+          const nearest = slides.reduce(
+            (result, slide, index) => {
+              const distance = Math.abs(slide.getBoundingClientRect().left - railLeft);
+              return distance < result.distance ? { index, distance } : result;
+            },
+            { index: 0, distance: Number.POSITIVE_INFINITY },
+          );
+          setActive(nearest.index);
+        });
+      };
+
+      previous.addEventListener('click', () => goTo(activeIndex - 1));
+      next.addEventListener('click', () => goTo(activeIndex + 1));
+      dots.forEach((dot, index) => dot.addEventListener('click', () => goTo(index)));
+      rail.addEventListener('scroll', updateFromScroll, { passive: true });
+      setActive(0);
+    });
+  };
+
+  setupSliderControls();
+  document.addEventListener('astro:page-load', setupSliderControls);
+</script>
