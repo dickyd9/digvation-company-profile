@@ -26,6 +26,6 @@ examples:
 start: Mulai dari keputusan atau event yang ingin dihasilkan dan bukti data yang tersedia.
 order: 5
 seo:
-  title: AI, Computer Vision & Data — Digvation
+  title: AI, Computer Vision & Data | Digvation
   description: Untuk data, gambar, video, atau event yang bisa membantu bisnis melihat pola dan mengambil keputusan.
 ---

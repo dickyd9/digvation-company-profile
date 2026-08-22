@@ -26,6 +26,6 @@ examples:
 start: Mulai dari gejala yang paling mengganggu operasi dan bukti yang tersedia.
 order: 7
 seo:
-  title: Digital Improvement & Care — Digvation
+  title: Digital Improvement & Care | Digvation
   description: Untuk sistem yang sudah berjalan tetapi perlu dibuat lebih stabil, mudah dipelihara, atau terus diperbaiki.
 ---

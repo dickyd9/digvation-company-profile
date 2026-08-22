@@ -44,6 +44,7 @@ Identify the class before implementation. A change may belong to more than one c
 
 - Use short, concrete language that sounds written by a person.
 - Explain the operational problem and improvement before naming the technology.
+- Do not use em dashes in public-facing copy. Rewrite the sentence with natural punctuation.
 - Keep claims verifiable. Mark placeholders clearly and never present them as proof.
 - Preserve intent between Indonesian and English; do not rely on literal translation when it weakens clarity.
 

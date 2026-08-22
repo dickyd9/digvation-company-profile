@@ -27,7 +27,8 @@ For cross-cutting work, follow `docs/CHANGE_POLICY.md`.
 
 - Keep Indonesian as the default experience and preserve the equivalent English route or content where applicable.
 - Never invent clients, testimonials, metrics, certifications, integrations, or business outcomes.
-- Keep copy short, specific, and human. Lead with the business problem, operational change, or outcome—not technology jargon.
+- Keep copy short, specific, and human. Lead with the business problem, operational change, or outcome instead of technology jargon.
+- Do not use em dashes in public-facing copy. Prefer a full stop, comma, colon, or a shorter sentence.
 - Reuse existing design tokens, layouts, and components before introducing a new pattern.
 - Avoid generic SaaS cards, decorative gradients, stock-style illustrations, and motion without meaning.
 - Keep one clear page H1 and one visually dominant primary CTA.

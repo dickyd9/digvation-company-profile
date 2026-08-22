@@ -1,5 +1,6 @@
 ---
 import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Step = { title: string; phase: string; body: string };
 type Props = { locale: 'id' | 'en'; steps: Step[]; note?: string };
@@ -33,10 +34,18 @@ const stageLabels =
     }
   </div>
 
-  <ol class="process-board__grid">
+  <div class="process-board__mobile-controls">
+    <SliderControls
+      controls={`process-slider-${locale}`}
+      count={Math.min(steps.length, 5)}
+      locale={locale}
+    />
+  </div>
+
+  <ol class="process-board__grid" id={`process-slider-${locale}`} data-slider-rail>
     {
       steps.slice(0, 5).map((step, index) => (
-        <li class={`process-card process-card--${index + 1}`}>
+        <li class={`process-card process-card--${index + 1}`} data-slider-slide>
           <div>
             <>
               <span>{String(index + 1).padStart(2, '0')}</span>
@@ -91,18 +100,35 @@ const stageLabels =
   .process-board__stage-head {
     display: none;
   }
+  .process-board__mobile-controls {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.12);
+    background: #fff;
+  }
   .process-board__grid {
     display: grid;
+    grid-auto-columns: min(82vw, 20rem);
+    grid-auto-flow: column;
     gap: 1rem;
+    overflow-x: auto;
     margin: 0;
-    padding: 1rem;
+    padding: 1rem calc(100% - min(82vw, 20rem) + 1rem) 1rem 1rem;
     list-style: none;
+    scroll-padding-inline: 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+  .process-board__grid::-webkit-scrollbar {
+    display: none;
   }
   .process-card {
     padding: 1.1rem;
     border: 1px solid #121a2f;
     background: #e3e8ff;
     box-shadow: 4px 5px 0 #121a2f;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     opacity: 0;
     transform: translateY(18px) rotate(-0.35deg);
     transition:
@@ -181,6 +207,9 @@ const stageLabels =
     font-weight: 700;
   }
   @media (min-width: 900px) {
+    .process-board__mobile-controls {
+      display: none;
+    }
     .process-board__stage-head {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -205,8 +234,11 @@ const stageLabels =
     .process-board__grid {
       grid-template-columns: repeat(5, 1fr);
       grid-template-rows: repeat(6, 5rem);
+      grid-auto-columns: auto;
+      grid-auto-flow: row;
       gap: 0;
       min-height: 30rem;
+      overflow: visible;
       padding: 0;
       background-color: #f7f7f5;
       background-image: linear-gradient(

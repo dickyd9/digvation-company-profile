@@ -26,6 +26,6 @@ examples:
 start: Start with field conditions and connectivity constraints before choosing devices or platforms.
 order: 6
 seo:
-  title: IoT & Connected Systems — Digvation
+  title: IoT & Connected Systems | Digvation
   description: For operations that depend on devices, sensors, cameras, or field data.
 ---

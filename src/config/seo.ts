@@ -3,7 +3,7 @@ import { siteConfig, type Locale } from './site';
 
 export const seoConfig = {
   defaultTitle: 'Digvation - Your Digitalization Partner.',
-  titleTemplate: `%s — ${siteConfig.name}`,
+  titleTemplate: `%s | ${siteConfig.name}`,
   defaultDescription: siteConfig.description,
   ogImage: brandConfig.assets.defaultOgImage,
   robots: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',

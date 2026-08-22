@@ -37,6 +37,6 @@ preview:
   mode: live
   embedUrl: https://poseidonfilter.id/
 seo:
-  title: Poseidon Filter — Website & Digital Presence Case Study
+  title: Poseidon Filter | Website & Digital Presence Case Study
   description: How Digvation built Poseidon Filter's website from scratch to market water-filtration products, improve product discovery, and create a clear inquiry path.
 ---

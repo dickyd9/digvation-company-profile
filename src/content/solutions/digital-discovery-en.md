@@ -28,6 +28,6 @@ examples:
 start: Start with a short conversation about how the process works today.
 order: 1
 seo:
-  title: Digital Discovery — Digvation
+  title: Digital Discovery | Digvation
   description: When the problem is real but it is not yet clear what should be built.
 ---

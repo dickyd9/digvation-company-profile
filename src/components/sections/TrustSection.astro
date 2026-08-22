@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '@/config/site';
 import { clients } from '@/content/social-proof';
+import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
@@ -8,28 +9,43 @@ const realClients = clients;
 const copy =
   locale === 'id'
     ? {
-        eyebrow: 'Kenapa disebut partner?',
-        title: 'Karena bisnis butuh lebih dari daftar fitur.',
-        body: 'Kami ikut memahami masalah, menjaga keputusan tetap jelas, dan bertanggung jawab sampai solusi bisa dipakai.',
+        eyebrow: 'Apa arti partner?',
+        title: 'Ada yang tetap memikirkan hasil, bukan hanya fitur.',
+        body: 'Digvation ikut memahami cara bisnis berjalan, menjaga prioritas, dan bertanggung jawab sampai solusinya bisa digunakan.',
         items: [
-          ['Masuk ke konteks bisnis', 'Proses, orang, data, dan hambatan dilihat lebih dulu.'],
-          ['Keputusan tetap jelas', 'Scope, prioritas, dan risiko dibahas tanpa jargon.'],
           [
-            'Tetap ada setelah launch',
-            'Sistem bisa dirawat dan ditingkatkan saat bisnis bergerak.',
+            'Masalah dibaca sebelum solusi dipilih',
+            'Proses, orang, data, dan hambatan dilihat lebih dulu.',
+          ],
+          [
+            'Keputusan dibuat dengan bahasa bisnis',
+            'Scope, prioritas, dan risiko dibahas tanpa jargon teknis.',
+          ],
+          [
+            'Hubungan tidak berhenti saat live',
+            'Solusi bisa dirawat dan ditingkatkan saat kebutuhan bisnis berubah.',
           ],
         ],
         proof: 'Bisnis yang sudah kami bantu',
         honest: 'Kami hanya menampilkan project dan nama client yang memang bisa diverifikasi.',
       }
     : {
-        eyebrow: 'Why call it a partnership?',
-        title: 'Because a business needs more than a feature list.',
-        body: 'We understand the problem, keep decisions clear, and stay accountable until the solution works in practice.',
+        eyebrow: 'What does partnership mean?',
+        title: 'Someone stays focused on the outcome, not only the features.',
+        body: 'Digvation learns how the business works, keeps priorities clear, and stays accountable until the solution can be used.',
         items: [
-          ['Enter the business context', 'Process, people, data, and friction come first.'],
-          ['Keep decisions clear', 'Scope, priority, and risk without the jargon.'],
-          ['Stay after launch', 'The system can improve as the business moves.'],
+          [
+            'Understand the problem before choosing the solution',
+            'Process, people, data, and friction come first.',
+          ],
+          [
+            'Make decisions in business language',
+            'Scope, priority, and risk are discussed without technical jargon.',
+          ],
+          [
+            'Stay involved after launch',
+            'The solution can improve as the needs of the business change.',
+          ],
         ],
         proof: 'Businesses we have helped',
         honest: 'We only show projects and client names that can be verified.',
@@ -43,10 +59,25 @@ const copy =
       <p>{copy.body}</p>
     </div>
 
-    <div class="trust-items" data-reveal="up" style="--reveal-delay:70ms">
+    <div class="trust-controls" data-reveal="up" style="--reveal-delay:50ms">
+      <SliderControls
+        controls={`trust-slider-${locale}`}
+        count={copy.items.length}
+        locale={locale}
+        tone="dark"
+      />
+    </div>
+
+    <div
+      class="trust-items"
+      id={`trust-slider-${locale}`}
+      data-slider-rail
+      data-reveal="up"
+      style="--reveal-delay:70ms"
+    >
       {
         copy.items.map(([title, body], index) => (
-          <article>
+          <article data-slider-slide>
             <>
               <span>0{index + 1}</span>
               <h3>{title}</h3>
@@ -109,14 +140,33 @@ const copy =
   }
   .trust-items {
     display: grid;
+    grid-auto-columns: min(82vw, 27rem);
+    grid-auto-flow: column;
+    gap: 0.8rem;
+    overflow-x: auto;
+    padding: 0 0 1.4rem;
+    padding-right: calc(100% - min(82vw, 27rem));
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+  .trust-items::-webkit-scrollbar {
+    display: none;
+  }
+  .trust-controls {
+    padding-block: 1.2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.13);
   }
   .trust-items article {
-    padding: 2rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 18rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.035);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
-  .trust-items article:last-child {
-    border-bottom: 0;
+  .trust-items article:nth-child(2) {
+    background: rgba(147, 166, 255, 0.08);
   }
   .trust-items span {
     color: #93a6ff;
@@ -183,13 +233,24 @@ const copy =
     font-size: 0.72rem;
   }
   @media (min-width: 768px) {
+    .trust-controls {
+      display: none;
+    }
     .trust-items {
       grid-template-columns: repeat(3, 1fr);
+      grid-auto-columns: auto;
+      grid-auto-flow: row;
+      gap: 0;
+      overflow: visible;
+      padding: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
     }
     .trust-items article {
+      min-height: 0;
       padding: 2.4rem 2rem;
+      border: 0;
       border-right: 1px solid rgba(255, 255, 255, 0.1);
-      border-bottom: 0;
+      background: transparent;
     }
     .trust-items article:first-child {
       padding-left: 0;

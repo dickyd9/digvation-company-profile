@@ -26,6 +26,6 @@ examples:
 start: Mulai dari kondisi lapangan dan constraint konektivitas sebelum menentukan device atau platform.
 order: 6
 seo:
-  title: IoT & Connected Systems — Digvation
+  title: IoT & Connected Systems | Digvation
   description: Untuk operasi yang bergantung pada device, sensor, camera, atau data dari lapangan.
 ---
