@@ -1,6 +1,5 @@
 ---
 import type { Locale } from '@/config/site';
-import { clients } from '@/content/clients';
 import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Props = { locale: Locale };
@@ -25,9 +24,6 @@ const copy =
             'Solusi bisa dirawat dan ditingkatkan saat kebutuhan bisnis berubah.',
           ],
         ],
-        proof: 'Client Digvation',
-        clientNote: 'Bisnis dan tim yang pernah bekerja bersama kami.',
-        visit: 'Kunjungi website',
       }
     : {
         eyebrow: 'What does partnership mean?',
@@ -47,9 +43,6 @@ const copy =
             'The solution can improve as the needs of the business change.',
           ],
         ],
-        proof: 'Digvation clients',
-        clientNote: 'Businesses and teams we have worked with.',
-        visit: 'Visit website',
       };
 ---
 
@@ -86,44 +79,6 @@ const copy =
         ))
       }
     </div>
-
-    {
-      clients.length > 0 && (
-        <div class="client-proof" data-reveal="up" style="--reveal-delay:120ms">
-          <header class="client-proof__head">
-            <span>{copy.proof}</span>
-            <p>{copy.clientNote}</p>
-          </header>
-
-          <ul class="client-logo-wall" aria-label={copy.proof}>
-            {clients.map((client) => (
-              <li>
-                <a
-                  href={client.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${copy.visit}: ${client.name}`}
-                >
-                  <img
-                    class:list={[
-                      'client-logo',
-                      client.logoType === 'mark' ? 'client-logo--mark' : 'client-logo--wordmark',
-                    ]}
-                    src={client.logo}
-                    alt={client.name}
-                    width={client.width}
-                    height={client.height}
-                    loading="lazy"
-                    decoding="async"
-                    referrerpolicy="no-referrer"
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
   </div>
 </section>
 
@@ -200,98 +155,6 @@ const copy =
     font-size: 0.82rem;
     line-height: 1.7;
   }
-  .client-proof {
-    padding-top: clamp(2.5rem, 5vw, 4rem);
-  }
-  .client-proof__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 2rem;
-    padding-bottom: 1.25rem;
-  }
-  .client-proof__head span,
-  .client-proof__head p {
-    margin: 0;
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-  .client-proof__head span {
-    color: var(--color-accent);
-  }
-  .client-proof__head p {
-    color: rgba(255, 255, 255, 0.4);
-  }
-  .client-logo-wall {
-    display: grid;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    list-style: none;
-  }
-  .client-logo-wall li {
-    min-width: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  }
-  .client-logo-wall li:last-child {
-    border-bottom: 0;
-  }
-  .client-logo-wall a {
-    position: relative;
-    display: grid;
-    min-height: clamp(9rem, 15vw, 12rem);
-    place-items: center;
-    overflow: hidden;
-    padding: 2rem;
-    color: inherit;
-    text-decoration: none;
-    transition: background-color 240ms ease;
-  }
-  .client-logo-wall a::before {
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    left: 50%;
-    height: 2px;
-    background: var(--color-accent);
-    content: '';
-    transition:
-      right 480ms cubic-bezier(0.22, 1, 0.36, 1),
-      left 480ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .client-logo-wall a:hover {
-    background: rgba(147, 166, 255, 0.055);
-  }
-  .client-logo-wall a:hover::before {
-    right: 0;
-    left: 0;
-  }
-  .client-logo {
-    display: block;
-    object-fit: contain;
-    opacity: 0.56;
-    filter: grayscale(1) brightness(3.8);
-    transition:
-      opacity 240ms ease,
-      filter 320ms ease,
-      transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .client-logo--wordmark {
-    width: min(14rem, 72%);
-    max-height: 5.5rem;
-  }
-  .client-logo--mark {
-    width: min(5.75rem, 38%);
-    max-height: 5.75rem;
-  }
-  .client-logo-wall a:hover .client-logo {
-    opacity: 1;
-    filter: none;
-    transform: translateY(-0.2rem);
-  }
   @media (min-width: 768px) {
     .trust-controls {
       display: none;
@@ -319,37 +182,11 @@ const copy =
       padding-right: 0;
       border-right: 0;
     }
-    .client-logo-wall {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .client-logo-wall li {
-      border-right: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 0;
-    }
-    .client-logo-wall li:last-child {
-      border-right: 0;
-    }
   }
   @media (min-width: 1024px) {
     .trust-intro {
       grid-template-columns: 1.06fr 0.94fr;
       gap: 5rem;
-    }
-  }
-  @media (max-width: 640px) {
-    .client-proof__head {
-      display: grid;
-      gap: 0.4rem;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .client-logo-wall a,
-    .client-logo-wall a::before,
-    .client-logo {
-      transition: none;
-    }
-    .client-logo-wall a:hover .client-logo {
-      transform: none;
     }
   }
 </style>

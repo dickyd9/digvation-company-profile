@@ -15,6 +15,7 @@ A prospective client should understand these ideas quickly:
 
 ```text
 Partner positioning
+→ See trusted client relationships
 → Recognize manual/disconnected work
 → See what can be digitalized
 → Understand why Digvation works as a partner
@@ -54,11 +55,12 @@ Avoid:
 ## Signature Digvation components
 
 1. **Digitalization-partner hero:** immediately communicates that the business becomes easier to run, monitor, and grow. A restrained word rotation adds rhythm while one concrete operational-flow illustration makes the promise tangible.
-2. **What Can Be Digitalized?:** concrete day-to-day examples such as orders, approvals, and reporting.
-3. **Why Partner With Digvation:** context, clear decisions, and continuity after launch.
-4. **Working With Digvation:** understand the context → set the priority → design the solution → build and launch → monitor and improve. Present this as one connected journey with visible ownership, not a collection of decorative cards.
-5. **Solution possibilities:** technology appears after the business need is understood.
-6. **Selected Work:** real project proof with case-study/live-preview options. Published websites use a composed browser-stage presentation rather than raw iframe chrome.
+2. **Client relationship wall:** a compact, light-background logo rail directly after the hero. It gives relationship proof without repeating portfolio content and remains at most two rows when the list grows.
+3. **What Can Be Digitalized?:** concrete day-to-day examples such as orders, approvals, and reporting.
+4. **Why Partner With Digvation:** context, clear decisions, and continuity after launch.
+5. **Working With Digvation:** understand the context → set the priority → design the solution → build and launch → monitor and improve. Present this as one connected journey with visible ownership, not a collection of decorative cards.
+6. **Solution possibilities:** technology appears after the business need is understood.
+7. **Selected Work:** real project proof with case-study/live-preview options. Published websites use a composed browser-stage presentation rather than raw iframe chrome.
 
 ## Typography
 

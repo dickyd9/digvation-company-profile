@@ -9,25 +9,28 @@ Existing SEO, bilingual routing, analytics, content collections, inquiry flow, a
 1. **Hero: A Better-Run Business**  
    Leads with the outcome: a business that is easier to run, monitor, and grow. The final phrase rotates gently without changing the H1's accessible meaning or causing layout shift. One clearly labelled illustrative system shows a connected operational flow without presenting illustrative data as a client result.
 
-2. **What Can Be Digitalized?**  
+2. **Client Experience Signal**  
+   A compact light-background logo wall immediately confirms that real brands and teams have trusted Digvation with digital work. It stays separate from project proof: logos show relationship history, while project detail belongs in Selected Work. Up to four clients use one row; larger lists use a two-row horizontal rail so the section does not keep growing vertically.
+
+3. **What Can Be Digitalized?**  
    Short, concrete examples let visitors recognize their own day-to-day problems before seeing technology categories. Each slide pairs one sharp friction statement with one clear change and a contextual business scene. The examples use a wide horizontal frame so the active story stays readable while the next-card edge, current/total count, progress markers, and controls make the continuation obvious.
 
-3. **Why Partner With Digvation**  
-   Explains what “partner” means in practice: understand the business context, keep decisions clear, and remain available after launch. Approved client relationships appear as a restrained logo wall. It does not repeat project summaries, because detailed proof belongs in Selected Work.
+4. **Why Partner With Digvation**  
+   Explains what “partner” means in practice: understand the business context, keep decisions clear, and remain available after launch.
 
-4. **Working With Digvation**  
+5. **Working With Digvation**  
    Explains the partnership model in five connected steps: understand the context, set the priority, design the solution, build and launch, then monitor and improve. A continuous timeline and explicit ownership make the sequence easy to scan without using decorative sticky-note cards. The process becomes a slider on smaller screens to avoid a long stack.
 
-5. **Solution Possibilities**  
+6. **Solution Possibilities**  
    Shows the forms the digital change can take after the need is understood: customer experiences, internal systems, automation and integration, and connected data operations. Each slide leads with the change in the business, shows a compact concept interface, and names possible technology only at the end. The slider stays visually important without taking over the full page depth.
 
-6. **Selected Work**  
+7. **Selected Work**  
    Presents approved Digvation work as real project proof. Live websites appear inside a restrained browser-stage treatment with a clear project name, published state, and direct visit action instead of looking like a raw embedded iframe.
 
-7. **FAQ**  
+8. **FAQ**  
    Removes uncertainty before starting a conversation.
 
-8. **Final CTA**  
+9. **Final CTA**  
    Invites the visitor to describe how the business works today without requiring a proposal, technical specification, or predefined solution.
 
 ## Core message hierarchy

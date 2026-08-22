@@ -1,5 +1,6 @@
 ---
 import DigitalizeThis from '@/components/sections/DigitalizeThis.astro';
+import ClientSection from '@/components/sections/ClientSection.astro';
 import FaqSection from '@/components/sections/FaqSection.astro';
 import FeaturedWork from '@/components/sections/FeaturedWork.astro';
 import FinalCta from '@/components/sections/FinalCta.astro';
@@ -17,6 +18,7 @@ const copy = homeCopy[locale];
 ---
 
 <HomeHero locale={locale} copy={copy.hero} />
+<ClientSection locale={locale} />
 <DigitalizeThis locale={locale} copy={copy.digitalize} />
 <TrustSection locale={locale} />
 <ProcessSection locale={locale} copy={copy.process} />
