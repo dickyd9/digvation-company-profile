@@ -21,18 +21,13 @@ export type HomeCopy = {
     intro: string;
     signalLabel: string;
     responseLabel: string;
-    currentLabel: string;
-    changeLabel: string;
-    targetLabel: string;
     visualNote: string;
     linkLabel: string;
     items: Array<{
       index: string;
       signal: string;
       response: string;
-      before: string[];
-      shift: string;
-      after: string[];
+      preview: 'customer' | 'operations' | 'data';
     }>;
     note: string;
   };
@@ -41,14 +36,13 @@ export type HomeCopy = {
     title: string;
     intro: string;
     contextLabel: string;
-    flowLabel: string;
     outputLabel: string;
     visualNote: string;
     items: Array<{
       index: string;
       title: string;
       body: string;
-      path: string[];
+      preview: 'experience' | 'workspace' | 'automation' | 'monitoring';
       outputs: string[];
     }>;
   };
@@ -89,9 +83,6 @@ const id: HomeCopy = {
       'Tunjukkan bagian yang membuang waktu, membuat customer ragu, atau menahan keputusan. Dari sana kami cari perubahan pertama yang paling masuk akal.',
     signalLabel: 'Masalah yang terasa',
     responseLabel: 'Yang perlu berubah',
-    currentLabel: 'Kondisi sekarang',
-    changeLabel: 'Yang dibenahi',
-    targetLabel: 'Arah yang dituju',
     visualNote: 'Cari yang paling mirip dengan kondisi bisnis Anda.',
     linkLabel: 'Ceritakan satu hambatan',
     items: [
@@ -101,27 +92,21 @@ const id: HomeCopy = {
           'Orang datang, melihat-lihat, lalu pergi tanpa benar-benar paham nilai bisnis Anda.',
         response:
           'Susun informasi dan jalur kontak agar calon customer tahu kenapa harus memilih dan apa yang perlu dilakukan berikutnya.',
-        before: ['Datang', 'Masih ragu', 'Pergi'],
-        shift: 'Pesan dan jalur inquiry diperjelas',
-        after: ['Paham nilainya', 'Lihat buktinya', 'Mulai bicara'],
+        preview: 'customer',
       },
       {
         index: '02',
         signal: 'Order masuk dari mana-mana. Status ditanya ulang. Approval tenggelam di chat.',
         response:
           'Satukan permintaan, PIC, approval, dan status supaya tim bekerja dari alur yang sama.',
-        before: ['Chat', 'Spreadsheet', 'Dokumen'],
-        shift: 'Satu alur kerja',
-        after: ['PIC jelas', 'Status terlihat', 'Riwayat tersimpan'],
+        preview: 'operations',
       },
       {
         index: '03',
         signal: 'Data penjualan, stok, dan operasional ada, tetapi keputusan tetap menunggu rekap.',
         response:
           'Hubungkan sumber data dan tampilkan hal yang memang perlu dipantau atau ditindaklanjuti.',
-        before: ['Penjualan', 'Stok', 'Operasional'],
-        shift: 'Data disatukan',
-        after: ['Ringkasan siap', 'Masalah terlihat', 'Langkah lebih jelas'],
+        preview: 'data',
       },
     ],
     note: 'Website, sistem internal, automation, dashboard, AI, atau IoT hanyalah bentuknya. Yang dibenahi tetap alur bisnisnya.',
@@ -132,7 +117,6 @@ const id: HomeCopy = {
     intro:
       'Kami tentukan bentuknya dari alur kerja, orang yang memakai, dan perubahan yang ingin dicapai.',
     contextLabel: 'Saat bisnis membutuhkan',
-    flowLabel: 'Perubahan yang dituju',
     outputLabel: 'Bentuk yang mungkin',
     visualNote: 'Mulai dari dampaknya. Teknologinya menyusul.',
     items: [
@@ -140,28 +124,28 @@ const id: HomeCopy = {
         index: '01',
         title: 'Customer tahu kenapa harus memilih Anda.',
         body: 'Bisnis perlu lebih mudah ditemukan, dipercaya, dan dihubungi.',
-        path: ['Ditemukan', 'Dipahami', 'Dihubungi'],
+        preview: 'experience',
         outputs: ['Website', 'Portal', 'Inquiry Flow', 'Mobile'],
       },
       {
         index: '02',
         title: 'Tim bekerja dari alur yang sama.',
         body: 'Pekerjaan tersebar di chat, spreadsheet, dan terlalu banyak dokumen.',
-        path: ['Permintaan masuk', 'Diproses', 'Status terlihat'],
+        preview: 'workspace',
         outputs: ['Internal System', 'Backoffice', 'Workflow', 'Dashboard'],
       },
       {
         index: '03',
         title: 'Pekerjaan berulang tidak lagi dikerjakan dua kali.',
         body: 'Data dan tugas terus dipindahkan dari satu sistem ke sistem lain.',
-        path: ['Pemicu muncul', 'Proses berjalan', 'Tim mendapat update'],
+        preview: 'automation',
         outputs: ['Automation', 'API', 'Integration', 'Notification'],
       },
       {
         index: '04',
         title: 'Data menunjukkan apa yang perlu dilakukan.',
         body: 'Laporan, kamera, atau sensor perlu membantu monitoring dan keputusan.',
-        path: ['Data masuk', 'Sinyal terbaca', 'Tindakan dibuat'],
+        preview: 'monitoring',
         outputs: ['Analytics', 'AI / CV', 'IoT', 'Monitoring'],
       },
     ],
@@ -235,9 +219,6 @@ const en: HomeCopy = {
       'Show us what wastes time, makes customers hesitate, or delays a decision. We will find the first change that makes practical sense.',
     signalLabel: 'The problem you feel',
     responseLabel: 'What needs to change',
-    currentLabel: 'Current state',
-    changeLabel: 'What changes',
-    targetLabel: 'Where it should lead',
     visualNote: 'Find the story that feels closest to your business.',
     linkLabel: 'Share one bottleneck',
     items: [
@@ -247,26 +228,20 @@ const en: HomeCopy = {
           'People visit, look around, and leave without really seeing why the business matters.',
         response:
           'Shape the information and contact path so potential customers know why to choose you and what to do next.',
-        before: ['Arrive', 'Still unsure', 'Leave'],
-        shift: 'Clarify the message and inquiry path',
-        after: ['See the value', 'Find the proof', 'Start a conversation'],
+        preview: 'customer',
       },
       {
         index: '02',
         signal: 'Orders arrive everywhere. Status gets asked twice. Approvals disappear in chat.',
         response:
           'Bring requests, ownership, approvals, and status into one flow the whole team can follow.',
-        before: ['Chat', 'Spreadsheet', 'Documents'],
-        shift: 'One working flow',
-        after: ['Clear owner', 'Visible status', 'Saved history'],
+        preview: 'operations',
       },
       {
         index: '03',
         signal: 'Sales, stock, and operations data exist, but decisions still wait for a recap.',
         response: 'Connect the sources and show what actually needs to be monitored or acted on.',
-        before: ['Sales', 'Stock', 'Operations'],
-        shift: 'Bring the data together',
-        after: ['Recap ready', 'Issues visible', 'Next step clearer'],
+        preview: 'data',
       },
     ],
     note: 'A website, internal system, automation, dashboard, AI, or IoT is only the form. The real work is improving the business flow.',
@@ -277,7 +252,6 @@ const en: HomeCopy = {
     intro:
       'We choose the form based on the workflow, the people using it, and the change the business needs.',
     contextLabel: 'When the business needs',
-    flowLabel: 'The intended change',
     outputLabel: 'Possible forms',
     visualNote: 'Start with the impact. Choose the technology after.',
     items: [
@@ -285,28 +259,28 @@ const en: HomeCopy = {
         index: '01',
         title: 'Customers know why they should choose you.',
         body: 'The business needs to be easier to find, trust, and contact.',
-        path: ['Found', 'Understood', 'Contacted'],
+        preview: 'experience',
         outputs: ['Website', 'Portal', 'Inquiry Flow', 'Mobile'],
       },
       {
         index: '02',
         title: 'The team works from the same flow.',
         body: 'Work is scattered across chat, spreadsheets, and too many documents.',
-        path: ['Request arrives', 'Work moves', 'Status is visible'],
+        preview: 'workspace',
         outputs: ['Internal System', 'Backoffice', 'Workflow', 'Dashboard'],
       },
       {
         index: '03',
         title: 'Repeated work is not done twice.',
         body: 'Data and tasks keep moving manually between separate systems.',
-        path: ['Trigger appears', 'Process runs', 'Team gets an update'],
+        preview: 'automation',
         outputs: ['Automation', 'API', 'Integration', 'Notification'],
       },
       {
         index: '04',
         title: 'Data shows what needs to happen next.',
         body: 'Reports, cameras, or sensors need to support monitoring and decisions.',
-        path: ['Data arrives', 'Signal is clear', 'Action is taken'],
+        preview: 'monitoring',
         outputs: ['Analytics', 'AI / CV', 'IoT', 'Monitoring'],
       },
     ],

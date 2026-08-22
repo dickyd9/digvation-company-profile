@@ -3,6 +3,7 @@ import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
 import SliderControls from '@/components/ui/SliderControls.astro';
+import ProblemScene from '@/components/ui/ProblemScene.astro';
 
 type Props = { copy: HomeCopy['digitalize']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
@@ -77,30 +78,8 @@ const { copy, locale = 'id' } = Astro.props;
               </div>
             </div>
 
-            <div class="signal-map">
-              <div class="signal-stage signal-stage--before">
-                <p>{copy.currentLabel}</p>
-                <ul>
-                  {item.before.map((step) => (
-                    <li>{step}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div class="signal-shift">
-                <p>{copy.changeLabel}</p>
-                <strong>{item.shift}</strong>
-                <span aria-hidden="true">→</span>
-              </div>
-
-              <div class="signal-stage signal-stage--after">
-                <p>{copy.targetLabel}</p>
-                <ul>
-                  {item.after.map((step) => (
-                    <li>{step}</li>
-                  ))}
-                </ul>
-              </div>
+            <div class="signal-visual">
+              <ProblemScene kind={item.preview} locale={locale} />
             </div>
           </article>
         ))
@@ -219,75 +198,8 @@ const { copy, locale = 'id' } = Astro.props;
     padding-top: 1.2rem;
     border-top: 1px solid rgba(11, 13, 16, 0.13);
   }
-  .signal-map {
-    display: grid;
+  .signal-visual {
     min-width: 0;
-    align-content: center;
-    gap: 1.1rem;
-    padding: clamp(1.5rem, 3vw, 3rem);
-    background: var(--color-indigo-deep);
-    color: #fff;
-  }
-  .signal-stage {
-    padding: 1.1rem;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.04);
-  }
-  .signal-stage > p,
-  .signal-shift > p {
-    color: rgba(255, 255, 255, 0.48);
-  }
-  .signal-stage ul {
-    display: grid;
-    gap: 0.5rem;
-    margin: 1rem 0 0;
-    padding: 0;
-    list-style: none;
-  }
-  .signal-stage li {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    min-height: 2.65rem;
-    padding: 0.6rem 0.75rem;
-    background: rgba(255, 255, 255, 0.07);
-    font-size: 0.82rem;
-    font-weight: 650;
-  }
-  .signal-stage li::before {
-    width: 0.45rem;
-    height: 0.45rem;
-    flex: none;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
-    content: '';
-  }
-  .signal-stage--after {
-    border-color: rgba(147, 166, 255, 0.5);
-    background: rgba(147, 166, 255, 0.1);
-  }
-  .signal-stage--after li::before {
-    border-color: var(--color-accent);
-    background: var(--color-accent);
-    box-shadow: 0 0 0 4px rgba(147, 166, 255, 0.12);
-  }
-  .signal-shift {
-    position: relative;
-    padding: 0.25rem 2.5rem 0.25rem 0;
-  }
-  .signal-shift strong {
-    max-width: 20rem;
-    margin-top: 0.35rem;
-    color: #fff;
-    font-size: 0.92rem;
-    line-height: 1.45;
-  }
-  .signal-shift > span {
-    position: absolute;
-    right: 0;
-    bottom: 0.35rem;
-    color: var(--color-accent);
-    font-size: 1.7rem;
   }
   .scope-note {
     max-width: 54rem;
@@ -297,24 +209,6 @@ const { copy, locale = 'id' } = Astro.props;
     color: rgba(11, 13, 16, 0.54);
     font-size: 0.82rem;
     line-height: 1.75;
-  }
-  @media (min-width: 700px) {
-    .signal-map {
-      grid-template-columns: minmax(0, 1fr) minmax(7.5rem, 0.7fr) minmax(0, 1fr);
-      align-items: center;
-    }
-    .signal-shift {
-      padding: 0 0 3.25rem;
-      text-align: center;
-    }
-    .signal-shift strong {
-      margin-inline: auto;
-    }
-    .signal-shift > span {
-      right: 50%;
-      bottom: 0.2rem;
-      transform: translateX(50%);
-    }
   }
   @media (min-width: 1024px) {
     .digitalize-head {
@@ -334,9 +228,6 @@ const { copy, locale = 'id' } = Astro.props;
     .signal-row {
       grid-template-columns: minmax(22rem, 0.9fr) minmax(32rem, 1.1fr);
     }
-    .signal-map {
-      grid-template-columns: minmax(0, 1fr) minmax(7rem, 0.65fr) minmax(0, 1fr);
-    }
   }
   @media (max-width: 699px) {
     .signal-row {
@@ -344,22 +235,6 @@ const { copy, locale = 'id' } = Astro.props;
     }
     .signal-row h3 {
       margin-top: 2.5rem;
-    }
-    .signal-map {
-      min-height: 24rem;
-    }
-    .signal-stage ul {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .signal-stage li {
-      min-height: 4.25rem;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.55rem;
-      text-align: center;
-    }
-    .signal-shift > span {
-      transform: rotate(90deg);
     }
   }
 </style>

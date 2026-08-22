@@ -3,6 +3,7 @@ import type { Locale } from '@/config/site';
 import { getLocalizedPath } from '@/config/navigation';
 import type { HomeCopy } from '@/content/home';
 import SliderControls from '@/components/ui/SliderControls.astro';
+import SolutionScene from '@/components/ui/SolutionScene.astro';
 
 type Props = { copy: HomeCopy['solutions']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
@@ -66,26 +67,16 @@ const { copy, locale = 'id' } = Astro.props;
               <p>{item.body}</p>
             </div>
 
-            <div class="solution-card__story">
-              <div class="solution-card__flow">
-                <p>{copy.flowLabel}</p>
-                <ol>
-                  {item.path.map((step, stepIndex) => (
-                    <li>
-                      <span>{step}</span>
-                      {stepIndex < item.path.length - 1 && <b aria-hidden="true">→</b>}
-                    </li>
-                  ))}
-                </ol>
-              </div>
+            <div class="solution-card__visual">
+              <SolutionScene kind={item.preview} locale={locale} />
+            </div>
 
-              <div class="solution-card__outputs">
-                <p>{copy.outputLabel}</p>
-                <div>
-                  {item.outputs.map((output) => (
-                    <span>{output}</span>
-                  ))}
-                </div>
+            <div class="solution-card__outputs">
+              <p>{copy.outputLabel}</p>
+              <div>
+                {item.outputs.map((output) => (
+                  <span>{output}</span>
+                ))}
               </div>
             </div>
           </article>
@@ -163,9 +154,9 @@ const { copy, locale = 'id' } = Astro.props;
   }
   .solution-card {
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    min-height: clamp(31rem, 46vw, 38rem);
-    gap: clamp(2rem, 4vw, 4rem);
+    grid-template-rows: auto auto 1fr auto;
+    min-height: clamp(42rem, 58vw, 49rem);
+    gap: clamp(1.4rem, 2.4vw, 2.35rem);
     padding: clamp(1.5rem, 3.2vw, 3.25rem);
     border: 1px solid rgba(255, 255, 255, 0.16);
     background: var(--color-surface);
@@ -211,13 +202,9 @@ const { copy, locale = 'id' } = Astro.props;
     font-size: 0.94rem;
     line-height: 1.7;
   }
-  .solution-card__story {
-    display: grid;
-    gap: 1.5rem;
-    padding-top: clamp(1.5rem, 3vw, 2.5rem);
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  .solution-card__visual {
+    min-width: 0;
   }
-  .solution-card__flow > p,
   .solution-card__outputs > p {
     margin: 0;
     color: rgba(255, 255, 255, 0.4);
@@ -226,38 +213,10 @@ const { copy, locale = 'id' } = Astro.props;
     letter-spacing: 0.09em;
     text-transform: uppercase;
   }
-  .solution-card__flow ol {
-    display: grid;
-    gap: 0.5rem;
-    margin: 0.9rem 0 0;
-    padding: 0;
-    list-style: none;
-  }
-  .solution-card__flow li {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .solution-card__flow li > span {
-    display: grid;
-    min-height: 2.7rem;
-    flex: 1;
-    place-items: center;
-    padding: 0.65rem 0.75rem;
-    border: 1px solid rgba(147, 166, 255, 0.26);
-    background: rgba(147, 166, 255, 0.08);
-    font-size: 0.78rem;
-    font-weight: 650;
-    text-align: center;
-  }
-  .solution-card__flow b {
-    color: var(--color-accent);
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
   .solution-card__outputs {
     min-width: 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
   .solution-card__outputs > div {
     display: flex;
@@ -289,33 +248,10 @@ const { copy, locale = 'id' } = Astro.props;
       grid-auto-columns: min(72vw, 62rem);
       padding-right: calc(100% - min(72vw, 62rem));
     }
-    .solution-card__story {
-      grid-template-columns: minmax(0, 1.25fr) minmax(13rem, 0.75fr);
-      gap: clamp(2rem, 4vw, 4rem);
-    }
-    .solution-card__flow ol {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 1023px) {
-    .solution-card__flow ol {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
   @media (max-width: 540px) {
     .solution-card {
-      min-height: 37rem;
-    }
-    .solution-card__flow ol {
-      grid-template-columns: 1fr;
-    }
-    .solution-card__flow li {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-    .solution-card__flow b {
-      justify-self: center;
-      transform: rotate(90deg);
+      min-height: 46rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
