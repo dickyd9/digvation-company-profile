@@ -95,13 +95,16 @@ const hint = locale === 'id' ? 'Geser untuk melihat lainnya' : 'Swipe to see mor
     white-space: nowrap;
   }
   .slider-dots {
-    display: none;
+    display: flex;
+    grid-column: 1 / -1;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.25rem;
   }
   .slider-dots button {
-    width: 2.2rem;
+    width: auto;
+    min-width: 2.2rem;
     height: 1.4rem;
+    flex: 1;
     border: 0;
     padding: 0;
     background: transparent;
@@ -174,7 +177,11 @@ const hint = locale === 'id' ? 'Geser untuk melihat lainnya' : 'Swipe to see mor
       grid-template-columns: minmax(0, 1fr) auto auto;
     }
     .slider-dots {
-      display: flex;
+      grid-column: auto;
+    }
+    .slider-dots button {
+      width: 2.2rem;
+      flex: none;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -249,6 +256,11 @@ const hint = locale === 'id' ? 'Geser untuk melihat lainnya' : 'Swipe to see mor
       previous.addEventListener('click', () => goTo(activeIndex - 1));
       next.addEventListener('click', () => goTo(activeIndex + 1));
       dots.forEach((dot, index) => dot.addEventListener('click', () => goTo(index)));
+      rail.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        goTo(activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
+      });
       rail.addEventListener('scroll', updateFromScroll, { passive: true });
       setActive(0);
     });

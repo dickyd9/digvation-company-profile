@@ -21,15 +21,36 @@ export type HomeCopy = {
     intro: string;
     signalLabel: string;
     responseLabel: string;
+    currentLabel: string;
+    changeLabel: string;
+    targetLabel: string;
+    visualNote: string;
     linkLabel: string;
-    items: Array<{ index: string; signal: string; response: string }>;
+    items: Array<{
+      index: string;
+      signal: string;
+      response: string;
+      before: string[];
+      shift: string;
+      after: string[];
+    }>;
     note: string;
   };
   solutions: {
     eyebrow: string;
     title: string;
     intro: string;
-    items: Array<{ index: string; title: string; body: string; outputs: string[] }>;
+    contextLabel: string;
+    flowLabel: string;
+    outputLabel: string;
+    visualNote: string;
+    items: Array<{
+      index: string;
+      title: string;
+      body: string;
+      path: string[];
+      outputs: string[];
+    }>;
   };
   process: {
     eyebrow: string;
@@ -63,59 +84,84 @@ const id: HomeCopy = {
   },
   digitalize: {
     eyebrow: 'Tanda yang perlu dibenahi',
-    title: 'Masalah yang berulang layak dibereskan.',
+    title: 'Yang terasa sepele, sering jadi beban setiap hari.',
     intro:
-      'Tidak perlu menebak aplikasi apa yang harus dibuat. Tunjukkan proses yang paling merepotkan. Kami bantu memilih perubahan pertama yang paling terasa.',
-    signalLabel: 'Yang terjadi sekarang',
-    responseLabel: 'Arah perbaikannya',
-    linkLabel: 'Bahas satu hambatan',
+      'Tunjukkan bagian yang membuang waktu, membuat customer ragu, atau menahan keputusan. Dari sana kami cari perubahan pertama yang paling masuk akal.',
+    signalLabel: 'Masalah yang terasa',
+    responseLabel: 'Yang perlu berubah',
+    currentLabel: 'Kondisi sekarang',
+    changeLabel: 'Yang dibenahi',
+    targetLabel: 'Arah yang dituju',
+    visualNote: 'Cari yang paling mirip dengan kondisi bisnis Anda.',
+    linkLabel: 'Ceritakan satu hambatan',
     items: [
       {
         index: '01',
-        signal: 'Calon customer datang, tetapi belum paham kenapa harus memilih Anda.',
-        response: 'Perjelas nilai bisnis, alur informasi, dan jalan menuju inquiry.',
+        signal:
+          'Orang datang, melihat-lihat, lalu pergi tanpa benar-benar paham nilai bisnis Anda.',
+        response:
+          'Susun informasi dan jalur kontak agar calon customer tahu kenapa harus memilih dan apa yang perlu dilakukan berikutnya.',
+        before: ['Datang', 'Masih ragu', 'Pergi'],
+        shift: 'Pesan dan jalur inquiry diperjelas',
+        after: ['Paham nilainya', 'Lihat buktinya', 'Mulai bicara'],
       },
       {
         index: '02',
-        signal: 'Order, approval, dan laporan masih berpindah lewat chat atau spreadsheet.',
-        response: 'Satukan proses, status, dan tanggung jawab dalam satu alur.',
+        signal: 'Order masuk dari mana-mana. Status ditanya ulang. Approval tenggelam di chat.',
+        response:
+          'Satukan permintaan, PIC, approval, dan status supaya tim bekerja dari alur yang sama.',
+        before: ['Chat', 'Spreadsheet', 'Dokumen'],
+        shift: 'Satu alur kerja',
+        after: ['PIC jelas', 'Status terlihat', 'Riwayat tersimpan'],
       },
       {
         index: '03',
-        signal: 'Data ada di banyak tempat, tetapi keputusan tetap menunggu rekap manual.',
-        response: 'Hubungkan sumber data, otomatisasi rekap, dan tampilkan yang perlu dipantau.',
+        signal: 'Data penjualan, stok, dan operasional ada, tetapi keputusan tetap menunggu rekap.',
+        response:
+          'Hubungkan sumber data dan tampilkan hal yang memang perlu dipantau atau ditindaklanjuti.',
+        before: ['Penjualan', 'Stok', 'Operasional'],
+        shift: 'Data disatukan',
+        after: ['Ringkasan siap', 'Masalah terlihat', 'Langkah lebih jelas'],
       },
     ],
-    note: 'Solusinya bisa berupa website, sistem internal, automation, dashboard, AI, IoT, atau gabungan beberapa kebutuhan.',
+    note: 'Website, sistem internal, automation, dashboard, AI, atau IoT hanyalah bentuknya. Yang dibenahi tetap alur bisnisnya.',
   },
   solutions: {
     eyebrow: 'Bentuk solusi',
-    title: 'Yang dibangun mengikuti masalahnya.',
+    title: 'Yang dibangun harus mengubah sesuatu.',
     intro:
-      'Kadang jawabannya website. Kadang sistem internal, integrasi, atau automation. Bentuknya dipilih setelah kebutuhan bisnisnya jelas.',
+      'Kami tentukan bentuknya dari alur kerja, orang yang memakai, dan perubahan yang ingin dicapai.',
+    contextLabel: 'Saat bisnis membutuhkan',
+    flowLabel: 'Perubahan yang dituju',
+    outputLabel: 'Bentuk yang mungkin',
+    visualNote: 'Mulai dari dampaknya. Teknologinya menyusul.',
     items: [
       {
         index: '01',
-        title: 'Pengalaman customer yang lebih jelas',
-        body: 'Saat bisnis perlu lebih mudah ditemukan, dipahami, dan dihubungi.',
+        title: 'Customer tahu kenapa harus memilih Anda.',
+        body: 'Bisnis perlu lebih mudah ditemukan, dipercaya, dan dihubungi.',
+        path: ['Ditemukan', 'Dipahami', 'Dihubungi'],
         outputs: ['Website', 'Portal', 'Inquiry Flow', 'Mobile'],
       },
       {
         index: '02',
-        title: 'Operasional yang lebih rapi',
-        body: 'Saat pekerjaan tersebar di chat, spreadsheet, atau banyak dokumen.',
+        title: 'Tim bekerja dari alur yang sama.',
+        body: 'Pekerjaan tersebar di chat, spreadsheet, dan terlalu banyak dokumen.',
+        path: ['Permintaan masuk', 'Diproses', 'Status terlihat'],
         outputs: ['Internal System', 'Backoffice', 'Workflow', 'Dashboard'],
       },
       {
         index: '03',
-        title: 'Proses yang saling terhubung',
-        body: 'Saat tim harus mengulang input dan memindahkan data antar sistem.',
+        title: 'Pekerjaan berulang tidak lagi dikerjakan dua kali.',
+        body: 'Data dan tugas terus dipindahkan dari satu sistem ke sistem lain.',
+        path: ['Pemicu muncul', 'Proses berjalan', 'Tim mendapat update'],
         outputs: ['Automation', 'API', 'Integration', 'Notification'],
       },
       {
         index: '04',
-        title: 'Data yang bisa ditindaklanjuti',
-        body: 'Saat laporan, kamera, atau sensor perlu membantu monitoring dan keputusan.',
+        title: 'Data menunjukkan apa yang perlu dilakukan.',
+        body: 'Laporan, kamera, atau sensor perlu membantu monitoring dan keputusan.',
+        path: ['Data masuk', 'Sinyal terbaca', 'Tindakan dibuat'],
         outputs: ['Analytics', 'AI / CV', 'IoT', 'Monitoring'],
       },
     ],
@@ -184,59 +230,83 @@ const en: HomeCopy = {
   },
   digitalize: {
     eyebrow: 'Signs that something needs to change',
-    title: 'Recurring problems are worth fixing.',
+    title: 'Small frustrations often become a daily burden.',
     intro:
-      'You do not need to guess which application to build. Show us the process that causes the most friction. We will help choose the first change that matters.',
-    signalLabel: 'What is happening now',
-    responseLabel: 'A practical direction',
-    linkLabel: 'Discuss one bottleneck',
+      'Show us what wastes time, makes customers hesitate, or delays a decision. We will find the first change that makes practical sense.',
+    signalLabel: 'The problem you feel',
+    responseLabel: 'What needs to change',
+    currentLabel: 'Current state',
+    changeLabel: 'What changes',
+    targetLabel: 'Where it should lead',
+    visualNote: 'Find the story that feels closest to your business.',
+    linkLabel: 'Share one bottleneck',
     items: [
       {
         index: '01',
-        signal: 'Potential customers arrive but still do not see why they should choose you.',
-        response: 'Clarify the business value, information flow, and path to inquiry.',
+        signal:
+          'People visit, look around, and leave without really seeing why the business matters.',
+        response:
+          'Shape the information and contact path so potential customers know why to choose you and what to do next.',
+        before: ['Arrive', 'Still unsure', 'Leave'],
+        shift: 'Clarify the message and inquiry path',
+        after: ['See the value', 'Find the proof', 'Start a conversation'],
       },
       {
         index: '02',
-        signal: 'Orders, approvals, and reports still move through chat or spreadsheets.',
-        response: 'Bring the process, status, and responsibility into one flow.',
+        signal: 'Orders arrive everywhere. Status gets asked twice. Approvals disappear in chat.',
+        response:
+          'Bring requests, ownership, approvals, and status into one flow the whole team can follow.',
+        before: ['Chat', 'Spreadsheet', 'Documents'],
+        shift: 'One working flow',
+        after: ['Clear owner', 'Visible status', 'Saved history'],
       },
       {
         index: '03',
-        signal: 'Data exists in many places, but decisions still wait for a manual recap.',
-        response: 'Connect the sources, automate the recap, and show what needs attention.',
+        signal: 'Sales, stock, and operations data exist, but decisions still wait for a recap.',
+        response: 'Connect the sources and show what actually needs to be monitored or acted on.',
+        before: ['Sales', 'Stock', 'Operations'],
+        shift: 'Bring the data together',
+        after: ['Recap ready', 'Issues visible', 'Next step clearer'],
       },
     ],
-    note: 'The solution may be a website, internal system, automation, dashboard, AI, IoT, or a combination of several needs.',
+    note: 'A website, internal system, automation, dashboard, AI, or IoT is only the form. The real work is improving the business flow.',
   },
   solutions: {
     eyebrow: 'Forms of solution',
-    title: 'What gets built follows the problem.',
+    title: 'What we build must change something.',
     intro:
-      'Sometimes the answer is a website. Sometimes it is an internal system, integration, or automation. The form follows the business need.',
+      'We choose the form based on the workflow, the people using it, and the change the business needs.',
+    contextLabel: 'When the business needs',
+    flowLabel: 'The intended change',
+    outputLabel: 'Possible forms',
+    visualNote: 'Start with the impact. Choose the technology after.',
     items: [
       {
         index: '01',
-        title: 'A clearer customer experience',
-        body: 'When the business needs to be easier to find, understand, and contact.',
+        title: 'Customers know why they should choose you.',
+        body: 'The business needs to be easier to find, trust, and contact.',
+        path: ['Found', 'Understood', 'Contacted'],
         outputs: ['Website', 'Portal', 'Inquiry Flow', 'Mobile'],
       },
       {
         index: '02',
-        title: 'More organized operations',
-        body: 'When work is scattered across chat, spreadsheets, or too many documents.',
+        title: 'The team works from the same flow.',
+        body: 'Work is scattered across chat, spreadsheets, and too many documents.',
+        path: ['Request arrives', 'Work moves', 'Status is visible'],
         outputs: ['Internal System', 'Backoffice', 'Workflow', 'Dashboard'],
       },
       {
         index: '03',
-        title: 'Processes that work together',
-        body: 'When teams repeat data entry and move information between separate systems.',
+        title: 'Repeated work is not done twice.',
+        body: 'Data and tasks keep moving manually between separate systems.',
+        path: ['Trigger appears', 'Process runs', 'Team gets an update'],
         outputs: ['Automation', 'API', 'Integration', 'Notification'],
       },
       {
         index: '04',
-        title: 'Data that leads to action',
-        body: 'When reports, cameras, or sensors need to support monitoring and decisions.',
+        title: 'Data shows what needs to happen next.',
+        body: 'Reports, cameras, or sensors need to support monitoring and decisions.',
+        path: ['Data arrives', 'Signal is clear', 'Action is taken'],
         outputs: ['Analytics', 'AI / CV', 'IoT', 'Monitoring'],
       },
     ],
