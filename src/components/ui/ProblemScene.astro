@@ -7,10 +7,9 @@ const { kind, locale } = Astro.props;
 const copy =
   locale === 'id'
     ? {
-        label: 'Ilustrasi kondisi bisnis',
-        disclaimer: 'Bukan data client',
+        label: 'Contoh kondisi bisnis',
         customer: {
-          aria: 'Ilustrasi calon customer yang meninggalkan website karena nilai bisnis belum jelas',
+          aria: 'Contoh calon customer yang meninggalkan website karena nilai bisnis belum jelas',
           brand: 'Bisnis Anda',
           nav: ['Layanan', 'Tentang', 'Kontak'],
           headline: 'Solusi lengkap untuk kebutuhan Anda.',
@@ -20,7 +19,7 @@ const copy =
           trail: ['Datang', 'Membaca', 'Masih ragu', 'Pergi'],
         },
         operations: {
-          aria: 'Ilustrasi order, spreadsheet, dan approval yang tersebar di beberapa tempat',
+          aria: 'Contoh order, spreadsheet, dan approval yang tersebar di beberapa tempat',
           chatTitle: '# order-baru',
           messages: [
             'Order R-184 sudah dicek?',
@@ -40,7 +39,7 @@ const copy =
           question: 'Status terakhir ada di mana?',
         },
         data: {
-          aria: 'Ilustrasi data penjualan, stok, dan operasional yang masih menunggu rekap manual',
+          aria: 'Contoh data penjualan, stok, dan operasional yang masih menunggu rekap manual',
           sources: ['Penjualan', 'Stok', 'Operasional'],
           sheet: 'REKAP_MINGGUAN.xlsx',
           columns: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum'],
@@ -51,10 +50,9 @@ const copy =
         },
       }
     : {
-        label: 'Illustrative business situation',
-        disclaimer: 'Not client data',
+        label: 'Example business situation',
         customer: {
-          aria: 'Illustration of a potential customer leaving because the business value is unclear',
+          aria: 'Example of a potential customer leaving because the business value is unclear',
           brand: 'Your Business',
           nav: ['Services', 'About', 'Contact'],
           headline: 'Complete solutions for your needs.',
@@ -64,7 +62,7 @@ const copy =
           trail: ['Arrives', 'Reads', 'Still unsure', 'Leaves'],
         },
         operations: {
-          aria: 'Illustration of orders, spreadsheets, and approvals scattered across several places',
+          aria: 'Example of orders, spreadsheets, and approvals scattered across several places',
           chatTitle: '# new-orders',
           messages: [
             'Has order R-184 been checked?',
@@ -84,7 +82,7 @@ const copy =
           question: 'Where is the latest status?',
         },
         data: {
-          aria: 'Illustration of sales, stock, and operations data waiting for a manual recap',
+          aria: 'Example of sales, stock, and operations data waiting for a manual recap',
           sources: ['Sales', 'Stock', 'Operations'],
           sheet: 'WEEKLY_RECAP.xlsx',
           columns: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
@@ -106,7 +104,6 @@ const scene = copy[kind];
 >
   <figcaption class="problem-scene__caption">
     <span>{copy.label}</span>
-    <span><i></i>{copy.disclaimer}</span>
   </figcaption>
 
   {
@@ -330,18 +327,6 @@ const scene = copy[kind];
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-  }
-  .problem-scene__caption span:last-child {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-  }
-  .problem-scene__caption i {
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 50%;
-    background: #5367ee;
-    box-shadow: 0 0 0 4px rgba(83, 103, 238, 0.1);
   }
   .customer-stage,
   .operations-stage,

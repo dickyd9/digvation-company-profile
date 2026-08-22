@@ -1,14 +1,13 @@
 ---
 type Kind = 'experience' | 'workspace' | 'automation' | 'monitoring';
-type Props = { kind: Kind; locale: 'id' | 'en' };
+type Props = { kind: Kind; locale: 'id' | 'en'; compact?: boolean };
 
-const { kind, locale } = Astro.props;
+const { kind, locale, compact = false } = Astro.props;
 
 const copy =
   locale === 'id'
     ? {
         label: 'Contoh bentuk solusi',
-        disclaimer: 'Ilustrasi, bukan sistem client',
         experience: {
           aria: 'Contoh website dengan pesan bisnis yang jelas dan alur inquiry yang terhubung',
           brand: 'NORTH & CO.',
@@ -66,7 +65,6 @@ const copy =
       }
     : {
         label: 'Example solution form',
-        disclaimer: 'Illustration, not a client system',
         experience: {
           aria: 'Example website with clear business messaging and a connected inquiry path',
           brand: 'NORTH & CO.',
@@ -122,14 +120,13 @@ const scene = copy[kind];
 ---
 
 <figure
-  class:list={['solution-scene', `solution-scene--${kind}`]}
+  class:list={['solution-scene', `solution-scene--${kind}`, compact && 'solution-scene--compact']}
   role="img"
   aria-label={scene.aria}
   data-reveal="scale"
 >
   <figcaption class="solution-scene__caption">
     <span>{copy.label}</span>
-    <span><i></i>{copy.disclaimer}</span>
   </figcaption>
 
   {
@@ -507,6 +504,9 @@ const scene = copy[kind];
     background: #eef0f4;
     color: #12161d;
   }
+  .solution-scene--compact {
+    min-height: 17rem;
+  }
   .solution-scene__caption {
     display: flex;
     min-height: 2.6rem;
@@ -521,17 +521,6 @@ const scene = copy[kind];
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-  }
-  .solution-scene__caption span:last-child {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .solution-scene__caption i {
-    width: 0.38rem;
-    height: 0.38rem;
-    border-radius: 50%;
-    background: #5367ee;
   }
   .experience-stage,
   .workspace-stage,
@@ -1401,6 +1390,9 @@ const scene = copy[kind];
   @media (max-width: 700px) {
     .solution-scene {
       min-height: 22rem;
+    }
+    .solution-scene--compact {
+      min-height: 18rem;
     }
     .solution-scene__caption {
       padding-inline: 0.65rem;

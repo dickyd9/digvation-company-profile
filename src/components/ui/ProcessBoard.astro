@@ -2,7 +2,7 @@
 import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
 import SliderControls from '@/components/ui/SliderControls.astro';
 
-type Step = { title: string; phase: string; body: string };
+type Step = { title: string; phase: string; body: string; owner?: string };
 type Props = { locale: 'id' | 'en'; steps: Step[]; note?: string };
 const {
   locale,
@@ -11,27 +11,15 @@ const {
     ? 'Dari masalah sampai benar-benar dipakai.'
     : 'From the problem to real use.',
 } = Astro.props;
-const stageLabels =
-  locale === 'id'
-    ? ['Pahami', 'Tentukan', 'Rancang', 'Bangun', 'Jalankan']
-    : ['Understand', 'Define', 'Design', 'Build', 'Run'];
 ---
 
 <div class="process-board" data-process-board>
   <div class="process-board__top">
-    <p>{locale === 'id' ? 'ALUR KERJA DIGVATION' : 'THE DIGVATION DELIVERY FLOW'}</p>
-    <HandwrittenNote text={note} direction="down" />
-  </div>
-
-  <div class="process-board__stage-head" aria-hidden="true">
-    {
-      stageLabels.map((label, index) => (
-        <span>
-          <b>0{index + 1}</b>
-          {label}
-        </span>
-      ))
-    }
+    <div>
+      <p>{locale === 'id' ? 'ALUR KERJA DIGVATION' : 'THE DIGVATION DELIVERY FLOW'}</p>
+      <strong>{locale === 'id' ? 'Lima tahap. Satu alur.' : 'Five stages. One clear flow.'}</strong>
+    </div>
+    <HandwrittenNote text={note} direction="down" tone="light" />
   </div>
 
   <div class="process-board__mobile-controls">
@@ -39,263 +27,309 @@ const stageLabels =
       controls={`process-slider-${locale}`}
       count={Math.min(steps.length, 5)}
       locale={locale}
+      tone="dark"
     />
   </div>
 
-  <ol class="process-board__grid" id={`process-slider-${locale}`} data-slider-rail>
+  <ol
+    class="process-board__journey"
+    id={`process-slider-${locale}`}
+    data-slider-rail
+    aria-label={locale === 'id' ? 'Tahapan kerja Digvation' : 'Digvation delivery stages'}
+    tabindex="0"
+  >
     {
-      steps.slice(0, 5).map((step, index) => (
-        <li class={`process-card process-card--${index + 1}`} data-slider-slide>
-          <div>
-            <>
+      steps.slice(0, 5).map((step, index) => {
+        const owner =
+          step.owner ??
+          (index < 2 || index === Math.min(steps.length, 5) - 1
+            ? locale === 'id'
+              ? 'Bersama'
+              : 'Together'
+            : 'Digvation');
+        return (
+          <li class={`process-step process-step--${index + 1}`} data-slider-slide tabindex="0">
+            <div class="process-step__track" aria-hidden="true">
               <span>{String(index + 1).padStart(2, '0')}</span>
-              <small>{step.phase}</small>
-            </>
-          </div>
-          <h3>{step.title}</h3>
-          <p>{step.body}</p>
-        </li>
-      ))
+            </div>
+            <div class="process-step__meta">
+              <span>{step.phase}</span>
+              <span>{owner}</span>
+            </div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+            <small>
+              {index === steps.length - 1
+                ? locale === 'id'
+                  ? 'Lanjut bila dibutuhkan'
+                  : 'Continue when needed'
+                : locale === 'id'
+                  ? 'Lanjut ke tahap berikutnya'
+                  : 'Move to the next stage'}
+            </small>
+          </li>
+        );
+      })
     }
   </ol>
 
   <div class="process-board__footer">
-    <span>{locale === 'id' ? 'Anda: konteks & keputusan' : 'You: context & decisions'}</span>
-    <span
-      >{
+    <span>
+      <b>{locale === 'id' ? 'Anda' : 'You'}</b>
+      {locale === 'id' ? 'Konteks dan keputusan bisnis' : 'Business context and decisions'}
+    </span>
+    <span>
+      <b>Digvation</b>
+      {
         locale === 'id'
-          ? 'Digvation: strategi, desain, build & launch'
-          : 'Digvation: strategy, design, build & launch'
-      }</span
-    >
+          ? 'Strategi, desain, build, dan peluncuran'
+          : 'Strategy, design, build, and launch'
+      }
+    </span>
   </div>
 </div>
 
 <style>
   .process-board {
     overflow: hidden;
-    border: 1px solid rgba(11, 13, 16, 0.16);
-    background: #f7f7f5;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: #111827;
+    color: #fff;
+    box-shadow: 0 2.4rem 6rem rgba(11, 13, 16, 0.16);
   }
   .process-board__top {
     display: flex;
-    min-height: 6rem;
+    min-height: 8.5rem;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid rgba(11, 13, 16, 0.12);
-    background: #fff;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
-  .process-board__top > p {
+  .process-board__top p {
     margin: 0;
-    color: rgba(11, 13, 16, 0.46);
-    font-size: 0.62rem;
+    color: var(--color-accent);
+    font-size: 0.6rem;
     font-weight: 800;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.11em;
+  }
+  .process-board__top strong {
+    display: block;
+    margin-top: 0.65rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.7vw, 2.45rem);
+    font-weight: 620;
+    line-height: 1;
+    letter-spacing: -0.045em;
   }
   .process-board__top :global(.hand-note) {
-    margin-right: 4%;
-  }
-  .process-board__stage-head {
-    display: none;
+    margin-right: 3%;
   }
   .process-board__mobile-controls {
-    padding: 0.9rem 1rem;
-    border-bottom: 1px solid rgba(11, 13, 16, 0.12);
-    background: #fff;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
-  .process-board__grid {
+  .process-board__journey {
     display: grid;
-    grid-auto-columns: min(82vw, 20rem);
+    grid-auto-columns: min(84vw, 21rem);
     grid-auto-flow: column;
-    gap: 1rem;
     overflow-x: auto;
     margin: 0;
-    padding: 1rem calc(100% - min(82vw, 20rem) + 1rem) 1rem 1rem;
+    padding: 0 calc(100% - min(84vw, 21rem)) 0 0;
     list-style: none;
-    scroll-padding-inline: 1rem;
+    scroll-padding-inline: 0;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     overscroll-behavior-inline: contain;
   }
-  .process-board__grid::-webkit-scrollbar {
+  .process-board__journey::-webkit-scrollbar {
     display: none;
   }
-  .process-card {
-    padding: 1.1rem;
-    border: 1px solid #121a2f;
-    background: #e3e8ff;
-    box-shadow: 4px 5px 0 #121a2f;
+  .process-board__journey:focus-visible {
+    outline-color: var(--color-accent);
+    outline-offset: -3px;
+  }
+  .process-step {
+    position: relative;
+    min-height: 23rem;
+    padding: 2rem 1.5rem 1.7rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     opacity: 0;
-    transform: translateY(18px) rotate(-0.35deg);
+    transform: translateY(14px);
     transition:
       opacity 420ms ease,
-      transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+      transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 260ms ease;
   }
-  .process-card:nth-child(even) {
-    background: #fff;
-    transform: translateY(18px) rotate(0.35deg);
+  .process-step:hover,
+  .process-step:focus-visible {
+    background: rgba(147, 166, 255, 0.08);
+    outline: none;
   }
-  .process-card > div {
+  .process-step__track {
+    position: relative;
+    height: 3.8rem;
+  }
+  .process-step__track::before {
+    position: absolute;
+    top: 1rem;
+    right: -1.5rem;
+    left: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.22);
+    content: '';
+  }
+  .process-step:last-child .process-step__track::before {
+    right: 0;
+  }
+  .process-step__track span {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 2.05rem;
+    height: 2.05rem;
+    place-items: center;
+    border: 1px solid rgba(147, 166, 255, 0.62);
+    border-radius: 50%;
+    background: #111827;
+    color: var(--color-accent);
+    font-size: 0.57rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    transition:
+      background-color 220ms ease,
+      color 220ms ease,
+      transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .process-step:hover .process-step__track span,
+  .process-step:focus-visible .process-step__track span {
+    background: var(--color-accent);
+    color: #111827;
+    transform: scale(1.08);
+  }
+  .process-step__meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.8rem;
-  }
-  .process-card > div span {
-    display: grid;
-    width: 1.5rem;
-    height: 1.5rem;
-    place-items: center;
-    border-radius: 50%;
-    background: #121a2f;
-    color: #fff;
-    font-size: 0.55rem;
-    font-weight: 850;
-  }
-  .process-card small {
-    color: rgba(11, 13, 16, 0.48);
+    color: rgba(255, 255, 255, 0.42);
     font-size: 0.56rem;
     font-weight: 800;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
   }
-  .process-card h3 {
-    margin-top: 1rem;
+  .process-step__meta span:last-child {
+    color: rgba(147, 166, 255, 0.78);
+  }
+  .process-step h3 {
+    max-width: 10ch;
+    margin: 1.2rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 1.8vw, 1.65rem);
-    font-weight: 680;
-    line-height: 1;
-    letter-spacing: -0.04em;
+    font-size: clamp(1.5rem, 2.15vw, 2rem);
+    font-weight: 630;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
   }
-  .process-card p {
-    margin: 0.7rem 0 0;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.76rem;
-    line-height: 1.55;
+  .process-step > p {
+    max-width: 20rem;
+    margin: 1rem 0 0;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.78rem;
+    line-height: 1.65;
   }
-  .process-board.is-visible .process-card {
+  .process-step > small {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.7rem;
+    left: 1.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.32);
+    font-size: 0.55rem;
+    font-weight: 750;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .process-board.is-visible .process-step {
     opacity: 1;
-    transform: translateY(0) rotate(-0.35deg);
+    transform: translateY(0);
   }
-  .process-board.is-visible .process-card:nth-child(even) {
-    transform: translateY(0) rotate(0.35deg);
-  }
-  .process-card--2 {
+  .process-step--2 {
     transition-delay: 80ms;
   }
-  .process-card--3 {
+  .process-step--3 {
     transition-delay: 160ms;
   }
-  .process-card--4 {
+  .process-step--4 {
     transition-delay: 240ms;
   }
-  .process-card--5 {
+  .process-step--5 {
     transition-delay: 320ms;
   }
   .process-board__footer {
     display: grid;
-    gap: 0.45rem;
-    padding: 1rem 1.25rem;
-    border-top: 1px solid rgba(11, 13, 16, 0.12);
-    background: #fff;
-    color: rgba(11, 13, 16, 0.48);
-    font-size: 0.62rem;
-    font-weight: 700;
+    gap: 1rem;
+    padding: 1.2rem clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.13);
+  }
+  .process-board__footer span {
+    display: grid;
+    gap: 0.2rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.64rem;
+  }
+  .process-board__footer b {
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.59rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
   @media (min-width: 900px) {
     .process-board__mobile-controls {
       display: none;
     }
-    .process-board__stage-head {
-      display: grid;
+    .process-board__journey {
       grid-template-columns: repeat(5, 1fr);
-      border-bottom: 1px solid rgba(11, 13, 16, 0.12);
-    }
-    .process-board__stage-head span {
-      display: flex;
-      gap: 0.6rem;
-      padding: 0.72rem 1rem;
-      border-right: 1px solid rgba(11, 13, 16, 0.1);
-      color: rgba(11, 13, 16, 0.65);
-      font-size: 0.62rem;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-    .process-board__stage-head span:last-child {
-      border-right: 0;
-    }
-    .process-board__stage-head b {
-      color: rgba(78, 101, 243, 0.72);
-    }
-    .process-board__grid {
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: repeat(6, 5rem);
       grid-auto-columns: auto;
       grid-auto-flow: row;
-      gap: 0;
-      min-height: 30rem;
       overflow: visible;
       padding: 0;
-      background-color: #f7f7f5;
-      background-image: linear-gradient(
-        90deg,
-        transparent calc(20% - 1px),
-        rgba(11, 13, 16, 0.08) calc(20% - 1px),
-        rgba(11, 13, 16, 0.08) 20%,
-        transparent 20%,
-        transparent calc(40% - 1px),
-        rgba(11, 13, 16, 0.08) calc(40% - 1px),
-        rgba(11, 13, 16, 0.08) 40%,
-        transparent 40%,
-        transparent calc(60% - 1px),
-        rgba(11, 13, 16, 0.08) calc(60% - 1px),
-        rgba(11, 13, 16, 0.08) 60%,
-        transparent 60%,
-        transparent calc(80% - 1px),
-        rgba(11, 13, 16, 0.08) calc(80% - 1px),
-        rgba(11, 13, 16, 0.08) 80%,
-        transparent 80%
-      );
     }
-    .process-card {
-      align-self: start;
-      margin: 1rem;
+    .process-step {
+      min-height: clamp(23rem, 28vw, 26rem);
+      padding: 2.2rem clamp(1rem, 1.65vw, 1.6rem) 1.7rem;
     }
-    .process-card--1 {
-      grid-column: 1;
-      grid-row: 1 / span 2;
+    .process-step__track::before {
+      right: calc(clamp(1rem, 1.65vw, 1.6rem) * -1);
     }
-    .process-card--2 {
-      grid-column: 2;
-      grid-row: 2 / span 2;
-    }
-    .process-card--3 {
-      grid-column: 3;
-      grid-row: 3 / span 2;
-    }
-    .process-card--4 {
-      grid-column: 4;
-      grid-row: 4 / span 2;
-    }
-    .process-card--5 {
-      grid-column: 5;
-      grid-row: 5 / span 2;
+    .process-step > small {
+      right: clamp(1rem, 1.65vw, 1.6rem);
+      left: clamp(1rem, 1.65vw, 1.6rem);
     }
     .process-board__footer {
       grid-template-columns: 1fr 1fr;
     }
     .process-board__footer span:last-child {
+      justify-items: end;
       text-align: right;
     }
   }
+  @media (max-width: 640px) {
+    .process-board__top :global(.hand-note) {
+      display: none;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .process-card {
+    .process-step {
       opacity: 1;
-      transform: none !important;
+      transform: none;
+      transition: none;
+    }
+    .process-step__track span {
       transition: none;
     }
   }

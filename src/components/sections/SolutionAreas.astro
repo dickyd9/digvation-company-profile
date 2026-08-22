@@ -9,12 +9,12 @@ type Props = { copy: HomeCopy['solutions']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
 ---
 
-<section class="section-pad bg-ink text-paper" id="solutions" data-track-section="solutions">
+<section class="solution-section bg-ink text-paper" id="solutions" data-track-section="solutions">
   <div class="shell-wide">
     <div class="solution-head" data-reveal="up">
       <div>
         <p class="eyebrow text-accent">{copy.eyebrow}</p>
-        <h2 class="display-xl mt-4 max-w-[14ch]">{copy.title}</h2>
+        <h2 class="solution-title mt-4 max-w-[14ch]">{copy.title}</h2>
       </div>
       <div>
         <p class="body-lg m-0 max-w-2xl text-white/60">{copy.intro}</p>
@@ -60,7 +60,7 @@ const { copy, locale = 'id' } = Astro.props;
           >
             <div class="solution-card__top">
               <span>{item.index}</span>
-              <span>{copy.contextLabel}</span>
+              <span>{item.outputs[0]}</span>
             </div>
             <div class="solution-card__message">
               <h3 id={`solution-title-${locale}-${index}`}>{item.title}</h3>
@@ -68,7 +68,7 @@ const { copy, locale = 'id' } = Astro.props;
             </div>
 
             <div class="solution-card__visual">
-              <SolutionScene kind={item.preview} locale={locale} />
+              <SolutionScene kind={item.preview} locale={locale} compact />
             </div>
 
             <div class="solution-card__outputs">
@@ -104,16 +104,26 @@ const { copy, locale = 'id' } = Astro.props;
 </section>
 
 <style>
+  .solution-section {
+    padding-block: clamp(4rem, 6vw, 6rem);
+  }
+  .solution-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.65rem, 4.4vw, 4.1rem);
+    font-weight: 650;
+    line-height: 0.99;
+    letter-spacing: -0.048em;
+  }
   .solution-head {
     display: grid;
     gap: 2rem;
-    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    padding-bottom: clamp(2rem, 4vw, 3.25rem);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   }
   .solution-controls {
     display: grid;
     gap: 1rem;
-    padding-block: 1.15rem;
+    padding-block: 0.95rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   }
   .slider-note {
@@ -136,11 +146,11 @@ const { copy, locale = 'id' } = Astro.props;
   }
   .solution-list {
     display: grid;
-    grid-auto-columns: min(84vw, 62rem);
+    grid-auto-columns: min(86vw, 54rem);
     grid-auto-flow: column;
     gap: 1rem;
     overflow-x: auto;
-    padding: 1.1rem calc(100% - min(84vw, 62rem)) 1.8rem 0;
+    padding: 0.95rem calc(100% - min(86vw, 54rem)) 1.35rem 0;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     overscroll-behavior-inline: contain;
@@ -153,11 +163,12 @@ const { copy, locale = 'id' } = Astro.props;
     outline-offset: 4px;
   }
   .solution-card {
+    position: relative;
     display: grid;
     grid-template-rows: auto auto 1fr auto;
-    min-height: clamp(42rem, 58vw, 49rem);
-    gap: clamp(1.4rem, 2.4vw, 2.35rem);
-    padding: clamp(1.5rem, 3.2vw, 3.25rem);
+    min-height: clamp(34rem, 46vw, 39rem);
+    gap: clamp(1rem, 1.8vw, 1.65rem);
+    padding: clamp(1.3rem, 2.4vw, 2.25rem);
     border: 1px solid rgba(255, 255, 255, 0.16);
     background: var(--color-surface);
     scroll-snap-align: start;
@@ -170,7 +181,20 @@ const { copy, locale = 'id' } = Astro.props;
   .solution-card:hover {
     border-color: rgba(147, 166, 255, 0.55);
     background: #171b23;
-    transform: translateY(-0.35rem);
+    transform: translateY(-0.22rem);
+  }
+  .solution-card::before {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 3.5rem;
+    height: 2px;
+    background: var(--color-accent);
+    content: '';
+    transition: width 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solution-card:hover::before {
+    width: calc(100% + 2px);
   }
   .solution-card__top {
     display: flex;
@@ -189,7 +213,7 @@ const { copy, locale = 'id' } = Astro.props;
     max-width: 18ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 4.1vw, 4.35rem);
+    font-size: clamp(1.9rem, 3.3vw, 3.35rem);
     font-weight: 630;
     line-height: 0.99;
     letter-spacing: -0.05em;
@@ -197,10 +221,10 @@ const { copy, locale = 'id' } = Astro.props;
   }
   .solution-card__message > p {
     max-width: 36rem;
-    margin: 1.25rem 0 0;
+    margin: 0.8rem 0 0;
     color: rgba(255, 255, 255, 0.58);
-    font-size: 0.94rem;
-    line-height: 1.7;
+    font-size: 0.84rem;
+    line-height: 1.6;
   }
   .solution-card__visual {
     min-width: 0;
@@ -215,17 +239,17 @@ const { copy, locale = 'id' } = Astro.props;
   }
   .solution-card__outputs {
     min-width: 0;
-    padding-top: 1.2rem;
+    padding-top: 0.95rem;
     border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
   .solution-card__outputs > div {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 0.9rem;
+    margin-top: 0.7rem;
   }
   .solution-card__outputs span {
-    padding: 0.48rem 0.65rem;
+    padding: 0.4rem 0.58rem;
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: rgba(255, 255, 255, 0.64);
     font-size: 0.62rem;
@@ -245,17 +269,20 @@ const { copy, locale = 'id' } = Astro.props;
       gap: 3rem;
     }
     .solution-list {
-      grid-auto-columns: min(72vw, 62rem);
-      padding-right: calc(100% - min(72vw, 62rem));
+      grid-auto-columns: min(66vw, 54rem);
+      padding-right: calc(100% - min(66vw, 54rem));
     }
   }
   @media (max-width: 540px) {
     .solution-card {
-      min-height: 46rem;
+      min-height: 39rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
     .solution-card {
+      transition: none;
+    }
+    .solution-card::before {
       transition: none;
     }
   }

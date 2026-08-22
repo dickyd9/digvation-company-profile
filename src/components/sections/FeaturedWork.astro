@@ -23,13 +23,13 @@ const works = await getFeaturedWorkEntries(locale, 2);
     >
       <div class="max-w-4xl">
         <p class="eyebrow text-indigo-deep">
-          {locale === 'id' ? 'Project nyata' : 'Real projects'}
+          {locale === 'id' ? 'Hasil kerja Digvation' : 'Digvation work'}
         </p>
         <h2 class="display-xl mt-4 max-w-[15ch]">
           {
             locale === 'id'
-              ? 'Bukan mockup. Ini solusi yang sudah kami bangun.'
-              : 'Not mockups. These are solutions we have built.'
+              ? 'Hasil kerja untuk kebutuhan bisnis yang nyata.'
+              : 'Work built around real business needs.'
           }
         </h2>
       </div>
@@ -37,7 +37,7 @@ const works = await getFeaturedWorkEntries(locale, 2);
         class="border-ink text-ink inline-flex items-center gap-3 border-b pb-1 text-sm font-extrabold no-underline"
         href={getLocalizedPath(locale, '/work')}
       >
-        {locale === 'id' ? 'Lihat semua pekerjaan' : 'See all work'}
+        {locale === 'id' ? 'Lihat semua project' : 'See all projects'}
         <span aria-hidden="true">↗</span>
       </a>
     </div>
@@ -73,7 +73,7 @@ const works = await getFeaturedWorkEntries(locale, 2);
                     0{index + 1} / {entry.data.projectType}
                   </span>
                   <span class="text-ink/38 text-[.65rem] font-bold tracking-[.06em] uppercase">
-                    {entry.data.client}
+                    DIGVATION × {entry.data.client}
                   </span>
                 </div>
 
@@ -92,7 +92,7 @@ const works = await getFeaturedWorkEntries(locale, 2);
                       data-preview-title={entry.data.title}
                       data-preview-descriptor={entry.data.projectType}
                       data-preview-slug={entry.data.routeSlug}
-                      aria-label={`${locale === 'id' ? 'Preview project' : 'Preview project'} ${entry.data.title}`}
+                      aria-label={`${locale === 'id' ? 'Buka project' : 'Open project'} ${entry.data.title}`}
                     >
                       {entry.data.showLiveInCard && preview.embedUrl ? (
                         <LiveProjectVisual
@@ -139,12 +139,6 @@ const works = await getFeaturedWorkEntries(locale, 2);
                       )}
                     </a>
                   )}
-                  <span
-                    class="work-view bg-paper text-ink pointer-events-none absolute right-5 bottom-5 grid size-20 place-items-center rounded-full text-[.64rem] font-extrabold tracking-[.08em] uppercase opacity-0 shadow-[0_12px_36px_rgba(11,13,16,.16)]"
-                    aria-hidden="true"
-                  >
-                    {locale === 'id' ? 'Lihat' : 'View'} ↗
-                  </span>
                 </div>
 
                 <div class="mt-6 grid gap-5 md:grid-cols-[.9fr_1.1fr] md:items-start">
@@ -179,7 +173,13 @@ const works = await getFeaturedWorkEntries(locale, 2);
                         data-preview-descriptor={entry.data.projectType}
                         data-preview-slug={entry.data.routeSlug}
                       >
-                        {locale === 'id' ? 'Preview project' : 'Preview project'}{' '}
+                        {preview.liveUrl
+                          ? locale === 'id'
+                            ? 'Buka website live'
+                            : 'Open live website'
+                          : locale === 'id'
+                            ? 'Lihat project'
+                            : 'View project'}{' '}
                         <span aria-hidden="true">↗</span>
                       </a>
                     </div>
@@ -206,25 +206,9 @@ const works = await getFeaturedWorkEntries(locale, 2);
   .work-editorial:hover .work-media :global(.project-visual) {
     transform: scale(1.018);
   }
-  .work-view {
-    transition:
-      opacity 260ms ease,
-      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-    transform: translateY(8px) scale(0.96);
-  }
-  .work-editorial:hover .work-view {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  @media (max-width: 767px) {
-    .work-view {
-      display: none;
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     .work-media :global(img),
-    .work-media :global(.project-visual),
-    .work-view {
+    .work-media :global(.project-visual) {
       transition: none;
     }
   }

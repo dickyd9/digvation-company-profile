@@ -1,11 +1,9 @@
 ---
 import type { Locale } from '@/config/site';
-import { clients } from '@/content/social-proof';
 import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
-const realClients = clients;
 const copy =
   locale === 'id'
     ? {
@@ -26,8 +24,6 @@ const copy =
             'Solusi bisa dirawat dan ditingkatkan saat kebutuhan bisnis berubah.',
           ],
         ],
-        proof: 'Bisnis yang sudah kami bantu',
-        honest: 'Kami hanya menampilkan project dan nama client yang memang bisa diverifikasi.',
       }
     : {
         eyebrow: 'What does partnership mean?',
@@ -47,8 +43,6 @@ const copy =
             'The solution can improve as the needs of the business change.',
           ],
         ],
-        proof: 'Businesses we have helped',
-        honest: 'We only show projects and client names that can be verified.',
       };
 ---
 
@@ -78,40 +72,13 @@ const copy =
       {
         copy.items.map(([title, body], index) => (
           <article data-slider-slide>
-            <>
-              <span>0{index + 1}</span>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </>
+            <span>0{index + 1}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
           </article>
         ))
       }
     </div>
-
-    {
-      realClients.length > 0 && (
-        <div class="client-proof" data-reveal="up" style="--reveal-delay:120ms">
-          <div>
-            <>
-              <span>{copy.proof}</span>
-              <small>{copy.honest}</small>
-            </>
-          </div>
-          <div>
-            {realClients.map((client) =>
-              client.href ? (
-                <a href={client.href} target="_blank" rel="noopener noreferrer">
-                  {client.name}
-                  <span aria-hidden="true">↗</span>
-                </a>
-              ) : (
-                <strong>{client.name}</strong>
-              ),
-            )}
-          </div>
-        </div>
-      )
-    }
   </div>
 </section>
 
@@ -188,50 +155,6 @@ const copy =
     font-size: 0.82rem;
     line-height: 1.7;
   }
-  .client-proof {
-    display: grid;
-    gap: 1.5rem;
-    padding-top: 2rem;
-  }
-  .client-proof > div:first-child {
-    display: grid;
-    gap: 0.45rem;
-  }
-  .client-proof > div:first-child span {
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-  .client-proof small {
-    color: rgba(255, 255, 255, 0.34);
-    font-size: 0.67rem;
-  }
-  .client-proof > div:last-child {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2rem;
-  }
-  .client-proof a,
-  .client-proof strong {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 1rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .client-proof a:hover {
-    border-color: #93a6ff;
-    color: #fff;
-  }
-  .client-proof a span {
-    color: #93a6ff;
-    font-size: 0.72rem;
-  }
   @media (min-width: 768px) {
     .trust-controls {
       display: none;
@@ -258,13 +181,6 @@ const copy =
     .trust-items article:last-child {
       padding-right: 0;
       border-right: 0;
-    }
-    .client-proof {
-      grid-template-columns: 0.75fr 1.25fr;
-      align-items: center;
-    }
-    .client-proof > div:last-child {
-      justify-content: flex-end;
     }
   }
   @media (min-width: 1024px) {
