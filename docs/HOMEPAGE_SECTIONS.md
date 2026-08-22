@@ -13,13 +13,13 @@ Existing SEO, bilingual routing, analytics, content collections, inquiry flow, a
    Short, concrete examples let visitors recognize their own day-to-day problems before seeing technology categories. Each slide pairs one sharp friction statement with one clear change and a contextual business scene. The examples use a wide horizontal frame so the active story stays readable while the next-card edge, current/total count, progress markers, and controls make the continuation obvious.
 
 3. **Why Partner With Digvation**  
-   Explains what “partner” means in practice: understand the business context, keep decisions clear, and remain available after launch. Only verifiable client names are shown.
+   Explains what “partner” means in practice: understand the business context, keep decisions clear, and remain available after launch. Featured, verifiable work appears as a visual project ledger with project context and a direct link, not as an isolated list of client names.
 
 4. **Working With Digvation**  
    Explains the partnership model in five connected steps: understand the context, set the priority, design the solution, build and launch, then monitor and improve. A continuous timeline and explicit ownership make the sequence easy to scan without using decorative sticky-note cards. The process becomes a slider on smaller screens to avoid a long stack.
 
 5. **Solution Possibilities**  
-   Shows the forms the digital change can take after the need is understood: customer experiences, internal systems, automation and integration, and connected data operations. Each slide leads with the change in the business, shows a detailed concept interface, and names possible technology only at the end. A dark section creates a clear shift from recognizing problems to exploring possible responses.
+   Shows the forms the digital change can take after the need is understood: customer experiences, internal systems, automation and integration, and connected data operations. Each slide leads with the change in the business, shows a compact concept interface, and names possible technology only at the end. The slider stays visually important without taking over the full page depth.
 
 6. **Selected Work**  
    Presents approved Digvation work as real project proof. Live websites appear inside a restrained browser-stage treatment with a clear project name, published state, and direct visit action instead of looking like a raw embedded iframe.

@@ -1,8 +1,8 @@
 ---
 type Kind = 'experience' | 'workspace' | 'automation' | 'monitoring';
-type Props = { kind: Kind; locale: 'id' | 'en' };
+type Props = { kind: Kind; locale: 'id' | 'en'; compact?: boolean };
 
-const { kind, locale } = Astro.props;
+const { kind, locale, compact = false } = Astro.props;
 
 const copy =
   locale === 'id'
@@ -122,7 +122,7 @@ const scene = copy[kind];
 ---
 
 <figure
-  class:list={['solution-scene', `solution-scene--${kind}`]}
+  class:list={['solution-scene', `solution-scene--${kind}`, compact && 'solution-scene--compact']}
   role="img"
   aria-label={scene.aria}
   data-reveal="scale"
@@ -506,6 +506,9 @@ const scene = copy[kind];
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: #eef0f4;
     color: #12161d;
+  }
+  .solution-scene--compact {
+    min-height: 17rem;
   }
   .solution-scene__caption {
     display: flex;
@@ -1401,6 +1404,9 @@ const scene = copy[kind];
   @media (max-width: 700px) {
     .solution-scene {
       min-height: 22rem;
+    }
+    .solution-scene--compact {
+      min-height: 18rem;
     }
     .solution-scene__caption {
       padding-inline: 0.65rem;

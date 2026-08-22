@@ -1,11 +1,40 @@
 ---
 import type { Locale } from '@/config/site';
-import { clients } from '@/content/social-proof';
+import { getLocalizedPath } from '@/config/navigation';
+import { getFeaturedWorkEntries } from '@/lib/content/catalog';
+import { resolveWorkPreview } from '@/lib/content/work-preview';
 import SliderControls from '@/components/ui/SliderControls.astro';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
-const realClients = clients;
+const realProjects = (await getFeaturedWorkEntries(locale, 2)).map((entry, index) => {
+  const preview = resolveWorkPreview(entry.data);
+  const href =
+    preview.liveUrl ??
+    (entry.data.entryType === 'case-study'
+      ? getLocalizedPath(locale, `/work/${entry.data.routeSlug}`)
+      : getLocalizedPath(locale, '/work'));
+  const domain = preview.liveUrl?.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  const initials = entry.data.title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+  return {
+    index,
+    title: entry.data.title,
+    client: entry.data.client,
+    summary: entry.data.summary,
+    projectType: entry.data.projectType,
+    year: entry.data.year,
+    variant: entry.data.visualVariant,
+    href,
+    domain,
+    initials,
+  };
+});
 const copy =
   locale === 'id'
     ? {
@@ -27,7 +56,9 @@ const copy =
           ],
         ],
         proof: 'Bisnis yang sudah kami bantu',
-        honest: 'Kami hanya menampilkan project dan nama client yang memang bisa diverifikasi.',
+        honest: 'Project terpilih yang dapat Anda lihat langsung.',
+        live: 'Project live',
+        view: 'Kunjungi project',
       }
     : {
         eyebrow: 'What does partnership mean?',
@@ -48,7 +79,9 @@ const copy =
           ],
         ],
         proof: 'Businesses we have helped',
-        honest: 'We only show projects and client names that can be verified.',
+        honest: 'Selected projects you can visit directly.',
+        live: 'Live project',
+        view: 'Visit project',
       };
 ---
 
@@ -78,36 +111,63 @@ const copy =
       {
         copy.items.map(([title, body], index) => (
           <article data-slider-slide>
-            <>
-              <span>0{index + 1}</span>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </>
+            <span>0{index + 1}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
           </article>
         ))
       }
     </div>
 
     {
-      realClients.length > 0 && (
+      realProjects.length > 0 && (
         <div class="client-proof" data-reveal="up" style="--reveal-delay:120ms">
-          <div>
-            <>
+          <header class="client-proof__head">
+            <div>
               <span>{copy.proof}</span>
-              <small>{copy.honest}</small>
-            </>
-          </div>
-          <div>
-            {realClients.map((client) =>
-              client.href ? (
-                <a href={client.href} target="_blank" rel="noopener noreferrer">
-                  {client.name}
-                  <span aria-hidden="true">↗</span>
-                </a>
-              ) : (
-                <strong>{client.name}</strong>
-              ),
-            )}
+              <strong>{copy.honest}</strong>
+            </div>
+            <p>SELECTED WORK / {String(realProjects.length).padStart(2, '0')}</p>
+          </header>
+
+          <div class="client-projects">
+            {realProjects.map((project) => (
+              <a
+                class:list={['client-project', `client-project--${project.variant}`]}
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${copy.view}: ${project.title}`}
+              >
+                <div class="client-project__top">
+                  <span>
+                    0{project.index + 1} / {copy.live}
+                  </span>
+                  <span>{project.year}</span>
+                </div>
+
+                <div class="client-project__visual" aria-hidden="true">
+                  <strong>{project.initials}</strong>
+                  <div>
+                    <span>DIGVATION / SELECTED WORK</span>
+                    <b>{project.projectType}</b>
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                </div>
+
+                <div class="client-project__copy">
+                  <h3>{project.client}</h3>
+                  <p>{project.summary}</p>
+                </div>
+
+                <div class="client-project__footer">
+                  <span>{project.domain ?? project.projectType}</span>
+                  <strong>{copy.view} ↗</strong>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       )
@@ -189,48 +249,181 @@ const copy =
     line-height: 1.7;
   }
   .client-proof {
-    display: grid;
-    gap: 1.5rem;
-    padding-top: 2rem;
+    padding-top: clamp(2.5rem, 5vw, 4.5rem);
   }
-  .client-proof > div:first-child {
+  .client-proof__head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-bottom: 1.35rem;
+  }
+  .client-proof__head > div {
     display: grid;
     gap: 0.45rem;
   }
-  .client-proof > div:first-child span {
-    font-size: 0.65rem;
+  .client-proof__head span,
+  .client-proof__head p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.44);
+    font-size: 0.6rem;
     font-weight: 800;
     letter-spacing: 0.09em;
     text-transform: uppercase;
   }
-  .client-proof small {
-    color: rgba(255, 255, 255, 0.34);
-    font-size: 0.67rem;
+  .client-proof__head span {
+    color: var(--color-accent);
   }
-  .client-proof > div:last-child {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2rem;
+  .client-proof__head strong {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78rem;
+    font-weight: 550;
   }
-  .client-proof a,
-  .client-proof strong {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 1rem;
-    font-weight: 700;
+  .client-projects {
+    display: grid;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .client-project {
+    display: grid;
+    min-width: 0;
+    gap: 1.3rem;
+    padding: clamp(1.15rem, 2.2vw, 1.8rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    color: inherit;
     text-decoration: none;
   }
-  .client-proof a:hover {
-    border-color: #93a6ff;
-    color: #fff;
+  .client-project:last-child {
+    border-bottom: 0;
   }
-  .client-proof a span {
-    color: #93a6ff;
-    font-size: 0.72rem;
+  .client-project__top,
+  .client-project__footer {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.43);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .client-project__top span:first-child {
+    color: var(--color-accent);
+  }
+  .client-project__visual {
+    position: relative;
+    display: grid;
+    min-height: 11rem;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #17213a;
+  }
+  .client-project--paper .client-project__visual {
+    background: #e9e8e2;
+    color: #121a2f;
+  }
+  .client-project--ink .client-project__visual {
+    background: #15171c;
+  }
+  .client-project__visual > strong {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    color: rgba(147, 166, 255, 0.13);
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 10vw, 8.5rem);
+    line-height: 0.7;
+    letter-spacing: -0.09em;
+    transform: translateY(-50%);
+  }
+  .client-project--paper .client-project__visual > strong {
+    color: rgba(18, 26, 47, 0.1);
+  }
+  .client-project__visual > div {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: min(72%, 22rem);
+    gap: 0.55rem;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(11, 13, 16, 0.42);
+    box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.2);
+    transform: translateX(8%);
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .client-project--paper .client-project__visual > div {
+    border-color: rgba(18, 26, 47, 0.16);
+    background: rgba(255, 255, 255, 0.74);
+    box-shadow: 0 1.25rem 3rem rgba(18, 26, 47, 0.12);
+  }
+  .client-project__visual span {
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.48rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+  }
+  .client-project--paper .client-project__visual span {
+    color: rgba(18, 26, 47, 0.48);
+  }
+  .client-project__visual b {
+    max-width: 18ch;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.6vw, 1.35rem);
+    font-weight: 620;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+  .client-project__visual i {
+    display: block;
+    width: 88%;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.16;
+  }
+  .client-project__visual i:nth-last-child(2) {
+    width: 68%;
+  }
+  .client-project__visual i:last-child {
+    width: 46%;
+  }
+  .client-project__copy h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 2.8vw, 2.5rem);
+    font-weight: 620;
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+  .client-project__copy p {
+    max-width: 34rem;
+    margin: 0.75rem 0 0;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.76rem;
+    line-height: 1.65;
+  }
+  .client-project__footer {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .client-project__footer span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .client-project__footer strong {
+    flex: none;
+    color: rgba(255, 255, 255, 0.78);
+    transition: color 180ms ease;
+  }
+  .client-project:hover .client-project__visual > div {
+    transform: translateX(8%) translateY(-0.3rem);
+  }
+  .client-project:hover .client-project__footer strong {
+    color: var(--color-accent);
   }
   @media (min-width: 768px) {
     .trust-controls {
@@ -259,18 +452,30 @@ const copy =
       padding-right: 0;
       border-right: 0;
     }
-    .client-proof {
-      grid-template-columns: 0.75fr 1.25fr;
-      align-items: center;
+    .client-projects {
+      grid-template-columns: repeat(2, 1fr);
     }
-    .client-proof > div:last-child {
-      justify-content: flex-end;
+    .client-project {
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+      border-bottom: 0;
+    }
+    .client-project:last-child {
+      border-right: 0;
     }
   }
   @media (min-width: 1024px) {
     .trust-intro {
       grid-template-columns: 1.06fr 0.94fr;
       gap: 5rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .client-project__visual > div,
+    .client-project__footer strong {
+      transition: none;
+    }
+    .client-project:hover .client-project__visual > div {
+      transform: translateX(8%);
     }
   }
 </style>

@@ -76,15 +76,15 @@ Each localized file automatically feeds `/solutions` and `/solutions/[slug]`. Up
 
 Homepage solution summaries are intentionally sales-oriented entries in `src/content/home.ts` and link into the deeper solution routes. The homepage presentation is editorial rather than card-driven.
 
-## Client & testimonial data
+## Homepage client proof
 
-Edit:
+The “businesses we have helped” proof is generated from featured entries in:
 
 ```text
-src/content/social-proof.ts
+src/content/work/
 ```
 
-If an array is empty, the corresponding homepage section does not render.
+Set `featured: true` only for approved, verifiable work. The homepage reads the project name, client, summary, type, year, visual variant, and live URL from that collection, so the proof never needs a second manually maintained client list. If no featured work exists, the proof block does not render.
 
 ## FAQ
 
