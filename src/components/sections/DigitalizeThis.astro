@@ -3,6 +3,7 @@ import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
 import SliderControls from '@/components/ui/SliderControls.astro';
+import ProblemScene from '@/components/ui/ProblemScene.astro';
 
 type Props = { copy: HomeCopy['digitalize']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
@@ -30,30 +31,55 @@ const { copy, locale = 'id' } = Astro.props;
     </header>
 
     <div class="signal-controls" data-reveal="up" style="--reveal-delay:60ms">
-      <SliderControls
-        controls={`digitalize-slider-${locale}`}
-        count={copy.items.length}
-        locale={locale}
-      />
+      <p class="slider-note" aria-hidden="true">
+        {copy.visualNote}
+        <span>↘</span>
+      </p>
+      <div>
+        <SliderControls
+          controls={`digitalize-slider-${locale}`}
+          count={copy.items.length}
+          locale={locale}
+        />
+      </div>
     </div>
 
-    <div class="signal-list" id={`digitalize-slider-${locale}`} data-slider-rail>
+    <div
+      class="signal-list"
+      id={`digitalize-slider-${locale}`}
+      data-slider-rail
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={locale === 'id' ? 'Contoh masalah bisnis' : 'Business problem examples'}
+      tabindex="0"
+    >
       {
         copy.items.map((item, index) => (
           <article
             class="signal-row"
             data-slider-slide
             data-reveal="up"
+            role="group"
+            aria-roledescription="slide"
+            aria-posinset={index + 1}
+            aria-setsize={copy.items.length}
+            aria-labelledby={`signal-title-${locale}-${index}`}
             style={`--reveal-delay:${Math.min(index * 60, 120)}ms`}
           >
-            <div class="signal-topline">
-              <span class="signal-number">{item.index}</span>
-              <p>{copy.signalLabel}</p>
+            <div class="signal-copy">
+              <div class="signal-topline">
+                <span class="signal-number">{item.index}</span>
+                <p>{copy.signalLabel}</p>
+              </div>
+              <h3 id={`signal-title-${locale}-${index}`}>{item.signal}</h3>
+              <div class="signal-response">
+                <p>{copy.responseLabel}</p>
+                <strong>{item.response}</strong>
+              </div>
             </div>
-            <h3>{item.signal}</h3>
-            <div class="signal-response">
-              <p>{copy.responseLabel}</p>
-              <strong>{item.response}</strong>
+
+            <div class="signal-visual">
+              <ProblemScene kind={item.preview} locale={locale} />
             </div>
           </article>
         ))
@@ -72,17 +98,36 @@ const { copy, locale = 'id' } = Astro.props;
     border-bottom: 1px solid rgba(11, 13, 16, 0.13);
   }
   .signal-controls {
-    padding-block: 1.25rem;
+    display: grid;
+    gap: 1rem;
+    padding-block: 1.15rem;
     border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .slider-note {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.72);
+    font-family: var(--font-hand);
+    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+    line-height: 1;
+    transform: rotate(-1.5deg);
+  }
+  .slider-note span {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transform: translateY(0.25rem) rotate(5deg);
   }
   .signal-list {
     display: grid;
-    grid-auto-columns: min(82vw, 33rem);
+    grid-auto-columns: min(84vw, 68rem);
     grid-auto-flow: column;
-    gap: 0.9rem;
+    gap: 1rem;
     overflow-x: auto;
-    padding: 1.1rem calc(100% - min(82vw, 33rem)) 1.6rem 0;
-    scroll-padding-inline: 0.1rem;
+    padding: 1.1rem calc(100% - min(84vw, 68rem)) 1.8rem 0;
+    scroll-padding-inline: 0;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     overscroll-behavior-inline: contain;
@@ -90,22 +135,24 @@ const { copy, locale = 'id' } = Astro.props;
   .signal-list::-webkit-scrollbar {
     display: none;
   }
+  .signal-list:focus-visible {
+    outline: 2px solid var(--color-indigo-deep);
+    outline-offset: 4px;
+  }
   .signal-row {
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    min-height: clamp(22rem, 34vw, 29rem);
-    gap: 1.7rem;
-    padding: clamp(1.5rem, 2.5vw, 2.2rem);
+    min-height: 34rem;
+    overflow: hidden;
     border: 1px solid rgba(11, 13, 16, 0.14);
     background: #fff;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
-  .signal-row:nth-child(2) {
-    background: #f3f4f7;
-  }
-  .signal-row:nth-child(3) {
-    background: #e8ebff;
+  .signal-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding: clamp(1.5rem, 3vw, 3rem);
   }
   .signal-topline {
     display: flex;
@@ -128,17 +175,18 @@ const { copy, locale = 'id' } = Astro.props;
     text-transform: uppercase;
   }
   .signal-row h3 {
-    max-width: 19ch;
-    margin: 0;
+    max-width: 18ch;
+    margin: clamp(2.5rem, 5vw, 5rem) 0 2.5rem;
     font-family: var(--font-display);
-    font-size: clamp(1.85rem, 3vw, 3.25rem);
+    font-size: clamp(2rem, 3.4vw, 3.65rem);
     font-weight: 620;
-    line-height: 1.04;
-    letter-spacing: -0.047em;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
   }
   .signal-row strong {
     display: block;
-    max-width: 40rem;
+    max-width: 34rem;
     margin-top: 0.7rem;
     color: rgba(11, 13, 16, 0.58);
     font-size: 0.88rem;
@@ -146,8 +194,12 @@ const { copy, locale = 'id' } = Astro.props;
     line-height: 1.75;
   }
   .signal-response {
+    margin-top: auto;
     padding-top: 1.2rem;
     border-top: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .signal-visual {
+    min-width: 0;
   }
   .scope-note {
     max-width: 54rem;
@@ -164,9 +216,25 @@ const { copy, locale = 'id' } = Astro.props;
       align-items: end;
       gap: 5rem;
     }
+    .signal-controls {
+      grid-template-columns: minmax(18rem, auto) minmax(0, 1fr);
+      align-items: center;
+      gap: 3rem;
+    }
     .signal-list {
-      grid-auto-columns: calc((100% - 1.8rem) / 2.45);
-      padding-right: calc(100% - ((100% - 1.8rem) / 2.45));
+      grid-auto-columns: min(78vw, 68rem);
+      padding-right: calc(100% - min(78vw, 68rem));
+    }
+    .signal-row {
+      grid-template-columns: minmax(22rem, 0.9fr) minmax(32rem, 1.1fr);
+    }
+  }
+  @media (max-width: 699px) {
+    .signal-row {
+      min-height: auto;
+    }
+    .signal-row h3 {
+      margin-top: 2.5rem;
     }
   }
 </style>

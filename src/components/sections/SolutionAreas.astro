@@ -3,32 +3,37 @@ import type { Locale } from '@/config/site';
 import { getLocalizedPath } from '@/config/navigation';
 import type { HomeCopy } from '@/content/home';
 import SliderControls from '@/components/ui/SliderControls.astro';
+import SolutionScene from '@/components/ui/SolutionScene.astro';
 
 type Props = { copy: HomeCopy['solutions']; locale?: Locale };
 const { copy, locale = 'id' } = Astro.props;
 ---
 
-<section class="section-pad bg-paper text-ink" id="solutions" data-track-section="solutions">
+<section class="section-pad bg-ink text-paper" id="solutions" data-track-section="solutions">
   <div class="shell-wide">
-    <div
-      class="border-ink/12 grid gap-8 border-b pb-10 lg:grid-cols-[.9fr_1.1fr] lg:items-end lg:gap-16"
-      data-reveal="up"
-    >
+    <div class="solution-head" data-reveal="up">
       <div>
-        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+        <p class="eyebrow text-accent">{copy.eyebrow}</p>
         <h2 class="display-xl mt-4 max-w-[14ch]">{copy.title}</h2>
       </div>
       <div>
-        <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.intro}</p>
+        <p class="body-lg m-0 max-w-2xl text-white/60">{copy.intro}</p>
       </div>
     </div>
 
     <div class="solution-controls" data-reveal="up" style="--reveal-delay:60ms">
-      <SliderControls
-        controls={`solutions-slider-${locale}`}
-        count={copy.items.length}
-        locale={locale}
-      />
+      <p class="slider-note" aria-hidden="true">
+        {copy.visualNote}
+        <span>↘</span>
+      </p>
+      <div>
+        <SliderControls
+          controls={`solutions-slider-${locale}`}
+          count={copy.items.length}
+          locale={locale}
+          tone="dark"
+        />
+      </div>
     </div>
 
     <div
@@ -36,24 +41,41 @@ const { copy, locale = 'id' } = Astro.props;
       id={`solutions-slider-${locale}`}
       data-slider-rail
       data-reveal="up"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={locale === 'id' ? 'Kemungkinan bentuk solusi' : 'Possible solution forms'}
+      tabindex="0"
       style="--reveal-delay:70ms"
     >
       {
-        copy.items.map((item) => (
-          <article class="solution-card group" data-slider-slide>
+        copy.items.map((item, index) => (
+          <article
+            class="solution-card group"
+            data-slider-slide
+            role="group"
+            aria-roledescription="slide"
+            aria-posinset={index + 1}
+            aria-setsize={copy.items.length}
+            aria-labelledby={`solution-title-${locale}-${index}`}
+          >
             <div class="solution-card__top">
               <span>{item.index}</span>
-              <span aria-hidden="true">↗</span>
+              <span>{copy.contextLabel}</span>
             </div>
-            <h3>{item.title}</h3>
-            <div class="solution-card__body">
+            <div class="solution-card__message">
+              <h3 id={`solution-title-${locale}-${index}`}>{item.title}</h3>
               <p>{item.body}</p>
-              <div class="solution-card__outputs">
-                {item.outputs.map((output, outputIndex) => (
-                  <>
-                    <span>{output}</span>
-                    {outputIndex < item.outputs.length - 1 && <span>/</span>}
-                  </>
+            </div>
+
+            <div class="solution-card__visual">
+              <SolutionScene kind={item.preview} locale={locale} />
+            </div>
+
+            <div class="solution-card__outputs">
+              <p>{copy.outputLabel}</p>
+              <div>
+                {item.outputs.map((output) => (
+                  <span>{output}</span>
                 ))}
               </div>
             </div>
@@ -63,18 +85,18 @@ const { copy, locale = 'id' } = Astro.props;
     </div>
 
     <div class="mt-9 flex flex-wrap items-center justify-between gap-5">
-      <p class="text-dark-muted m-0 max-w-2xl text-sm leading-6">
+      <p class="m-0 max-w-2xl text-sm leading-6 text-white/50">
         {
           locale === 'id'
-            ? 'Belum tahu solusi mana yang cocok? Tidak masalah. Kategori dan teknologinya justru kami tentukan setelah konteks bisnisnya cukup jelas.'
-            : 'Not sure which solution fits? That is fine. We decide the category and technology after the business context is clear enough.'
+            ? 'Belum tahu bentuk yang cocok? Mulai saja dari proses yang ingin dibenahi.'
+            : 'Not sure which form fits? Start with the process you want to improve.'
         }
       </p>
       <a
-        class="border-ink text-ink inline-flex items-center gap-3 border-b pb-1 text-sm font-extrabold no-underline"
+        class="text-paper inline-flex items-center gap-3 border-b border-white/70 pb-1 text-sm font-extrabold no-underline"
         href={getLocalizedPath(locale, '/solutions')}
       >
-        {locale === 'id' ? 'Lihat semua kemungkinan solusi' : 'See all solution possibilities'}
+        {locale === 'id' ? 'Lihat kemungkinan solusinya' : 'Explore possible solutions'}
         <span aria-hidden="true">↗</span>
       </a>
     </div>
@@ -82,17 +104,43 @@ const { copy, locale = 'id' } = Astro.props;
 </section>
 
 <style>
+  .solution-head {
+    display: grid;
+    gap: 2rem;
+    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
   .solution-controls {
-    padding-block: 1.25rem;
-    border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+    display: grid;
+    gap: 1rem;
+    padding-block: 1.15rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .slider-note {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.74);
+    font-family: var(--font-hand);
+    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+    line-height: 1;
+    transform: rotate(-1.5deg);
+  }
+  .slider-note span {
+    display: inline-block;
+    color: var(--color-accent);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transform: translateY(0.25rem) rotate(5deg);
   }
   .solution-list {
     display: grid;
-    grid-auto-columns: min(82vw, 30rem);
+    grid-auto-columns: min(84vw, 62rem);
     grid-auto-flow: column;
-    gap: 0.9rem;
+    gap: 1rem;
     overflow-x: auto;
-    padding: 1.1rem calc(100% - min(82vw, 30rem)) 1.6rem 0;
+    padding: 1.1rem calc(100% - min(84vw, 62rem)) 1.8rem 0;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     overscroll-behavior-inline: contain;
@@ -100,14 +148,18 @@ const { copy, locale = 'id' } = Astro.props;
   .solution-list::-webkit-scrollbar {
     display: none;
   }
+  .solution-list:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
   .solution-card {
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    min-height: clamp(22rem, 31vw, 27rem);
-    gap: 1.5rem;
-    padding: clamp(1.45rem, 2.4vw, 2rem);
-    border: 1px solid rgba(11, 13, 16, 0.14);
-    background: #fff;
+    grid-template-rows: auto auto 1fr auto;
+    min-height: clamp(42rem, 58vw, 49rem);
+    gap: clamp(1.4rem, 2.4vw, 2.35rem);
+    padding: clamp(1.5rem, 3.2vw, 3.25rem);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: var(--color-surface);
     scroll-snap-align: start;
     scroll-snap-stop: always;
     transition:
@@ -115,67 +167,91 @@ const { copy, locale = 'id' } = Astro.props;
       background-color 220ms ease,
       border-color 220ms ease;
   }
-  .solution-card:nth-child(2) {
-    background: #f3f4f7;
-  }
-  .solution-card:nth-child(3) {
-    background: #e8ebff;
-  }
-  .solution-card:nth-child(4) {
-    background: #f0ede7;
-  }
   .solution-card:hover {
-    border-color: rgba(18, 26, 47, 0.36);
+    border-color: rgba(147, 166, 255, 0.55);
+    background: #171b23;
     transform: translateY(-0.35rem);
   }
   .solution-card__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: rgba(18, 26, 47, 0.48);
+    color: rgba(255, 255, 255, 0.42);
     font-size: 0.66rem;
     font-weight: 800;
     letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
-  .solution-card__top span:last-child {
-    font-size: 1.1rem;
-    font-weight: 400;
+  .solution-card__top span:first-child {
+    color: var(--color-accent);
   }
   .solution-card h3 {
-    max-width: 16ch;
+    max-width: 18ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.1vw, 3.25rem);
+    font-size: clamp(2.1rem, 4.1vw, 4.35rem);
     font-weight: 630;
-    line-height: 1;
-    letter-spacing: -0.052em;
+    line-height: 0.99;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
   }
-  .solution-card__body {
-    padding-top: 1.2rem;
-    border-top: 1px solid rgba(11, 13, 16, 0.13);
-  }
-  .solution-card__body > p {
-    max-width: 30rem;
-    margin: 0;
-    color: rgba(11, 13, 16, 0.58);
-    font-size: 0.84rem;
+  .solution-card__message > p {
+    max-width: 36rem;
+    margin: 1.25rem 0 0;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.94rem;
     line-height: 1.7;
   }
+  .solution-card__visual {
+    min-width: 0;
+  }
+  .solution-card__outputs > p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
   .solution-card__outputs {
+    min-width: 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .solution-card__outputs > div {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.55rem 0.8rem;
-    margin-top: 1rem;
-    color: rgba(11, 13, 16, 0.38);
-    font-size: 0.6rem;
-    font-weight: 800;
-    letter-spacing: 0.04em;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+  }
+  .solution-card__outputs span {
+    padding: 0.48rem 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.62rem;
+    font-weight: 750;
+    letter-spacing: 0.035em;
     text-transform: uppercase;
   }
   @media (min-width: 1024px) {
+    .solution-head {
+      grid-template-columns: 0.92fr 1.08fr;
+      align-items: end;
+      gap: 5rem;
+    }
+    .solution-controls {
+      grid-template-columns: minmax(18rem, auto) minmax(0, 1fr);
+      align-items: center;
+      gap: 3rem;
+    }
     .solution-list {
-      grid-auto-columns: calc((100% - 1.8rem) / 2.45);
-      padding-right: calc(100% - ((100% - 1.8rem) / 2.45));
+      grid-auto-columns: min(72vw, 62rem);
+      padding-right: calc(100% - min(72vw, 62rem));
+    }
+  }
+  @media (max-width: 540px) {
+    .solution-card {
+      min-height: 46rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
