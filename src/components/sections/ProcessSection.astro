@@ -14,6 +14,7 @@ const steps = copy.items.map((item, index) => ({
   title: item.title,
   phase: phases[index] ?? item.owner,
   body: item.body,
+  owner: item.owner,
 }));
 ---
 
@@ -22,7 +23,7 @@ const steps = copy.items.map((item, index) => ({
     <div class="process-intro" data-reveal="up">
       <div>
         <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-        <h2 class="display-xl mt-4 max-w-[13ch]">{copy.title}</h2>
+        <h2 class="display-xl mt-4 max-w-[14ch]">{copy.title}</h2>
       </div>
       <div>
         <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.body}</p>

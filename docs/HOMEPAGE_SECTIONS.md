@@ -7,22 +7,22 @@ Existing SEO, bilingual routing, analytics, content collections, inquiry flow, a
 ## Current flow
 
 1. **Hero: A Better-Run Business**  
-   Leads with the outcome: a business that is easier to run. It explains that Digvation starts from operational friction, sets the priority, builds the solution, and stays involved until it works in daily use. One clearly labelled illustrative system makes the promise tangible without presenting illustrative data as a client result.
+   Leads with the outcome: a business that is easier to run, monitor, and grow. The final phrase rotates gently without changing the H1's accessible meaning or causing layout shift. One clearly labelled illustrative system shows a connected operational flow without presenting illustrative data as a client result.
 
 2. **What Can Be Digitalized?**  
-   Concrete examples that let visitors recognize their own day-to-day processes before seeing technology categories. Each slide pairs the current friction with a contextual business scene such as a hesitant website visitor, scattered order tools, or a delayed manual recap. The examples use a wide horizontal frame so the active story stays readable while the next-card edge, current/total count, progress markers, and controls make the continuation obvious.
+   Short, concrete examples let visitors recognize their own day-to-day problems before seeing technology categories. Each slide pairs one sharp friction statement with one clear change and a contextual business scene. The examples use a wide horizontal frame so the active story stays readable while the next-card edge, current/total count, progress markers, and controls make the continuation obvious.
 
 3. **Why Partner With Digvation**  
    Explains what “partner” means in practice: understand the business context, keep decisions clear, and remain available after launch. Only verifiable client names are shown.
 
 4. **Working With Digvation**  
-   Explains the partnership model in five steps: understand the context, set the priority, design the solution, build and launch, then monitor and improve. The client brings business context; Digvation owns the digital translation and delivery. The process becomes a slider on smaller screens to avoid a long stack.
+   Explains the partnership model in five connected steps: understand the context, set the priority, design the solution, build and launch, then monitor and improve. A continuous timeline and explicit ownership make the sequence easy to scan without using decorative sticky-note cards. The process becomes a slider on smaller screens to avoid a long stack.
 
 5. **Solution Possibilities**  
    Shows the forms the digital change can take after the need is understood: customer experiences, internal systems, automation and integration, and connected data operations. Each slide leads with the change in the business, shows a detailed concept interface, and names possible technology only at the end. A dark section creates a clear shift from recognizing problems to exploring possible responses.
 
 6. **Selected Work**  
-   Demonstrates that different business needs result in different digital solutions.
+   Presents approved Digvation work as real project proof. Live websites appear inside a restrained browser-stage treatment with a clear project name, published state, and direct visit action instead of looking like a raw embedded iframe.
 
 7. **FAQ**  
    Removes uncertainty before starting a conversation.
@@ -55,6 +55,7 @@ A visitor should understand these ideas in order:
 - Use dark/light contrast for rhythm rather than many unrelated colors.
 - Technology appears only after the business context is established.
 - Motion supports transformation and hierarchy; it does not exist only as decoration.
+- Rotating hero language must keep one descriptive accessible H1, reserve its layout space, pause when motion is reduced, and never delay the primary CTA.
 - Sliders use native horizontal scrolling, scroll snapping, visible continuation, keyboard-accessible controls, and current/total status.
 - Desktop slider cards prioritize one readable story at a time. Narrow multi-card layouts that crop headings or split sentences are not allowed.
 - Scenario previews use recognizable interface detail, layered context, and purposeful annotations instead of generic box diagrams. They must remain labelled as illustration and must not imply measured client results.
