@@ -1,0 +1,74 @@
+---
+import type { Locale } from '@/config/site';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const label = locale === 'id' ? 'Kembali ke atas' : 'Back to top';
+---
+
+<button
+  type="button"
+  class="border-line bg-ink text-paper hover:bg-indigo-deep pointer-events-none fixed right-4 bottom-4 z-[70] grid size-12 translate-y-3 place-items-center rounded-full border text-lg font-semibold opacity-0 shadow-[0_16px_45px_rgba(11,13,16,.22)] transition-[opacity,transform,background-color] duration-200 ease-out focus-visible:pointer-events-auto sm:right-6 sm:bottom-6"
+  aria-label={label}
+  title={label}
+  tabindex="-1"
+  data-back-to-top
+>
+  <span aria-hidden="true">↑</span>
+</button>
+
+<script>
+  let backToTopCleanup: (() => void) | null = null;
+
+  const setupBackToTop = () => {
+    backToTopCleanup?.();
+    backToTopCleanup = null;
+
+    const button = document.querySelector<HTMLButtonElement>('[data-back-to-top]');
+    if (!button) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    let frame = 0;
+
+    const render = () => {
+      frame = 0;
+      const threshold = Math.max(900, window.innerHeight * 1.5);
+      const visible = window.scrollY > threshold;
+      button.classList.toggle('pointer-events-none', !visible);
+      button.classList.toggle('opacity-0', !visible);
+      button.classList.toggle('translate-y-3', !visible);
+      button.classList.toggle('pointer-events-auto', visible);
+      button.classList.toggle('opacity-100', visible);
+      button.classList.toggle('translate-y-0', visible);
+      button.tabIndex = visible ? 0 : -1;
+    };
+
+    const requestRender = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(render);
+    };
+
+    button.addEventListener(
+      'click',
+      () => {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+      },
+      { signal },
+    );
+
+    window.addEventListener('scroll', requestRender, { passive: true, signal });
+    window.addEventListener('resize', requestRender, { passive: true, signal });
+    render();
+
+    backToTopCleanup = () => {
+      controller.abort();
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  };
+
+  setupBackToTop();
+  document.addEventListener('astro:page-load', setupBackToTop);
+  document.addEventListener('astro:before-swap', () => backToTopCleanup?.());
+</script>

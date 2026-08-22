@@ -1,0 +1,26 @@
+---
+import DigitalizeThis from '@/components/sections/DigitalizeThis.astro';
+import FaqSection from '@/components/sections/FaqSection.astro';
+import FeaturedWork from '@/components/sections/FeaturedWork.astro';
+import FinalCta from '@/components/sections/FinalCta.astro';
+import HomeHero from '@/components/sections/HomeHero.astro';
+import ProcessSection from '@/components/sections/ProcessSection.astro';
+import SolutionAreas from '@/components/sections/SolutionAreas.astro';
+import TrustSection from '@/components/sections/TrustSection.astro';
+import { homeSectionConfig } from '@/config/home-sections';
+import type { Locale } from '@/config/site';
+import { homeCopy } from '@/content/home';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const copy = homeCopy[locale];
+---
+
+<HomeHero locale={locale} copy={copy.hero} />
+<DigitalizeThis locale={locale} copy={copy.digitalize} />
+<SolutionAreas locale={locale} copy={copy.solutions} />
+<FeaturedWork locale={locale} />
+<ProcessSection locale={locale} copy={copy.process} />
+<TrustSection locale={locale} />
+{homeSectionConfig.faq && <FaqSection locale={locale} />}
+<FinalCta locale={locale} copy={copy.finalCta} />

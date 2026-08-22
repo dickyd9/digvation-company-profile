@@ -1,0 +1,166 @@
+---
+import { getFaq } from '@/content/faq';
+import type { Locale } from '@/config/site';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const items = getFaq(locale);
+---
+
+<section class="section-pad bg-paper text-ink" id="faq" data-track-section="faq">
+  <div class="shell grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start" data-reveal="left">
+      <span class="eyebrow text-indigo-deep">FAQ</span>
+      <h2 class="display-lg mt-5 max-w-[14ch]">
+        {
+          locale === 'id'
+            ? 'Biasanya yang ditanyakan sebelum mulai.'
+            : 'Questions that usually come up before we start.'
+        }
+      </h2>
+      <p class="text-dark-muted mt-4 max-w-sm text-sm leading-7">
+        {
+          locale === 'id'
+            ? 'Kalau pertanyaan Anda tidak ada di sini, tetap tidak perlu menunggu requirement lengkap. Mulai saja dari konteks yang sudah ada.'
+            : 'If your question is not here, you still do not need complete requirements. Start with the context you already have.'
+        }
+      </p>
+    </div>
+
+    <div
+      class="border-ink/12 border-t"
+      data-faq-list
+      data-reveal="right"
+      style="--reveal-delay:70ms"
+    >
+      {
+        items.map((item, index) => (
+          <details class="faq-item group border-ink/12 border-b" open={index === 0} data-faq-item>
+            <summary
+              class="flex cursor-pointer list-none items-center justify-between gap-5 py-6 font-semibold marker:hidden sm:py-7"
+              data-faq-summary
+            >
+              <span class="flex items-start gap-4">
+                <span class="text-indigo-deep/45 mt-[.12rem] text-xs font-extrabold">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span>{item.question}</span>
+              </span>
+              <span
+                class="faq-icon text-indigo-deep grid size-7 shrink-0 place-items-center text-lg font-light"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <div class="faq-answer pb-7 pl-[2.7rem] sm:pb-8" data-faq-answer>
+              <div data-faq-answer-inner>
+                <p class="text-dark-muted m-0 max-w-2xl text-sm leading-7">{item.answer}</p>
+              </div>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-item {
+    overflow: clip;
+  }
+  .faq-icon {
+    transition:
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 260ms ease;
+  }
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  [data-faq-answer-inner] {
+    transform-origin: top;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-icon {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const setupFaq = () => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-faq-item]').forEach((details) => {
+      if (details.dataset.ready === 'true') return;
+      details.dataset.ready = 'true';
+
+      const summary = details.querySelector<HTMLElement>('[data-faq-summary]');
+      const answer = details.querySelector<HTMLElement>('[data-faq-answer]');
+      const answerInner = details.querySelector<HTMLElement>('[data-faq-answer-inner]');
+      if (!summary || !answer || !answerInner) return;
+
+      let heightAnimation: Animation | null = null;
+      let contentAnimation: Animation | null = null;
+      let targetOpen = details.open;
+
+      const resetInlineStyles = () => {
+        details.style.height = '';
+        details.style.overflow = '';
+        answerInner.style.opacity = '';
+        answerInner.style.transform = '';
+      };
+
+      const finish = (open: boolean) => {
+        targetOpen = open;
+        details.open = open;
+        heightAnimation = null;
+        contentAnimation = null;
+        resetInlineStyles();
+      };
+
+      const animateTo = (open: boolean) => {
+        targetOpen = open;
+        heightAnimation?.cancel();
+        contentAnimation?.cancel();
+
+        const startHeight = details.getBoundingClientRect().height;
+        if (open) details.open = true;
+        const endHeight = open ? summary.offsetHeight + answer.offsetHeight : summary.offsetHeight;
+
+        details.style.height = `${startHeight}px`;
+        details.style.overflow = 'hidden';
+
+        heightAnimation = details.animate(
+          { height: [`${startHeight}px`, `${endHeight}px`] },
+          { duration: open ? 400 : 320, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+        );
+
+        contentAnimation = answerInner.animate(
+          open
+            ? { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }
+            : { opacity: [1, 0], transform: ['translateY(0)', 'translateY(-5px)'] },
+          {
+            duration: open ? 280 : 170,
+            delay: open ? 55 : 0,
+            easing: open ? 'cubic-bezier(.22, 1, .36, 1)' : 'ease-out',
+            fill: 'forwards',
+          },
+        );
+
+        heightAnimation.onfinish = () => finish(open);
+        heightAnimation.oncancel = () => resetInlineStyles();
+      };
+
+      summary.addEventListener('click', (event) => {
+        if (reduceMotion.matches) return;
+        event.preventDefault();
+        animateTo(!targetOpen);
+      });
+    });
+  };
+
+  setupFaq();
+  document.addEventListener('astro:page-load', setupFaq);
+</script>

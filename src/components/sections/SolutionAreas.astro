@@ -1,0 +1,113 @@
+---
+import type { Locale } from '@/config/site';
+import { getLocalizedPath } from '@/config/navigation';
+import type { HomeCopy } from '@/content/home';
+
+type Props = { copy: HomeCopy['solutions']; locale?: Locale };
+const { copy, locale = 'id' } = Astro.props;
+---
+
+<section class="section-pad bg-paper text-ink" id="solutions" data-track-section="solutions">
+  <div class="shell-wide">
+    <div
+      class="border-ink/12 grid gap-8 border-b pb-10 lg:grid-cols-[.9fr_1.1fr] lg:items-end lg:gap-16"
+      data-reveal="up"
+    >
+      <div>
+        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+        <h2 class="display-xl mt-4 max-w-[14ch]">{copy.title}</h2>
+      </div>
+      <div>
+        <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.intro}</p>
+        <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-3 sm:grid-cols-4">
+          {
+            copy.signals.map((signal, index) => (
+              <div class="border-ink/12 border-t pt-3">
+                <span class="text-indigo-deep/45 text-[.58rem] font-extrabold tracking-[.08em]">
+                  0{index + 1}
+                </span>
+                <p class="text-ink/52 mt-2 text-xs leading-5 font-semibold">{signal}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2" data-reveal="up" style="--reveal-delay:70ms">
+      {
+        copy.items.map((item) => (
+          <article class="solution-row group border-ink/12 grid gap-5 border-b py-8 sm:py-9 lg:grid-cols-[5rem_.8fr_1.2fr_auto] lg:items-start lg:gap-9">
+            <span class="text-indigo-deep/45 pt-1 text-[.68rem] font-extrabold tracking-[.1em] uppercase">
+              {item.index}
+            </span>
+            <h3 class="font-display max-w-[18ch] text-[clamp(1.65rem,2.6vw,2.55rem)] leading-[1.02] font-semibold tracking-[-.05em]">
+              {item.title}
+            </h3>
+            <div>
+              <p class="text-ink/58 m-0 max-w-2xl text-sm leading-7">{item.body}</p>
+              <div class="text-ink/34 mt-4 flex flex-wrap gap-x-3 gap-y-2 text-[.63rem] font-extrabold tracking-[.04em] uppercase">
+                {item.outputs.map((output, outputIndex) => (
+                  <>
+                    <span>{output}</span>
+                    {outputIndex < item.outputs.length - 1 && <span>/</span>}
+                  </>
+                ))}
+              </div>
+            </div>
+            <span
+              class="solution-arrow text-ink/22 hidden pt-1 text-2xl font-light lg:block"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-9 flex flex-wrap items-center justify-between gap-5">
+      <p class="text-dark-muted m-0 max-w-2xl text-sm leading-6">
+        {
+          locale === 'id'
+            ? 'Belum tahu solusi mana yang cocok? Tidak masalah. Kategori dan teknologinya justru kami tentukan setelah konteks bisnisnya cukup jelas.'
+            : 'Not sure which solution fits? That is fine. We decide the category and technology after the business context is clear enough.'
+        }
+      </p>
+      <a
+        class="border-ink text-ink inline-flex items-center gap-3 border-b pb-1 text-sm font-extrabold no-underline"
+        href={getLocalizedPath(locale, '/solutions')}
+      >
+        {locale === 'id' ? 'Lihat semua kemungkinan solusi' : 'See all solution possibilities'}
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .solution-row {
+    transition:
+      padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms ease;
+  }
+  .solution-arrow {
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 220ms ease;
+  }
+  .solution-row:hover {
+    padding-left: 0.7rem;
+    background: rgba(147, 166, 255, 0.055);
+  }
+  .solution-row:hover .solution-arrow {
+    transform: translate(3px, -3px);
+    color: var(--color-indigo-deep);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .solution-row,
+    .solution-arrow {
+      transition: none;
+    }
+  }
+</style>

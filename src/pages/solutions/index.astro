@@ -1,0 +1,14 @@
+---
+export const prerender = true;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SolutionsIndexPage from '@/features/solutions/SolutionsIndexPage.astro';
+const locale = 'id' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Solutions — Digvation"
+  description="Cara memulai bersama Digvation—dari discovery dan PoC sampai build, automation, AI/data, IoT, dan care."
+>
+  <SolutionsIndexPage locale={locale} />
+</BaseLayout>

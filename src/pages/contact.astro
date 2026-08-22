@@ -1,0 +1,13 @@
+---
+import ContactPage from '@/features/inquiry/ContactPage.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import type { Locale } from '@/config/site';
+
+const locale = 'id' as Locale;
+const description =
+  'Ceritakan situasi bisnis yang ingin dibuat bekerja lebih baik. Digvation akan membaca konteksnya sebelum menentukan pendekatan digital yang masuk akal.';
+---
+
+<BaseLayout locale={locale} title="Ngobrol dengan Digvation" description={description}>
+  <ContactPage locale={locale} />
+</BaseLayout>

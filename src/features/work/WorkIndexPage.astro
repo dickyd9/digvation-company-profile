@@ -1,0 +1,237 @@
+---
+import { getWorkEntries } from '@/lib/content/catalog';
+import { resolveWorkPreview } from '@/lib/content/work-preview';
+import PageHero from '@/components/ui/PageHero.astro';
+import ProjectVisual from '@/components/ui/ProjectVisual.astro';
+import LiveProjectVisual from '@/components/ui/LiveProjectVisual.astro';
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const entries = await getWorkEntries(locale);
+---
+
+<PageHero
+  eyebrow={locale === 'id' ? 'Hasil Kerja' : 'Work'}
+  title={locale === 'id'
+    ? 'Pekerjaan nyata. Dibangun untuk kebutuhan yang nyata.'
+    : 'Real work. Built for real business needs.'}
+  body={locale === 'id'
+    ? 'Lihat masalahnya, keputusan yang diambil, dan solusi yang benar-benar dibuat.'
+    : 'See the problem, the decisions, and the solution that was actually built.'}
+  note={locale === 'id' ? 'Bukti lebih kuat daripada janji.' : 'Proof is stronger than promises.'}
+  ctaLabel={locale === 'id' ? 'Mulai project Anda' : 'Start your project'}
+  ctaHref={getLocalizedPath(locale, '/contact')}
+/>
+
+<section class="section-pad bg-paper text-ink">
+  <div class="shell-wide">
+    <div class="grid gap-16 lg:gap-24">
+      {
+        entries.map((entry, index) => {
+          const isExternal = entry.data.entryType === 'external';
+          const caseStudyHref = isExternal
+            ? undefined
+            : getLocalizedPath(locale, `/work/${entry.data.routeSlug}`);
+          const preview = resolveWorkPreview(entry.data);
+          const previewHref =
+            preview.liveUrl ?? preview.image ?? caseStudyHref ?? getLocalizedPath(locale, '/work');
+          const mediaClass =
+            index % 2 === 0
+              ? 'aspect-[16/9] min-h-0 rounded-none'
+              : 'aspect-[4/3] min-h-0 rounded-none';
+
+          return (
+            <article
+              class:list={[
+                'work-index-item',
+                index % 2 === 1 ? 'lg:grid lg:grid-cols-[.3fr_.7fr] lg:gap-10' : '',
+              ]}
+              data-reveal={index % 2 === 0 ? 'up' : 'right'}
+            >
+              {index % 2 === 1 && <div class="hidden lg:block" />}
+              <div>
+                <div class="border-ink/14 mb-5 flex items-center justify-between gap-4 border-t pt-4">
+                  <span class="text-indigo-deep text-[.65rem] font-extrabold tracking-[.09em] uppercase">
+                    {String(index + 1).padStart(2, '0')} / {entry.data.projectType}
+                  </span>
+                  <span class="text-ink/36 text-[.65rem] font-bold tracking-[.06em] uppercase">
+                    {entry.data.client}
+                  </span>
+                </div>
+
+                <div class="work-index-media bg-ink/5 relative overflow-hidden">
+                  {isExternal ? (
+                    <a
+                      class="block text-inherit no-underline"
+                      href={previewHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-project-preview-trigger
+                      data-preview-mode={preview.mode}
+                      data-preview-url={preview.embedUrl}
+                      data-preview-live-url={preview.liveUrl}
+                      data-preview-image={preview.image}
+                      data-preview-title={entry.data.title}
+                      data-preview-descriptor={entry.data.projectType}
+                      data-preview-slug={entry.data.routeSlug}
+                    >
+                      {entry.data.showLiveInCard && preview.embedUrl ? (
+                        <LiveProjectVisual
+                          title={entry.data.title}
+                          url={preview.embedUrl}
+                          locale={locale}
+                          class={mediaClass}
+                        />
+                      ) : (
+                        <ProjectVisual
+                          title={entry.data.title}
+                          index={index + 1}
+                          descriptor={entry.data.projectType}
+                          variant={entry.data.visualVariant}
+                          image={entry.data.coverImage}
+                          class={mediaClass}
+                        />
+                      )}
+                    </a>
+                  ) : (
+                    <a
+                      class="block text-inherit no-underline"
+                      href={caseStudyHref}
+                      data-work-kind="case-study"
+                      data-project-slug={entry.data.routeSlug}
+                    >
+                      {entry.data.showLiveInCard && preview.embedUrl ? (
+                        <LiveProjectVisual
+                          title={entry.data.title}
+                          url={preview.embedUrl}
+                          locale={locale}
+                          class={mediaClass}
+                        />
+                      ) : (
+                        <ProjectVisual
+                          title={entry.data.title}
+                          index={index + 1}
+                          descriptor={entry.data.projectType}
+                          variant={entry.data.visualVariant}
+                          image={entry.data.coverImage}
+                          transitionName={`project-visual-${entry.data.routeSlug}`}
+                          class={mediaClass}
+                        />
+                      )}
+                    </a>
+                  )}
+                  <span
+                    class="work-view bg-paper text-ink pointer-events-none absolute right-5 bottom-5 grid size-20 place-items-center rounded-full text-[.64rem] font-extrabold tracking-[.08em] uppercase opacity-0 shadow-[0_12px_36px_rgba(11,13,16,.16)]"
+                    aria-hidden="true"
+                  >
+                    View ↗
+                  </span>
+                </div>
+
+                <div class="mt-6 grid gap-5 md:grid-cols-[.9fr_1.1fr] md:items-start">
+                  <h2 class="font-display m-0 text-[clamp(2rem,4vw,4.25rem)] leading-[.98] font-semibold tracking-[-.055em]">
+                    {entry.data.title}
+                  </h2>
+                  <div>
+                    <p class="text-ink/58 m-0 max-w-xl text-sm leading-7">{entry.data.summary}</p>
+                    <div class="mt-5 flex flex-wrap gap-5">
+                      {!isExternal && (
+                        <a
+                          class="border-ink text-ink inline-flex items-center gap-2 border-b pb-1 text-sm font-extrabold no-underline"
+                          href={caseStudyHref}
+                          data-work-kind="case-study"
+                          data-project-slug={entry.data.routeSlug}
+                        >
+                          {locale === 'id' ? 'Buka case study' : 'Open case study'} →
+                        </a>
+                      )}
+                      <a
+                        class="border-ink/25 text-ink/58 inline-flex items-center gap-2 border-b pb-1 text-sm font-bold no-underline"
+                        href={previewHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-project-preview-trigger
+                        data-preview-mode={preview.mode}
+                        data-preview-url={preview.embedUrl}
+                        data-preview-live-url={preview.liveUrl}
+                        data-preview-image={preview.image}
+                        data-preview-title={entry.data.title}
+                        data-preview-descriptor={entry.data.projectType}
+                        data-preview-slug={entry.data.routeSlug}
+                      >
+                        {locale === 'id' ? 'Preview project' : 'Preview project'} ↗
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .work-index-media :global(img),
+  .work-index-media :global(.project-visual) {
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .work-index-item:hover .work-index-media :global(img),
+  .work-index-item:hover .work-index-media :global(.project-visual) {
+    transform: scale(1.018);
+  }
+  .work-view {
+    transition:
+      opacity 260ms ease,
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(8px) scale(0.96);
+  }
+  .work-index-item:hover .work-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  @media (max-width: 767px) {
+    .work-view {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .work-index-media :global(img),
+    .work-index-media :global(.project-visual),
+    .work-view {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const setupReturnTracking = () => {
+    document
+      .querySelectorAll<HTMLAnchorElement>('[data-work-kind="case-study"]')
+      .forEach((link) => {
+        if (link.dataset.returnReady === 'true') return;
+        link.dataset.returnReady = 'true';
+        link.addEventListener('click', (event) => {
+          if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          )
+            return;
+          sessionStorage.setItem(
+            'digvation:project-return',
+            `${location.pathname}${location.search}${location.hash}`,
+          );
+          sessionStorage.setItem('digvation:project-depth', '1');
+        });
+      });
+  };
+  setupReturnTracking();
+  document.addEventListener('astro:page-load', setupReturnTracking);
+</script>

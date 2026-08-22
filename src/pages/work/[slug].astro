@@ -1,0 +1,37 @@
+---
+export const prerender = true;
+import { getCaseStudyWorkEntries } from '@/lib/content/catalog';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import WorkDetailPage from '@/features/work/WorkDetailPage.astro';
+import { creativeWorkSchema, breadcrumbSchema } from '@/lib/seo/schema';
+import { getLocalizedPath } from '@/config/navigation';
+const locale = 'id' as const;
+export async function getStaticPaths() {
+  const entries = await getCaseStudyWorkEntries('id');
+  return entries.map((entry) => ({ params: { slug: entry.data.routeSlug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const path = getLocalizedPath(locale, `/work/${entry.data.routeSlug}`);
+---
+
+<BaseLayout
+  locale={locale}
+  title={entry.data.seo.title}
+  description={entry.data.seo.description}
+  image={entry.data.seo.ogImage}
+  structuredData={[
+    creativeWorkSchema({
+      name: entry.data.title,
+      description: entry.data.summary,
+      path,
+      dateCreated: entry.data.year,
+    }),
+    breadcrumbSchema([
+      { name: 'Home', path: getLocalizedPath(locale, '/') },
+      { name: 'Work', path: getLocalizedPath(locale, '/work') },
+      { name: entry.data.title, path },
+    ]),
+  ]}
+>
+  <WorkDetailPage locale={locale} slug={entry.data.routeSlug} />
+</BaseLayout>

@@ -1,0 +1,66 @@
+---
+type Props = {
+  title: string;
+  url: string;
+  locale?: 'id' | 'en';
+  class?: string;
+};
+
+const { title, url, locale = 'id', class: className = '' } = Astro.props;
+const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+---
+
+<div class:list={['live-project relative isolate overflow-hidden bg-[#e7eaed]', className]}>
+  <div class="absolute inset-0 grid place-items-center bg-[#e7eaed] text-center">
+    <div>
+      <span class="text-ink/35 text-[.58rem] font-extrabold tracking-[.12em] uppercase"
+        >{locale === 'id' ? 'Memuat website aktual' : 'Loading actual website'}</span
+      >
+      <strong class="text-ink/70 mt-2 block text-base font-semibold tracking-[-.03em] sm:text-xl"
+        >{title}</strong
+      >
+    </div>
+  </div>
+
+  <iframe
+    src={url}
+    title={`Live visual preview of ${title}`}
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+    sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+    tabindex="-1"
+    aria-hidden="true"
+    class="bg-paper pointer-events-none absolute top-0 left-0 h-[160%] w-[160%] origin-top-left scale-[.625] border-0"
+  ></iframe>
+
+  <div
+    class="bg-ink/88 text-paper pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between gap-4 px-4 py-2.5 backdrop-blur-sm"
+  >
+    <span class="text-paper/70 truncate text-[.58rem] font-bold tracking-[.04em]">{domain}</span>
+    <span
+      class="flex shrink-0 items-center gap-2 text-[.54rem] font-extrabold tracking-[.1em] uppercase"
+      ><i class="size-1.5 rounded-full bg-[#66d18f]"></i> Live website</span
+    >
+  </div>
+
+  <div
+    class="bg-ink/82 text-paper pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between px-4 py-3 text-[.56rem] font-extrabold tracking-[.08em] uppercase backdrop-blur-sm"
+  >
+    <span>{title}</span>
+    <span>{locale === 'id' ? 'Buka project ↗' : 'Open project ↗'}</span>
+  </div>
+</div>
+
+<style>
+  .live-project iframe {
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .live-project:hover iframe {
+    transform: scale(0.64);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .live-project iframe {
+      transition: none;
+    }
+  }
+</style>

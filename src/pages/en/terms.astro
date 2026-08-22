@@ -1,0 +1,14 @@
+---
+export const prerender = true;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LegalPage from '@/features/legal/LegalPage.astro';
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Website Terms"
+  description="Terms for using the Digvation website and a clear boundary between marketing information and written project commitments."
+>
+  <LegalPage locale={locale} kind="terms" />
+</BaseLayout>

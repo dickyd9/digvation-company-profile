@@ -1,0 +1,129 @@
+---
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+import type { HomeCopy } from '@/content/home';
+
+type Props = { copy: HomeCopy['digitalize']; locale?: Locale };
+const { copy, locale = 'id' } = Astro.props;
+---
+
+<section class="section-pad bg-paper text-ink" id="digitalize" data-track-section="digitalize-this">
+  <div class="shell-wide">
+    <header class="digitalize-head" data-reveal="up">
+      <div>
+        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+        <h2 class="display-xl mt-4 max-w-[14ch]">{copy.title}</h2>
+      </div>
+      <div>
+        <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.intro}</p>
+        <a
+          class="border-ink text-ink mt-6 inline-flex items-center gap-3 border-b pb-1 text-sm font-extrabold no-underline"
+          href={getLocalizedPath(locale, '/contact')}
+          data-track-event="cta_clicked"
+          data-track-label="problem-section"
+        >
+          {copy.linkLabel}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="signal-list">
+      {
+        copy.items.map((item, index) => (
+          <article
+            class="signal-row"
+            data-reveal="up"
+            style={`--reveal-delay:${Math.min(index * 60, 120)}ms`}
+          >
+            <span class="signal-number">{item.index}</span>
+            <div>
+              <p>{copy.signalLabel}</p>
+              <h3>{item.signal}</h3>
+            </div>
+            <div>
+              <p>{copy.responseLabel}</p>
+              <strong>{item.response}</strong>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="scope-note" data-reveal="up">{copy.note}</p>
+  </div>
+</section>
+
+<style>
+  .digitalize-head {
+    display: grid;
+    gap: 2rem;
+    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .signal-list {
+    border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .signal-row {
+    display: grid;
+    gap: 1.35rem;
+    padding: clamp(2rem, 3.5vw, 3.2rem) 0;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.11);
+  }
+  .signal-row:last-child {
+    border-bottom: 0;
+  }
+  .signal-number {
+    color: rgba(78, 101, 243, 0.52);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+  }
+  .signal-row p {
+    margin: 0;
+    color: rgba(11, 13, 16, 0.38);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .signal-row h3 {
+    max-width: 22ch;
+    margin-top: 0.7rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 2.8vw, 2.8rem);
+    font-weight: 620;
+    line-height: 1.04;
+    letter-spacing: -0.047em;
+  }
+  .signal-row strong {
+    display: block;
+    max-width: 40rem;
+    margin-top: 0.7rem;
+    color: rgba(11, 13, 16, 0.58);
+    font-size: 0.88rem;
+    font-weight: 550;
+    line-height: 1.75;
+  }
+  .scope-note {
+    max-width: 54rem;
+    margin: clamp(2.2rem, 4vw, 3.5rem) 0 0 auto;
+    padding-left: 1rem;
+    border-left: 2px solid #5367ee;
+    color: rgba(11, 13, 16, 0.54);
+    font-size: 0.82rem;
+    line-height: 1.75;
+  }
+  @media (min-width: 1024px) {
+    .digitalize-head {
+      grid-template-columns: 0.92fr 1.08fr;
+      align-items: end;
+      gap: 5rem;
+    }
+    .signal-row {
+      grid-template-columns: 5rem minmax(0, 0.95fr) minmax(0, 1.05fr);
+      align-items: start;
+      gap: 2.5rem;
+    }
+  }
+</style>

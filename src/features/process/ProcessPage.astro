@@ -1,0 +1,261 @@
+---
+import BrandLogo from '@/components/brand/BrandLogo.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import ProcessBoard from '@/components/ui/ProcessBoard.astro';
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const copy =
+  locale === 'id'
+    ? {
+        hero: [
+          'Cara Kerja',
+          'Anda bawa masalahnya. Kami bawa sampai jadi solusi digital yang berjalan.',
+          'Konteks bisnis dari Anda. Strategi, desain, build, dan launch dari kami.',
+          'Tidak perlu jadi project manager.',
+          'Diskusikan bisnis Anda',
+        ],
+        intro: [
+          'Satu partner. Satu alur yang jelas.',
+          'Tidak ada lempar-lempar tanggung jawab antara strategi, desain, dan development.',
+        ],
+        principles: [
+          ['Masalah dulu', 'Teknologi dipilih setelah kebutuhan jelas.'],
+          ['Keputusan terlihat', 'Scope, risiko, dan prioritas tidak disembunyikan.'],
+          ['Sampai dipakai', 'Launch bukan sekadar serah-terima file.'],
+        ],
+        steps: [
+          {
+            phase: 'Konteks',
+            title: 'Pahami',
+            body: 'Kami melihat proses, orang, data, dan hambatan yang paling terasa.',
+          },
+          {
+            phase: 'Prioritas',
+            title: 'Tentukan',
+            body: 'Kita memilih apa yang perlu diselesaikan dulu—dan apa yang belum perlu.',
+          },
+          {
+            phase: 'Flow & UI',
+            title: 'Rancang',
+            body: 'Kebutuhan diubah menjadi alur, pengalaman, scope, dan aturan yang jelas.',
+          },
+          {
+            phase: 'Build & QA',
+            title: 'Bangun',
+            body: 'Digvation mengerjakan development, integration, testing, dan review.',
+          },
+          {
+            phase: 'Launch',
+            title: 'Jalankan',
+            body: 'Solusi disiapkan untuk penggunaan nyata, lalu ditingkatkan bila diperlukan.',
+          },
+        ],
+        role: [
+          'Pembagian peran',
+          'Anda pegang bisnisnya. Kami pegang delivery digitalnya.',
+          'Kami tidak meminta Anda menerjemahkan bisnis menjadi jargon teknis.',
+        ],
+        client: ['Konteks bisnis', 'PIC untuk validasi', 'Keputusan penting'],
+        us: ['Strategi & scope', 'UI/UX & development', 'Integration, QA & launch'],
+        close: [
+          'Mulai dari satu masalah yang paling terasa.',
+          'Ceritakan prosesnya. Kami bantu menentukan langkah pertama.',
+          'Mulai Percakapan',
+        ],
+      }
+    : {
+        hero: [
+          'How We Work',
+          'You bring the problem. We carry it through to a digital solution that works.',
+          'Business context from you. Strategy, design, build, and launch from us.',
+          'You do not need to become the project manager.',
+          'Discuss your business',
+        ],
+        intro: [
+          'One partner. One clear delivery path.',
+          'No responsibility gaps between strategy, design, and development.',
+        ],
+        principles: [
+          ['Problem first', 'Technology is chosen after the need is clear.'],
+          ['Visible decisions', 'Scope, risk, and priorities stay explicit.'],
+          ['Through to use', 'Launch is more than handing over files.'],
+        ],
+        steps: [
+          {
+            phase: 'Context',
+            title: 'Understand',
+            body: 'We look at process, people, data, and the friction that matters most.',
+          },
+          {
+            phase: 'Priority',
+            title: 'Define',
+            body: 'We choose what should be solved first—and what does not need to be built yet.',
+          },
+          {
+            phase: 'Flow & UI',
+            title: 'Design',
+            body: 'Needs become clear flows, experiences, scope, and business rules.',
+          },
+          {
+            phase: 'Build & QA',
+            title: 'Build',
+            body: 'Digvation handles development, integration, testing, and review.',
+          },
+          {
+            phase: 'Launch',
+            title: 'Run',
+            body: 'The solution enters real use and improves when the business needs it.',
+          },
+        ],
+        role: [
+          'Who owns what',
+          'You own the business. We own digital delivery.',
+          'You should not have to translate the business into technical jargon.',
+        ],
+        client: ['Business context', 'A PIC for validation', 'Important decisions'],
+        us: ['Strategy & scope', 'UI/UX & development', 'Integration, QA & launch'],
+        close: [
+          'Start with the problem you feel most.',
+          'Tell us how it works today. We will help decide the first move.',
+          'Start a Conversation',
+        ],
+      };
+const contactHref = getLocalizedPath(locale, '/contact');
+---
+
+<PageHero
+  eyebrow={copy.hero[0]!}
+  title={copy.hero[1]!}
+  body={copy.hero[2]!}
+  note={copy.hero[3]!}
+  ctaLabel={copy.hero[4]!}
+  ctaHref={contactHref}
+/>
+
+<section class="section-pad bg-paper text-ink" data-track-section="process-principles">
+  <div class="shell-wide">
+    <header
+      class="border-ink/12 grid gap-5 border-b pb-8 lg:grid-cols-[1fr_1fr] lg:items-end"
+      data-reveal="up"
+    >
+      <h2 class="display-lg max-w-[15ch]">{copy.intro[0]}</h2>
+      <p class="body-lg text-dark-muted m-0 max-w-xl">{copy.intro[1]}</p>
+    </header>
+    <div class="grid md:grid-cols-3" data-reveal="up" style="--reveal-delay:70ms">
+      {
+        copy.principles.map(([title, body], index) => (
+          <article class="border-ink/12 border-b py-7 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
+            <span class="text-indigo-deep/45 text-[.62rem] font-extrabold tracking-[.09em]">
+              0{index + 1}
+            </span>
+            <h3 class="font-display mt-4 text-2xl font-semibold tracking-[-.04em]">{title}</h3>
+            <p class="text-ink/56 mt-3 text-sm leading-6">{body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section
+  class="section-pad border-ink/8 bg-paper-soft text-ink border-y"
+  data-track-section="process-board"
+>
+  <div class="shell-wide">
+    <ProcessBoard
+      locale={locale}
+      steps={copy.steps}
+      note={locale === 'id'
+        ? 'Lima tahap. Satu pihak yang bertanggung jawab.'
+        : 'Five stages. One accountable partner.'}
+    />
+  </div>
+</section>
+
+<section class="section-pad bg-paper text-ink" data-track-section="process-responsibility">
+  <div class="shell">
+    <div class="grid gap-9 lg:grid-cols-[.78fr_1.22fr] lg:items-start lg:gap-14">
+      <div data-reveal="left">
+        <p class="eyebrow text-indigo-deep">{copy.role[0]}</p>
+        <h2 class="display-lg mt-4 max-w-[14ch]">{copy.role[1]}</h2>
+        <p class="text-dark-muted mt-5 max-w-lg text-base leading-7">{copy.role[2]}</p>
+      </div>
+      <div class="role-grid" data-reveal="right">
+        <article>
+          <span>01</span><h3>{locale === 'id' ? 'Dari Anda' : 'From you'}</h3>
+          <ul>{copy.client.map((item) => <li>{item}</li>)}</ul>
+        </article>
+        <article class="role-grid__digvation">
+          <BrandLogo locale={locale} tone="light" compact /><h3>
+            {locale === 'id' ? 'Dari Digvation' : 'From Digvation'}
+          </h3>
+          <ul>{copy.us.map((item) => <li>{item}</li>)}</ul>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad-sm bg-indigo-deep text-paper" data-track-section="process-cta">
+  <div class="shell conversion-strip">
+    <div>
+      <p class="eyebrow text-accent">{copy.close[0]}</p><h2
+        class="font-display mt-4 max-w-[18ch] text-[clamp(2rem,4vw,3.7rem)] leading-[1.02] font-semibold tracking-[-.05em]"
+      >
+        {copy.close[1]}
+      </h2>
+    </div>
+    <a class="button-primary bg-paper! text-ink! shrink-0" href={contactHref}>{copy.close[2]} ↗</a>
+  </div>
+</section>
+
+<style>
+  .role-grid {
+    display: grid;
+    border: 1px solid rgba(11, 13, 16, 0.14);
+  }
+  .role-grid article {
+    padding: 1.5rem;
+    background: #fff;
+  }
+  .role-grid article > span {
+    color: rgba(78, 101, 243, 0.55);
+    font-size: 0.62rem;
+    font-weight: 800;
+  }
+  .role-grid h3 {
+    margin-top: 0.85rem;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+  }
+  .role-grid ul {
+    display: grid;
+    gap: 0;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .role-grid li {
+    padding: 0.7rem 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.1);
+    font-size: 0.82rem;
+    font-weight: 650;
+  }
+  .role-grid__digvation {
+    background: #121a2f !important;
+    color: #fff;
+  }
+  .role-grid__digvation li {
+    border-color: rgba(255, 255, 255, 0.13);
+  }
+  @media (min-width: 640px) {
+    .role-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

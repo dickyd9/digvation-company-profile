@@ -1,0 +1,38 @@
+---
+entryType: case-study
+routeSlug: project-slug
+locale: id
+title: Project Name
+client: Client Name
+industry: Industry
+year: 2026
+projectType: Digital Experience
+summary: Ringkasan singkat project.
+challenge: Masalah bisnis yang ingin diselesaikan.
+context: Kondisi awal sebelum project dimulai.
+insight: Hal penting yang ditemukan selama discovery.
+approach: Bagaimana Digvation mendekati project.
+solution: Solusi yang dibangun.
+built:
+  - Deliverable pertama
+  - Deliverable kedua
+technologies:
+  - Technology / capability
+outcome: Hasil yang benar-benar dapat diverifikasi. Jangan membuat angka palsu.
+nextStep: Improvement atau langkah lanjutan.
+relatedSolution: digital-build
+featured: false
+draft: true
+order: 99
+showLiveInCard: false
+visualVariant: navy
+# coverImage optional. Hapus jika ingin zero project asset.
+# coverImage: /work/project-slug/cover.webp
+liveUrl: https://example.com
+preview:
+  mode: live
+  embedUrl: https://example.com/
+seo:
+  title: Project Name — Case Study
+  description: Deskripsi SEO project.
+---

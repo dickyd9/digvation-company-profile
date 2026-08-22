@@ -1,0 +1,313 @@
+---
+import type { Locale } from '@/config/site';
+import { analyticsConfig } from '@/config/analytics';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const copy =
+  locale === 'id'
+    ? {
+        text: 'Kami menggunakan analitik dan pengukuran kampanye opsional untuk memahami kunjungan, memperbaiki pengalaman, dan mengukur inquiry dari kampanye. Tag opsional hanya dimuat setelah Anda mengizinkan.',
+        accept: 'Izinkan pengukuran',
+        reject: 'Hanya yang diperlukan',
+        privacy: 'Privasi',
+      }
+    : {
+        text: 'We use optional analytics and campaign measurement to understand visits, improve the experience, and measure inquiries from campaigns. Optional tags only load after you allow them.',
+        accept: 'Allow measurement',
+        reject: 'Necessary only',
+        privacy: 'Privacy',
+      };
+---
+
+{
+  analyticsConfig.enabled && analyticsConfig.mode === 'consent' && (
+    <div
+      class="border-line-light bg-paper text-ink fixed right-4 bottom-4 left-4 z-[90] mx-auto hidden max-w-3xl rounded-2xl border p-5 shadow-[0_24px_80px_rgba(11,13,16,.14)] sm:right-6 sm:bottom-6 sm:left-auto"
+      data-analytics-consent
+    >
+      <p class="text-dark-muted m-0 text-sm leading-6">{copy.text}</p>
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          class="button-primary min-h-10! cursor-pointer px-4! py-2! text-xs!"
+          type="button"
+          data-analytics-accept
+        >
+          {copy.accept}
+        </button>
+        <button
+          class="button-secondary min-h-10! cursor-pointer px-4! py-2! text-xs!"
+          type="button"
+          data-analytics-reject
+        >
+          {copy.reject}
+        </button>
+        <a
+          class="text-dark-muted ml-auto text-xs font-semibold underline underline-offset-4"
+          href={locale === 'id' ? '/privacy' : '/en/privacy'}
+        >
+          {copy.privacy}
+        </a>
+      </div>
+    </div>
+  )
+}
+
+<script
+  is:inline
+  define:vars={{
+    analyticsEnabled: analyticsConfig.enabled,
+    analyticsMode: analyticsConfig.mode,
+    gaId: analyticsConfig.googleAnalyticsId,
+    gtmId: analyticsConfig.googleTagManagerId,
+    clarityId: analyticsConfig.clarityProjectId,
+  }}
+>
+  (() => {
+    if (!analyticsEnabled) return;
+    const consentKey = 'digvation:analytics-consent';
+    const attributionKey = 'digvation:campaign-attribution';
+    const runtimeKey = '__digvationAnalyticsRuntime';
+    const root = window;
+    const runtime =
+      root[runtimeKey] ||
+      (root[runtimeKey] = {
+        pageController: null,
+        sectionObserver: null,
+        lastPageKey: '',
+        eventBridgeReady: false,
+      });
+
+    const hasConsent = () =>
+      analyticsMode === 'always' || localStorage.getItem(consentKey) === 'granted';
+
+    const captureAttribution = () => {
+      const params = new URLSearchParams(location.search);
+      const campaign = {
+        utmSource: params.get('utm_source') || '',
+        utmMedium: params.get('utm_medium') || '',
+        utmCampaign: params.get('utm_campaign') || '',
+        utmContent: params.get('utm_content') || '',
+        utmTerm: params.get('utm_term') || '',
+        clickId: params.get('gclid') || params.get('fbclid') || '',
+        landingPage: `${location.pathname}${location.search}`,
+        referrer: document.referrer || '',
+      };
+      const hasCampaign = Object.values(campaign).slice(0, 6).some(Boolean);
+      if (hasCampaign || !sessionStorage.getItem(attributionKey)) {
+        sessionStorage.setItem(attributionKey, JSON.stringify(campaign));
+      }
+    };
+
+    const ensureDataLayer = () => {
+      window.dataLayer = window.dataLayer || [];
+      return window.dataLayer;
+    };
+
+    const loadGoogleAnalytics = () => {
+      if (!gaId || document.querySelector(`script[data-ga-id="${gaId}"]`)) return;
+      ensureDataLayer();
+      window.gtag =
+        window.gtag ||
+        function (...args) {
+          window.dataLayer.push(args);
+        };
+      window.gtag('js', new Date());
+      window.gtag('config', gaId, { send_page_view: false, anonymize_ip: true });
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+      script.dataset.gaId = gaId;
+      document.head.appendChild(script);
+    };
+
+    const loadGoogleTagManager = () => {
+      if (!gtmId || document.querySelector(`script[data-gtm-id="${gtmId}"]`)) return;
+      const layer = ensureDataLayer();
+      layer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+      script.dataset.gtmId = gtmId;
+      document.head.appendChild(script);
+    };
+
+    const loadClarity = () => {
+      if (!clarityId || document.querySelector(`script[data-clarity-id="${clarityId}"]`)) return;
+      window.clarity =
+        window.clarity ||
+        function (...args) {
+          (window.clarity.q = window.clarity.q || []).push(args);
+        };
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.clarity.ms/tag/${encodeURIComponent(clarityId)}`;
+      script.dataset.clarityId = clarityId;
+      document.head.appendChild(script);
+    };
+
+    const loadProviders = () => {
+      if (!hasConsent()) return;
+      loadGoogleAnalytics();
+      loadGoogleTagManager();
+      loadClarity();
+    };
+
+    const send = (event, data = {}) => {
+      if (!hasConsent()) return;
+      const payload = {
+        event,
+        ...data,
+        page_path: location.pathname,
+        page_location: location.href,
+        page_title: document.title,
+      };
+
+      // GTM is intentionally kept as a separate marketing-tag entry point.
+      // This allows Google Ads / Meta Pixel / other tags to be added later
+      // without touching the website source again.
+      if (gtmId) ensureDataLayer().push(payload);
+
+      // GA4 remains a direct, simple analytics destination. Do not also create
+      // a GA4 page/event tag in GTM unless this direct integration is disabled.
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', event, payload);
+      }
+      if (typeof window.clarity === 'function') window.clarity('event', event);
+    };
+
+    const pageView = () => {
+      loadProviders();
+      if (!hasConsent()) return;
+      const key = `${location.pathname}${location.search}|${document.title}`;
+      if (runtime.lastPageKey === key) return;
+      runtime.lastPageKey = key;
+      send('page_view');
+    };
+
+    const setupConsent = () => {
+      const banner = document.querySelector('[data-analytics-consent]');
+      if (!banner || analyticsMode !== 'consent') return;
+
+      const stored = localStorage.getItem(consentKey);
+      banner.classList.toggle('hidden', stored === 'granted' || stored === 'denied');
+      if (banner.dataset.ready === 'true') return;
+      banner.dataset.ready = 'true';
+
+      const grant = () => {
+        localStorage.setItem(consentKey, 'granted');
+        banner.classList.add('hidden');
+        loadProviders();
+        if (typeof window.clarity === 'function') window.clarity('consent', true);
+        pageView();
+      };
+
+      const deny = () => {
+        localStorage.setItem(consentKey, 'denied');
+        banner.classList.add('hidden');
+        if (typeof window.clarity === 'function') window.clarity('consent', false);
+      };
+
+      banner.querySelector('[data-analytics-accept]')?.addEventListener('click', grant);
+      banner.querySelector('[data-analytics-reject]')?.addEventListener('click', deny);
+
+      document.addEventListener('digvation:analytics-settings', () => {
+        localStorage.removeItem(consentKey);
+        banner.classList.remove('hidden');
+      });
+    };
+
+    const setupInteractionTracking = () => {
+      runtime.pageController?.abort();
+      runtime.pageController = new AbortController();
+      const signal = runtime.pageController.signal;
+
+      document.querySelectorAll('[data-track-event]').forEach((element) => {
+        element.addEventListener(
+          'click',
+          () => {
+            const event = element.dataset.trackEvent;
+            if (!event) return;
+            send(event, {
+              label: element.dataset.trackLabel || '',
+              text: (element.textContent || '').trim().slice(0, 120),
+            });
+          },
+          { signal },
+        );
+      });
+
+      document.querySelectorAll('a[href^="http"]').forEach((link) => {
+        const url = new URL(link.href, location.href);
+        if (url.origin === location.origin) return;
+        link.addEventListener(
+          'click',
+          () => send('outbound_clicked', { destination: url.hostname }),
+          { signal },
+        );
+      });
+
+      const seenSections = new Set();
+      runtime.sectionObserver?.disconnect();
+      runtime.sectionObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting || entry.intersectionRatio < 0.4) continue;
+            const section = entry.target.dataset.trackSection;
+            if (!section || seenSections.has(section)) continue;
+            seenSections.add(section);
+            send('section_viewed', { section });
+          }
+        },
+        { threshold: [0.4] },
+      );
+      document
+        .querySelectorAll('[data-track-section]')
+        .forEach((section) => runtime.sectionObserver.observe(section));
+
+      let depth50 = false;
+      let depth90 = false;
+      const onScroll = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        if (max <= 0) return;
+        const depth = window.scrollY / max;
+        if (!depth50 && depth >= 0.5) {
+          depth50 = true;
+          send('scroll_depth_50');
+        }
+        if (!depth90 && depth >= 0.9) {
+          depth90 = true;
+          send('scroll_depth_90');
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true, signal });
+    };
+
+    if (!runtime.eventBridgeReady) {
+      runtime.eventBridgeReady = true;
+      window.addEventListener('digvation:analytics', (event) => {
+        if (!(event instanceof CustomEvent) || !event.detail?.event) return;
+        const { event: eventName, ...data } = event.detail;
+        send(eventName, data);
+      });
+    }
+
+    const setup = () => {
+      captureAttribution();
+      setupConsent();
+      loadProviders();
+      pageView();
+      setupInteractionTracking();
+    };
+
+    setup();
+    if (!runtime.pageLoadReady) {
+      runtime.pageLoadReady = true;
+      document.addEventListener('astro:page-load', setup);
+      document.addEventListener('astro:before-swap', () => {
+        runtime.pageController?.abort();
+        runtime.sectionObserver?.disconnect();
+      });
+    }
+  })();
+</script>

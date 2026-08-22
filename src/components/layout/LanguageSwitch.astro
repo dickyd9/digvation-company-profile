@@ -1,0 +1,48 @@
+---
+import type { Locale } from '@/config/site';
+
+type Props = {
+  locale: Locale;
+  href: string;
+  compact?: boolean;
+};
+
+const { locale, href, compact = false } = Astro.props;
+const targetLocale = locale === 'id' ? 'en' : 'id';
+const targetLabel = locale === 'id' ? 'English' : 'Bahasa Indonesia';
+const currentCode = locale.toUpperCase();
+const targetCode = targetLocale.toUpperCase();
+---
+
+<a
+  class:list={[
+    'group border-indigo-deep/15 bg-indigo-deep/[.045] text-ink hover:border-indigo-deep/30 hover:bg-indigo-deep/[.075] inline-flex items-center gap-2 rounded-full border no-underline transition-colors',
+    compact ? 'px-3 py-2 text-xs font-bold' : 'px-3.5 py-2.5 text-[.78rem] font-bold',
+  ]}
+  href={href}
+  hreflang={targetLocale}
+  lang={targetLocale}
+  aria-label={`${locale === 'id' ? 'Ganti bahasa ke' : 'Switch language to'} ${targetLabel}`}
+  title={`${locale === 'id' ? 'Ganti bahasa ke' : 'Switch language to'} ${targetLabel}`}
+  data-track-event="language_switched"
+  data-track-label={targetLocale}
+>
+  <svg class="text-indigo-deep size-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"></circle>
+    <path
+      d="M3.5 12h17M12 3c2.2 2.45 3.3 5.45 3.3 9s-1.1 6.55-3.3 9c-2.2-2.45-3.3-5.45-3.3-9S9.8 5.45 12 3Z"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"></path>
+  </svg>
+  {
+    !compact && (
+      <span class="text-dark-muted text-[.62rem] font-extrabold tracking-[.08em] uppercase">
+        {locale === 'id' ? 'Bahasa' : 'Language'}
+      </span>
+    )
+  }
+  <span class="font-extrabold tracking-[.04em]">{currentCode}</span>
+  <span class="text-dark-muted" aria-hidden="true">→</span>
+  <span class="text-indigo-deep font-extrabold">{targetCode}</span>
+</a>

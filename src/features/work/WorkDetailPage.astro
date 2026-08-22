@@ -1,0 +1,333 @@
+---
+import { getCaseStudyWorkEntries } from '@/lib/content/catalog';
+import { resolveWorkPreview } from '@/lib/content/work-preview';
+import ProjectVisual from '@/components/ui/ProjectVisual.astro';
+import LiveProjectVisual from '@/components/ui/LiveProjectVisual.astro';
+import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+type Props = { locale: Locale; slug: string };
+const { locale, slug } = Astro.props;
+const all = await getCaseStudyWorkEntries(locale);
+const index = all.findIndex((entry) => entry.data.routeSlug === slug);
+const entry = all[index];
+if (!entry) throw new Error(`Work not found: ${slug}`);
+const previous = all[(index - 1 + all.length) % all.length]!;
+const next = all[(index + 1) % all.length]!;
+const closeHref = getLocalizedPath(locale, '/work');
+const preview = resolveWorkPreview(entry.data);
+const previewHref = preview.liveUrl ?? preview.image ?? '#';
+---
+
+<article class="bg-paper-warm text-ink" data-project-view data-project-slug={slug}>
+  <header class="border-line-light bg-paper-warm border-b">
+    <div class="shell flex flex-wrap items-center justify-between gap-3 py-5">
+      <button
+        class="text-dark-muted hover:text-ink inline-flex items-center gap-2 text-sm font-semibold"
+        type="button"
+        data-project-close
+        data-fallback={closeHref}
+        aria-label={locale === 'id' ? 'Tutup project' : 'Close project'}
+        >← {locale === 'id' ? 'Kembali ke work' : 'Back to work'}
+        <span class="hidden text-[.62rem] uppercase sm:inline" data-project-esc-hint>Esc</span
+        ></button
+      >
+      <span class="text-dark-muted text-[.66rem] font-bold tracking-[.08em] uppercase"
+        >{entry.data.projectType} · {entry.data.year}</span
+      >
+    </div>
+    <div class="shell grid gap-8 pt-5 pb-12 lg:grid-cols-[.82fr_1.18fr] lg:items-center lg:pb-16">
+      <div>
+        <p class="eyebrow text-indigo-deep">{entry.data.client} · {entry.data.industry}</p>
+        <h1
+          class="display-xl mt-4 max-w-[12ch]"
+          style={`view-transition-name: project-title-${slug}`}
+        >
+          {entry.data.title}
+        </h1>
+        <p class="body-lg text-dark-muted mt-5 max-w-lg">{entry.data.summary}</p>
+        <div class="mt-5 flex justify-end pr-[10%]">
+          <HandwrittenNote
+            text={locale === 'id'
+              ? 'Lihat masalahnya, bukan cuma tampilannya.'
+              : 'Look at the problem, not only the visuals.'}
+            direction="left"
+          />
+        </div>
+        {
+          (preview.liveUrl || preview.image) && (
+            <a
+              class="button-secondary mt-6"
+              href={previewHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-project-preview-trigger
+              data-preview-mode={preview.mode}
+              data-preview-url={preview.embedUrl}
+              data-preview-live-url={preview.liveUrl}
+              data-preview-image={preview.image}
+              data-preview-title={entry.data.title}
+              data-preview-descriptor={entry.data.projectType}
+              data-preview-slug={entry.data.routeSlug}
+            >
+              {locale === 'id' ? 'Lihat website asli' : 'View the live website'}{' '}
+              <span aria-hidden="true">↗</span>
+            </a>
+          )
+        }
+      </div>
+      <div class="border-ink/12 border-t pt-4">
+        {
+          entry.data.showLiveInCard && preview.embedUrl ? (
+            <LiveProjectVisual
+              title={entry.data.title}
+              url={preview.embedUrl}
+              locale={locale}
+              class="aspect-[4/3] min-h-0 rounded-none"
+            />
+          ) : (
+            <ProjectVisual
+              title={entry.data.title}
+              index={index + 1}
+              variant={entry.data.visualVariant}
+              image={entry.data.coverImage}
+              transitionName={`project-visual-${entry.data.routeSlug}`}
+              class="aspect-[4/3] min-h-0 rounded-none"
+            />
+          )
+        }
+      </div>
+    </div>
+  </header>
+
+  <section class="section-pad bg-paper text-ink" data-track-section="case-context">
+    <div class="shell grid gap-3 lg:grid-cols-12">
+      <article class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-7" data-reveal="up">
+        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Masalah' : 'Challenge'}</p><h2
+          class="mt-4 max-w-[24ch] text-2xl font-semibold tracking-[-.03em]"
+        >
+          {entry.data.challenge}
+        </h2><p class="text-ink/65 mt-4 max-w-2xl text-sm leading-6">{entry.data.context}</p>
+      </article>
+      <article
+        class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-5 lg:pl-8"
+        data-reveal="up"
+        style="--reveal-delay:70ms"
+      >
+        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Keputusan' : 'Decision'}</p><h2
+          class="mt-4 text-xl font-semibold tracking-[-.03em]"
+        >
+          {entry.data.insight}
+        </h2><p class="text-ink/65 mt-3 text-sm leading-6">{entry.data.approach}</p>
+      </article>
+      <article class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-12" data-reveal="up">
+        <div class="grid gap-5 lg:grid-cols-[.35fr_.65fr] lg:items-start">
+          <p class="eyebrow text-ink/50">{locale === 'id' ? 'Solusi' : 'Solution'}</p><h2
+            class="m-0 max-w-3xl text-2xl font-semibold tracking-[-.03em]"
+          >
+            {entry.data.solution}
+          </h2>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="pb-12 sm:pb-16" data-track-section="case-built">
+    <div class="shell bg-indigo-deep text-paper p-6 sm:p-8">
+      <div class="grid gap-7 lg:grid-cols-[.75fr_1.25fr] lg:gap-12">
+        <div>
+          <p class="eyebrow text-fog">{locale === 'id' ? 'Yang dibangun' : 'What we built'}</p><h2
+            class="display-md mt-4"
+          >
+            {
+              locale === 'id'
+                ? 'Bagian yang benar-benar diperlukan untuk menjawab masalahnya.'
+                : 'The parts actually needed to solve the problem.'
+            }
+          </h2>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {
+            entry.data.built.map((item, idx) => (
+              <div class="border-paper/16 text-paper border-t py-4">
+                <>
+                  <span class="text-[.62rem] font-extrabold opacity-45">0{idx + 1}</span>
+                  <p class="mt-3 text-sm font-bold">{item}</p>
+                </>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-paper-warm text-ink" data-track-section="case-outcome">
+    <div class="shell grid gap-3 lg:grid-cols-12">
+      <div class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-7">
+        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Hasil' : 'Outcome'}</p><h2
+          class="mt-4 text-xl font-semibold tracking-[-.02em]"
+        >
+          {entry.data.outcome}
+        </h2><p class="text-ink/65 mt-4 text-sm leading-6">{entry.data.nextStep}</p>
+      </div>
+      <div class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-5 lg:pl-8">
+        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Teknologi' : 'Technology'}</p><div
+          class="mt-4 flex flex-wrap gap-2"
+        >
+          {
+            entry.data.technologies.map((item) => (
+              <span class="border-ink/14 text-ink/55 border-b pb-1 text-xs font-bold">{item}</span>
+            ))
+          }
+        </div>{
+          entry.data.relatedSolution && (
+            <a
+              class="mt-5 inline-flex text-sm font-bold underline underline-offset-4"
+              href={getLocalizedPath(locale, `/solutions/${entry.data.relatedSolution}`)}
+            >
+              {locale === 'id' ? 'Lihat solusi terkait' : 'See related solution'} →
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper pb-12">
+    <div class="shell">
+      <div class="bg-indigo-deep text-paper grid lg:grid-cols-[1fr_auto]">
+        <div class="p-6 sm:p-8">
+          <h2 class="text-2xl font-semibold">
+            {locale === 'id' ? 'Punya masalah yang mirip?' : 'Have a similar problem?'}
+          </h2><p class="text-fog-light mt-2 text-sm">
+            {
+              locale === 'id'
+                ? 'Mulai dari konteks bisnisnya. Solusinya kita tentukan setelah itu.'
+                : 'Start with the business context. We can decide the solution after that.'
+            }
+          </p>
+        </div><div
+          class="border-paper/12 grid place-items-center border-t p-6 lg:border-t-0 lg:border-l"
+        >
+          <a class="button-primary" href={getLocalizedPath(locale, '/contact')}
+            >{locale === 'id' ? 'Mulai Diskusi' : 'Start a Conversation'} ↗</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="h-px" data-project-complete aria-hidden="true"></div>
+  {
+    all.length > 1 && (
+      <nav
+        class="border-line-light bg-paper text-ink border-t"
+        aria-label={locale === 'id' ? 'Navigasi project' : 'Project navigation'}
+      >
+        <div class="shell grid md:grid-cols-2">
+          <a
+            class="border-line-light border-b py-6 text-inherit no-underline md:border-r md:border-b-0 md:pr-6"
+            href={getLocalizedPath(locale, `/work/${previous.data.routeSlug}`)}
+            data-project-navigation
+          >
+            <>
+              <span class="text-dark-muted text-xs">
+                ← {locale === 'id' ? 'Sebelumnya' : 'Previous'}
+              </span>
+              <strong class="mt-2 block text-xl font-semibold">{previous.data.title}</strong>
+            </>
+          </a>
+          <a
+            class="py-6 text-inherit no-underline md:pl-6 md:text-right"
+            href={getLocalizedPath(locale, `/work/${next.data.routeSlug}`)}
+            data-project-navigation
+          >
+            <>
+              <span class="text-dark-muted text-xs">
+                {locale === 'id' ? 'Berikutnya' : 'Next'} →
+              </span>
+              <strong class="mt-2 block text-xl font-semibold">{next.data.title}</strong>
+            </>
+          </a>
+        </div>
+      </nav>
+    )
+  }
+</article>
+<script>
+  import { track } from '@/lib/analytics/client';
+
+  let projectCompletionObserver: IntersectionObserver | null = null;
+
+  const setupProjectControls = () => {
+    const close = document.querySelector<HTMLButtonElement>('[data-project-close]');
+    if (!close || close.dataset.ready === 'true') return;
+    close.dataset.ready = 'true';
+
+    const project = document.querySelector<HTMLElement>('[data-project-view]');
+    const returnTo = sessionStorage.getItem('digvation:project-return');
+    const escHint = close.querySelector<HTMLElement>('[data-project-esc-hint]');
+    if (escHint) escHint.classList.toggle('hidden', !returnTo);
+
+    track('portfolio_opened', { slug: project?.dataset.projectSlug ?? '' });
+
+    projectCompletionObserver?.disconnect();
+    const complete = document.querySelector<HTMLElement>('[data-project-complete]');
+    if (complete && 'IntersectionObserver' in window) {
+      projectCompletionObserver = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          track('portfolio_completed', { slug: project?.dataset.projectSlug ?? '' });
+          projectCompletionObserver?.disconnect();
+          projectCompletionObserver = null;
+        },
+        { threshold: 0.5 },
+      );
+      projectCompletionObserver.observe(complete);
+    }
+
+    const leave = () => {
+      const fallback = close.dataset.fallback || '/work';
+      const storedReturn = sessionStorage.getItem('digvation:project-return');
+      const depth = Number(sessionStorage.getItem('digvation:project-depth') || '0');
+      sessionStorage.removeItem('digvation:project-return');
+      sessionStorage.removeItem('digvation:project-depth');
+      if (storedReturn && storedReturn.startsWith('/') && depth > 0) history.go(-depth);
+      else location.href = fallback;
+    };
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-project-navigation]').forEach((link) => {
+      if (link.dataset.depthReady === 'true') return;
+      link.dataset.depthReady = 'true';
+      link.addEventListener('click', () => {
+        const depth = Number(sessionStorage.getItem('digvation:project-depth') || '0');
+        if (depth > 0) sessionStorage.setItem('digvation:project-depth', String(depth + 1));
+      });
+    });
+
+    close.addEventListener('click', leave);
+    const onKeydown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      if (document.querySelector('[data-project-preview-dialog][open]')) return;
+      if (!sessionStorage.getItem('digvation:project-return')) return;
+      leave();
+    };
+    document.addEventListener('keydown', onKeydown);
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        document.removeEventListener('keydown', onKeydown);
+        projectCompletionObserver?.disconnect();
+        projectCompletionObserver = null;
+      },
+      { once: true },
+    );
+
+    if (returnTo) close.focus({ preventScroll: true });
+  };
+
+  setupProjectControls();
+  document.addEventListener('astro:page-load', setupProjectControls);
+</script>

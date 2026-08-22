@@ -1,0 +1,74 @@
+---
+import BrandLogo from '@/components/brand/BrandLogo.astro';
+import InquiryForm from '@/components/inquiry/InquiryForm.astro';
+import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import { siteConfig, type Locale } from '@/config/site';
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+---
+
+<section class="bg-paper-warm text-ink">
+  <div class="shell-wide py-12 sm:py-16 lg:py-20">
+    <div class="grid gap-10 lg:grid-cols-[.82fr_1.18fr] lg:items-start lg:gap-16">
+      <div class="lg:sticky lg:top-28" data-reveal="left">
+        <BrandLogo locale={locale} tone="brand" compact />
+        <p class="eyebrow text-indigo-deep mt-9">
+          {locale === 'id' ? 'Mulai dari bisnis Anda' : 'Start with your business'}
+        </p>
+        <h1
+          class="font-display mt-5 max-w-[12ch] text-[clamp(2.8rem,5.2vw,5.2rem)] leading-[.98] font-semibold tracking-[-.052em]"
+        >
+          {locale === 'id' ? 'Mulai dari satu masalah bisnis.' : 'Start with one business problem.'}
+        </h1>
+        <p class="text-dark-muted mt-7 max-w-lg text-base leading-8">
+          {
+            locale === 'id'
+              ? 'Ceritakan proses yang lambat, manual, atau sulit dipantau. Kami bantu menentukan langkah digitalnya.'
+              : 'Tell us what feels slow, manual, or hard to monitor. We will help define the digital next step.'
+          }
+        </p>
+
+        <div class="mt-6 flex justify-end pr-[12%]" data-reveal="right">
+          <HandwrittenNote
+            text={locale === 'id'
+              ? 'Tidak perlu proposal atau istilah teknis.'
+              : 'No proposal or technical language needed.'}
+            direction="left"
+          />
+        </div>
+
+        <div class="border-ink/12 mt-9 border-y py-5">
+          {
+            [
+              locale === 'id' ? 'Kami pahami konteksnya' : 'We understand the context',
+              locale === 'id' ? 'Kami tentukan prioritasnya' : 'We define the priority',
+              locale === 'id' ? 'Kami sarankan langkahnya' : 'We recommend the next move',
+            ].map((item, index) => (
+              <div class="border-ink/10 grid grid-cols-[2.5rem_1fr] gap-3 border-b py-3 text-sm font-semibold last:border-b-0">
+                <>
+                  <span class="text-indigo-deep/42">0{index + 1}</span>
+                  <span>{item}</span>
+                </>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="text-ink/58 mt-7 text-sm">
+          <p>{locale === 'id' ? 'Lebih nyaman lewat email?' : 'Prefer email?'}</p>
+          <a
+            class="text-ink font-bold underline underline-offset-4"
+            href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a
+          >
+        </div>
+      </div>
+
+      <div
+        class="border-ink/14 bg-paper lg:border-ink/12 border-t pt-7 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12"
+        data-reveal="right"
+      >
+        <InquiryForm locale={locale} />
+      </div>
+    </div>
+  </div>
+</section>

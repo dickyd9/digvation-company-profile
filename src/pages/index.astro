@@ -1,0 +1,16 @@
+---
+export const prerender = true;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HomePage from '@/features/home/HomePage.astro';
+import { getFaq } from '@/content/faq';
+import { faqSchema } from '@/lib/seo/schema';
+const locale = 'id' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  description="Partner digitalisasi bisnis untuk website, sistem, automation, integration, AI, dan IoT—dari masalah nyata sampai siap digunakan."
+  structuredData={[faqSchema(getFaq(locale))]}
+>
+  <HomePage locale={locale} />
+</BaseLayout>

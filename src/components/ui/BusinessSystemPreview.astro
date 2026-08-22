@@ -1,0 +1,776 @@
+---
+type Props = { locale?: 'id' | 'en' };
+const { locale = 'id' } = Astro.props;
+
+const ui =
+  locale === 'id'
+    ? {
+        workspace: 'Commerce Operations',
+        overview: 'Ringkasan bisnis',
+        today: 'Hari ini · 10:42',
+        synced: 'Semua sistem tersinkron',
+        nav: ['Overview', 'Orders', 'Inventory', 'Finance', 'Fulfillment'],
+        metrics: [
+          ['Order aktif', '128', '+18 hari ini'],
+          ['Net sales', 'Rp486,2jt', '+12,4% bulan ini'],
+          ['Stock coverage', '23 hari', '6 item perlu restock'],
+          ['On-time fulfillment', '94,6%', '+2,1% dari target'],
+        ],
+        chart: 'Sales per channel',
+        pipeline: 'Order pipeline',
+        exceptions: 'Perlu perhatian',
+        channels: ['Direct', 'Marketplace', 'Reseller', 'Retail'],
+        stages: [
+          ['Baru', '28'],
+          ['Diverifikasi', '44'],
+          ['Diproses', '31'],
+          ['Dikirim', '25'],
+        ],
+        issues: [
+          ['Stok minimum', '6 SKU'],
+          ['Approval tertunda', '3 request'],
+          ['Pembayaran dicek', '8 order'],
+        ],
+        orders: 'Order terbaru',
+        tableHead: ['Order', 'Customer', 'Channel', 'Status', 'Total'],
+        rows: [
+          ['SO-2841', 'PT Aruna Niaga', 'Direct', 'Diproses', 'Rp18.450.000'],
+          ['SO-2840', 'Sentra Retail', 'Reseller', 'Diverifikasi', 'Rp9.820.000'],
+          ['SO-2839', 'Nusa Market', 'Marketplace', 'Siap dikirim', 'Rp6.275.000'],
+        ],
+      }
+    : {
+        workspace: 'Commerce Operations',
+        overview: 'Business overview',
+        today: 'Today · 10:42',
+        synced: 'All systems synced',
+        nav: ['Overview', 'Orders', 'Inventory', 'Finance', 'Fulfillment'],
+        metrics: [
+          ['Active orders', '128', '+18 today'],
+          ['Net sales', 'IDR486.2m', '+12.4% this month'],
+          ['Stock coverage', '23 days', '6 items need restock'],
+          ['On-time fulfillment', '94.6%', '+2.1% above target'],
+        ],
+        chart: 'Sales by channel',
+        pipeline: 'Order pipeline',
+        exceptions: 'Needs attention',
+        channels: ['Direct', 'Marketplace', 'Reseller', 'Retail'],
+        stages: [
+          ['New', '28'],
+          ['Verified', '44'],
+          ['Processing', '31'],
+          ['Shipped', '25'],
+        ],
+        issues: [
+          ['Minimum stock', '6 SKUs'],
+          ['Pending approval', '3 requests'],
+          ['Payment review', '8 orders'],
+        ],
+        orders: 'Latest orders',
+        tableHead: ['Order', 'Customer', 'Channel', 'Status', 'Total'],
+        rows: [
+          ['SO-2841', 'PT Aruna Niaga', 'Direct', 'Processing', 'IDR18,450,000'],
+          ['SO-2840', 'Sentra Retail', 'Reseller', 'Verified', 'IDR9,820,000'],
+          ['SO-2839', 'Nusa Market', 'Marketplace', 'Ready to ship', 'IDR6,275,000'],
+        ],
+      };
+---
+
+<div
+  class="system-screen"
+  role="img"
+  aria-label={locale === 'id'
+    ? 'Contoh tampilan sistem operasional bisnis terintegrasi'
+    : 'Example interface of an integrated business operations system'}
+>
+  <header class="system-topbar">
+    <div class="system-brand"><b>D</b><span>{ui.workspace}</span></div>
+    <div class="system-search">
+      <span aria-hidden="true">⌕</span><i
+        >{locale === 'id' ? 'Cari order, customer, atau SKU' : 'Search order, customer, or SKU'}</i
+      ><kbd>⌘ K</kbd>
+    </div>
+    <div class="system-user">
+      <span>NA</span><div><b>Nadia A.</b><small>Operations Lead</small></div>
+    </div>
+  </header>
+
+  <div class="system-body">
+    <aside class="system-nav">
+      <div class="company">
+        <span>NW</span><div><b>Northwind</b><small>Distribution</small></div>
+      </div>
+      <nav aria-label={locale === 'id' ? 'Contoh navigasi sistem' : 'Example system navigation'}>
+        {
+          ui.nav.map((item, index) => (
+            <span class:list={[index === 0 && 'active']}>
+              <i>{['⌂', '□', '◇', '○', '↗'][index]}</i>
+              {item}
+              {index === 2 && <em>6</em>}
+            </span>
+          ))
+        }
+      </nav>
+      <div class="nav-footer">
+        <i></i><span><b>{ui.synced}</b><small>ERP · WMS · CRM</small></span>
+      </div>
+    </aside>
+
+    <main class="system-main">
+      <div class="system-heading">
+        <div><span>OPERATIONS / OVERVIEW</span><h3>{ui.overview}</h3></div>
+        <div class="system-date"><i></i>{ui.today}<b>Live</b></div>
+      </div>
+
+      <div class="metric-list">
+        {
+          ui.metrics.map(([label, value, change], index) => (
+            <article>
+              <>
+                <div>
+                  <>
+                    <span>{label}</span>
+                    <i>{['↗', '◫', '▦', '✓'][index]}</i>
+                  </>
+                </div>
+                <strong>{value}</strong>
+                <small>{change}</small>
+              </>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="operations-grid">
+        <section class="chart-panel">
+          <div class="panel-title"><strong>{ui.chart}</strong><span>30 days⌄</span></div>
+          <div class="chart-area" aria-hidden="true">
+            <div class="chart-lines"><i></i><i></i><i></i><i></i></div>
+            <svg viewBox="0 0 430 115" preserveAspectRatio="none">
+              <path
+                d="M0 94 C34 87, 46 62, 78 70 S130 93, 158 65 S206 28, 235 45 S280 72, 310 44 S365 20, 430 25"
+                fill="none"
+                stroke="#5367ee"
+                stroke-width="3"
+                stroke-linecap="round"></path>
+              <path
+                d="M0 103 C45 100, 60 83, 94 88 S142 72, 177 78 S223 95, 258 70 S310 55, 342 62 S387 43, 430 48"
+                fill="none"
+                stroke="#8b9199"
+                stroke-width="2"
+                stroke-dasharray="4 5"></path>
+            </svg>
+          </div>
+          <div class="chart-legend">
+            {
+              ui.channels.map((channel, index) => (
+                <span>
+                  <i style={`--legend:${['#5367ee', '#9198a1', '#39a76a', '#d49a41'][index]}`} />
+                  {channel}
+                </span>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="attention-panel">
+          <div class="panel-title"><strong>{ui.exceptions}</strong><span>3 items</span></div>
+          <div class="issue-list">
+            {
+              ui.issues.map(([label, value], index) => (
+                <div>
+                  <>
+                    <i class:list={[index === 0 ? 'warn' : 'neutral']}>{['!', '↗', '•'][index]}</i>
+                    <span>
+                      <>
+                        <b>{label}</b>
+                        <small>{locale === 'id' ? 'Lihat detail' : 'View details'}</small>
+                      </>
+                    </span>
+                    <strong>{value}</strong>
+                  </>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+      </div>
+
+      <section class="order-panel">
+        <div class="panel-title">
+          <strong>{ui.orders}</strong><span>{locale === 'id' ? 'Lihat semua' : 'View all'} →</span>
+        </div>
+        <div class="pipeline">
+          <span>{ui.pipeline}</span>
+          {
+            ui.stages.map(([label, value], index) => (
+              <div>
+                <>
+                  <i style={`--stage:${[22, 34, 25, 19][index]}%`} />
+                  <b>{value}</b>
+                  <small>{label}</small>
+                </>
+              </div>
+            ))
+          }
+        </div>
+        <div class="order-table">
+          <div class="table-head table-row">{ui.tableHead.map((cell) => <span>{cell}</span>)}</div>
+          {
+            ui.rows.map((row, rowIndex) => (
+              <div class="table-row">
+                {row.map((cell, cellIndex) => (
+                  <span
+                    class:list={[
+                      cellIndex === 0 && 'order-id',
+                      cellIndex === 3 && `status status-${rowIndex}`,
+                    ]}
+                  >
+                    {cell}
+                  </span>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<style>
+  .system-screen {
+    aspect-ratio: 16/10;
+    min-height: 0;
+    overflow: hidden;
+    background: #eef0f2;
+    color: #15181d;
+    font-family: var(--font-sans);
+    font-size: clamp(0.34rem, 0.53vw, 0.59rem);
+  }
+  .system-topbar {
+    display: grid;
+    grid-template-columns: 11.5rem 1fr auto;
+    align-items: center;
+    height: 2.8rem;
+    border-bottom: 1px solid #d9dde1;
+    background: #fff;
+  }
+  .system-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0 0.8rem;
+    font-weight: 750;
+  }
+  .system-brand > b {
+    display: grid;
+    width: 1.55rem;
+    height: 1.55rem;
+    place-items: center;
+    border-radius: 0.32rem;
+    background: #121a2f;
+    color: white;
+    font-size: 0.72rem;
+  }
+  .system-search {
+    justify-self: center;
+    display: flex;
+    width: min(19rem, 55%);
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.43rem 0.6rem;
+    border: 1px solid #e1e3e5;
+    border-radius: 0.34rem;
+    background: #f8f8f7;
+    color: #8a9098;
+  }
+  .system-search i {
+    flex: 1;
+    overflow: hidden;
+    font-style: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .system-search kbd {
+    padding: 0.12rem 0.28rem;
+    border: 1px solid #d9dcdf;
+    border-radius: 0.2rem;
+    background: #fff;
+    font: inherit;
+  }
+  .system-user {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding-right: 0.8rem;
+  }
+  .system-user > span {
+    display: grid;
+    width: 1.6rem;
+    height: 1.6rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #e3e7ff;
+    color: #3f53ca;
+    font-size: 0.52rem;
+    font-weight: 800;
+  }
+  .system-user div {
+    display: grid;
+    line-height: 1.25;
+  }
+  .system-user small,
+  .company small,
+  .nav-footer small {
+    color: #8a9098;
+    font-size: 0.47rem;
+  }
+  .system-body {
+    display: grid;
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    height: calc(100% - 2.8rem);
+  }
+  .system-nav {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    border-right: 1px solid #d9dde1;
+    background: #fff;
+  }
+  .company {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0.7rem;
+    padding: 0.6rem;
+    border: 1px solid #e2e4e6;
+    border-radius: 0.35rem;
+  }
+  .company > span {
+    display: grid;
+    width: 1.6rem;
+    height: 1.6rem;
+    place-items: center;
+    border-radius: 0.3rem;
+    background: #e8ebed;
+    font-size: 0.51rem;
+    font-weight: 800;
+  }
+  .company div {
+    display: grid;
+    line-height: 1.25;
+  }
+  .system-nav nav {
+    display: grid;
+    gap: 0.16rem;
+    padding: 0 0.7rem;
+  }
+  .system-nav nav > span {
+    display: grid;
+    grid-template-columns: 1rem 1fr auto;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0.3rem;
+    color: #697079;
+    font-weight: 650;
+  }
+  .system-nav nav > span.active {
+    background: #eef0ff;
+    color: #3349c4;
+  }
+  .system-nav nav i {
+    color: #8e959c;
+    font-style: normal;
+    font-size: 0.68rem;
+    text-align: center;
+  }
+  .system-nav nav em {
+    display: grid;
+    width: 1.15rem;
+    height: 1.15rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff1df;
+    color: #ad6513;
+    font-style: normal;
+    font-size: 0.45rem;
+  }
+  .nav-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: auto 0.7rem 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid #e5e7e8;
+  }
+  .nav-footer > i {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 50%;
+    background: #39a76a;
+    box-shadow: 0 0 0 3px #e2f4e8;
+  }
+  .nav-footer span {
+    display: grid;
+    line-height: 1.25;
+  }
+  .system-main {
+    min-width: 0;
+    overflow: hidden;
+    padding: 0.85rem 1rem 1rem;
+  }
+  .system-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .system-heading > div:first-child span {
+    color: #8b9199;
+    font-size: 0.46rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .system-heading h3 {
+    margin-top: 0.18rem;
+    font-size: 1.05rem;
+    font-weight: 720;
+    letter-spacing: -0.035em;
+  }
+  .system-date {
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+    color: #727981;
+  }
+  .system-date > i {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: #39a76a;
+  }
+  .system-date b {
+    padding: 0.18rem 0.35rem;
+    border-radius: 0.2rem;
+    background: #e4f3e9;
+    color: #27794b;
+    font-size: 0.45rem;
+    text-transform: uppercase;
+  }
+  .metric-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.48rem;
+    margin-top: 0.7rem;
+  }
+  .metric-list article {
+    min-width: 0;
+    padding: 0.55rem 0.6rem;
+    border: 1px solid #dde0e3;
+    border-radius: 0.32rem;
+    background: #fff;
+  }
+  .metric-list article > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.4rem;
+    color: #7b828a;
+  }
+  .metric-list article > div i {
+    font-style: normal;
+  }
+  .metric-list strong {
+    display: block;
+    overflow: hidden;
+    margin-top: 0.38rem;
+    font-size: 0.88rem;
+    letter-spacing: -0.035em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .metric-list small {
+    display: block;
+    overflow: hidden;
+    margin-top: 0.18rem;
+    color: #6c747c;
+    font-size: 0.45rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .operations-grid {
+    display: grid;
+    grid-template-columns: 1.45fr 0.75fr;
+    gap: 0.48rem;
+    margin-top: 0.48rem;
+  }
+  .chart-panel,
+  .attention-panel,
+  .order-panel {
+    min-width: 0;
+    border: 1px solid #dde0e3;
+    border-radius: 0.32rem;
+    background: #fff;
+  }
+  .panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.52rem 0.62rem;
+    border-bottom: 1px solid #e4e6e8;
+  }
+  .panel-title strong {
+    font-size: 0.56rem;
+  }
+  .panel-title span {
+    color: #7d848c;
+    font-size: 0.45rem;
+    font-weight: 650;
+  }
+  .chart-area {
+    position: relative;
+    height: 4.2rem;
+    margin: 0.4rem 0.6rem 0;
+  }
+  .chart-area svg,
+  .chart-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .chart-lines {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .chart-lines i {
+    width: 100%;
+    height: 1px;
+    background: #eceeef;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.35rem 0.6rem 0.5rem;
+    color: #747b83;
+    font-size: 0.42rem;
+  }
+  .chart-legend span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .chart-legend i {
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 50%;
+    background: var(--legend);
+  }
+  .issue-list {
+    display: grid;
+    padding: 0.15rem 0.55rem;
+  }
+  .issue-list > div {
+    display: grid;
+    grid-template-columns: 1.35rem 1fr auto;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.42rem 0;
+    border-bottom: 1px solid #eceeef;
+  }
+  .issue-list > div:last-child {
+    border-bottom: 0;
+  }
+  .issue-list > div > i {
+    display: grid;
+    width: 1.25rem;
+    height: 1.25rem;
+    place-items: center;
+    border-radius: 0.28rem;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .issue-list > div > i.warn {
+    background: #fff0dd;
+    color: #a85c08;
+  }
+  .issue-list > div > i.neutral {
+    background: #edf0f3;
+    color: #606973;
+  }
+  .issue-list span {
+    display: grid;
+    line-height: 1.25;
+  }
+  .issue-list span small {
+    color: #8a9098;
+    font-size: 0.42rem;
+  }
+  .issue-list > div > strong {
+    font-size: 0.48rem;
+  }
+  .order-panel {
+    margin-top: 0.48rem;
+  }
+  .pipeline {
+    display: grid;
+    grid-template-columns: 5rem repeat(4, 1fr);
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.42rem 0.62rem;
+    border-bottom: 1px solid #e5e7e9;
+  }
+  .pipeline > span {
+    color: #7d848c;
+    font-size: 0.43rem;
+    font-weight: 700;
+  }
+  .pipeline > div {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.25rem;
+    overflow: hidden;
+  }
+  .pipeline > div::after {
+    content: '';
+    grid-column: 1/-1;
+    width: 100%;
+    height: 0.18rem;
+    border-radius: 99px;
+    background: #eceef0;
+  }
+  .pipeline > div i {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: var(--stage);
+    height: 0.18rem;
+    border-radius: 99px;
+    background: #5367ee;
+  }
+  .pipeline b {
+    font-size: 0.5rem;
+  }
+  .pipeline small {
+    color: #858c93;
+    font-size: 0.4rem;
+  }
+  .order-table {
+    padding: 0 0.62rem 0.25rem;
+  }
+  .table-row {
+    display: grid;
+    grid-template-columns: 0.72fr 1.3fr 0.9fr 0.85fr 0.85fr;
+    align-items: center;
+    min-height: 1.22rem;
+    border-bottom: 1px solid #eceeef;
+    color: #59616a;
+  }
+  .table-row:last-child {
+    border-bottom: 0;
+  }
+  .table-row span {
+    overflow: hidden;
+    padding-right: 0.35rem;
+    font-size: 0.43rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .table-head {
+    min-height: 1.05rem;
+    color: #969ba1;
+    font-weight: 750;
+    text-transform: uppercase;
+  }
+  .table-head span {
+    font-size: 0.38rem;
+    letter-spacing: 0.04em;
+  }
+  .order-id {
+    color: #3349c4;
+    font-weight: 780;
+  }
+  .status {
+    width: fit-content;
+    padding: 0.16rem 0.32rem !important;
+    border-radius: 0.18rem;
+    font-weight: 720;
+  }
+  .status-0 {
+    background: #e9edff;
+    color: #3b50ca;
+  }
+  .status-1 {
+    background: #fff1df;
+    color: #9d5b0e;
+  }
+  .status-2 {
+    background: #e5f3e9;
+    color: #27794b;
+  }
+  @media (max-width: 560px) {
+    .system-screen {
+      font-size: 0.36rem;
+    }
+    .system-topbar {
+      grid-template-columns: 7rem 1fr auto;
+      height: 2.4rem;
+    }
+    .system-brand {
+      padding: 0 0.45rem;
+    }
+    .system-brand > b {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+    .system-search {
+      width: 85%;
+    }
+    .system-user div,
+    .system-nav nav > span:not(.active),
+    .nav-footer,
+    .company div,
+    .metric-list article:nth-child(4) {
+      display: none;
+    }
+    .system-user {
+      padding-right: 0.45rem;
+    }
+    .system-body {
+      grid-template-columns: 3.2rem minmax(0, 1fr);
+      height: calc(100% - 2.4rem);
+    }
+    .company {
+      justify-content: center;
+      margin: 0.4rem;
+      padding: 0.35rem;
+    }
+    .system-nav nav {
+      padding: 0 0.4rem;
+    }
+    .system-nav nav > span.active {
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+      padding: 0.5rem 0.25rem;
+    }
+    .system-nav nav > span.active i {
+      font-size: 0.8rem;
+    }
+    .metric-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .operations-grid {
+      grid-template-columns: 1fr;
+    }
+    .attention-panel {
+      display: none;
+    }
+  }
+</style>

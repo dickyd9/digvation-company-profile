@@ -1,0 +1,54 @@
+---
+import ProcessBoard from '@/components/ui/ProcessBoard.astro';
+import { getLocalizedPath } from '@/config/navigation';
+import type { HomeCopy } from '@/content/home';
+import type { Locale } from '@/config/site';
+
+type Props = { copy: HomeCopy['process']; locale: Locale };
+const { copy, locale } = Astro.props;
+const phases =
+  locale === 'id'
+    ? ['Konteks', 'Prioritas', 'Pengalaman', 'Delivery', 'Operasi']
+    : ['Context', 'Priority', 'Experience', 'Delivery', 'Operations'];
+const steps = copy.items.map((item, index) => ({
+  title: item.title,
+  phase: phases[index] ?? item.owner,
+  body: item.body,
+}));
+---
+
+<section class="section-pad bg-paper-warm text-ink" id="process" data-track-section="process">
+  <div class="shell-wide">
+    <div class="process-intro" data-reveal="up">
+      <div>
+        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+        <h2 class="display-xl mt-4 max-w-[13ch]">{copy.title}</h2>
+      </div>
+      <div>
+        <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.body}</p>
+        <a class="text-link mt-6" href={getLocalizedPath(locale, '/process')}
+          >{locale === 'id' ? 'Lihat cara kerja lengkap' : 'See the full process'}
+          <span aria-hidden="true">↗</span></a
+        >
+      </div>
+    </div>
+
+    <div class="mt-10" data-reveal="up" style="--reveal-delay:80ms">
+      <ProcessBoard locale={locale} steps={steps} note={copy.note} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .process-intro {
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+  }
+  @media (min-width: 1024px) {
+    .process-intro {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 5rem;
+    }
+  }
+</style>

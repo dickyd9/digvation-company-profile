@@ -1,0 +1,318 @@
+---
+import type { Locale } from '@/config/site';
+import { getLocalizedPath } from '@/config/navigation';
+import { PUBLIC_TURNSTILE_SITEKEY } from 'astro:env/client';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const serverStatus = '';
+
+const field =
+  'w-full border-0 border-b border-line-light bg-transparent px-0 py-3.5 text-base text-ink outline-none transition-colors placeholder:text-dark-muted/45 focus:border-indigo-deep';
+const copy =
+  locale === 'id'
+    ? {
+        title: 'Apa yang ingin dibuat lebih baik?',
+        helper: 'Satu masalah yang jelas sudah cukup untuk memulai.',
+        name: 'Nama',
+        email: 'Email',
+        phone: 'WhatsApp / Phone',
+        company: 'Perusahaan / Organisasi',
+        problem: 'Apa yang ingin dibuat lebih mudah?',
+        placeholder:
+          'Contoh: order masih masuk dari WhatsApp, admin mencatat ulang ke spreadsheet, lalu statusnya sulit dipantau...',
+        consent:
+          'Saya setuju informasi ini digunakan untuk menindaklanjuti percakapan saya dengan Digvation.',
+        submit: 'Kirim ke Digvation',
+        sending: 'Mengirim…',
+        optional: 'opsional',
+      }
+    : {
+        title: 'What would you like to improve?',
+        helper: 'One clear problem is enough to start.',
+        name: 'Name',
+        email: 'Email',
+        phone: 'WhatsApp / Phone',
+        company: 'Company / Organization',
+        problem: 'What would you like to make easier?',
+        placeholder:
+          'Example: orders still come through WhatsApp, the team re-enters them into spreadsheets, and status is difficult to track...',
+        consent:
+          'I agree that this information may be used to follow up on my conversation with Digvation.',
+        submit: 'Send to Digvation',
+        sending: 'Sending…',
+        optional: 'optional',
+      };
+---
+
+<form
+  class="grid gap-8"
+  data-inquiry-form
+  data-clarity-mask="true"
+  method="POST"
+  action="/api/inquiry"
+>
+  <input type="hidden" name="locale" value={locale} />
+  <input type="hidden" name="utmSource" />
+  <input type="hidden" name="utmMedium" />
+  <input type="hidden" name="utmCampaign" />
+  <input type="hidden" name="utmContent" />
+  <input type="hidden" name="utmTerm" />
+  <input type="hidden" name="clickId" />
+  <input type="hidden" name="landingPage" />
+  <input type="hidden" name="referrer" />
+  <input
+    class="absolute -left-[9999px]"
+    aria-hidden="true"
+    tabindex="-1"
+    autocomplete="off"
+    name="website"
+  />
+
+  <div>
+    <div class="mb-4 flex items-center gap-3">
+      <span class="text-indigo-deep text-xs font-extrabold tracking-[.08em]">01</span><span
+        class="bg-ink/12 h-px w-7"
+        aria-hidden="true"></span><span
+        class="text-dark-muted text-xs font-extrabold tracking-[.08em] uppercase"
+        >{locale === 'id' ? 'Tentang kebutuhan Anda' : 'About your need'}</span
+      >
+    </div><h2 class="m-0 text-xl leading-tight font-semibold tracking-[-.02em]">{copy.title}</h2>
+    <p class="text-dark-muted mt-3 max-w-2xl text-sm leading-6">{copy.helper}</p>
+  </div>
+
+  <div class="grid gap-x-5 gap-y-6 md:grid-cols-2">
+    <label class="grid gap-2">
+      <span class="text-sm font-medium">{copy.name} *</span>
+      <input class={field} name="name" autocomplete="name" minlength="2" maxlength="80" required />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-sm font-medium">{copy.email} *</span>
+      <input class={field} type="email" name="email" autocomplete="email" required />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-sm font-medium"
+        >{copy.phone} <span class="text-dark-muted font-normal">({copy.optional})</span></span
+      >
+      <input class={field} name="phone" autocomplete="tel" maxlength="40" />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-sm font-medium"
+        >{copy.company} <span class="text-dark-muted font-normal">({copy.optional})</span></span
+      >
+      <input class={field} name="company" autocomplete="organization" maxlength="120" />
+    </label>
+
+    <label class="grid gap-2 md:col-span-2">
+      <span class="text-sm font-medium">{copy.problem} *</span>
+      <textarea
+        class={field}
+        name="improvement"
+        rows="6"
+        minlength="20"
+        maxlength="2200"
+        required
+        placeholder={copy.placeholder}></textarea>
+    </label>
+  </div>
+
+  {
+    PUBLIC_TURNSTILE_SITEKEY && (
+      <div class="cf-turnstile" data-sitekey={PUBLIC_TURNSTILE_SITEKEY} data-action="inquiry" />
+    )
+  }
+
+  <label class="text-dark-muted flex items-start gap-3 text-sm leading-6">
+    <input class="accent-ink mt-1 size-4" type="checkbox" name="consent" value="true" required />
+    <span
+      >{copy.consent}
+      <a class="underline underline-offset-4" href={getLocalizedPath(locale, '/privacy')}>Privacy</a
+      ></span
+    >
+  </label>
+
+  <div
+    class="border-line-light flex flex-col items-start gap-4 border-t pt-7 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p
+      class="text-dark-muted data-[state=error]:text-ink data-[state=success]:border-indigo-deep data-[state=success]:text-ink m-0 max-w-xl border-l border-transparent pl-0 text-sm transition-[border-color,color,padding] data-[state=error]:border-[#b45d4d] data-[state=error]:pl-3 data-[state=success]:pl-3"
+      data-form-status
+      data-state="idle"
+      role="status"
+      aria-live="polite"
+    >
+      {serverStatus}
+    </p>
+    <button
+      type="submit"
+      class="button-accent shrink-0 cursor-pointer disabled:cursor-wait disabled:opacity-50"
+      data-submit-label={copy.submit}
+      data-sending-label={copy.sending}
+    >
+      <span data-submit-text>{copy.submit}</span>
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+</form>
+
+<script>
+  import { track } from '@/lib/analytics/client';
+
+  type TurnstileApi = {
+    render: (container: HTMLElement, options?: Record<string, unknown>) => string;
+    reset: (widgetId?: string) => void;
+  };
+
+  const getTurnstile = () => (window as typeof window & { turnstile?: TurnstileApi }).turnstile;
+
+  const setupTurnstile = (form: HTMLFormElement) => {
+    const container = form.querySelector<HTMLElement>('.cf-turnstile[data-sitekey]');
+    if (!container || container.dataset.rendered === 'true') return;
+
+    const render = () => {
+      const api = getTurnstile();
+      if (!api || !container.isConnected || container.dataset.rendered === 'true') return;
+      const widgetId = api.render(container, {
+        sitekey: container.dataset.sitekey,
+        action: container.dataset.action || 'inquiry',
+        theme: 'light',
+      });
+      container.dataset.rendered = 'true';
+      container.dataset.widgetId = String(widgetId);
+    };
+
+    if (getTurnstile()) {
+      render();
+      return;
+    }
+
+    let script = document.querySelector<HTMLScriptElement>('script[data-digvation-turnstile]');
+    if (!script) {
+      script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.dataset.digvationTurnstile = 'true';
+      document.head.appendChild(script);
+    }
+    script.addEventListener('load', render, { once: true });
+  };
+
+  const resetTurnstile = (form: HTMLFormElement) => {
+    const container = form.querySelector<HTMLElement>('.cf-turnstile[data-rendered="true"]');
+    const api = getTurnstile();
+    if (!container || !api) return;
+    api.reset(container.dataset.widgetId);
+  };
+
+  const setupInquiry = () => {
+    const form = document.querySelector<HTMLFormElement>('[data-inquiry-form]');
+    if (!form || form.dataset.ready === 'true') return;
+    form.dataset.ready = 'true';
+
+    try {
+      const attribution = JSON.parse(
+        sessionStorage.getItem('digvation:campaign-attribution') || '{}',
+      );
+      [
+        'utmSource',
+        'utmMedium',
+        'utmCampaign',
+        'utmContent',
+        'utmTerm',
+        'clickId',
+        'landingPage',
+        'referrer',
+      ].forEach((name) => {
+        const input = form.elements.namedItem(name);
+        if (input instanceof HTMLInputElement && typeof attribution[name] === 'string')
+          input.value = attribution[name].slice(0, 500);
+      });
+    } catch {
+      /* attribution remains optional */
+    }
+
+    setupTurnstile(form);
+
+    const status = form.querySelector<HTMLElement>('[data-form-status]');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const buttonText = button?.querySelector<HTMLElement>('[data-submit-text]');
+    let started = false;
+
+    form.addEventListener('focusin', () => {
+      if (started) return;
+      started = true;
+      track('inquiry_started');
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const localeInput = form.elements.namedItem('locale');
+      const locale = localeInput instanceof HTMLInputElement ? localeInput.value : 'id';
+
+      form.setAttribute('aria-busy', 'true');
+      if (button) button.disabled = true;
+      if (buttonText) buttonText.textContent = button?.dataset.sendingLabel ?? 'Sending…';
+      if (status) {
+        status.textContent = '';
+        status.dataset.state = 'idle';
+      }
+
+      try {
+        const formData = new FormData(form);
+        formData.set('consent', 'true');
+
+        const response = await fetch('/api/inquiry', {
+          method: 'POST',
+          body: formData,
+          headers: { accept: 'application/json' },
+        });
+        const result = await response.json().catch(() => ({ ok: false }));
+        if (!response.ok || !result?.ok) {
+          if (status) {
+            status.dataset.state = 'error';
+            status.textContent =
+              result?.message ||
+              (locale === 'id'
+                ? 'Inquiry belum dapat dikirim. Silakan coba lagi.'
+                : 'Your inquiry could not be sent. Please try again.');
+          }
+          return;
+        }
+
+        track('inquiry_submitted');
+        track('generate_lead', { lead_source: 'website_inquiry' });
+        form.reset();
+        resetTurnstile(form);
+        if (localeInput instanceof HTMLInputElement) localeInput.value = locale;
+        if (status) {
+          status.dataset.state = 'success';
+          status.textContent =
+            locale === 'id'
+              ? 'Terima kasih. Ceritanya sudah kami terima. Kami akan membaca konteksnya sebelum melanjutkan percakapan.'
+              : 'Thank you. We received your message and will review the context before continuing the conversation.';
+        }
+      } catch {
+        if (status) {
+          status.dataset.state = 'error';
+          status.textContent =
+            locale === 'id'
+              ? 'Koneksi sedang bermasalah dan pesan belum terkirim. Silakan coba lagi.'
+              : 'There was a connection problem and your message was not sent. Please try again.';
+        }
+      } finally {
+        form.removeAttribute('aria-busy');
+        if (button) button.disabled = false;
+        if (buttonText) buttonText.textContent = button?.dataset.submitLabel ?? 'Submit';
+      }
+    });
+  };
+
+  setupInquiry();
+  document.addEventListener('astro:page-load', setupInquiry);
+</script>

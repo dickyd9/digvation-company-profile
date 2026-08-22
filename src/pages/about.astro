@@ -1,0 +1,13 @@
+---
+export const prerender = true;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import AboutPage from '@/features/about/AboutPage.astro';
+const locale = 'id' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Tentang Digvation — Partner Digitalisasi Bisnis"
+  description="Digvation memahami masalah bisnis lebih dulu, lalu merancang dan membangun solusi digital yang benar-benar diperlukan."
+  ><AboutPage locale={locale} /></BaseLayout
+>

@@ -1,0 +1,14 @@
+---
+export const prerender = true;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LegalPage from '@/features/legal/LegalPage.astro';
+const locale = 'id' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Privacy Policy"
+  description="Bagaimana website Digvation mengumpulkan, menggunakan, melindungi, dan memberi kontrol atas data inquiry dan analytics."
+>
+  <LegalPage locale={locale} kind="privacy" />
+</BaseLayout>

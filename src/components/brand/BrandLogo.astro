@@ -1,0 +1,36 @@
+---
+import { brandConfig } from '@/config/brand';
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+
+type Props = {
+  locale: Locale;
+  tone?: 'light' | 'brand';
+  compact?: boolean;
+  class?: string;
+};
+
+const { locale, tone = 'brand', compact = false, class: className = '' } = Astro.props;
+
+const asset = tone === 'light' ? brandConfig.assets.lockupWhite : brandConfig.assets.lockupIndigo;
+---
+
+<a
+  class:list={['inline-flex shrink-0 items-center no-underline', className]}
+  href={getLocalizedPath(locale, '/')}
+  aria-label={`${brandConfig.name} — ${locale === 'id' ? 'kembali ke beranda' : 'back to home'}`}
+  data-home-logo
+>
+  <img
+    src={asset}
+    alt="Digvation"
+    width={192}
+    height={40}
+    class:list={[
+      'block h-auto object-contain',
+      compact ? 'w-[7.8rem]' : 'w-[9.8rem] sm:w-[10.5rem]',
+    ]}
+    loading="eager"
+    decoding="async"
+  />
+</a>

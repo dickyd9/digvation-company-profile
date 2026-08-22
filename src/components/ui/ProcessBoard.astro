@@ -1,0 +1,302 @@
+---
+import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+
+type Step = { title: string; phase: string; body: string };
+type Props = { locale: 'id' | 'en'; steps: Step[]; note?: string };
+const {
+  locale,
+  steps,
+  note = locale === 'id'
+    ? 'Dari masalah sampai benar-benar dipakai.'
+    : 'From the problem to real use.',
+} = Astro.props;
+const stageLabels =
+  locale === 'id'
+    ? ['Pahami', 'Tentukan', 'Rancang', 'Bangun', 'Jalankan']
+    : ['Understand', 'Define', 'Design', 'Build', 'Run'];
+---
+
+<div class="process-board" data-process-board>
+  <div class="process-board__top">
+    <p>{locale === 'id' ? 'ALUR KERJA DIGVATION' : 'THE DIGVATION DELIVERY FLOW'}</p>
+    <HandwrittenNote text={note} direction="down" />
+  </div>
+
+  <div class="process-board__stage-head" aria-hidden="true">
+    {
+      stageLabels.map((label, index) => (
+        <span>
+          <b>0{index + 1}</b>
+          {label}
+        </span>
+      ))
+    }
+  </div>
+
+  <ol class="process-board__grid">
+    {
+      steps.slice(0, 5).map((step, index) => (
+        <li class={`process-card process-card--${index + 1}`}>
+          <div>
+            <>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <small>{step.phase}</small>
+            </>
+          </div>
+          <h3>{step.title}</h3>
+          <p>{step.body}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="process-board__footer">
+    <span>{locale === 'id' ? 'Anda: konteks & keputusan' : 'You: context & decisions'}</span>
+    <span
+      >{
+        locale === 'id'
+          ? 'Digvation: strategi, desain, build & launch'
+          : 'Digvation: strategy, design, build & launch'
+      }</span
+    >
+  </div>
+</div>
+
+<style>
+  .process-board {
+    overflow: hidden;
+    border: 1px solid rgba(11, 13, 16, 0.16);
+    background: #f7f7f5;
+  }
+  .process-board__top {
+    display: flex;
+    min-height: 6rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.12);
+    background: #fff;
+  }
+  .process-board__top > p {
+    margin: 0;
+    color: rgba(11, 13, 16, 0.46);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .process-board__top :global(.hand-note) {
+    margin-right: 4%;
+  }
+  .process-board__stage-head {
+    display: none;
+  }
+  .process-board__grid {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 1rem;
+    list-style: none;
+  }
+  .process-card {
+    padding: 1.1rem;
+    border: 1px solid #121a2f;
+    background: #e3e8ff;
+    box-shadow: 4px 5px 0 #121a2f;
+    opacity: 0;
+    transform: translateY(18px) rotate(-0.35deg);
+    transition:
+      opacity 420ms ease,
+      transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .process-card:nth-child(even) {
+    background: #fff;
+    transform: translateY(18px) rotate(0.35deg);
+  }
+  .process-card > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .process-card > div span {
+    display: grid;
+    width: 1.5rem;
+    height: 1.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #121a2f;
+    color: #fff;
+    font-size: 0.55rem;
+    font-weight: 850;
+  }
+  .process-card small {
+    color: rgba(11, 13, 16, 0.48);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .process-card h3 {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+    font-weight: 680;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .process-card p {
+    margin: 0.7rem 0 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+  .process-board.is-visible .process-card {
+    opacity: 1;
+    transform: translateY(0) rotate(-0.35deg);
+  }
+  .process-board.is-visible .process-card:nth-child(even) {
+    transform: translateY(0) rotate(0.35deg);
+  }
+  .process-card--2 {
+    transition-delay: 80ms;
+  }
+  .process-card--3 {
+    transition-delay: 160ms;
+  }
+  .process-card--4 {
+    transition-delay: 240ms;
+  }
+  .process-card--5 {
+    transition-delay: 320ms;
+  }
+  .process-board__footer {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(11, 13, 16, 0.12);
+    background: #fff;
+    color: rgba(11, 13, 16, 0.48);
+    font-size: 0.62rem;
+    font-weight: 700;
+  }
+  @media (min-width: 900px) {
+    .process-board__stage-head {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-bottom: 1px solid rgba(11, 13, 16, 0.12);
+    }
+    .process-board__stage-head span {
+      display: flex;
+      gap: 0.6rem;
+      padding: 0.72rem 1rem;
+      border-right: 1px solid rgba(11, 13, 16, 0.1);
+      color: rgba(11, 13, 16, 0.65);
+      font-size: 0.62rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .process-board__stage-head span:last-child {
+      border-right: 0;
+    }
+    .process-board__stage-head b {
+      color: rgba(78, 101, 243, 0.72);
+    }
+    .process-board__grid {
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(6, 5rem);
+      gap: 0;
+      min-height: 30rem;
+      padding: 0;
+      background-color: #f7f7f5;
+      background-image: linear-gradient(
+        90deg,
+        transparent calc(20% - 1px),
+        rgba(11, 13, 16, 0.08) calc(20% - 1px),
+        rgba(11, 13, 16, 0.08) 20%,
+        transparent 20%,
+        transparent calc(40% - 1px),
+        rgba(11, 13, 16, 0.08) calc(40% - 1px),
+        rgba(11, 13, 16, 0.08) 40%,
+        transparent 40%,
+        transparent calc(60% - 1px),
+        rgba(11, 13, 16, 0.08) calc(60% - 1px),
+        rgba(11, 13, 16, 0.08) 60%,
+        transparent 60%,
+        transparent calc(80% - 1px),
+        rgba(11, 13, 16, 0.08) calc(80% - 1px),
+        rgba(11, 13, 16, 0.08) 80%,
+        transparent 80%
+      );
+    }
+    .process-card {
+      align-self: start;
+      margin: 1rem;
+    }
+    .process-card--1 {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+    .process-card--2 {
+      grid-column: 2;
+      grid-row: 2 / span 2;
+    }
+    .process-card--3 {
+      grid-column: 3;
+      grid-row: 3 / span 2;
+    }
+    .process-card--4 {
+      grid-column: 4;
+      grid-row: 4 / span 2;
+    }
+    .process-card--5 {
+      grid-column: 5;
+      grid-row: 5 / span 2;
+    }
+    .process-board__footer {
+      grid-template-columns: 1fr 1fr;
+    }
+    .process-board__footer span:last-child {
+      text-align: right;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .process-card {
+      opacity: 1;
+      transform: none !important;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const processBoardObservers = new Set<IntersectionObserver>();
+  const setupProcessBoards = () => {
+    document.querySelectorAll<HTMLElement>('[data-process-board]').forEach((board) => {
+      if (board.dataset.ready === 'true') return;
+      board.dataset.ready = 'true';
+      if (!('IntersectionObserver' in window)) {
+        board.classList.add('is-visible');
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          board.classList.add('is-visible');
+          observer.disconnect();
+          processBoardObservers.delete(observer);
+        },
+        { threshold: 0.12 },
+      );
+      observer.observe(board);
+      processBoardObservers.add(observer);
+    });
+  };
+  const cleanupProcessBoards = () => {
+    processBoardObservers.forEach((observer) => observer.disconnect());
+    processBoardObservers.clear();
+  };
+  setupProcessBoards();
+  document.addEventListener('astro:page-load', setupProcessBoards);
+  document.addEventListener('astro:before-swap', cleanupProcessBoards);
+</script>

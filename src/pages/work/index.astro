@@ -1,0 +1,14 @@
+---
+export const prerender = true;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import WorkIndexPage from '@/features/work/WorkIndexPage.astro';
+const locale = 'id' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Work — Digvation"
+  description="Case study Digvation tentang masalah bisnis, keputusan, implementasi, dan hasil yang bisa dibuktikan."
+>
+  <WorkIndexPage locale={locale} />
+</BaseLayout>

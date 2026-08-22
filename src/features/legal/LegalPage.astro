@@ -1,0 +1,766 @@
+---
+import { brandConfig } from '@/config/brand';
+import { siteConfig, type Locale } from '@/config/site';
+
+type Props = {
+  locale: Locale;
+  kind: 'privacy' | 'terms';
+};
+
+type LegalSection = {
+  id: string;
+  title: string;
+  body: string[];
+  bullets?: string[];
+};
+
+type LegalCopy = {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  updated: string;
+  quickTitle: string;
+  quickItems: Array<{ label: string; title: string; body: string; tone: string }>;
+  flow?: Array<{ label: string; title: string; body: string }>;
+  flowTitle?: string;
+  flowIntro?: string;
+  sections: LegalSection[];
+  closingTitle: string;
+  closingBody: string;
+  reference?: { label: string; body: string; href: string; linkLabel: string };
+};
+
+const { locale, kind } = Astro.props;
+const isId = locale === 'id';
+const privacyHref = isId ? '/privacy' : '/en/privacy';
+const termsHref = isId ? '/terms' : '/en/terms';
+const contactHref = isId ? '/contact' : '/en/contact';
+
+const privacy: LegalCopy = isId
+  ? {
+      eyebrow: 'Privasi',
+      title: 'Privasi yang dijelaskan apa adanya.',
+      intro:
+        'Kami tidak ingin halaman privasi terdengar aman hanya karena bahasanya formal. Di bawah ini kami jelaskan data apa yang benar-benar diproses oleh website Digvation, kenapa dibutuhkan, ke mana data bisa dikirim, dan bagaimana Anda dapat meminta akses, koreksi, atau penghapusan.',
+      updated: 'Diperbarui 21 Agustus 2026',
+      quickTitle: 'Ringkasnya',
+      quickItems: [
+        {
+          label: 'Inquiry',
+          title: 'Hanya data yang Anda kirim',
+          body: 'Nama dan email wajib. WhatsApp, perusahaan, dan konteks kebutuhan bersifat sesuai form. Kami tidak meminta password, data pembayaran, atau dokumen identitas lewat form inquiry.',
+          tone: 'bg-butter',
+        },
+        {
+          label: 'Proteksi',
+          title: 'Validasi dilakukan di server',
+          body: 'Form memakai validasi server, honeypot, batas ukuran request, dan Cloudflare Turnstile bila diaktifkan. Secret provider tetap berada di Cloudflare Pages Function dan tidak dikirim ke browser.',
+          tone: 'bg-mint',
+        },
+        {
+          label: 'Analytics',
+          title: 'Pengukuran bersifat opsional',
+          body: 'GA4, Google Tag Manager, dan Microsoft Clarity hanya dipakai bila dikonfigurasi. Mode bawaan adalah consent, sehingga tag opsional baru dimuat setelah pengunjung memberi izin.',
+          tone: 'bg-sky',
+        },
+        {
+          label: 'Kontrol',
+          title: 'Anda tetap punya kendali',
+          body: `Untuk permintaan terkait data, hubungi ${siteConfig.contact.email}. Kami akan menilai permintaan akses, koreksi, pembatasan, penarikan persetujuan, atau penghapusan sesuai konteks dan kewajiban hukum yang berlaku.`,
+          tone: 'bg-lavender',
+        },
+      ],
+      flowTitle: 'Apa yang terjadi saat Anda mengirim inquiry?',
+      flowIntro:
+        'Ini adalah alur yang memang digunakan arsitektur website, bukan ilustrasi marketing.',
+      flow: [
+        {
+          label: '01',
+          title: 'Anda mengirim form',
+          body: 'Data yang Anda pilih dimasukkan ke form inquiry dan dikirim melalui koneksi website.',
+        },
+        {
+          label: '02',
+          title: 'Server memvalidasi',
+          body: 'Input diperiksa di Cloudflare Pages Function. Honeypot, batas ukuran request, dan Turnstile opsional dipakai untuk mengurangi abuse.',
+        },
+        {
+          label: '03',
+          title: 'Provider mengirimkan',
+          body: 'Jika inquiry diaktifkan, server meneruskan data ke provider pengiriman yang dikonfigurasi, misalnya Resend atau webhook operasional.',
+        },
+        {
+          label: '04',
+          title: 'Tim menindaklanjuti',
+          body: 'Informasi dipakai untuk memahami konteks dan melanjutkan percakapan. Website tidak menjual data. Jika campaign measurement diaktifkan melalui Google Tag Manager, tag opsional hanya dimuat setelah consent sesuai konfigurasi production.',
+        },
+      ],
+      sections: [
+        {
+          id: 'siapa-kami',
+          title: 'Siapa yang menangani data',
+          body: [
+            `Dalam kebijakan ini, “Digvation” berarti operator website ${new URL(siteConfig.url).hostname} dan layanan yang menggunakan brand Digvation. Kontak privasi saat ini adalah ${siteConfig.contact.email}.`,
+            'Kami sengaja tidak menampilkan alamat, nomor telepon, atau detail badan hukum yang belum dikonfigurasi dan diverifikasi pada website. Jika informasi bisnis resmi ditambahkan kemudian, halaman ini harus ikut diperbarui.',
+          ],
+        },
+        {
+          id: 'data',
+          title: 'Data yang diproses',
+          body: [
+            'Saat Anda mengirim inquiry, website dapat menerima nama, email, nomor kontak opsional, nama organisasi opsional, dan cerita/konteks kebutuhan yang Anda tulis sendiri.',
+            'Untuk keamanan form, Cloudflare dapat menyediakan alamat IP koneksi ke Pages Function untuk membantu verifikasi anti-abuse dan Turnstile. Jika Turnstile diaktifkan, token diverifikasi server-side melalui Siteverify Cloudflare.',
+          ],
+          bullets: [
+            'Jangan mengirim password, API key, credential, data kartu pembayaran, atau rahasia sistem melalui form.',
+            'Jangan memasukkan data pribadi pihak lain kecuali memang diperlukan dan Anda berwenang membagikannya.',
+          ],
+        },
+        {
+          id: 'tujuan-dasar',
+          title: 'Tujuan dan dasar pemrosesan',
+          body: [
+            'Data inquiry digunakan untuk menanggapi permintaan Anda, memahami konteks sebelum kemungkinan kerja sama, menjaga keamanan form, dan menjalankan tindak lanjut yang Anda minta.',
+            'Untuk analytics opsional, kami menggunakan pilihan consent ketika mode consent diaktifkan. Anda dapat menolak analytics dan tetap menggunakan konten utama website serta mengirim inquiry.',
+          ],
+        },
+        {
+          id: 'analytics',
+          title: 'Analytics dan rekaman interaksi',
+          body: [
+            'Website mendukung Google Analytics 4 untuk page/event measurement, Google Tag Manager sebagai entry point untuk campaign tags, dan Microsoft Clarity untuk memahami pola penggunaan seperti scroll dan interaksi. Provider opsional hanya aktif bila dikonfigurasi; mode bawaan project adalah consent.',
+            'Form inquiry diberi penanda masking untuk Clarity agar isi form tidak direkam sebagai konten yang dapat dibaca dalam session recording. Jika Google Ads, Meta Pixel, atau tag campaign lain diaktifkan kemudian, penggunaannya harus mengikuti consent dan konfigurasi privacy yang berlaku.',
+          ],
+        },
+        {
+          id: 'provider',
+          title: 'Provider dan transfer data',
+          body: [
+            'Bergantung pada konfigurasi production, data dapat diproses oleh provider yang diperlukan untuk fungsi tertentu—misalnya Cloudflare Pages/Turnstile, Resend untuk email, webhook internal/automation, Google Analytics, Google Tag Manager, Microsoft Clarity, atau platform advertising yang memang diaktifkan.',
+            'Sebagian provider dapat memproses data pada infrastruktur di luar Indonesia. Karena itu, pemilihan provider production harus mempertimbangkan persyaratan transfer dan pelindungan data yang berlaku, bukan sekadar kenyamanan teknis.',
+          ],
+        },
+        {
+          id: 'retensi',
+          title: 'Retensi dan penghapusan',
+          body: [
+            'Aplikasi website saat ini tidak memiliki database inquiry publik sebagai sumber penyimpanan utama. Data inquiry dapat tersimpan pada provider pengiriman, inbox, atau workflow operasional yang dipakai untuk menindaklanjuti permintaan.',
+            'Kami menyimpan data hanya selama masih dibutuhkan untuk percakapan, pelaksanaan project, administrasi, keamanan, atau kewajiban hukum. Bila Anda ingin data tertentu dihapus lebih cepat, kirim permintaan melalui email dan sertakan informasi yang cukup agar kami dapat menemukan record yang dimaksud.',
+          ],
+        },
+        {
+          id: 'keamanan',
+          title: 'Langkah keamanan yang benar-benar ada di website',
+          body: [
+            'Kami tidak mengklaim bahwa sistem apa pun “100% aman”. Kontrol yang memang ada pada implementasi website mencakup validasi server di Pages Function, batas ukuran request, honeypot, Turnstile opsional dengan verifikasi server-side, server-only secret untuk provider, masking form untuk Clarity, dan error message yang tidak sengaja menulis isi inquiry ke log aplikasi. Rate limiting tambahan dapat diterapkan melalui kontrol Cloudflare di level edge.',
+            'Jika terjadi insiden data, penanganan dan pemberitahuan dilakukan sesuai dampak insiden dan kewajiban hukum yang berlaku.',
+          ],
+        },
+        {
+          id: 'hak',
+          title: 'Hak dan permintaan terkait data',
+          body: [
+            `Anda dapat menghubungi ${siteConfig.contact.email} untuk meminta informasi tentang data Anda, koreksi data yang tidak akurat, penarikan persetujuan yang relevan, pembatasan, atau penghapusan sesuai ketentuan yang berlaku.`,
+            'Agar tidak memberikan data kepada orang yang salah, kami dapat meminta verifikasi yang proporsional sebelum memenuhi permintaan tertentu.',
+          ],
+        },
+        {
+          id: 'perubahan',
+          title: 'Perubahan kebijakan',
+          body: [
+            'Jika cara website mengumpulkan data, provider, analytics, atau alur inquiry berubah secara material, kebijakan ini harus ikut diperbarui. Tanggal pembaruan ditampilkan di bagian atas halaman agar perubahan mudah dikenali.',
+          ],
+        },
+      ],
+      closingTitle: 'Ada pertanyaan tentang data Anda?',
+      closingBody: `Kirim email ke ${siteConfig.contact.email}. Jelaskan permintaannya dengan bahasa biasa; tidak perlu format hukum khusus.`,
+      reference: {
+        label: 'Dasar rujukan',
+        body: 'Kebijakan ini disusun untuk menjelaskan praktik website secara transparan dengan mengacu pada prinsip pelindungan data di Indonesia, termasuk hak subjek data, tujuan pemrosesan, keamanan, dan akuntabilitas. Ini bukan klaim sertifikasi kepatuhan.',
+        href: 'https://jdih.komdigi.go.id/produk_hukum/view/id/832/t/undangundang%2Bnomor%2B27%2Btahun%2B2022',
+        linkLabel: 'Lihat UU No. 27 Tahun 2022 ↗',
+      },
+    }
+  : {
+      eyebrow: 'Privacy',
+      title: 'Privacy, explained without hiding behind legal language.',
+      intro:
+        'We do not want this page to sound safe simply because it is formal. This policy explains what the Digvation website actually processes, why it is needed, where data may go, and how you can ask for access, correction, restriction, or deletion.',
+      updated: 'Updated 21 August 2026',
+      quickTitle: 'In short',
+      quickItems: [
+        {
+          label: 'Inquiry',
+          title: 'Only what you submit',
+          body: 'Name and email are required. Phone, company, and need context follow the form. The inquiry form does not ask for passwords, payment data, or identity documents.',
+          tone: 'bg-butter',
+        },
+        {
+          label: 'Protection',
+          title: 'Validation happens on the server',
+          body: 'The form uses server validation, a honeypot, a request-size limit, and optional Cloudflare Turnstile. Provider secrets stay in the Cloudflare Pages Function and are not exposed to the browser.',
+          tone: 'bg-mint',
+        },
+        {
+          label: 'Analytics',
+          title: 'Measurement is optional',
+          body: 'GA4, Google Tag Manager, and Microsoft Clarity are only used when configured. The project defaults to consent mode, so optional tags load after the visitor allows them.',
+          tone: 'bg-sky',
+        },
+        {
+          label: 'Control',
+          title: 'You keep control',
+          body: `For data requests, contact ${siteConfig.contact.email}. We assess access, correction, restriction, consent withdrawal, or deletion requests according to context and applicable obligations.`,
+          tone: 'bg-lavender',
+        },
+      ],
+      flowTitle: 'What actually happens when you send an inquiry?',
+      flowIntro:
+        'This mirrors the website architecture rather than presenting a marketing diagram.',
+      flow: [
+        {
+          label: '01',
+          title: 'You submit the form',
+          body: 'The information you choose is sent through the website inquiry form.',
+        },
+        {
+          label: '02',
+          title: 'The server validates it',
+          body: 'Server validation, honeypot checks, rate limiting, and optional CAPTCHA reduce abuse.',
+        },
+        {
+          label: '03',
+          title: 'A configured provider delivers it',
+          body: 'When enabled, the server passes the inquiry to the configured delivery provider, such as Resend or an operational webhook.',
+        },
+        {
+          label: '04',
+          title: 'The team follows up',
+          body: 'The information is used to understand context and continue the conversation. The website has no feature for selling inquiry data or personalized advertising.',
+        },
+      ],
+      sections: [
+        {
+          id: 'who',
+          title: 'Who handles the data',
+          body: [
+            `In this policy, “Digvation” means the operator of ${new URL(siteConfig.url).hostname} and services using the Digvation brand. The current privacy contact is ${siteConfig.contact.email}.`,
+            'We do not display a legal entity, address, or phone number that has not been configured and verified. This policy should be updated when official business details are added.',
+          ],
+        },
+        {
+          id: 'data',
+          title: 'Data we process',
+          body: [
+            'An inquiry can include your name, email, optional contact number, optional organization name, and the need/context you choose to write.',
+            'For form security, Cloudflare may make the connection IP available to the Pages Function for abuse protection and Turnstile verification. If Turnstile is enabled, its token is validated server-side through Cloudflare Siteverify.',
+          ],
+          bullets: [
+            'Do not submit passwords, API keys, credentials, payment card data, or system secrets through the form.',
+            'Do not include another person’s personal data unless it is necessary and you are authorized to share it.',
+          ],
+        },
+        {
+          id: 'purpose',
+          title: 'Purpose and processing basis',
+          body: [
+            'Inquiry data is used to respond to your request, understand context before a potential engagement, secure the form, and carry out the follow-up you requested.',
+            'Optional analytics uses the visitor’s choice when consent mode is enabled. You can decline analytics and still access the main website content and submit an inquiry.',
+          ],
+        },
+        {
+          id: 'analytics',
+          title: 'Analytics and interaction measurement',
+          body: [
+            'The website supports Google Analytics 4 for page/event measurement, Google Tag Manager as the entry point for campaign tags, and Microsoft Clarity for interaction patterns such as scrolling. Optional providers only run when configured; the project defaults to consent mode.',
+            'The inquiry form is marked for Clarity masking so the form content is not captured as readable content in session recordings. If Google Ads, Meta Pixel, or other campaign tags are enabled later, they must follow the configured consent and privacy controls.',
+          ],
+        },
+        {
+          id: 'providers',
+          title: 'Providers and data transfers',
+          body: [
+            'Depending on production configuration, data may be processed by providers needed for a specific function—such as Cloudflare Pages/Turnstile, Resend for email, an internal/automation webhook, Google Analytics, Google Tag Manager, Microsoft Clarity, or advertising platforms that are actually enabled.',
+            'Some providers may process data on infrastructure outside Indonesia. Production provider selection should therefore consider applicable transfer and protection requirements, not only technical convenience.',
+          ],
+        },
+        {
+          id: 'retention',
+          title: 'Retention and deletion',
+          body: [
+            'The current website application does not use a public inquiry database as its primary storage. Inquiry data may remain in the delivery provider, inbox, or operational workflow used to follow up.',
+            'We retain data only while needed for the conversation, project delivery, administration, security, or legal obligations. You may request earlier deletion by email and provide enough information for us to locate the relevant record.',
+          ],
+        },
+        {
+          id: 'security',
+          title: 'Security controls that actually exist',
+          body: [
+            'We do not claim that any system is “100% secure”. The controls implemented in this website include server validation in a Pages Function, a request-size limit, a honeypot, optional Turnstile with server-side verification, server-only provider secrets, Clarity form masking, and application error logging that does not intentionally log the inquiry payload. Additional rate limiting can be configured at the Cloudflare edge.',
+            'If a data incident occurs, response and notification should follow the impact of the incident and applicable legal obligations.',
+          ],
+        },
+        {
+          id: 'rights',
+          title: 'Your data requests',
+          body: [
+            `Contact ${siteConfig.contact.email} to request information about your data, correction, relevant consent withdrawal, restriction, or deletion where applicable.`,
+            'We may use proportionate verification before fulfilling certain requests so that personal data is not disclosed to the wrong person.',
+          ],
+        },
+        {
+          id: 'changes',
+          title: 'Policy changes',
+          body: [
+            'If the website materially changes how it collects data, its providers, analytics, or inquiry flow, this policy should change with it. The update date is shown at the top of the page.',
+          ],
+        },
+      ],
+      closingTitle: 'Have a question about your data?',
+      closingBody: `Email ${siteConfig.contact.email}. Describe the request in plain language; no legal template is required.`,
+      reference: {
+        label: 'Reference',
+        body: 'This policy is designed to explain the website practice transparently with reference to Indonesian personal-data protection principles, including data-subject rights, purpose, security, and accountability. It is not a certification claim.',
+        href: 'https://jdih.komdigi.go.id/produk_hukum/view/id/832/t/undangundang%2Bnomor%2B27%2Btahun%2B2022',
+        linkLabel: 'View Law No. 27 of 2022 ↗',
+      },
+    };
+
+const terms: LegalCopy = isId
+  ? {
+      eyebrow: 'Terms',
+      title: 'Aturan website, bukan tulisan kecil yang menjebak.',
+      intro:
+        'Terms ini mengatur penggunaan website Digvation. Untuk project nyata, scope, fee, timeline, acceptance, hak atas hasil kerja, support, kerahasiaan, dan tanggung jawab hanya mengikuti proposal, SOW, atau agreement tertulis yang disetujui—bukan asumsi dari halaman marketing.',
+      updated: 'Diperbarui 21 Agustus 2026',
+      quickTitle: 'Yang perlu dipahami sebelum lanjut',
+      quickItems: [
+        {
+          label: 'Browsing',
+          title: 'Melihat website bukan kontrak',
+          body: 'Membaca website, membuka case study, atau mengirim inquiry tidak otomatis membuat hubungan kerja atau kewajiban project.',
+          tone: 'bg-butter',
+        },
+        {
+          label: 'Project',
+          title: 'Komitmen project harus tertulis',
+          body: 'Scope, harga, timeline, revisi, acceptance, ownership, hosting, maintenance, dan support ditentukan dalam dokumen project yang disepakati.',
+          tone: 'bg-mint',
+        },
+        {
+          label: 'Portfolio',
+          title: 'Case study memberi konteks, bukan janji hasil',
+          body: 'Hasil setiap bisnis dipengaruhi kondisi, scope, input, dan operasionalnya. Kami tidak menggunakan satu case study sebagai garansi hasil untuk project lain.',
+          tone: 'bg-sky',
+        },
+        {
+          label: 'Content',
+          title: 'Materi boleh dilihat, bukan disalahgunakan',
+          body: 'Brand, tulisan, visual, dan case study Digvation tidak boleh diambil lalu dipresentasikan seolah milik atau dibuat oleh pihak lain.',
+          tone: 'bg-lavender',
+        },
+      ],
+      sections: [
+        {
+          id: 'cakupan',
+          title: 'Cakupan terms ini',
+          body: [
+            'Terms ini berlaku untuk penggunaan website Digvation, termasuk halaman solusi, work/case study, form inquiry, preview project, dan materi yang dipublikasikan melalui website.',
+            'Terms ini tidak menggantikan kontrak project. Jika ada perbedaan antara halaman website dan dokumen project yang ditandatangani/disetujui, dokumen project yang lebih spesifik menjadi acuan untuk engagement tersebut.',
+          ],
+        },
+        {
+          id: 'inquiry',
+          title: 'Inquiry bukan persetujuan project',
+          body: [
+            'Mengirim form berarti Anda meminta Digvation membaca konteks dan, bila relevan, menindaklanjuti percakapan. Inquiry tidak menjamin bahwa Digvation akan menerima project, tersedia pada timeline tertentu, atau menawarkan harga tertentu.',
+            'Project baru dianggap memiliki komitmen ketika scope dan ketentuan komersial yang relevan sudah disepakati secara tertulis oleh pihak yang berwenang.',
+          ],
+        },
+        {
+          id: 'project',
+          title: 'Apa yang harus ada di dokumen project',
+          body: [
+            'Untuk menghindari asumsi, proposal/SOW/agreement sebaiknya menjelaskan setidaknya scope dan deliverables, dependency dan input client, timeline atau milestone, fee dan pembayaran, revision/acceptance, ownership dan lisensi, confidentiality, hosting/deployment, support/maintenance, serta ketentuan perubahan scope.',
+            'Kami tidak menetapkan aturan project yang sama untuk semua client lewat Terms website ini karena jenis pekerjaan Digvation dapat berbeda dari website, internal system, automation, integration, data/AI, sampai IoT.',
+          ],
+        },
+        {
+          id: 'portfolio',
+          title: 'Portfolio, preview, dan website client',
+          body: [
+            'Case study menjelaskan konteks berdasarkan informasi yang layak dipublikasikan. Data yang belum diverifikasi tidak boleh dipresentasikan sebagai metric, testimonial, atau hasil nyata.',
+            'Preview live dapat memuat website pihak ketiga melalui embed atau membuka website aslinya. Website client dapat berubah setelah project selesai, sehingga tampilan live saat ini tidak selalu identik dengan kondisi saat Digvation menyerahkan pekerjaan.',
+          ],
+        },
+        {
+          id: 'ip',
+          title: 'Brand dan hak atas materi website',
+          body: [
+            'Logo Digvation, identitas visual, copy, layout, ilustrasi, dokumentasi publik, serta materi case study pada website dilindungi sebagai karya dan/atau aset brand sesuai hak yang berlaku.',
+            'Anda boleh membagikan link dan mengutip secara wajar dengan atribusi. Anda tidak boleh menyalin materi secara substansial, menghapus atribusi, memakai brand Digvation untuk menyesatkan, atau mengklaim pekerjaan Digvation sebagai karya pihak lain. Hak atas deliverable client sendiri mengikuti agreement project masing-masing.',
+          ],
+        },
+        {
+          id: 'acceptable-use',
+          title: 'Penggunaan yang tidak diperbolehkan',
+          body: [
+            'Jangan mencoba mengganggu keamanan website, melakukan abuse terhadap form, mengirim payload berbahaya, melakukan scraping yang membebani layanan secara tidak wajar, atau menggunakan website untuk melanggar hak pihak lain.',
+            'Kami dapat membatasi request yang terdeteksi sebagai spam atau abuse untuk menjaga layanan tetap dapat digunakan.',
+          ],
+        },
+        {
+          id: 'external',
+          title: 'Layanan dan link pihak ketiga',
+          body: [
+            'Website dapat menghubungkan atau menampilkan service pihak ketiga, misalnya website client, provider analytics, CAPTCHA, atau tool lain. Kebijakan, uptime, dan perubahan pada service tersebut berada di bawah kendali providernya masing-masing.',
+            'Link eksternal diberikan untuk konteks atau akses. Kehadiran link tidak berarti Digvation mengendalikan seluruh isi atau praktik pihak ketiga.',
+          ],
+        },
+        {
+          id: 'accuracy',
+          title: 'Informasi, perubahan, dan ketersediaan',
+          body: [
+            'Kami berusaha menjaga informasi website tetap akurat dan relevan, tetapi halaman marketing tidak dimaksudkan sebagai spesifikasi kontraktual yang permanen. Layanan, capability, contoh work, atau copy dapat diperbarui ketika bisnis berkembang.',
+            'Kami juga tidak menjanjikan website akan selalu bebas gangguan. Jika ada komitmen uptime, SLA, support, atau availability untuk project client, ketentuannya harus ditulis secara khusus dalam agreement project.',
+          ],
+        },
+        {
+          id: 'privacy',
+          title: 'Privasi',
+          body: [
+            `Penggunaan data pribadi melalui website dijelaskan secara terpisah di Privacy Policy. Silakan baca ${privacyHref} terutama sebelum mengirim inquiry atau mengaktifkan analytics opsional.`,
+          ],
+        },
+        {
+          id: 'changes',
+          title: 'Perubahan terms',
+          body: [
+            'Terms dapat berubah jika fungsi website atau model layanan berubah. Versi terbaru berlaku untuk penggunaan website setelah tanggal pembaruan yang ditampilkan di halaman ini. Perubahan Terms website tidak secara otomatis mengubah agreement project yang sudah disepakati.',
+          ],
+        },
+      ],
+      closingTitle: 'Butuh kepastian untuk project tertentu?',
+      closingBody:
+        'Jangan mengandalkan Terms website untuk detail komersial project. Minta proposal atau agreement yang menjelaskan scope dan tanggung jawab secara spesifik.',
+    }
+  : {
+      eyebrow: 'Terms',
+      title: 'Website terms without hiding the important part in fine print.',
+      intro:
+        'These terms govern use of the Digvation website. For real projects, scope, fees, timing, acceptance, ownership, support, confidentiality, and responsibilities are governed by the written proposal, SOW, or agreement that is actually accepted—not by assumptions from a marketing page.',
+      updated: 'Updated 21 August 2026',
+      quickTitle: 'What matters before you continue',
+      quickItems: [
+        {
+          label: 'Browsing',
+          title: 'Using the site is not a project contract',
+          body: 'Reading pages, viewing case studies, or submitting an inquiry does not by itself create a project engagement or commercial obligation.',
+          tone: 'bg-butter',
+        },
+        {
+          label: 'Project',
+          title: 'Project commitments must be written',
+          body: 'Scope, pricing, timeline, revisions, acceptance, ownership, hosting, maintenance, and support belong in the agreed project documents.',
+          tone: 'bg-mint',
+        },
+        {
+          label: 'Portfolio',
+          title: 'Case studies provide context, not guaranteed outcomes',
+          body: 'Results depend on each business, scope, inputs, and operations. One case study is not a promise of identical results elsewhere.',
+          tone: 'bg-sky',
+        },
+        {
+          label: 'Content',
+          title: 'Site materials may be viewed, not misrepresented',
+          body: 'Digvation brand assets, copy, visuals, and case-study materials may not be taken and presented as if they belong to or were created by another party.',
+          tone: 'bg-lavender',
+        },
+      ],
+      sections: [
+        {
+          id: 'scope',
+          title: 'What these terms cover',
+          body: [
+            'These terms apply to use of the Digvation website, including solution pages, work/case studies, the inquiry form, project previews, and public materials.',
+            'They do not replace a project contract. If a signed/accepted project document conflicts with a general website statement, the more specific project document governs that engagement.',
+          ],
+        },
+        {
+          id: 'inquiry',
+          title: 'An inquiry is not project acceptance',
+          body: [
+            'Submitting the form asks Digvation to review the context and, where relevant, continue the conversation. It does not guarantee project acceptance, availability on a certain timeline, or a particular price.',
+            'A project commitment exists only when the relevant scope and commercial terms are agreed in writing by authorized parties.',
+          ],
+        },
+        {
+          id: 'project',
+          title: 'What a project document should define',
+          body: [
+            'To avoid assumptions, the proposal/SOW/agreement should define at least scope and deliverables, client dependencies and inputs, milestones, fees and payment, revisions/acceptance, ownership and licensing, confidentiality, hosting/deployment, support/maintenance, and scope-change handling.',
+            'We do not force one set of project rules through these website terms because Digvation engagements can range from websites and internal systems to automation, integration, data/AI, and IoT.',
+          ],
+        },
+        {
+          id: 'portfolio',
+          title: 'Portfolio, previews, and client websites',
+          body: [
+            'Case studies describe context based on information appropriate to publish. Unverified data should not be presented as a metric, testimonial, or real outcome.',
+            'A live preview may embed or link to a third-party/client website. Client websites can change after delivery, so the current live version may not be identical to the state Digvation originally delivered.',
+          ],
+        },
+        {
+          id: 'ip',
+          title: 'Brand and site materials',
+          body: [
+            'Digvation logos, visual identity, copy, layouts, illustrations, public documentation, and case-study materials are protected as works and/or brand assets under applicable rights.',
+            'You may share links and make reasonable attributed references. You may not substantially copy the materials, remove attribution, use the Digvation brand misleadingly, or claim Digvation work as another party’s work. Ownership of client deliverables follows each project agreement.',
+          ],
+        },
+        {
+          id: 'acceptable-use',
+          title: 'Acceptable use',
+          body: [
+            'Do not attempt to compromise the site, abuse the form, send malicious payloads, perform scraping that unreasonably burdens the service, or use the website to infringe another party’s rights.',
+            'Requests detected as spam or abuse may be limited to keep the service usable.',
+          ],
+        },
+        {
+          id: 'external',
+          title: 'Third-party services and links',
+          body: [
+            'The website may link to or display third-party services such as client websites, analytics providers, CAPTCHA, or other tools. Their policies, uptime, and changes are controlled by their respective providers.',
+            'An external link is provided for context or access and does not mean Digvation controls all content or practices of that third party.',
+          ],
+        },
+        {
+          id: 'accuracy',
+          title: 'Information, changes, and availability',
+          body: [
+            'We aim to keep the website accurate and relevant, but marketing pages are not permanent contractual specifications. Services, capabilities, work examples, or copy may evolve as the business changes.',
+            'The website is not promised to be interruption-free. Any client-specific SLA, uptime, support, or availability commitment must be stated in the project agreement.',
+          ],
+        },
+        {
+          id: 'privacy',
+          title: 'Privacy',
+          body: [
+            `Personal-data practices are explained separately in the Privacy Policy at ${privacyHref}, particularly before you submit an inquiry or enable optional analytics.`,
+          ],
+        },
+        {
+          id: 'changes',
+          title: 'Changes to these terms',
+          body: [
+            'These terms may change when the website or service model changes. The latest version applies to website use after the update date shown here. Updating the website terms does not automatically change an existing agreed project contract.',
+          ],
+        },
+      ],
+      closingTitle: 'Need certainty for a specific project?',
+      closingBody:
+        'Do not rely on website terms for project-specific commercial details. Ask for a proposal or agreement that defines the scope and responsibilities for that engagement.',
+    };
+
+const copy = kind === 'privacy' ? privacy : terms;
+const counterpartHref = kind === 'privacy' ? termsHref : privacyHref;
+const counterpartLabel = kind === 'privacy' ? 'Terms' : 'Privacy';
+---
+
+<section class="border-line-light bg-paper-warm text-ink border-b">
+  <div class="shell py-10 sm:py-14 lg:py-18">
+    <div class="grid gap-8 lg:grid-cols-[1.08fr_.72fr] lg:items-end lg:gap-16">
+      <div>
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="section-label">{copy.eyebrow}</span>
+          <span class="text-dark-muted text-xs font-semibold">{copy.updated}</span>
+        </div>
+        <h1 class="display-xl mt-5 max-w-[15ch]">{copy.title}</h1>
+        <p class="body-lg text-dark-muted mt-5 max-w-3xl">{copy.intro}</p>
+      </div>
+      <div class="panel bg-paper p-5 sm:p-6">
+        <div class="flex items-center gap-3">
+          <img src={brandConfig.assets.markIndigo} alt="" width="44" height="44" class="size-9" />
+          <div>
+            <p class="m-0 text-sm font-bold">Digvation</p>
+            <p class="text-dark-muted m-0 text-xs">{siteConfig.tagline}</p>
+          </div>
+        </div>
+        <div class="border-line-light mt-5 grid gap-2 border-t pt-5 text-sm">
+          <a
+            class="text-ink decoration-line-light hover:decoration-ink font-semibold underline underline-offset-4"
+            href={counterpartHref}>{counterpartLabel} →</a
+          >
+          <a
+            class="text-ink decoration-line-light hover:decoration-ink font-semibold underline underline-offset-4"
+            href={contactHref}>{isId ? 'Hubungi Digvation' : 'Contact Digvation'} →</a
+          >
+          <a
+            class="text-ink decoration-line-light hover:decoration-ink font-semibold underline underline-offset-4"
+            href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad-sm bg-paper text-ink">
+  <div class="shell">
+    <div class="mb-6 flex items-end justify-between gap-6">
+      <div>
+        <p class="eyebrow text-indigo-deep">{copy.quickTitle}</p>
+        <h2 class="display-md mt-3 max-w-xl">
+          {
+            isId
+              ? 'Baca inti kebijakannya dalam satu menit.'
+              : 'Understand the important part in one minute.'
+          }
+        </h2>
+      </div>
+    </div>
+    <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      {
+        copy.quickItems.map((item) => (
+          <article class:list={['border-ink/10 rounded-[.8rem] border p-5 sm:p-6', item.tone]}>
+            <p class="eyebrow text-ink/60 m-0">{item.label}</p>
+            <h3 class="mt-5 text-lg leading-tight font-bold tracking-[-.02em]">{item.title}</h3>
+            <p class="text-ink/70 mt-3 text-sm leading-6">{item.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{
+  copy.flow && (
+    <section class="section-pad-sm border-line bg-ink text-paper border-y">
+      <div class="shell">
+        <div class="grid gap-8 lg:grid-cols-[.62fr_1.38fr] lg:gap-14">
+          <div>
+            <p class="eyebrow text-butter">{isId ? 'Alur nyata' : 'Actual flow'}</p>
+            <h2 class="display-md mt-3 max-w-md">{copy.flowTitle}</h2>
+            <p class="text-fog-light mt-4 max-w-lg text-sm leading-7">{copy.flowIntro}</p>
+          </div>
+          <div class="border-line bg-line grid gap-px overflow-hidden rounded-[.8rem] border md:grid-cols-2">
+            {copy.flow.map((step) => (
+              <article class="bg-surface p-5 sm:p-6">
+                <span class="text-butter text-xs font-extrabold tracking-[.08em]">
+                  {step.label}
+                </span>
+                <h3 class="text-paper mt-5 text-lg font-semibold">{step.title}</h3>
+                <p class="text-fog-light mt-2 text-sm leading-6">{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<section class="section-pad bg-paper-warm text-ink">
+  <div class="shell grid gap-12 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
+    <aside class="lg:sticky lg:top-28 lg:self-start">
+      <p class="eyebrow text-dark-muted">{isId ? 'Di halaman ini' : 'On this page'}</p>
+      <nav
+        class="mt-5 hidden gap-2 text-sm lg:grid"
+        aria-label={isId ? 'Daftar isi kebijakan' : 'Policy contents'}
+      >
+        {
+          copy.sections.map((section, index) => (
+            <a
+              class="border-line-light text-dark-muted hover:text-ink grid grid-cols-[2rem_1fr] gap-2 border-b py-2.5 no-underline transition-colors"
+              href={`#${section.id}`}
+            >
+              <span class="text-xs">{String(index + 1).padStart(2, '0')}</span>
+              <span>{section.title}</span>
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <div class="border-line-light border-t">
+      {
+        copy.sections.map((section, index) => (
+          <section id={section.id} class="border-line-light scroll-mt-28 border-b py-8 sm:py-10">
+            <div class="grid gap-5 sm:grid-cols-[3rem_1fr] sm:gap-8">
+              <span class="text-dark-muted pt-1 text-xs font-semibold">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h2 class="m-0 text-xl font-bold tracking-[-.025em] sm:text-2xl">
+                  {section.title}
+                </h2>
+                <div class="mt-4 grid gap-3">
+                  {section.body.map((paragraph) => (
+                    <p class="text-dark-muted m-0 max-w-3xl text-sm leading-7 sm:text-base">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+                {section.bullets && (
+                  <ul class="text-dark-muted mt-5 grid gap-2 pl-5 text-sm leading-7 sm:text-base">
+                    {section.bullets.map((bullet) => (
+                      <li>{bullet}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{
+  copy.reference && (
+    <section class="bg-paper text-ink">
+      <div class="shell pb-8 sm:pb-12">
+        <div class="border-line-light bg-sky/55 rounded-[.8rem] border p-5 sm:p-7 lg:flex lg:items-center lg:justify-between lg:gap-10">
+          <div class="max-w-3xl">
+            <p class="eyebrow text-indigo-deep">{copy.reference.label}</p>
+            <p class="text-dark-muted mt-3 text-sm leading-7">{copy.reference.body}</p>
+          </div>
+          <a
+            class="button-secondary mt-5 shrink-0 lg:mt-0"
+            href={copy.reference.href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {copy.reference.linkLabel}
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<section class="bg-paper text-ink">
+  <div class="shell pb-12 sm:pb-16">
+    <div
+      class="bg-butter grid gap-6 rounded-[.85rem] p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:p-10"
+    >
+      <div>
+        <p class="eyebrow text-ink/60">Digvation</p>
+        <h2 class="display-md mt-3 max-w-2xl">{copy.closingTitle}</h2>
+        <p class="text-ink/70 mt-3 max-w-2xl text-sm leading-7">{copy.closingBody}</p>
+      </div>
+      <a
+        class="button-primary"
+        href={kind === 'privacy' ? `mailto:${siteConfig.contact.email}` : contactHref}
+        >{
+          kind === 'privacy'
+            ? siteConfig.contact.email
+            : isId
+              ? 'Ngobrol dengan Kami'
+              : 'Talk to Us'
+        } →</a
+      >
+    </div>
+  </div>
+</section>

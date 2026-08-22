@@ -1,0 +1,157 @@
+---
+import { getCollection } from 'astro:content';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.astro';
+import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+type Props = { locale: Locale; slug: string };
+const { locale, slug } = Astro.props;
+const all = (await getCollection('solutions'))
+  .filter((entry) => entry.data.locale === locale)
+  .sort((a, b) => a.data.order - b.data.order);
+const entry = all.find((item) => item.data.routeSlug === slug);
+if (!entry) throw new Error(`Solution not found: ${slug}`);
+---
+
+<article class="bg-paper-warm text-ink" data-solution-view data-solution-slug={slug}>
+  <header class="border-ink/10 border-b">
+    <div class="shell-wide py-12 sm:py-16 lg:py-20">
+      <Breadcrumbs
+        tone="light"
+        items={[
+          {
+            label: locale === 'id' ? 'Solusi' : 'Solutions',
+            href: getLocalizedPath(locale, '/solutions'),
+          },
+          { label: entry.data.title },
+        ]}
+      />
+      <div class="mt-10 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-end lg:gap-16">
+        <div>
+          <p class="eyebrow text-indigo-deep">{entry.data.eyebrow}</p><h1
+            class="font-display mt-5 max-w-[14ch] text-[clamp(3rem,6vw,6.5rem)] leading-[.93] font-semibold tracking-[-.062em]"
+          >
+            {entry.data.title}
+          </h1>
+        </div>
+        <div>
+          <HandwrittenNote
+            text={locale === 'id'
+              ? 'Dipilih karena relevan, bukan karena sedang tren.'
+              : 'Chosen because it fits, not because it is trending.'}
+            direction="left"
+          />
+          <p class="text-dark-muted mt-4 max-w-xl text-[clamp(1rem,1.2vw,1.15rem)] leading-8">
+            {entry.data.summary}
+          </p>
+          <a class="text-link mt-6" href={getLocalizedPath(locale, '/contact')}
+            >{locale === 'id' ? 'Diskusikan kebutuhan ini' : 'Discuss this need'}
+            <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section-pad bg-paper">
+    <div class="shell">
+      <div class="border-ink/12 grid border-t lg:grid-cols-2">
+        <article class="border-ink/12 border-b py-8 lg:border-r lg:pr-10">
+          <p class="eyebrow text-indigo-deep/60">
+            {locale === 'id' ? 'Masalah yang dibantu' : 'Problem it helps with'}
+          </p><h2
+            class="font-display mt-5 max-w-[24ch] text-[clamp(2rem,3.5vw,3.4rem)] leading-[1.02] font-semibold tracking-[-.05em]"
+          >
+            {entry.data.problem}
+          </h2>
+        </article>
+        <article class="border-ink/12 border-b py-8 lg:pl-10">
+          <p class="eyebrow text-indigo-deep/60">
+            {locale === 'id' ? 'Kapan relevan' : 'When it is relevant'}
+          </p><ul class="text-ink/58 mt-5 grid gap-3 text-sm leading-7">
+            {
+              entry.data.when.map((item, index) => (
+                <li class="grid grid-cols-[2rem_1fr] gap-2">
+                  <>
+                    <span class="text-indigo-deep/38">0{index + 1}</span>
+                    <span>{item}</span>
+                  </>
+                </li>
+              ))
+            }
+          </ul>
+        </article>
+        <article class="border-ink/12 border-b py-8 lg:border-r lg:pr-10">
+          <p class="eyebrow text-indigo-deep/60">
+            {locale === 'id' ? 'Yang kami lakukan' : 'What we do'}
+          </p><ul class="text-ink/58 mt-5 grid gap-3 text-sm leading-7">
+            {
+              entry.data.whatWeDo.slice(0, 3).map((item, index) => (
+                <li class="grid grid-cols-[2rem_1fr] gap-2">
+                  <>
+                    <span class="text-indigo-deep/38">0{index + 1}</span>
+                    <span>{item}</span>
+                  </>
+                </li>
+              ))
+            }
+          </ul>
+        </article>
+        <article class="border-ink/12 border-b py-8 lg:pl-10">
+          <p class="eyebrow text-indigo-deep/60">
+            {locale === 'id' ? 'Output yang mungkin' : 'Typical outputs'}
+          </p><div class="mt-5 flex flex-wrap gap-x-4 gap-y-3">
+            {
+              entry.data.outputs
+                .slice(0, 5)
+                .map((item) => (
+                  <span class="border-ink/16 text-ink/62 border-b pb-1 text-sm font-semibold">
+                    {item}
+                  </span>
+                ))
+            }
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-ink text-paper py-14 sm:py-18 lg:py-20">
+    <div class="shell grid gap-9 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-14">
+      <div>
+        <p class="eyebrow text-accent">{locale === 'id' ? 'Cara memulai' : 'How it begins'}</p>
+        <h2
+          class="font-display mt-5 max-w-[24ch] text-[clamp(2.2rem,4vw,4.2rem)] leading-[1.01] font-semibold tracking-[-.055em]"
+        >
+          {entry.data.start}
+        </h2>
+        <div class="text-paper/56 mt-7 flex flex-wrap gap-x-4 gap-y-3 text-sm">
+          {
+            entry.data.examples
+              .slice(0, 4)
+              .map((item) => <span class="border-paper/16 border-b pb-1">{item}</span>)
+          }
+        </div>
+      </div>
+      <a
+        class="button-accent shrink-0"
+        href={getLocalizedPath(locale, '/contact')}
+        data-track-event="cta_clicked"
+        data-track-label={`solution-${slug}`}
+        >{locale === 'id' ? 'Ceritakan Proses Anda' : 'Tell Us What You Need'} ↗</a
+      >
+    </div>
+  </section>
+</article>
+
+<script>
+  import { track } from '@/lib/analytics/client';
+  const trackSolutionView = () => {
+    const page = document.querySelector<HTMLElement>('[data-solution-view]');
+    if (!page || page.dataset.analyticsReady === 'true') return;
+    page.dataset.analyticsReady = 'true';
+    track('service_viewed', { slug: page.dataset.solutionSlug ?? '' });
+  };
+  trackSolutionView();
+  document.addEventListener('astro:page-load', trackSolutionView);
+</script>

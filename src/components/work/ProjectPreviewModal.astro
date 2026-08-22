@@ -1,0 +1,524 @@
+---
+import { brandConfig } from '@/config/brand';
+import type { Locale } from '@/config/site';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+
+const copy =
+  locale === 'id'
+    ? {
+        label: 'Preview hasil kerja',
+        openOriginal: 'Buka website asli',
+        close: 'Tutup preview',
+        loading: 'Membuka website…',
+        live: 'Live website',
+        fallback: 'Tampilan alternatif',
+        backToLive: 'Kembali ke live',
+        note: 'Kalau preview live diblokir oleh website, pilih tampilan alternatif atau buka website aslinya.',
+        defaultTitle: 'Project Digvation',
+        defaultDescriptor: 'Preview project',
+      }
+    : {
+        label: 'Project preview',
+        openOriginal: 'Open original website',
+        close: 'Close preview',
+        loading: 'Opening website…',
+        live: 'Live website',
+        fallback: 'Alternative preview',
+        backToLive: 'Back to live',
+        note: 'If the live preview is blocked by the website, use the alternative preview or open the original site.',
+        defaultTitle: 'Digvation project',
+        defaultDescriptor: 'Project preview',
+      };
+---
+
+<dialog
+  class="project-preview-dialog border-ink/15 bg-paper text-ink m-auto h-[min(92svh,58rem)] w-[min(94vw,92rem)] max-w-none overflow-hidden rounded-[.35rem] border p-0 shadow-[0_40px_120px_rgba(11,13,16,.35)]"
+  data-project-preview-dialog
+  aria-label={copy.label}
+  data-preview-fallback-label={copy.fallback}
+  data-preview-live-label={copy.backToLive}
+>
+  <div class="grid h-full min-h-0 grid-rows-[auto_1fr_auto]">
+    <header
+      class="border-line-light bg-paper-warm flex min-h-14 items-center gap-3 border-b px-3 py-2 sm:px-4"
+    >
+      <div class="hidden shrink-0 items-center gap-2 sm:flex" aria-hidden="true">
+        <span class="bg-ink/18 h-px w-8"></span>
+      </div>
+
+      <div class="min-w-0 flex-1 sm:px-2">
+        <p class="sr-only">{copy.label}</p>
+        <div
+          class="border-ink/12 bg-paper flex min-w-0 items-center gap-2 border-b px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,.8)]"
+        >
+          <svg
+            class="text-ink/40 size-3.5 shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M8 10V7a4 4 0 1 1 8 0v3M6.5 10h11A1.5 1.5 0 0 1 19 11.5v7A1.5 1.5 0 0 1 17.5 20h-11A1.5 1.5 0 0 1 5 18.5v-7A1.5 1.5 0 0 1 6.5 10Z"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"></path>
+          </svg>
+          <span class="text-ink/55 truncate text-[.72rem] font-semibold" data-preview-address
+            >digvation.id</span
+          >
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="border-ink/10 bg-paper text-ink/65 hover:border-ink/25 hover:text-ink shrink-0 border px-3 py-2 text-[.7rem] font-bold transition max-sm:px-2 max-sm:text-[.62rem]"
+        data-preview-fallback-toggle
+        hidden
+      >
+        {copy.fallback}
+      </button>
+
+      <a
+        class="bg-indigo-deep text-paper hidden shrink-0 items-center gap-1.5 px-3 py-2 text-[.7rem] font-extrabold no-underline transition hover:-translate-y-px sm:inline-flex"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-preview-open-original
+      >
+        {copy.openOriginal}
+        <span aria-hidden="true">↗</span>
+      </a>
+
+      <button
+        type="button"
+        class="border-ink/10 bg-paper hover:bg-paper-soft grid size-9 shrink-0 place-items-center border text-lg leading-none transition"
+        aria-label={copy.close}
+        data-preview-close
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    <div class="relative min-h-0 overflow-hidden bg-[#e9ecef]" data-preview-stage>
+      <div
+        class="bg-paper-warm absolute inset-0 z-20 grid place-items-center text-center transition-opacity"
+        data-preview-loading
+        hidden
+      >
+        <div>
+          <img
+            src={brandConfig.assets.markIndigo}
+            alt=""
+            class="mx-auto w-10 animate-pulse"
+            width="40"
+            height="40"
+          />
+          <p class="text-ink/55 mt-3 text-sm font-bold">{copy.loading}</p>
+        </div>
+      </div>
+
+      <iframe
+        class="bg-paper absolute inset-0 size-full border-0"
+        title={copy.live}
+        src="about:blank"
+        referrerpolicy="strict-origin-when-cross-origin"
+        sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+        data-preview-iframe
+        hidden></iframe>
+
+      <div
+        class="absolute inset-0 overflow-auto bg-[#e9ecef] p-3 sm:p-6"
+        data-preview-image-stage
+        hidden
+      >
+        <div
+          class="border-ink/10 bg-paper mx-auto min-h-full w-full max-w-[86rem] overflow-hidden border shadow-[0_24px_70px_rgba(11,13,16,.14)]"
+        >
+          <img
+            class="block h-auto min-h-[55vh] w-full object-contain object-top"
+            src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+            alt=""
+            data-preview-image
+          />
+        </div>
+      </div>
+
+      <div
+        class="bg-paper-soft absolute inset-0 overflow-auto p-4 sm:p-8"
+        data-preview-default-stage
+        hidden
+      >
+        <div class="mx-auto grid min-h-full max-w-3xl place-items-center text-center">
+          <div class="border-ink/12 w-full border-y py-14 sm:py-20">
+            <img
+              src={brandConfig.assets.markIndigo}
+              alt=""
+              class="mx-auto w-10"
+              width="40"
+              height="40"
+            />
+            <p
+              class="text-indigo-deep/45 mt-7 text-[.64rem] font-extrabold tracking-[.1em] uppercase"
+              data-preview-default-descriptor
+            >
+              {copy.defaultDescriptor}
+            </p>
+            <h2
+              class="font-display mx-auto mt-4 max-w-[16ch] text-3xl font-semibold tracking-[-.045em] sm:text-5xl"
+              id="project-preview-title"
+              data-preview-title
+            >
+              {copy.defaultTitle}
+            </h2>
+            <p class="text-dark-muted mx-auto mt-5 max-w-lg text-sm leading-7">
+              {
+                locale === 'id'
+                  ? 'Website ini tidak mengizinkan preview di dalam halaman. Buka website aslinya untuk melihat pekerjaan yang sebenarnya.'
+                  : 'This website does not allow an embedded preview. Open the original website to see the actual work.'
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer
+      class="border-line-light bg-paper flex flex-col gap-2 border-t px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4"
+    >
+      <p class="text-dark-muted m-0 max-w-4xl text-[.67rem] leading-5">{copy.note}</p>
+      <a
+        class="text-indigo-deep decoration-indigo-deep/30 inline-flex shrink-0 items-center gap-1.5 text-[.72rem] font-extrabold underline underline-offset-4 sm:hidden"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-preview-open-original-mobile
+      >
+        {copy.openOriginal}
+        <span aria-hidden="true">↗</span>
+      </a>
+    </footer>
+  </div>
+</dialog>
+
+<style>
+  .project-preview-dialog[open] {
+    animation: project-preview-in 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .project-preview-dialog[open]::backdrop {
+    animation: project-preview-backdrop-in 180ms ease-out both;
+  }
+  .project-preview-dialog.is-closing {
+    animation: project-preview-out 150ms ease-in both;
+  }
+  .project-preview-dialog.is-closing::backdrop {
+    animation: project-preview-backdrop-out 150ms ease-in both;
+  }
+
+  .project-preview-dialog::backdrop {
+    background: rgba(11, 13, 16, 0.72);
+    backdrop-filter: blur(10px);
+  }
+
+  @keyframes project-preview-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes project-preview-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(8px) scale(0.99);
+    }
+  }
+  @keyframes project-preview-backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes project-preview-backdrop-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-preview-dialog[open],
+    .project-preview-dialog[open]::backdrop,
+    .project-preview-dialog.is-closing,
+    .project-preview-dialog.is-closing::backdrop {
+      animation: none !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-preview-dialog {
+      width: calc(100vw - 1rem);
+      height: calc(100svh - 1rem);
+      border-radius: 1.15rem;
+    }
+  }
+</style>
+
+<script>
+  import { track } from '@/lib/analytics/client';
+
+  type PreviewTrigger = HTMLAnchorElement & {
+    dataset: DOMStringMap & {
+      previewMode?: 'live' | 'image' | 'default';
+      previewUrl?: string;
+      previewImage?: string;
+      previewTitle?: string;
+      previewDescriptor?: string;
+      previewSlug?: string;
+      previewLiveUrl?: string;
+    };
+  };
+
+  const setupProjectPreview = () => {
+    if (!document.querySelector('[data-project-view]')) {
+      sessionStorage.removeItem('digvation:project-return');
+      sessionStorage.removeItem('digvation:project-depth');
+    }
+
+    const dialog = document.querySelector<HTMLDialogElement>('[data-project-preview-dialog]');
+    if (!dialog) return;
+
+    const iframe = dialog.querySelector<HTMLIFrameElement>('[data-preview-iframe]');
+    const imageStage = dialog.querySelector<HTMLElement>('[data-preview-image-stage]');
+    const image = dialog.querySelector<HTMLImageElement>('[data-preview-image]');
+    const defaultStage = dialog.querySelector<HTMLElement>('[data-preview-default-stage]');
+    const loading = dialog.querySelector<HTMLElement>('[data-preview-loading]');
+    const title = dialog.querySelector<HTMLElement>('[data-preview-title]');
+    const descriptor = dialog.querySelector<HTMLElement>('[data-preview-default-descriptor]');
+    const address = dialog.querySelector<HTMLElement>('[data-preview-address]');
+    const toggle = dialog.querySelector<HTMLButtonElement>('[data-preview-fallback-toggle]');
+    const close = dialog.querySelector<HTMLButtonElement>('[data-preview-close]');
+    const originalLinks = dialog.querySelectorAll<HTMLAnchorElement>(
+      '[data-preview-open-original], [data-preview-open-original-mobile]',
+    );
+
+    if (
+      !iframe ||
+      !imageStage ||
+      !image ||
+      !defaultStage ||
+      !loading ||
+      !title ||
+      !descriptor ||
+      !address ||
+      !toggle ||
+      !close
+    )
+      return;
+
+    const fallbackLabel = dialog.dataset.previewFallbackLabel ?? 'Alternative preview';
+    const backToLiveLabel = dialog.dataset.previewLiveLabel ?? 'Back to live';
+
+    let opener: HTMLElement | null = null;
+    let currentMode: 'live' | 'image' | 'default' = 'default';
+    let fallbackMode: 'image' | 'default' = 'default';
+    let liveUrl = '';
+    let embedUrl = '';
+    let previewImage = '';
+    let showingFallback = false;
+    let previousOverflow = '';
+    let closingTimer = 0;
+
+    const hideAllStages = () => {
+      iframe.hidden = true;
+      imageStage.hidden = true;
+      defaultStage.hidden = true;
+      loading.hidden = true;
+    };
+
+    const setOriginalUrl = (url: string) => {
+      originalLinks.forEach((link) => {
+        link.href = url || '#';
+        link.toggleAttribute('hidden', !url);
+      });
+    };
+
+    const getDisplayAddress = (url: string) => {
+      if (!url) return 'digvation.id';
+      try {
+        const parsed = new URL(url);
+        const path = parsed.pathname === '/' ? '' : parsed.pathname;
+        return `${parsed.host}${path}`;
+      } catch {
+        return url;
+      }
+    };
+
+    const showDefault = () => {
+      hideAllStages();
+      defaultStage.hidden = false;
+    };
+
+    const showImage = () => {
+      if (!previewImage) {
+        showDefault();
+        return;
+      }
+      hideAllStages();
+      image.src = previewImage;
+      image.alt = title.textContent ? `${title.textContent} preview` : 'Project preview';
+      imageStage.hidden = false;
+    };
+
+    const showLive = () => {
+      if (!embedUrl) {
+        if (fallbackMode === 'image') showImage();
+        else showDefault();
+        return;
+      }
+      hideAllStages();
+      loading.hidden = false;
+      iframe.hidden = false;
+      iframe.src = embedUrl;
+      const onLoad = () => {
+        loading.hidden = true;
+        iframe.removeEventListener('load', onLoad);
+      };
+      iframe.addEventListener('load', onLoad);
+      window.setTimeout(() => {
+        loading.hidden = true;
+      }, 6500);
+    };
+
+    const updateToggle = () => {
+      const canToggle = currentMode === 'live';
+      toggle.hidden = !canToggle;
+      toggle.textContent = showingFallback ? backToLiveLabel : fallbackLabel;
+    };
+
+    const requestClose = () => {
+      if (!dialog.open) return;
+      window.clearTimeout(closingTimer);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reducedMotion) {
+        dialog.close();
+        return;
+      }
+      dialog.classList.add('is-closing');
+      closingTimer = window.setTimeout(() => {
+        dialog.classList.remove('is-closing');
+        dialog.close();
+      }, 150);
+    };
+
+    const openPreview = (trigger: PreviewTrigger) => {
+      currentMode = trigger.dataset.previewMode ?? 'default';
+      liveUrl = trigger.dataset.previewLiveUrl ?? '';
+      embedUrl = trigger.dataset.previewUrl ?? liveUrl;
+      previewImage = trigger.dataset.previewImage ?? '';
+      fallbackMode = previewImage ? 'image' : 'default';
+      showingFallback = false;
+      opener = trigger;
+
+      title.textContent = trigger.dataset.previewTitle || 'Digvation project';
+      descriptor.textContent = trigger.dataset.previewDescriptor || 'Selected work';
+      address.textContent = getDisplayAddress(liveUrl || embedUrl);
+      setOriginalUrl(liveUrl);
+      updateToggle();
+
+      if (currentMode === 'live') showLive();
+      else if (currentMode === 'image') showImage();
+      else showDefault();
+
+      previousOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = 'hidden';
+      dialog.showModal();
+      close.focus({ preventScroll: true });
+
+      track('portfolio_previewed', {
+        slug: trigger.dataset.previewSlug ?? '',
+        preview_mode: currentMode,
+      });
+    };
+
+    document
+      .querySelectorAll<PreviewTrigger>('[data-project-preview-trigger]')
+      .forEach((trigger) => {
+        if (trigger.dataset.previewReady === 'true') return;
+        trigger.dataset.previewReady = 'true';
+        trigger.addEventListener('click', (event) => {
+          if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          )
+            return;
+          event.preventDefault();
+          openPreview(trigger);
+        });
+      });
+
+    if (dialog.dataset.controlsReady !== 'true') {
+      dialog.dataset.controlsReady = 'true';
+
+      toggle.addEventListener('click', () => {
+        if (currentMode !== 'live') return;
+        showingFallback = !showingFallback;
+        if (showingFallback) {
+          iframe.src = 'about:blank';
+          if (fallbackMode === 'image') showImage();
+          else showDefault();
+        } else {
+          showLive();
+        }
+        updateToggle();
+      });
+
+      close.addEventListener('click', requestClose);
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) requestClose();
+      });
+      dialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        requestClose();
+      });
+
+      document.addEventListener(
+        'astro:before-swap',
+        () => {
+          window.clearTimeout(closingTimer);
+          dialog.classList.remove('is-closing');
+          if (dialog.open) dialog.close();
+        },
+        { once: true },
+      );
+
+      dialog.addEventListener('close', () => {
+        window.clearTimeout(closingTimer);
+        dialog.classList.remove('is-closing');
+        iframe.src = 'about:blank';
+        hideAllStages();
+        document.documentElement.style.overflow = previousOverflow;
+        opener?.focus({ preventScroll: true });
+        opener = null;
+      });
+    }
+  };
+
+  setupProjectPreview();
+  document.addEventListener('astro:page-load', setupProjectPreview);
+</script>

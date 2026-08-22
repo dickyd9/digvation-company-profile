@@ -1,0 +1,123 @@
+---
+type Props = {
+  text: string;
+  direction?: 'left' | 'right' | 'down';
+  tone?: 'ink' | 'light';
+  class?: string;
+};
+
+const { text, direction = 'left', tone = 'ink', class: className = '' } = Astro.props;
+---
+
+<aside
+  class:list={[
+    'hand-note',
+    `hand-note--${direction}`,
+    tone === 'light' && 'hand-note--light',
+    className,
+  ]}
+  aria-label={text}
+  data-hand-note
+>
+  <span>{text}</span>
+  <svg viewBox="0 0 108 72" fill="none" aria-hidden="true">
+    <path
+      class="hand-note__line"
+      d={direction === 'right'
+        ? 'M8 8C29 14 55 30 92 60'
+        : direction === 'down'
+          ? 'M54 5C56 23 54 43 51 62'
+          : 'M100 8C78 15 57 32 16 60'}></path>
+    <path
+      class="hand-note__tip"
+      d={direction === 'right'
+        ? 'M81 58L94 62L90 49'
+        : direction === 'down'
+          ? 'M43 53L51 64L60 53'
+          : 'M27 57L14 62L19 49'}></path>
+  </svg>
+</aside>
+
+<style>
+  .hand-note {
+    display: inline-grid;
+    justify-items: center;
+    max-width: 12rem;
+    color: #15181d;
+    transform: rotate(-4deg);
+  }
+  .hand-note--right {
+    transform: rotate(4deg);
+  }
+  .hand-note span {
+    font-family: var(--font-hand);
+    font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+    font-weight: 600;
+    line-height: 0.95;
+    text-align: center;
+  }
+  .hand-note svg {
+    width: 5.7rem;
+    margin-top: 0.15rem;
+    overflow: visible;
+  }
+  .hand-note__line,
+  .hand-note__tip {
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .hand-note__line {
+    stroke-dasharray: 140;
+    stroke-dashoffset: 140;
+    transition: stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1) 180ms;
+  }
+  .hand-note__tip {
+    opacity: 0;
+    transition: opacity 220ms ease 820ms;
+  }
+  .hand-note.is-visible .hand-note__line {
+    stroke-dashoffset: 0;
+  }
+  .hand-note.is-visible .hand-note__tip {
+    opacity: 1;
+  }
+  .hand-note--light {
+    color: rgba(255, 255, 255, 0.82);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hand-note__line {
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+    .hand-note__tip {
+      opacity: 1;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const setupHandNotes = () => {
+    document.querySelectorAll<HTMLElement>('[data-hand-note]').forEach((note) => {
+      if (note.dataset.ready === 'true') return;
+      note.dataset.ready = 'true';
+      if (!('IntersectionObserver' in window)) {
+        note.classList.add('is-visible');
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          note.classList.add('is-visible');
+          observer.disconnect();
+        },
+        { threshold: 0.4 },
+      );
+      observer.observe(note);
+    });
+  };
+  setupHandNotes();
+  document.addEventListener('astro:page-load', setupHandNotes);
+</script>

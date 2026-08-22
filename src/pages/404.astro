@@ -1,0 +1,45 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BrandLogo from '@/components/brand/BrandLogo.astro';
+---
+
+<BaseLayout
+  locale="id"
+  title="404 — Digvation"
+  description="Halaman tidak ditemukan."
+  noindex
+  hasAlternate={false}
+>
+  <section class="bg-paper-warm text-ink py-10 sm:py-16">
+    <div class="shell">
+      <div
+        class="border-ink/10 bg-paper grid overflow-hidden rounded-[.9rem] border lg:grid-cols-[.9fr_1.1fr]"
+      >
+        <div class="bg-butter p-6 sm:p-8 lg:p-10">
+          <BrandLogo locale="id" tone="brand" compact />
+          <p class="eyebrow text-indigo-deep mt-8">404 / Not found</p>
+          <h1 class="mt-4 max-w-[12ch] text-3xl font-semibold tracking-[-.035em] sm:text-4xl">
+            Halaman ini tidak ditemukan.
+          </h1>
+          <p class="text-ink/65 mt-4 max-w-lg text-sm leading-6">
+            Mungkin URL berubah atau halaman sudah tidak tersedia. Anda bisa kembali ke beranda atau
+            langsung cerita ke Digvation.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a class="button-primary" href="/">Kembali ke Beranda</a><a
+              class="button-secondary"
+              href="/contact">Ngobrol dengan Kami</a
+            >
+          </div>
+        </div>
+        <div class="bg-lavender grid min-h-[16rem] place-items-center p-8" aria-hidden="true">
+          <div
+            class="bg-paper text-indigo-deep soft-shadow grid size-36 place-items-center rounded-full text-5xl font-black"
+          >
+            404
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

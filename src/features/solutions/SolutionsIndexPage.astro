@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '@/components/ui/PageHero.astro';
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const solutions = (await getCollection('solutions'))
+  .filter((entry) => entry.data.locale === locale)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageHero
+  eyebrow={locale === 'id' ? 'Solusi' : 'Solutions'}
+  title={locale === 'id'
+    ? 'Solusi digital yang mengikuti bisnis Anda.'
+    : 'Digital solutions shaped around your business.'}
+  body={locale === 'id'
+    ? 'Website, sistem, automation, AI, atau IoT dipilih setelah kebutuhan bisnisnya jelas.'
+    : 'Websites, systems, automation, AI, or IoT are chosen after the business need is clear.'}
+  note={locale === 'id'
+    ? 'Mulai dari masalah. Bukan dari stack.'
+    : 'Start with the problem. Not the stack.'}
+  ctaLabel={locale === 'id' ? 'Ceritakan kebutuhan Anda' : 'Tell us what you need'}
+  ctaHref={getLocalizedPath(locale, '/contact')}
+/>
+
+<section class="section-pad bg-paper text-ink">
+  <div class="shell">
+    <div class="border-ink/12 border-t">
+      {
+        solutions.map((entry, index) => (
+          <a
+            class="solution-index-row group border-ink/12 grid gap-5 border-b py-8 text-inherit no-underline sm:py-9 lg:grid-cols-[5rem_.85fr_1.15fr_auto] lg:items-start lg:gap-9"
+            href={getLocalizedPath(locale, `/solutions/${entry.data.routeSlug}`)}
+            data-reveal="up"
+            style={`--reveal-delay:${Math.min(index * 35, 140)}ms`}
+          >
+            <span class="text-indigo-deep/42 pt-1 text-[.66rem] font-extrabold tracking-[.1em] uppercase">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <div>
+              <p class="text-ink/36 text-[.6rem] font-extrabold tracking-[.08em] uppercase">
+                {entry.data.eyebrow}
+              </p>
+              <h2 class="font-display mt-3 max-w-[18ch] text-[clamp(1.7rem,2.7vw,2.65rem)] leading-[1.02] font-semibold tracking-[-.05em]">
+                {entry.data.title}
+              </h2>
+            </div>
+            <div>
+              <p class="text-ink/58 m-0 max-w-2xl text-sm leading-7">{entry.data.summary}</p>
+              <div class="text-ink/34 mt-4 flex flex-wrap gap-x-3 gap-y-2 text-[.63rem] font-extrabold tracking-[.04em] uppercase">
+                {entry.data.outputs.slice(0, 4).map((output, outputIndex) => (
+                  <>
+                    <span>{output}</span>
+                    {outputIndex < Math.min(entry.data.outputs.length, 4) - 1 && <span>/</span>}
+                  </>
+                ))}
+              </div>
+            </div>
+            <span
+              class="solution-index-arrow text-ink/22 hidden pt-1 text-2xl font-light lg:block"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div
+      class="border-ink/12 mt-12 grid gap-7 border-t pt-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-12"
+    >
+      <div>
+        <p class="eyebrow text-indigo-deep">
+          {locale === 'id' ? 'Belum tahu masuk yang mana?' : 'Not sure which one fits?'}
+        </p>
+        <h2
+          class="font-display mt-4 max-w-[21ch] text-[clamp(2rem,3.5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-.05em]"
+        >
+          {
+            locale === 'id'
+              ? 'Ceritakan prosesnya. Kami bantu menentukan jalannya.'
+              : 'Tell us the process. We will help find the way.'
+          }
+        </h2>
+      </div>
+      <a class="button-primary shrink-0" href={getLocalizedPath(locale, '/contact')}
+        >{locale === 'id' ? 'Mulai Diskusi' : 'Start a Conversation'} ↗</a
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  .solution-index-row {
+    transition:
+      padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms ease;
+  }
+  .solution-index-row:hover {
+    padding-left: 0.7rem;
+    background: rgba(147, 166, 255, 0.065);
+  }
+  .solution-index-arrow {
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 220ms ease;
+  }
+  .solution-index-row:hover .solution-index-arrow {
+    transform: translate(3px, -3px);
+    color: var(--color-indigo-deep);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .solution-index-row,
+    .solution-index-arrow {
+      transition: none;
+    }
+  }
+</style>

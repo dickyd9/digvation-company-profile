@@ -1,0 +1,52 @@
+<script>
+  let revealObserver: IntersectionObserver | null = null;
+
+  const revealImmediately = (elements: HTMLElement[]) => {
+    elements.forEach((element) => element.classList.add('is-revealed'));
+  };
+
+  const setupScrollMotion = () => {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    if (elements.length === 0) return;
+
+    document.documentElement.classList.add('motion-ready');
+
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)
+    ) {
+      revealImmediately(elements);
+      return;
+    }
+
+    revealObserver?.disconnect();
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const element = entry.target as HTMLElement;
+          element.classList.add('is-revealed');
+          revealObserver?.unobserve(element);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    );
+
+    elements.forEach((element) => {
+      if (element.classList.contains('is-revealed')) return;
+      revealObserver?.observe(element);
+    });
+  };
+
+  const cleanupScrollMotion = () => {
+    revealObserver?.disconnect();
+    revealObserver = null;
+  };
+
+  setupScrollMotion();
+  document.addEventListener('astro:page-load', setupScrollMotion);
+  document.addEventListener('astro:before-swap', cleanupScrollMotion);
+</script>
