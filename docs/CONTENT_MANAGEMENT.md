@@ -76,15 +76,15 @@ Each localized file automatically feeds `/solutions` and `/solutions/[slug]`. Up
 
 Homepage solution summaries are intentionally sales-oriented entries in `src/content/home.ts` and link into the deeper solution routes. The homepage presentation is editorial rather than card-driven.
 
-## Homepage client proof
+## Homepage client logos
 
-The “businesses we have helped” proof is generated from featured entries in:
+The homepage client wall is managed in:
 
 ```text
-src/content/work/
+src/content/clients.ts
 ```
 
-Set `featured: true` only for approved, verifiable work. The homepage reads the project name, client, summary, type, year, visual variant, and live URL from that collection, so the proof never needs a second manually maintained client list. If no featured work exists, the proof block does not render.
+Add only approved, verifiable clients and use their official public logo asset. This section is relationship proof, not a second portfolio: it displays logos only and links each logo to the client's public website. Project summaries and case studies remain in `src/content/work/`. If the client array is empty, the logo wall does not render.
 
 ## FAQ
 
