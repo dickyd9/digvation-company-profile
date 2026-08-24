@@ -1,7 +1,5 @@
 ---
-import BrandLogo from '@/components/brand/BrandLogo.astro';
-import PageHero from '@/components/ui/PageHero.astro';
-import ProcessBoard from '@/components/ui/ProcessBoard.astro';
+import ProjectFrame from '@/components/work/ProjectFrame.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 
@@ -10,252 +8,397 @@ const { locale } = Astro.props;
 const copy =
   locale === 'id'
     ? {
-        hero: [
-          'Cara Kerja',
-          'Anda bawa masalahnya. Kami bawa sampai jadi solusi digital yang berjalan.',
-          'Konteks bisnis dari Anda. Strategi, desain, build, dan launch dari kami.',
-          'Tidak perlu jadi project manager.',
-          'Diskusikan bisnis Anda',
+        eyebrow: 'Cara Kerja',
+        title: 'Bekerja dengan Digvation harus terasa jelas.',
+        intro:
+          'Tidak perlu memahami proses engineering. Anda cukup memahami bisnisnya. Kami menjaga agar keputusan, progres, dan hasilnya mudah diikuti.',
+        stages: [
+          [
+            'Pahami',
+            'Kami melihat proses, orang, data, dan hambatan yang sebenarnya.',
+            'Catatan konteks dan pertanyaan penting',
+          ],
+          [
+            'Bentuk',
+            'Kami menentukan solusi yang masuk akal, apa yang diprioritaskan, dan apa yang belum perlu.',
+            'Arah solusi, scope, dan alur awal',
+          ],
+          [
+            'Bangun',
+            'Desain dan development berjalan bertahap agar keputusan dapat dilihat lebih awal.',
+            'Flow, interface, dan versi yang dapat dicoba',
+          ],
+          [
+            'Validasi',
+            'Kami menguji solusi dengan skenario yang akan benar-benar dihadapi pengguna.',
+            'Review, test state, dan perbaikan',
+          ],
+          [
+            'Jalankan',
+            'Kami menyiapkan rilis, deployment, data, dan kebutuhan operasionalnya.',
+            'Production release dan panduan penggunaan',
+          ],
+          [
+            'Tingkatkan',
+            'Setelah digunakan, kami melihat apa yang perlu dipantau atau dibenahi berikutnya.',
+            'Monitoring dan prioritas berikutnya',
+          ],
         ],
-        intro: [
-          'Satu partner. Satu alur yang jelas.',
-          'Tidak ada lempar-lempar tanggung jawab antara strategi, desain, dan development.',
+        artifact: 'Yang terlihat di tahap ini',
+        roleEyebrow: 'Pembagian peran',
+        roleTitle: 'Anda membawa konteks bisnis. Kami bertanggung jawab pada delivery digital.',
+        client: [
+          'Menjelaskan proses dan hambatan',
+          'Memberi validasi dari sisi bisnis',
+          'Mengambil keputusan penting',
         ],
-        principles: [
-          ['Masalah dulu', 'Teknologi dipilih setelah kebutuhan jelas.'],
-          ['Keputusan terlihat', 'Scope, risiko, dan prioritas tidak disembunyikan.'],
-          ['Sampai dipakai', 'Launch bukan sekadar serah-terima file.'],
+        us: [
+          'Menerjemahkan kebutuhan menjadi scope',
+          'Menangani desain, development, dan integration',
+          'Menguji, merilis, dan mendampingi penggunaan',
         ],
-        steps: [
-          {
-            phase: 'Konteks',
-            title: 'Pahami',
-            body: 'Kami melihat proses, orang, data, dan hambatan yang paling terasa.',
-          },
-          {
-            phase: 'Prioritas',
-            title: 'Tentukan',
-            body: 'Kita memilih apa yang perlu diselesaikan dulu dan apa yang belum perlu.',
-          },
-          {
-            phase: 'Flow & UI',
-            title: 'Rancang',
-            body: 'Kebutuhan diubah menjadi alur, pengalaman, scope, dan aturan yang jelas.',
-          },
-          {
-            phase: 'Build & QA',
-            title: 'Bangun',
-            body: 'Digvation mengerjakan development, integration, testing, dan review.',
-          },
-          {
-            phase: 'Launch',
-            title: 'Jalankan',
-            body: 'Solusi disiapkan untuk penggunaan nyata, lalu ditingkatkan bila diperlukan.',
-          },
-        ],
-        role: [
-          'Pembagian peran',
-          'Anda pegang bisnisnya. Kami pegang delivery digitalnya.',
-          'Kami tidak meminta Anda menerjemahkan bisnis menjadi jargon teknis.',
-        ],
-        client: ['Konteks bisnis', 'PIC untuk validasi', 'Keputusan penting'],
-        us: ['Strategi & scope', 'UI/UX & development', 'Integration, QA & launch'],
-        close: [
-          'Mulai dari satu masalah yang paling terasa.',
-          'Ceritakan prosesnya. Kami bantu menentukan langkah pertama.',
-          'Mulai Percakapan',
-        ],
+        clientLabel: 'Dari Anda',
+        usLabel: 'Dari Digvation',
+        ctaTitle: 'Mulai dari satu proses yang paling terasa berat.',
+        ctaBody: 'Kami bantu melihat langkah pertama yang paling masuk akal.',
+        cta: 'Mulai percakapan',
       }
     : {
-        hero: [
-          'How We Work',
-          'You bring the problem. We carry it through to a digital solution that works.',
-          'Business context from you. Strategy, design, build, and launch from us.',
-          'You do not need to become the project manager.',
-          'Discuss your business',
+        eyebrow: 'How We Work',
+        title: 'Working with Digvation should feel clear.',
+        intro:
+          'You do not need to understand the engineering process. You understand the business. We keep decisions, progress, and outcomes easy to follow.',
+        stages: [
+          [
+            'Understand',
+            'We look at the process, people, data, and the actual friction.',
+            'Context notes and key questions',
+          ],
+          [
+            'Shape',
+            'We define a sensible solution, what to prioritize, and what does not need to be built yet.',
+            'Direction, scope, and an initial flow',
+          ],
+          [
+            'Build',
+            'Design and development move in clear iterations so decisions are visible early.',
+            'Flow, interface, and a version to try',
+          ],
+          [
+            'Validate',
+            'We test the solution against the situations users will actually face.',
+            'Review, test state, and improvements',
+          ],
+          [
+            'Launch',
+            'We prepare the release, deployment, data, and operational needs.',
+            'Production release and usage guidance',
+          ],
+          [
+            'Improve',
+            'Once in use, we see what should be monitored or improved next.',
+            'Monitoring and the next priorities',
+          ],
         ],
-        intro: [
-          'One partner. One clear delivery path.',
-          'No responsibility gaps between strategy, design, and development.',
+        artifact: 'What you can see at this stage',
+        roleEyebrow: 'Who owns what',
+        roleTitle: 'You bring the business context. We own digital delivery.',
+        client: [
+          'Explain the process and friction',
+          'Validate from the business side',
+          'Make important decisions',
         ],
-        principles: [
-          ['Problem first', 'Technology is chosen after the need is clear.'],
-          ['Visible decisions', 'Scope, risk, and priorities stay explicit.'],
-          ['Through to use', 'Launch is more than handing over files.'],
+        us: [
+          'Translate the need into scope',
+          'Handle design, development, and integration',
+          'Test, launch, and support real use',
         ],
-        steps: [
-          {
-            phase: 'Context',
-            title: 'Understand',
-            body: 'We look at process, people, data, and the friction that matters most.',
-          },
-          {
-            phase: 'Priority',
-            title: 'Define',
-            body: 'We choose what should be solved first and what does not need to be built yet.',
-          },
-          {
-            phase: 'Flow & UI',
-            title: 'Design',
-            body: 'Needs become clear flows, experiences, scope, and business rules.',
-          },
-          {
-            phase: 'Build & QA',
-            title: 'Build',
-            body: 'Digvation handles development, integration, testing, and review.',
-          },
-          {
-            phase: 'Launch',
-            title: 'Run',
-            body: 'The solution enters real use and improves when the business needs it.',
-          },
-        ],
-        role: [
-          'Who owns what',
-          'You own the business. We own digital delivery.',
-          'You should not have to translate the business into technical jargon.',
-        ],
-        client: ['Business context', 'A PIC for validation', 'Important decisions'],
-        us: ['Strategy & scope', 'UI/UX & development', 'Integration, QA & launch'],
-        close: [
-          'Start with the problem you feel most.',
-          'Tell us how it works today. We will help decide the first move.',
-          'Start a Conversation',
-        ],
+        clientLabel: 'From you',
+        usLabel: 'From Digvation',
+        ctaTitle: 'Start with the process that feels heaviest.',
+        ctaBody: 'We will help find the most sensible first move.',
+        cta: 'Start a conversation',
       };
-const contactHref = getLocalizedPath(locale, '/contact');
 ---
 
-<PageHero
-  eyebrow={copy.hero[0]!}
-  title={copy.hero[1]!}
-  body={copy.hero[2]!}
-  note={copy.hero[3]!}
-  ctaLabel={copy.hero[4]!}
-  ctaHref={contactHref}
-/>
+<section class="process-hero bg-paper-warm text-ink">
+  <div class="shell process-hero__inner" data-reveal="up">
+    <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+    <h1>{copy.title}</h1>
+    <p>{copy.intro}</p>
+  </div>
+</section>
 
-<section class="section-pad bg-paper text-ink" data-track-section="process-principles">
-  <div class="shell-wide">
-    <header
-      class="border-ink/12 grid gap-5 border-b pb-8 lg:grid-cols-[1fr_1fr] lg:items-end"
-      data-reveal="up"
-    >
-      <h2 class="display-lg max-w-[15ch]">{copy.intro[0]}</h2>
-      <p class="body-lg text-dark-muted m-0 max-w-xl">{copy.intro[1]}</p>
-    </header>
-    <div class="grid md:grid-cols-3" data-reveal="up" style="--reveal-delay:70ms">
+<section class="process-stages bg-paper text-ink" data-track-section="process-stages">
+  <div class="shell-wide section-pad">
+    <ol class="process-stages__list">
       {
-        copy.principles.map(([title, body], index) => (
-          <article class="border-ink/12 border-b py-7 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
-            <span class="text-indigo-deep/45 text-[.62rem] font-extrabold tracking-[.09em]">
-              0{index + 1}
-            </span>
-            <h3 class="font-display mt-4 text-2xl font-semibold tracking-[-.04em]">{title}</h3>
-            <p class="text-ink/56 mt-3 text-sm leading-6">{body}</p>
-          </article>
+        copy.stages.map(([title, body, artifact], index) => (
+          <li class="process-stage" data-reveal="up">
+            <span class="process-stage__number">{String(index + 1).padStart(2, '0')}</span>
+            <h2>{title}</h2>
+            <p>{body}</p>
+            <div class="process-stage__artifact">
+              <>
+                <small>{copy.artifact}</small>
+                <strong>{artifact}</strong>
+              </>
+            </div>
+            {index === 2 && (
+              <div class="process-stage__visual">
+                <ProjectFrame
+                  image="/work/leaf-lab/product.webp"
+                  alt={
+                    locale === 'id'
+                      ? 'Interface Leaf Lab yang sedang dikembangkan'
+                      : 'Leaf Lab interface in development'
+                  }
+                  width={1348}
+                  height={926}
+                  imageClass="aspect-[1.46]"
+                />
+              </div>
+            )}
+            {index === 4 && (
+              <div class="process-stage__visual process-stage__visual--wide">
+                <ProjectFrame
+                  image="/work/poseidon-filter/cover.webp"
+                  alt={
+                    locale === 'id'
+                      ? 'Website Poseidon Filter setelah dirilis'
+                      : 'Poseidon Filter website after launch'
+                  }
+                  width={1348}
+                  height={945}
+                  imageClass="aspect-[1.43] object-top"
+                />
+              </div>
+            )}
+          </li>
         ))
       }
+    </ol>
+  </div>
+</section>
+
+<section class="process-roles bg-indigo-deep text-paper" data-track-section="process-roles">
+  <div class="shell section-pad">
+    <header class="process-roles__header">
+      <p class="eyebrow text-accent">{copy.roleEyebrow}</p><h2>{copy.roleTitle}</h2>
+    </header>
+    <div class="process-roles__columns">
+      <section>
+        <h3>{copy.clientLabel}</h3><ol>
+          {
+            copy.client.map((item, index) => (
+              <li>
+                <span>0{index + 1}</span>
+                {item}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+      <section>
+        <h3>{copy.usLabel}</h3><ol>
+          {
+            copy.us.map((item, index) => (
+              <li>
+                <span>0{index + 1}</span>
+                {item}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
     </div>
   </div>
 </section>
 
-<section
-  class="section-pad border-ink/8 bg-paper-soft text-ink border-y"
-  data-track-section="process-board"
->
-  <div class="shell-wide">
-    <ProcessBoard
-      locale={locale}
-      steps={copy.steps}
-      note={locale === 'id'
-        ? 'Lima tahap. Satu pihak yang bertanggung jawab.'
-        : 'Five stages. One accountable partner.'}
-    />
-  </div>
-</section>
-
-<section class="section-pad bg-paper text-ink" data-track-section="process-responsibility">
-  <div class="shell">
-    <div class="grid gap-9 lg:grid-cols-[.78fr_1.22fr] lg:items-start lg:gap-14">
-      <div data-reveal="left">
-        <p class="eyebrow text-indigo-deep">{copy.role[0]}</p>
-        <h2 class="display-lg mt-4 max-w-[14ch]">{copy.role[1]}</h2>
-        <p class="text-dark-muted mt-5 max-w-lg text-base leading-7">{copy.role[2]}</p>
-      </div>
-      <div class="role-grid" data-reveal="right">
-        <article>
-          <span>01</span><h3>{locale === 'id' ? 'Dari Anda' : 'From you'}</h3>
-          <ul>{copy.client.map((item) => <li>{item}</li>)}</ul>
-        </article>
-        <article class="role-grid__digvation">
-          <BrandLogo locale={locale} tone="light" compact /><h3>
-            {locale === 'id' ? 'Dari Digvation' : 'From Digvation'}
-          </h3>
-          <ul>{copy.us.map((item) => <li>{item}</li>)}</ul>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-pad-sm bg-indigo-deep text-paper" data-track-section="process-cta">
-  <div class="shell conversion-strip">
-    <div>
-      <p class="eyebrow text-accent">{copy.close[0]}</p><h2
-        class="font-display mt-4 max-w-[18ch] text-[clamp(2rem,4vw,3.7rem)] leading-[1.02] font-semibold tracking-[-.05em]"
-      >
-        {copy.close[1]}
-      </h2>
-    </div>
-    <a class="button-primary bg-paper! text-ink! shrink-0" href={contactHref}>{copy.close[2]} ↗</a>
+<section class="process-close bg-paper-warm text-ink">
+  <div class="shell process-close__inner">
+    <div><p class="eyebrow text-indigo-deep">{copy.ctaTitle}</p><h2>{copy.ctaBody}</h2></div>
+    <a class="button-primary" href={getLocalizedPath(locale, '/contact')}>{copy.cta} ↗</a>
   </div>
 </section>
 
 <style>
-  .role-grid {
-    display: grid;
-    border: 1px solid rgba(11, 13, 16, 0.14);
+  .process-hero__inner {
+    padding-block: clamp(5rem, 11vw, 10rem);
   }
-  .role-grid article {
-    padding: 1.5rem;
-    background: #fff;
-  }
-  .role-grid article > span {
-    color: rgba(78, 101, 243, 0.55);
-    font-size: 0.62rem;
-    font-weight: 800;
-  }
-  .role-grid h3 {
-    margin-top: 0.85rem;
+  .process-hero h1 {
+    max-width: 13ch;
+    margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: 1.65rem;
-    font-weight: 650;
-    letter-spacing: -0.04em;
+    font-size: clamp(3.4rem, 7.5vw, 8rem);
+    font-weight: 620;
+    line-height: 0.94;
+    letter-spacing: -0.065em;
   }
-  .role-grid ul {
+  .process-hero__inner > p:last-child {
+    max-width: 41rem;
+    margin: 2rem 0 0 auto;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.96rem;
+    line-height: 1.75;
+  }
+  .process-stages__list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    list-style: none;
+  }
+  .process-stage {
     display: grid;
-    gap: 0;
-    margin: 1.2rem 0 0;
+    grid-template-columns: 3rem minmax(9rem, 0.55fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: clamp(2rem, 4vw, 3.25rem) 0;
+  }
+  .process-stage__number {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .process-stage h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 620;
+    line-height: 0.98;
+    letter-spacing: -0.052em;
+  }
+  .process-stage > p {
+    max-width: 36rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .process-stage__artifact {
+    grid-column: 3;
+    display: grid;
+    gap: 0.45rem;
+    border-top: 1px solid rgba(11, 13, 16, 0.1);
+    padding-top: 0.9rem;
+  }
+  .process-stage__artifact small {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .process-stage__artifact strong {
+    font-size: 0.78rem;
+    font-weight: 650;
+  }
+  .process-stage__visual {
+    grid-column: 2 / -1;
+    width: 72%;
+    margin: 1.5rem 0 0 auto;
+    color: var(--color-ink);
+  }
+  .process-stage__visual--wide {
+    width: 90%;
+    margin-left: 0;
+  }
+  .process-roles__header {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .process-roles h2 {
+    max-width: 18ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 5.3vw, 5.6rem);
+    font-weight: 620;
+    line-height: 0.98;
+    letter-spacing: -0.058em;
+  }
+  .process-roles__columns {
+    display: grid;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .process-roles__columns section {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .process-roles h3 {
+    margin: 0 0 1.5rem;
+    color: rgba(147, 166, 255, 0.82);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .process-roles ol {
+    margin: 0;
     padding: 0;
     list-style: none;
   }
-  .role-grid li {
-    padding: 0.7rem 0;
-    border-top: 1px solid rgba(11, 13, 16, 0.1);
-    font-size: 0.82rem;
+  .process-roles li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.9rem 0;
+    font-size: 0.86rem;
     font-weight: 650;
   }
-  .role-grid__digvation {
-    background: #121a2f !important;
-    color: #fff;
+  .process-roles li span {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.61rem;
   }
-  .role-grid__digvation li {
-    border-color: rgba(255, 255, 255, 0.13);
+  .process-close__inner {
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+    padding-block: clamp(4rem, 7vw, 6rem);
   }
-  @media (min-width: 640px) {
-    .role-grid {
+  .process-close h2 {
+    max-width: 20ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4vw, 4rem);
+    font-weight: 620;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  @media (min-width: 900px) {
+    .process-roles__header {
+      grid-template-columns: 0.55fr 1.45fr;
+    }
+    .process-roles__columns {
       grid-template-columns: 1fr 1fr;
+    }
+    .process-roles__columns section:first-child {
+      padding-right: 2rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .process-roles__columns section:last-child {
+      padding-left: 2rem;
+    }
+    .process-close__inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  @media (max-width: 760px) {
+    .process-stage {
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1rem;
+    }
+    .process-stage h2,
+    .process-stage > p,
+    .process-stage__artifact {
+      grid-column: 2;
+    }
+    .process-stage__visual {
+      grid-column: 1 / -1;
+      width: 100%;
     }
   }
 </style>

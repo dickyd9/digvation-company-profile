@@ -1,74 +1,211 @@
 ---
-import BrandLogo from '@/components/brand/BrandLogo.astro';
 import InquiryForm from '@/components/inquiry/InquiryForm.astro';
-import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import { getWhatsAppUrl } from '@/config/contact';
 import { siteConfig, type Locale } from '@/config/site';
+
 type Props = { locale: Locale };
 const { locale } = Astro.props;
+const whatsappUrl = getWhatsAppUrl(locale);
+const copy =
+  locale === 'id'
+    ? {
+        eyebrow: 'Mulai percakapan',
+        title: 'Mari bicara tentang apa yang bisnis Anda butuhkan.',
+        intro:
+          'Tidak perlu proposal panjang atau istilah teknis. Ceritakan proses yang terasa lambat, manual, sulit dipantau, atau belum memiliki solusi.',
+        promise: [
+          ['Kami baca konteksnya', 'Bukan sekadar menghitung jumlah fitur.'],
+          ['Kami bantu memilih prioritas', 'Tidak semua hal harus dibangun sekaligus.'],
+          ['Kami jelaskan langkah berikutnya', 'Agar keputusan tetap mudah dipahami.'],
+        ],
+        emailLabel: 'Lebih nyaman lewat email?',
+        whatsappLabel: 'Lebih cepat lewat WhatsApp?',
+        whatsappCta: 'Mulai chat',
+        response: 'Kami akan membaca konteksnya sebelum melanjutkan percakapan.',
+      }
+    : {
+        eyebrow: 'Start a conversation',
+        title: 'Let us talk about what your business needs.',
+        intro:
+          'No long proposal or technical language needed. Tell us about a process that feels slow, manual, hard to monitor, or still has no solution.',
+        promise: [
+          ['We read the context', 'Not merely count the number of features.'],
+          ['We help choose the priority', 'Not everything has to be built at once.'],
+          ['We explain the next move', 'So the decision remains understandable.'],
+        ],
+        emailLabel: 'Prefer email?',
+        whatsappLabel: 'Prefer WhatsApp?',
+        whatsappCta: 'Start a chat',
+        response: 'We will review the context before continuing the conversation.',
+      };
 ---
 
-<section class="bg-paper-warm text-ink">
-  <div class="shell-wide py-12 sm:py-16 lg:py-20">
-    <div class="grid gap-10 lg:grid-cols-[.82fr_1.18fr] lg:items-start lg:gap-16">
-      <div class="lg:sticky lg:top-28" data-reveal="left">
-        <BrandLogo locale={locale} tone="brand" compact />
-        <p class="eyebrow text-indigo-deep mt-9">
-          {locale === 'id' ? 'Mulai dari bisnis Anda' : 'Start with your business'}
-        </p>
-        <h1
-          class="font-display mt-5 max-w-[12ch] text-[clamp(2.8rem,5.2vw,5.2rem)] leading-[.98] font-semibold tracking-[-.052em]"
-        >
-          {locale === 'id' ? 'Mulai dari satu masalah bisnis.' : 'Start with one business problem.'}
-        </h1>
-        <p class="text-dark-muted mt-7 max-w-lg text-base leading-8">
-          {
-            locale === 'id'
-              ? 'Ceritakan proses yang lambat, manual, atau sulit dipantau. Kami bantu menentukan langkah digitalnya.'
-              : 'Tell us what feels slow, manual, or hard to monitor. We will help define the digital next step.'
-          }
-        </p>
+<section class="contact-page bg-paper-warm text-ink">
+  <div class="shell-wide contact-page__grid">
+    <header class="contact-page__intro" data-reveal="left">
+      <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+      <h1>{copy.title}</h1>
+      <p class="contact-page__lead">{copy.intro}</p>
 
-        <div class="mt-6 flex justify-end pr-[12%]" data-reveal="right">
-          <HandwrittenNote
-            text={locale === 'id'
-              ? 'Tidak perlu proposal atau istilah teknis.'
-              : 'No proposal or technical language needed.'}
-            direction="left"
-          />
-        </div>
+      <ol class="contact-page__promise">
+        {
+          copy.promise.map(([title, body], index) => (
+            <li>
+              <>
+                <span>0{index + 1}</span>
+                <div>
+                  <>
+                    <strong>{title}</strong>
+                    <p>{body}</p>
+                  </>
+                </div>
+              </>
+            </li>
+          ))
+        }
+      </ol>
 
-        <div class="border-ink/12 mt-9 border-y py-5">
-          {
-            [
-              locale === 'id' ? 'Kami pahami konteksnya' : 'We understand the context',
-              locale === 'id' ? 'Kami tentukan prioritasnya' : 'We define the priority',
-              locale === 'id' ? 'Kami sarankan langkahnya' : 'We recommend the next move',
-            ].map((item, index) => (
-              <div class="border-ink/10 grid grid-cols-[2.5rem_1fr] gap-3 border-b py-3 text-sm font-semibold last:border-b-0">
-                <>
-                  <span class="text-indigo-deep/42">0{index + 1}</span>
-                  <span>{item}</span>
-                </>
-              </div>
-            ))
-          }
-        </div>
-
-        <div class="text-ink/58 mt-7 text-sm">
-          <p>{locale === 'id' ? 'Lebih nyaman lewat email?' : 'Prefer email?'}</p>
-          <a
-            class="text-ink font-bold underline underline-offset-4"
-            href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a
+      <div class="contact-page__alternatives">
+        <div>
+          <p>{copy.emailLabel}</p>
+          <a href={`mailto:${siteConfig.contact.email}`} data-track-event="email_click"
+            >{siteConfig.contact.email}</a
           >
         </div>
+        {
+          whatsappUrl && (
+            <div>
+              <p>{copy.whatsappLabel}</p>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-event="whatsapp_click"
+                data-track-label="contact-page"
+              >
+                {copy.whatsappCta} ↗
+              </a>
+            </div>
+          )
+        }
       </div>
+    </header>
 
-      <div
-        class="border-ink/14 bg-paper lg:border-ink/12 border-t pt-7 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12"
-        data-reveal="right"
-      >
-        <InquiryForm locale={locale} />
+    <div class="contact-page__form" data-reveal="right">
+      <div class="contact-page__form-head">
+        <span>01 / INQUIRY</span><p>{copy.response}</p>
       </div>
+      <InquiryForm locale={locale} />
     </div>
   </div>
 </section>
+
+<style>
+  .contact-page__grid {
+    display: grid;
+    gap: 3rem;
+    padding-block: clamp(3.5rem, 7vw, 6.5rem);
+  }
+  .contact-page__intro h1 {
+    max-width: 13ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.1rem, 6.5vw, 6.7rem);
+    font-weight: 620;
+    line-height: 0.95;
+    letter-spacing: -0.063em;
+  }
+  .contact-page__lead {
+    max-width: 38rem;
+    margin: 1.75rem 0 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.94rem;
+    line-height: 1.78;
+  }
+  .contact-page__promise {
+    margin: 2.5rem 0 0;
+    padding: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    list-style: none;
+  }
+  .contact-page__promise li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: 1rem 0;
+  }
+  .contact-page__promise li > span {
+    color: rgba(11, 13, 16, 0.3);
+    font-size: 0.6rem;
+    font-weight: 800;
+  }
+  .contact-page__promise strong {
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .contact-page__promise p {
+    margin: 0.2rem 0 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.73rem;
+  }
+  .contact-page__alternatives {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    margin-top: 2rem;
+  }
+  .contact-page__alternatives p {
+    margin: 0 0 0.3rem;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .contact-page__alternatives a {
+    color: var(--color-ink);
+    font-size: 0.83rem;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+  }
+  .contact-page__form {
+    padding: clamp(1.5rem, 3vw, 3rem);
+    border: 1px solid rgba(11, 13, 16, 0.14);
+    background: var(--color-paper);
+    box-shadow: 0 2.5rem 6rem rgba(11, 13, 16, 0.08);
+  }
+  .contact-page__form-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.14);
+    padding-bottom: 1rem;
+  }
+  .contact-page__form-head span {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+  }
+  .contact-page__form-head p {
+    max-width: 18rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.67rem;
+    line-height: 1.55;
+    text-align: right;
+  }
+  @media (min-width: 1024px) {
+    .contact-page__grid {
+      grid-template-columns: 0.86fr 1.14fr;
+      gap: clamp(4rem, 7vw, 7rem);
+      align-items: start;
+    }
+    .contact-page__intro {
+      position: sticky;
+      top: 7rem;
+    }
+  }
+</style>

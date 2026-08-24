@@ -1,9 +1,9 @@
 ---
 routeSlug: digital-care
 locale: id
-title: Digital Improvement & Care
-eyebrow: Solution 07
-summary: Untuk sistem yang sudah berjalan tetapi perlu dibuat lebih stabil, mudah dipelihara, atau terus diperbaiki.
+title: Perbaiki sistem yang sudah berjalan
+eyebrow: Jaga agar tetap berguna
+summary: Saat sistem perlu dibuat lebih stabil, mudah dirawat, atau terus dikembangkan.
 problem: Launch bukan akhir. Sistem yang dipakai akan menemukan traffic, edge case, kebutuhan operasional, dan perubahan bisnis yang tidak semuanya terlihat saat awal project.
 when:
   - Sistem existing sulit dipelihara

@@ -1,55 +1,133 @@
 ---
-import ProcessBoard from '@/components/ui/ProcessBoard.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { HomeCopy } from '@/content/home';
 import type { Locale } from '@/config/site';
 
 type Props = { copy: HomeCopy['process']; locale: Locale };
 const { copy, locale } = Astro.props;
-const phases =
-  locale === 'id'
-    ? ['Konteks', 'Prioritas', 'Pengalaman', 'Delivery', 'Operasi']
-    : ['Context', 'Priority', 'Experience', 'Delivery', 'Operations'];
-const steps = copy.items.map((item, index) => ({
-  title: item.title,
-  phase: phases[index] ?? item.owner,
-  body: item.body,
-  owner: item.owner,
-}));
 ---
 
-<section class="section-pad bg-paper-warm text-ink" id="process" data-track-section="process">
-  <div class="shell-wide">
-    <div class="process-intro" data-reveal="up">
+<section class="home-process bg-indigo-deep text-paper" data-track-section="process">
+  <div class="shell-wide section-pad">
+    <div class="home-process__intro" data-reveal="up">
       <div>
-        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-        <h2 class="display-xl mt-4 max-w-[14ch]">{copy.title}</h2>
+        <p class="eyebrow text-accent">{copy.eyebrow}</p>
+        <h2>{copy.title}</h2>
       </div>
       <div>
-        <p class="body-lg text-dark-muted m-0 max-w-2xl">{copy.body}</p>
-        <a class="text-link mt-6" href={getLocalizedPath(locale, '/process')}
-          >{locale === 'id' ? 'Lihat cara kerja lengkap' : 'See the full process'}
-          <span aria-hidden="true">↗</span></a
+        <p>{copy.body}</p>
+        <a href={getLocalizedPath(locale, '/process')}
+          >{copy.linkLabel}<span aria-hidden="true">↗</span></a
         >
       </div>
     </div>
 
-    <div class="mt-10" data-reveal="up" style="--reveal-delay:80ms">
-      <ProcessBoard locale={locale} steps={steps} note={copy.note} />
-    </div>
+    <ol class="home-process__steps" data-reveal="up" style="--reveal-delay:80ms">
+      {
+        copy.items.map((item, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
 <style>
-  .process-intro {
+  .home-process__intro {
     display: grid;
     gap: 2rem;
     align-items: end;
+    margin-bottom: clamp(3.5rem, 7vw, 6rem);
   }
-  @media (min-width: 1024px) {
-    .process-intro {
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 5rem;
+  .home-process__intro h2 {
+    max-width: 14ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 5.4vw, 5.8rem);
+    font-weight: 620;
+    line-height: 0.97;
+    letter-spacing: -0.06em;
+  }
+  .home-process__intro > div:last-child > p {
+    max-width: 35rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+  .home-process__intro a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.22rem;
+    color: var(--color-paper);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .home-process__steps {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    list-style: none;
+  }
+  .home-process__steps li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    min-width: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 1.4rem 0;
+  }
+  .home-process__steps li > span {
+    color: rgba(147, 166, 255, 0.72);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .home-process__steps h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 2.1vw, 2rem);
+    font-weight: 620;
+    letter-spacing: -0.04em;
+  }
+  .home-process__steps p {
+    margin: 0.75rem 0 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.76rem;
+    line-height: 1.6;
+  }
+  @media (min-width: 900px) {
+    .home-process__intro {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+    .home-process__steps {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .home-process__steps li {
+      min-height: 15rem;
+      grid-template-columns: 1fr;
+      align-content: space-between;
+      border-right: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 1.25rem;
+    }
+    .home-process__steps li:first-child {
+      padding-left: 0;
+    }
+    .home-process__steps li:last-child {
+      border-right: 0;
+      padding-right: 0;
     }
   }
 </style>

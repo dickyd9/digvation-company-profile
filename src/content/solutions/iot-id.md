@@ -1,9 +1,9 @@
 ---
 routeSlug: iot
 locale: id
-title: IoT & Connected Systems
-eyebrow: Solution 06
-summary: Untuk operasi yang bergantung pada device, sensor, camera, atau data dari lapangan.
+title: Pantau kondisi dari lapangan
+eyebrow: Hubungkan dunia fisik
+summary: Saat kondisi device, sensor, kamera, atau lokasi perlu terlihat dari satu alur.
 problem: 'Connected system harus tetap dipikirkan sebagai sistem operasional: bagaimana device terhubung, apa yang terjadi ketika offline, data apa yang penting, dan siapa yang perlu menerima alert.'
 when:
   - Perlu monitoring kondisi fisik

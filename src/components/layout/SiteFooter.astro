@@ -3,10 +3,12 @@ import BrandLogo from '@/components/brand/BrandLogo.astro';
 import { getNavigation } from '@/config/navigation';
 import { siteConfig, type Locale } from '@/config/site';
 import { analyticsConfig } from '@/config/analytics';
+import { getWhatsAppUrl } from '@/config/contact';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const navigation = getNavigation(locale).filter((item) => item.href !== '/' && item.href !== '/en');
+const whatsappUrl = getWhatsAppUrl(locale);
 ---
 
 <footer class="border-paper/10 bg-ink text-paper border-t">
@@ -14,24 +16,24 @@ const navigation = getNavigation(locale).filter((item) => item.href !== '/' && i
     <div class="grid gap-10 py-12 sm:py-14 lg:grid-cols-[1.35fr_.65fr_.65fr] lg:gap-14">
       <div>
         <BrandLogo locale={locale} tone="light" />
-        <p class="text-paper/48 mt-6 max-w-md text-sm leading-7">
+        <p class="text-paper/70 mt-6 max-w-md text-sm leading-7">
           {
             locale === 'id'
               ? 'Kami membantu bisnis merapikan proses, membangun sistem, menghubungkan data, dan menciptakan pengalaman digital yang benar-benar dipakai.'
               : 'We help businesses improve processes, build systems, connect data, and create digital experiences that people genuinely use.'
           }
         </p>
-        <p class="text-paper/30 mt-5 text-xs font-semibold">
+        <p class="text-paper/60 mt-5 text-xs font-semibold">
           Jakarta, Indonesia · Bekerja dengan bisnis di mana pun.
         </p>
       </div>
       <div>
-        <p class="eyebrow text-paper/30">{locale === 'id' ? 'Jelajahi' : 'Explore'}</p>
+        <p class="eyebrow text-paper/60">{locale === 'id' ? 'Jelajahi' : 'Explore'}</p>
         <nav class="mt-5 grid gap-3 text-sm" aria-label="Footer navigation">
           {
             navigation.map((item) => (
               <a
-                class="text-paper/58 hover:border-paper/30 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
+                class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
                 href={item.href}
               >
                 {item.label}
@@ -41,26 +43,40 @@ const navigation = getNavigation(locale).filter((item) => item.href !== '/' && i
         </nav>
       </div>
       <div>
-        <p class="eyebrow text-paper/30">{locale === 'id' ? 'Kontak' : 'Contact'}</p>
+        <p class="eyebrow text-paper/60">{locale === 'id' ? 'Kontak' : 'Contact'}</p>
         <div class="mt-5 grid gap-3 text-sm">
           <a
-            class="text-paper/58 hover:border-paper/30 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
+            class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
             href={`mailto:${siteConfig.contact.email}`}
-            data-track-event="email_clicked"
+            data-track-event="email_click"
             data-track-label="footer">{siteConfig.contact.email}</a
           >
+          {
+            whatsappUrl && (
+              <a
+                class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-event="whatsapp_click"
+                data-track-label="footer"
+              >
+                WhatsApp
+              </a>
+            )
+          }
           <a
-            class="text-paper/58 hover:border-paper/30 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
+            class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
             href={locale === 'id' ? '/privacy' : '/en/privacy'}>Privacy</a
           >
           <a
-            class="text-paper/58 hover:border-paper/30 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
+            class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
             href={locale === 'id' ? '/terms' : '/en/terms'}>Terms</a
           >
           {
             analyticsConfig.enabled && analyticsConfig.mode === 'consent' && (
               <button
-                class="text-paper/58 hover:text-paper w-fit cursor-pointer border-0 bg-transparent p-0 text-left"
+                class="text-paper/70 hover:text-paper w-fit cursor-pointer border-0 bg-transparent p-0 text-left"
                 type="button"
                 data-analytics-settings
               >
@@ -73,7 +89,7 @@ const navigation = getNavigation(locale).filter((item) => item.href !== '/' && i
     </div>
 
     <div
-      class="border-paper/10 text-paper/30 flex flex-col gap-2 border-t py-5 text-xs sm:flex-row sm:items-center sm:justify-between"
+      class="border-paper/10 text-paper/60 flex flex-col gap-2 border-t py-5 text-xs sm:flex-row sm:items-center sm:justify-between"
     >
       <span>© {new Date().getFullYear()} Digvation</span>
       <span>Your Digitalization Partner.</span>

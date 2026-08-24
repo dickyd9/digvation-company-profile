@@ -1,9 +1,9 @@
 ---
 routeSlug: digital-discovery
 locale: id
-title: Digital Discovery
-eyebrow: Solution 01
-summary: Untuk saat masalahnya nyata, tapi belum jelas apa yang seharusnya dibangun.
+title: Temukan langkah digital yang tepat
+eyebrow: Pahami sebelum membangun
+summary: Saat masalahnya terasa, tetapi solusi dan prioritasnya belum jelas.
 problem: 'Masalah bisnis sering datang dalam bentuk gejala: proses lambat, pekerjaan berulang, data sulit dilihat, atau sistem yang tidak nyambung. Discovery membantu memisahkan gejala dari akar masalah sebelum budget masuk ke implementasi.'
 when:
   - Masalah terasa nyata tetapi scope belum jelas

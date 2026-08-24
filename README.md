@@ -94,6 +94,7 @@ PUBLIC_ANALYTICS_MODE=consent
 PUBLIC_GA_ID=G-XXXXXXXXXX
 PUBLIC_GTM_ID=GTM-XXXXXXX
 PUBLIC_CLARITY_ID=xxxxxxxxxx
+PUBLIC_WHATSAPP_NUMBER=628xxxxxxxxxx
 ```
 
 - `PUBLIC_GA_ID` sends Digvation semantic events directly to GA4.
@@ -107,18 +108,19 @@ Key events already emitted include:
 
 ```text
 page_view
-cta_clicked
-portfolio_opened
-portfolio_previewed
-service_viewed
-inquiry_started
-inquiry_submitted
-generate_lead
-email_clicked
-outbound_clicked
+project_view
+case_study_view
+service_view
+cta_click
+contact_start
+contact_submit
+contact_success
+whatsapp_click
+email_click
+outbound_project_click
 ```
 
-`inquiry_submitted` and the standard `generate_lead` event are emitted only after `/api/inquiry` confirms successful delivery. UTM parameters, `gclid`/`fbclid`, landing page, and referrer are also carried into the lead payload.
+`contact_success` is emitted only after `/api/inquiry` confirms successful delivery. UTM parameters, `gclid`/`fbclid`, landing page, and referrer are also carried into the lead payload.
 
 See `docs/PRE_DEPLOY_CLOUDFLARE.md` and `docs/MEASUREMENT.md` before the first production deployment.
 

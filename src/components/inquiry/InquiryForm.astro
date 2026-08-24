@@ -8,7 +8,7 @@ const { locale } = Astro.props;
 const serverStatus = '';
 
 const field =
-  'w-full border-0 border-b border-line-light bg-transparent px-0 py-3.5 text-base text-ink outline-none transition-colors placeholder:text-dark-muted/45 focus:border-indigo-deep';
+  'w-full border-0 border-b border-line-light bg-transparent px-0 py-3.5 text-base text-ink outline-none transition-colors placeholder:text-dark-muted/60 focus:border-indigo-deep user-invalid:border-[#9f3f32]';
 const copy =
   locale === 'id'
     ? {
@@ -84,26 +84,56 @@ const copy =
   <div class="grid gap-x-5 gap-y-6 md:grid-cols-2">
     <label class="grid gap-2">
       <span class="text-sm font-medium">{copy.name} *</span>
-      <input class={field} name="name" autocomplete="name" minlength="2" maxlength="80" required />
+      <input
+        class={field}
+        name="name"
+        autocomplete="name"
+        enterkeyhint="next"
+        minlength="2"
+        maxlength="80"
+        required
+      />
     </label>
 
     <label class="grid gap-2">
       <span class="text-sm font-medium">{copy.email} *</span>
-      <input class={field} type="email" name="email" autocomplete="email" required />
+      <input
+        class={field}
+        type="email"
+        name="email"
+        autocomplete="email"
+        inputmode="email"
+        enterkeyhint="next"
+        required
+      />
     </label>
 
     <label class="grid gap-2">
       <span class="text-sm font-medium"
         >{copy.phone} <span class="text-dark-muted font-normal">({copy.optional})</span></span
       >
-      <input class={field} name="phone" autocomplete="tel" maxlength="40" />
+      <input
+        class={field}
+        type="tel"
+        name="phone"
+        autocomplete="tel"
+        inputmode="tel"
+        enterkeyhint="next"
+        maxlength="40"
+      />
     </label>
 
     <label class="grid gap-2">
       <span class="text-sm font-medium"
         >{copy.company} <span class="text-dark-muted font-normal">({copy.optional})</span></span
       >
-      <input class={field} name="company" autocomplete="organization" maxlength="120" />
+      <input
+        class={field}
+        name="company"
+        autocomplete="organization"
+        enterkeyhint="next"
+        maxlength="120"
+      />
     </label>
 
     <label class="grid gap-2 md:col-span-2">
@@ -115,6 +145,7 @@ const copy =
         minlength="20"
         maxlength="2200"
         required
+        enterkeyhint="send"
         placeholder={copy.placeholder}></textarea>
     </label>
   </div>
@@ -245,12 +276,13 @@ const copy =
     form.addEventListener('focusin', () => {
       if (started) return;
       started = true;
-      track('inquiry_started');
+      track('contact_start');
     });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
+      track('contact_submit');
 
       const localeInput = form.elements.namedItem('locale');
       const locale = localeInput instanceof HTMLInputElement ? localeInput.value : 'id';
@@ -285,8 +317,7 @@ const copy =
           return;
         }
 
-        track('inquiry_submitted');
-        track('generate_lead', { lead_source: 'website_inquiry' });
+        track('contact_success', { lead_source: 'website_inquiry' });
         form.reset();
         resetTurnstile(form);
         if (localeInput instanceof HTMLInputElement) localeInput.value = locale;

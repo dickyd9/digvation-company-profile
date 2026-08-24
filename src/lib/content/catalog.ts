@@ -12,7 +12,12 @@ function isCaseStudyWorkEntry(entry: WorkEntry): entry is CaseStudyWorkEntry {
 
 export async function getWorkEntries(locale: Locale) {
   return (await getCollection('work'))
-    .filter((entry) => entry.data.locale === locale && (!import.meta.env.PROD || !entry.data.draft))
+    .filter(
+      (entry) =>
+        entry.data.locale === locale &&
+        entry.data.status === 'published' &&
+        (!import.meta.env.PROD || !entry.data.draft),
+    )
     .sort((a, b) => a.data.order - b.data.order);
 }
 

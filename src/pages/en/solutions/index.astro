@@ -2,13 +2,25 @@
 export const prerender = true;
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SolutionsIndexPage from '@/features/solutions/SolutionsIndexPage.astro';
+import { getCollection } from 'astro:content';
+import { serviceSchema } from '@/lib/seo/schema';
 const locale = 'en' as const;
+const solutions = (await getCollection('solutions')).filter(
+  (entry) => entry.data.locale === locale,
+);
 ---
 
 <BaseLayout
   locale={locale}
-  title="Solutions | Digvation"
-  description="Ways to start with Digvation, from discovery and PoC to build, automation, AI/data, IoT, and care."
+  title="Digital Solutions for Business Needs"
+  description="Digvation helps businesses build, improve, connect, automate, and understand their operations through the right digital solution."
+  structuredData={solutions.map((entry) =>
+    serviceSchema({
+      name: entry.data.title,
+      description: entry.data.summary,
+      path: `/en/solutions#${entry.data.routeSlug}`,
+    }),
+  )}
 >
   <SolutionsIndexPage locale={locale} />
 </BaseLayout>

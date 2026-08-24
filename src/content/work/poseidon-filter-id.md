@@ -8,6 +8,7 @@ industry: Water Filtration
 year: 2026
 projectType: Website & Digital Presence
 summary: Website pemasaran baru yang memperjelas produk filter air dan membuka jalur langsung ke sales.
+status: published
 challenge: Poseidon perlu terlihat meyakinkan secara digital tanpa membuat calon customer tenggelam dalam katalog teknis.
 context: Project dimulai dari nol. Brand, kategori produk, dan kontak sales perlu bertemu dalam satu website.
 insight: Pengunjung perlu memahami manfaat dan percaya pada brand sebelum membaca spesifikasi.
@@ -24,19 +25,26 @@ technologies:
   - Product Information Architecture
   - Inquiry Experience
   - Technical SEO Foundation
-outcome: Poseidon kini memiliki website resmi sebagai pusat brand, produk, dan pemasaran digital. Tidak ada angka hasil yang diklaim tanpa data.
+outcome: Poseidon kini memiliki website resmi sebagai pusat brand, penelusuran produk, dan pemasaran digital.
 nextStep: 'Berikutnya: SEO per kategori dan measurement dari traffic sampai inquiry.'
 relatedSolution: digital-build
 featured: true
 draft: false
 order: 1
 visualVariant: navy
-showLiveInCard: true
+coverImage: /work/poseidon-filter/cover.webp
+showLiveInCard: false
 liveUrl: https://poseidonfilter.id/
 preview:
-  mode: live
+  mode: image
   embedUrl: https://poseidonfilter.id/
+  image: /work/poseidon-filter/cover.webp
+browserScreenshots:
+  - /work/poseidon-filter/product.webp
+gallery:
+  - /work/poseidon-filter/product.webp
 seo:
-  title: Poseidon Filter | Website & Digital Presence Case Study
+  title: Poseidon Filter | Case Study Website
   description: Bagaimana Digvation membangun website Poseidon Filter dari awal untuk memasarkan produk water filtration, memperjelas product discovery, dan membuka jalur inquiry.
+  ogImage: /work/poseidon-filter/cover.webp
 ---

@@ -1,9 +1,9 @@
 ---
 routeSlug: digital-build
 locale: en
-title: Digital Build
-eyebrow: Solution 03
-summary: For solutions whose problem and direction are clear enough to design and build.
+title: Build a solution ready for real use
+eyebrow: Build what is needed
+summary: When the need is clear and must become a working product or system.
 problem: Digital Build turns a sufficiently clear scope into an operable system. It is not just a prototype that looks good in a demo.
 when:
   - The business outcome is clear

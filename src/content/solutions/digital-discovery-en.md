@@ -1,9 +1,9 @@
 ---
 routeSlug: digital-discovery
 locale: en
-title: Digital Discovery
-eyebrow: Solution 01
-summary: When the problem is real but it is not yet clear what should be built.
+title: Find the right digital next step
+eyebrow: Understand before building
+summary: When the problem is real but the solution and priority are still unclear.
 problem: 'Business problems often arrive as symptoms: slow processes, repeated work, poor visibility, or disconnected systems. Discovery separates symptoms from root causes before implementation budget is committed.'
 when:
   - The problem is real but the scope is unclear

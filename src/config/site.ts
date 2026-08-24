@@ -9,7 +9,7 @@ export const siteConfig = {
   tagline: brandConfig.tagline,
   supportingLine: brandConfig.supportingLine,
   description:
-    'Digvation membantu bisnis membangun website, sistem, automation, integration, AI, dan IoT dari masalah nyata sampai siap digunakan.',
+    'Digvation membantu bisnis memahami masalah, mengambil keputusan digital, dan membangun solusi yang benar-benar digunakan.',
   url: import.meta.env.SITE ?? 'https://digvation.id',
   locale: { default: 'id', supported: ['id', 'en'] as const },
   contact: { email: businessConfig.email, phone: businessConfig.phone },

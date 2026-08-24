@@ -1,0 +1,25 @@
+---
+export const prerender = true;
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CampaignPage from '@/features/campaign/CampaignPage.astro';
+const locale = 'id' as const;
+export async function getStaticPaths() {
+  const entries = (await getCollection('campaigns')).filter(
+    (entry) => entry.data.locale === 'id' && entry.data.status === 'published',
+  );
+  return entries.map((entry) => ({ params: { slug: entry.data.routeSlug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+
+<BaseLayout
+  locale={locale}
+  title={entry.data.seo.title}
+  description={entry.data.seo.description}
+  image={entry.data.seo.ogImage}
+  noindex={entry.data.noindex}
+  hasAlternate={false}
+>
+  <CampaignPage locale={locale} entry={entry} />
+</BaseLayout>

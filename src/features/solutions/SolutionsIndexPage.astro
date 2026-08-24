@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import PageHero from '@/components/ui/PageHero.astro';
+import PricingAnchor from '@/components/commercial/PricingAnchor.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 
@@ -9,114 +9,365 @@ const { locale } = Astro.props;
 const solutions = (await getCollection('solutions'))
   .filter((entry) => entry.data.locale === locale)
   .sort((a, b) => a.data.order - b.data.order);
+const copy =
+  locale === 'id'
+    ? {
+        eyebrow: 'Solusi',
+        title: 'Mulai dari kebutuhan bisnisnya.',
+        intro:
+          'Pilih situasi yang paling dekat. Detailnya terbuka di halaman ini, tanpa membawa Anda ke tujuh halaman berbeda.',
+        hint: 'Buka satu untuk melihat detail',
+        fit: 'Cocok saat',
+        help: 'Yang kami bantu',
+        output: 'Yang Anda dapat',
+        example: 'Contoh bentuk solusi',
+        start: 'Mulai dari sini',
+        cta: 'Ceritakan kebutuhan Anda',
+        close: 'Tutup detail',
+      }
+    : {
+        eyebrow: 'Solutions',
+        title: 'Start with the business need.',
+        intro:
+          'Choose the closest situation. The detail opens here without sending you through seven separate pages.',
+        hint: 'Open one to see the detail',
+        fit: 'A good fit when',
+        help: 'How we help',
+        output: 'What you receive',
+        example: 'Possible solution forms',
+        start: 'Start here',
+        cta: 'Tell us what you need',
+        close: 'Close detail',
+      };
 ---
 
-<PageHero
-  eyebrow={locale === 'id' ? 'Solusi' : 'Solutions'}
-  title={locale === 'id'
-    ? 'Solusi digital yang mengikuti bisnis Anda.'
-    : 'Digital solutions shaped around your business.'}
-  body={locale === 'id'
-    ? 'Website, sistem, automation, AI, atau IoT dipilih setelah kebutuhan bisnisnya jelas.'
-    : 'Websites, systems, automation, AI, or IoT are chosen after the business need is clear.'}
-  note={locale === 'id'
-    ? 'Mulai dari masalah. Bukan dari stack.'
-    : 'Start with the problem. Not the stack.'}
-  ctaLabel={locale === 'id' ? 'Ceritakan kebutuhan Anda' : 'Tell us what you need'}
-  ctaHref={getLocalizedPath(locale, '/contact')}
-/>
+<section class="solutions-directory bg-paper-warm text-ink" data-solutions-directory>
+  <div class="shell-wide solutions-directory__inner">
+    <header class="solutions-directory__header" data-reveal="up">
+      <div>
+        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+      </div>
+      <div>
+        <p>{copy.intro}</p>
+        <small>{copy.hint} ↓</small>
+      </div>
+    </header>
 
-<section class="section-pad bg-paper text-ink">
-  <div class="shell">
-    <div class="border-ink/12 border-t">
+    <div class="solutions-directory__list">
       {
         solutions.map((entry, index) => (
-          <a
-            class="solution-index-row group border-ink/12 grid gap-5 border-b py-8 text-inherit no-underline sm:py-9 lg:grid-cols-[5rem_.85fr_1.15fr_auto] lg:items-start lg:gap-9"
-            href={getLocalizedPath(locale, `/solutions/${entry.data.routeSlug}`)}
-            data-reveal="up"
-            style={`--reveal-delay:${Math.min(index * 35, 140)}ms`}
+          <details
+            class="solution-directory-row"
+            id={entry.data.routeSlug}
+            data-solution-detail
+            data-solution-slug={entry.data.routeSlug}
           >
-            <span class="text-indigo-deep/42 pt-1 text-[.66rem] font-extrabold tracking-[.1em] uppercase">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <div>
-              <p class="text-ink/36 text-[.6rem] font-extrabold tracking-[.08em] uppercase">
-                {entry.data.eyebrow}
-              </p>
-              <h2 class="font-display mt-3 max-w-[18ch] text-[clamp(1.7rem,2.7vw,2.65rem)] leading-[1.02] font-semibold tracking-[-.05em]">
-                {entry.data.title}
-              </h2>
-            </div>
-            <div>
-              <p class="text-ink/58 m-0 max-w-2xl text-sm leading-7">{entry.data.summary}</p>
-              <div class="text-ink/34 mt-4 flex flex-wrap gap-x-3 gap-y-2 text-[.63rem] font-extrabold tracking-[.04em] uppercase">
-                {entry.data.outputs.slice(0, 4).map((output, outputIndex) => (
-                  <>
-                    <span>{output}</span>
-                    {outputIndex < Math.min(entry.data.outputs.length, 4) - 1 && <span>/</span>}
-                  </>
-                ))}
+            <summary>
+              <span class="solution-directory-row__number">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <small>{entry.data.eyebrow}</small>
+                <h2>{entry.data.title}</h2>
+              </div>
+              <p>{entry.data.summary}</p>
+              <span class="solution-directory-row__toggle" aria-hidden="true">
+                +
+              </span>
+            </summary>
+
+            <div class="solution-directory-row__detail">
+              <div class="solution-directory-row__lead">
+                <p class="eyebrow text-accent">{copy.start}</p>
+                <h3>{entry.data.problem}</h3>
+                <p>{entry.data.start}</p>
+                <a
+                  class="button-primary bg-paper! text-ink!"
+                  href={getLocalizedPath(locale, '/contact')}
+                  data-track-event="cta_click"
+                  data-track-label={`solution-${entry.data.routeSlug}`}
+                >
+                  {copy.cta}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+
+              <div class="solution-directory-row__facts">
+                <section>
+                  <h4>{copy.fit}</h4>
+                  <ul>
+                    {entry.data.when.slice(0, 3).map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h4>{copy.help}</h4>
+                  <ul>
+                    {entry.data.whatWeDo.slice(0, 3).map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h4>{copy.output}</h4>
+                  <ul>
+                    {entry.data.outputs.slice(0, 4).map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h4>{copy.example}</h4>
+                  <p>{entry.data.examples.slice(0, 3).join(' / ')}</p>
+                </section>
               </div>
             </div>
-            <span
-              class="solution-index-arrow text-ink/22 hidden pt-1 text-2xl font-light lg:block"
-              aria-hidden="true"
-            >
-              ↗
-            </span>
-          </a>
+          </details>
         ))
       }
-    </div>
-
-    <div
-      class="border-ink/12 mt-12 grid gap-7 border-t pt-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-12"
-    >
-      <div>
-        <p class="eyebrow text-indigo-deep">
-          {locale === 'id' ? 'Belum tahu masuk yang mana?' : 'Not sure which one fits?'}
-        </p>
-        <h2
-          class="font-display mt-4 max-w-[21ch] text-[clamp(2rem,3.5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-.05em]"
-        >
-          {
-            locale === 'id'
-              ? 'Ceritakan prosesnya. Kami bantu menentukan jalannya.'
-              : 'Tell us the process. We will help find the way.'
-          }
-        </h2>
-      </div>
-      <a class="button-primary shrink-0" href={getLocalizedPath(locale, '/contact')}
-        >{locale === 'id' ? 'Mulai Diskusi' : 'Start a Conversation'} ↗</a
-      >
     </div>
   </div>
 </section>
 
+<PricingAnchor locale={locale} />
+
 <style>
-  .solution-index-row {
-    transition:
-      padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 220ms ease;
+  .solutions-directory {
+    min-height: calc(100svh - 4.75rem);
   }
-  .solution-index-row:hover {
-    padding-left: 0.7rem;
-    background: rgba(147, 166, 255, 0.065);
+  .solutions-directory__inner {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
   }
-  .solution-index-arrow {
+  .solutions-directory__header {
+    display: grid;
+    gap: 1.25rem;
+    align-items: end;
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  }
+  .solutions-directory__header h1 {
+    max-width: 12ch;
+    margin: 0.8rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 6.2rem);
+    font-weight: 620;
+    line-height: 0.95;
+    letter-spacing: -0.062em;
+  }
+  .solutions-directory__header > div:last-child > p {
+    max-width: 34rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .solutions-directory__header small {
+    display: block;
+    margin-top: 0.75rem;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.63rem;
+    font-weight: 800;
+  }
+  .solutions-directory__list {
+    border-top: 1px solid rgba(11, 13, 16, 0.17);
+  }
+  .solution-directory-row {
+    border-bottom: 1px solid rgba(11, 13, 16, 0.17);
+    scroll-margin-top: 6rem;
+  }
+  .solution-directory-row summary {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(12rem, 0.75fr) minmax(0, 1.25fr) 2rem;
+    gap: 1.25rem;
+    align-items: center;
+    min-height: 3.9rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .solution-directory-row summary::-webkit-details-marker {
+    display: none;
+  }
+  .solution-directory-row__number {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.6rem;
+    font-weight: 800;
+  }
+  .solution-directory-row summary small {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .solution-directory-row h2 {
+    margin: 0.18rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.85rem);
+    font-weight: 650;
+    letter-spacing: -0.04em;
+  }
+  .solution-directory-row summary > p {
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.77rem;
+    line-height: 1.55;
+  }
+  .solution-directory-row__toggle {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid rgba(11, 13, 16, 0.18);
+    border-radius: 999px;
     transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 220ms ease,
+      background-color 220ms ease,
       color 220ms ease;
   }
-  .solution-index-row:hover .solution-index-arrow {
-    transform: translate(3px, -3px);
-    color: var(--color-indigo-deep);
+  .solution-directory-row[open] .solution-directory-row__toggle {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    transform: rotate(45deg);
+  }
+  .solution-directory-row[open] > summary {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    margin-inline: calc(50% - 50vw);
+    padding-inline: calc(50vw - 50%);
+  }
+  .solution-directory-row[open] summary small,
+  .solution-directory-row[open] summary > p,
+  .solution-directory-row[open] .solution-directory-row__number {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .solution-directory-row[open] .solution-directory-row__toggle {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .solution-directory-row__detail {
+    display: grid;
+    gap: 3rem;
+    margin-inline: calc(50% - 50vw);
+    padding: clamp(3rem, 6vw, 5rem) max(calc(50vw - 44rem), clamp(0.75rem, 3vw, 2.5rem));
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .solution-directory-row__lead h3 {
+    max-width: 16ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 4.6vw, 4.8rem);
+    font-weight: 620;
+    line-height: 0.99;
+    letter-spacing: -0.055em;
+  }
+  .solution-directory-row__lead > p:not(.eyebrow) {
+    max-width: 35rem;
+    margin: 1.25rem 0 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .solution-directory-row__lead a {
+    margin-top: 1.5rem;
+  }
+  .solution-directory-row__facts {
+    display: grid;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .solution-directory-row__facts section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 1.25rem 0;
+  }
+  .solution-directory-row__facts h4 {
+    margin: 0 0 0.8rem;
+    color: rgba(147, 166, 255, 0.82);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .solution-directory-row__facts ul {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .solution-directory-row__facts li,
+  .solution-directory-row__facts p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+  @media (min-width: 900px) {
+    .solutions-directory__header {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+    .solution-directory-row__detail {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+    .solution-directory-row__facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .solution-directory-row__facts section:nth-child(odd) {
+      padding-right: 1.5rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.16);
+    }
+    .solution-directory-row__facts section:nth-child(even) {
+      padding-left: 1.5rem;
+    }
+  }
+  @media (max-width: 760px) {
+    .solution-directory-row summary {
+      grid-template-columns: 2rem minmax(0, 1fr) 2rem;
+      gap: 0.75rem;
+      padding-block: 1rem;
+    }
+    .solution-directory-row summary > p {
+      grid-column: 2;
+    }
+    .solution-directory-row__toggle {
+      grid-row: 1 / span 2;
+      grid-column: 3;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .solution-index-row,
-    .solution-index-arrow {
+    .solution-directory-row__toggle {
       transition: none;
     }
   }
 </style>
+
+<script>
+  import { track } from '@/lib/analytics/client';
+  const setupSolutionsDirectory = () => {
+    const directory = document.querySelector<HTMLElement>('[data-solutions-directory]');
+    if (!directory || directory.dataset.ready === 'true') return;
+    directory.dataset.ready = 'true';
+    const rows = [...directory.querySelectorAll<HTMLDetailsElement>('[data-solution-detail]')];
+    const openRow = (row: HTMLDetailsElement, updateHash = true) => {
+      rows.forEach((other) => {
+        if (other !== row) other.open = false;
+      });
+      if (!row.open) return;
+      const slug = row.dataset.solutionSlug ?? '';
+      if (updateHash) history.replaceState(null, '', `#${slug}`);
+      track('service_view', { slug });
+    };
+    rows.forEach((row) => row.addEventListener('toggle', () => openRow(row)));
+    const hash = decodeURIComponent(location.hash.slice(1));
+    const target = rows.find((row) => row.id === hash);
+    if (target) {
+      target.open = true;
+      openRow(target, false);
+      requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+    }
+  };
+  setupSolutionsDirectory();
+  document.addEventListener('astro:page-load', setupSolutionsDirectory);
+</script>

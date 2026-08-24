@@ -1,11 +1,13 @@
 ---
 import BrandLogo from '@/components/brand/BrandLogo.astro';
+import { getWhatsAppUrl } from '@/config/contact';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
 
 type Props = { locale: Locale; copy: HomeCopy['finalCta'] };
 const { locale, copy } = Astro.props;
+const whatsappUrl = getWhatsAppUrl(locale);
 ---
 
 <section class="bg-indigo-deep text-paper overflow-hidden" data-track-section="final-cta">
@@ -15,7 +17,7 @@ const { locale, copy } = Astro.props;
       data-reveal="up"
     >
       <BrandLogo locale={locale} tone="light" compact />
-      <span class="text-paper/32 text-[.6rem] font-bold tracking-[.08em] uppercase"
+      <span class="text-paper/60 text-[.6rem] font-bold tracking-[.08em] uppercase"
         >Your Digitalization Partner</span
       >
     </div>
@@ -33,17 +35,32 @@ const { locale, copy } = Astro.props;
         </h2>
       </div>
       <div class="max-w-xl lg:justify-self-end">
-        <p class="text-paper/60 m-0 text-[1rem] leading-8">{copy.body}</p>
-        <a
-          class="bg-paper text-ink mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-[.25rem] px-5 py-3 text-sm font-extrabold no-underline transition-transform hover:-translate-y-0.5"
-          href={getLocalizedPath(locale, '/contact')}
-          data-track-event="cta_clicked"
-          data-track-label="final-cta"
-        >
-          {copy.button}
-          <span aria-hidden="true">↗</span>
-        </a>
-        <p class="text-paper/36 mt-5 max-w-lg text-xs leading-6">{copy.note}</p>
+        <p class="text-paper/70 m-0 text-[1rem] leading-8">{copy.body}</p>
+        <div class="mt-8 flex flex-wrap items-center gap-5">
+          <a
+            class="bg-paper text-ink inline-flex min-h-12 items-center justify-center gap-3 rounded-[.25rem] px-5 py-3 text-sm font-extrabold no-underline transition-transform hover:-translate-y-0.5"
+            href={getLocalizedPath(locale, '/contact')}
+            data-track-event="cta_click"
+            data-track-label="final-cta"
+          >
+            {copy.button}<span aria-hidden="true">↗</span>
+          </a>
+          {
+            whatsappUrl && (
+              <a
+                class="text-paper/64 border-paper/45 inline-flex items-center gap-2 border-b pb-1 text-xs font-bold no-underline"
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-event="whatsapp_click"
+                data-track-label="final-cta"
+              >
+                WhatsApp <span aria-hidden="true">↗</span>
+              </a>
+            )
+          }
+        </div>
+        <p class="text-paper/62 mt-5 max-w-lg text-xs leading-6">{copy.note}</p>
       </div>
     </div>
   </div>

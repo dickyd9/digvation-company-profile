@@ -8,6 +8,7 @@ industry: Water Filtration
 year: 2026
 projectType: Website & Digital Presence
 summary: A new marketing website that clarifies Poseidon's filtration products and opens a direct path to sales.
+status: published
 challenge: Poseidon needed to look credible online without making potential customers fight through a dense technical catalogue.
 context: The project started from zero. Brand, product categories, and sales contact needed to meet in one website.
 insight: Visitors need to understand the value and trust the brand before reading specifications.
@@ -24,19 +25,26 @@ technologies:
   - Product Information Architecture
   - Inquiry Experience
   - Technical SEO Foundation
-outcome: Poseidon now has an official home for its brand, products, and digital marketing. No result figures are claimed without data.
+outcome: Poseidon now has an official home for its brand, product discovery, and digital marketing.
 nextStep: 'Next: category SEO and measurement from traffic through to inquiry.'
 relatedSolution: digital-build
 featured: true
 draft: false
 order: 1
 visualVariant: navy
-showLiveInCard: true
+coverImage: /work/poseidon-filter/cover.webp
+showLiveInCard: false
 liveUrl: https://poseidonfilter.id/
 preview:
-  mode: live
+  mode: image
   embedUrl: https://poseidonfilter.id/
+  image: /work/poseidon-filter/cover.webp
+browserScreenshots:
+  - /work/poseidon-filter/product.webp
+gallery:
+  - /work/poseidon-filter/product.webp
 seo:
-  title: Poseidon Filter | Website & Digital Presence Case Study
+  title: Poseidon Filter | Website Case Study
   description: How Digvation built Poseidon Filter's website from scratch to market water-filtration products, improve product discovery, and create a clear inquiry path.
+  ogImage: /work/poseidon-filter/cover.webp
 ---

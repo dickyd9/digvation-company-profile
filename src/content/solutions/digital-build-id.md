@@ -1,9 +1,9 @@
 ---
 routeSlug: digital-build
 locale: id
-title: Digital Build
-eyebrow: Solution 03
-summary: Untuk solusi yang problem dan arahnya sudah cukup jelas untuk didesain dan dibangun.
+title: Wujudkan solusi yang siap digunakan
+eyebrow: Bangun yang dibutuhkan
+summary: Saat kebutuhan sudah jelas dan harus menjadi produk atau sistem yang berjalan.
 problem: Digital Build mengubah scope yang sudah cukup jelas menjadi sistem yang bisa digunakan. Hasilnya bukan hanya prototype yang bagus saat demo.
 when:
   - Business outcome sudah jelas

@@ -91,7 +91,7 @@ async function deliver(env: Env, input: InquirySubmission) {
   const rows = Object.entries(input)
     .map(
       ([key, value]) =>
-        `<p><strong>${escapeHtml(key)}</strong><br>${escapeHtml(String(value ?? '—'))}</p>`,
+        `<p><strong>${escapeHtml(key)}</strong><br>${escapeHtml(String(value ?? '-'))}</p>`,
     )
     .join('');
 
@@ -113,7 +113,7 @@ async function deliver(env: Env, input: InquirySubmission) {
     if (!response.ok) throw new Error('resend_delivery_failed');
   };
 
-  await send(env.INQUIRY_RECIPIENT, `New Digvation inquiry — ${input.name}`, rows, input.email);
+  await send(env.INQUIRY_RECIPIENT, `New Digvation inquiry: ${input.name}`, rows, input.email);
 
   try {
     const copy =
@@ -122,7 +122,7 @@ async function deliver(env: Env, input: InquirySubmission) {
         : 'Thank you. We received the context you shared and will review it before continuing the conversation.';
     await send(
       input.email,
-      input.locale === 'id' ? 'Inquiry diterima — Digvation' : 'Inquiry received — Digvation',
+      input.locale === 'id' ? 'Inquiry diterima | Digvation' : 'Inquiry received | Digvation',
       `<p>${escapeHtml(copy)}</p>`,
     );
   } catch {
@@ -131,6 +131,13 @@ async function deliver(env: Env, input: InquirySubmission) {
 }
 
 export const onRequestPost: PageHandler<Env> = async (context) => {
+  const contentType = context.request.headers.get('content-type') ?? '';
+  if (
+    !contentType.startsWith('multipart/form-data') &&
+    !contentType.startsWith('application/x-www-form-urlencoded')
+  ) {
+    return json({ ok: false, message: 'Unsupported content type.' }, 415);
+  }
   const contentLength = Number(context.request.headers.get('content-length') ?? '0');
   if (contentLength > 64 * 1024) return json({ ok: false, message: 'Request too large.' }, 413);
 

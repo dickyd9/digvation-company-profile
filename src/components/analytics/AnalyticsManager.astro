@@ -238,11 +238,12 @@ const copy =
       });
 
       document.querySelectorAll('a[href^="http"]').forEach((link) => {
+        if (link.dataset.trackEvent) return;
         const url = new URL(link.href, location.href);
         if (url.origin === location.origin) return;
         link.addEventListener(
           'click',
-          () => send('outbound_clicked', { destination: url.hostname }),
+          () => send('outbound_click', { destination: url.hostname }),
           { signal },
         );
       });
@@ -256,7 +257,8 @@ const copy =
             const section = entry.target.dataset.trackSection;
             if (!section || seenSections.has(section)) continue;
             seenSections.add(section);
-            send('section_viewed', { section });
+            send('section_view', { section });
+            if (section === 'pricing') send('pricing_view');
           }
         },
         { threshold: [0.4] },

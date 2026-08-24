@@ -53,7 +53,7 @@ Identify the class before implementation. A change may belong to more than one c
 - Reuse existing tokens and components before adding new ones.
 - Verify mobile, desktop, keyboard, focus, contrast, and reduced-motion behavior.
 - Animation must explain state, sequence, hierarchy, or progress. It must not delay access to content or calls to action.
-- Handwritten notes are supporting cues, not primary content, and must remain readable without them.
+- Visual cues must support hierarchy or state and remain understandable without animation.
 
 ### Route and SEO changes
 

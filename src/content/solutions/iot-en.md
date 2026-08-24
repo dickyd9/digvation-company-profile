@@ -1,9 +1,9 @@
 ---
 routeSlug: iot
 locale: en
-title: IoT & Connected Systems
-eyebrow: Solution 06
-summary: For operations that depend on devices, sensors, cameras, or field data.
+title: Monitor conditions from the field
+eyebrow: Connect the physical world
+summary: When devices, sensors, cameras, or locations need to be visible in one flow.
 problem: 'A connected system is still an operational system: how devices connect, what happens offline, which data matters, and who needs the alert.'
 when:
   - Physical conditions need monitoring

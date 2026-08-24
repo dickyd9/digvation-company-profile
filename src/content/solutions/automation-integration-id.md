@@ -1,9 +1,9 @@
 ---
 routeSlug: automation-integration
 locale: id
-title: Automation & Integration
-eyebrow: Solution 04
-summary: Untuk proses berulang dan sistem yang membuat orang memindahkan data secara manual.
+title: Hubungkan proses yang terputus
+eyebrow: Kurangi pekerjaan berulang
+summary: Saat data dipindahkan manual dan pekerjaan berhenti di antara beberapa sistem.
 problem: Banyak bottleneck bukan karena kurang aplikasi, tetapi karena informasi berhenti di satu sistem lalu harus dipindahkan manusia ke sistem berikutnya.
 when:
   - Input yang sama diketik berulang

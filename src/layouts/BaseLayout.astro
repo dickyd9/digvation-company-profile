@@ -6,7 +6,6 @@ import ScrollMotion from '@/components/animations/ScrollMotion.astro';
 import BackToTop from '@/components/layout/BackToTop.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
-import ProjectPreviewModal from '@/components/work/ProjectPreviewModal.astro';
 import StructuredData from '@/components/ui/StructuredData.astro';
 import { brandConfig } from '@/config/brand';
 import { localeToOpenGraph, resolvePageTitle, seoConfig } from '@/config/seo';
@@ -88,7 +87,7 @@ const faviconDark = brandConfig.assets.markWhite;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href={faviconLight} media="(prefers-color-scheme: light)" />
@@ -107,6 +106,5 @@ const faviconDark = brandConfig.assets.markWhite;
     <main id="main-content"><slot /></main>
     <SiteFooter locale={locale} />
     <BackToTop locale={locale} />
-    <ProjectPreviewModal locale={locale} />
   </body>
 </html>

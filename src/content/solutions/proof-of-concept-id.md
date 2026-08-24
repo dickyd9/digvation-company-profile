@@ -1,9 +1,9 @@
 ---
 routeSlug: proof-of-concept
 locale: id
-title: Proof of Concept
-eyebrow: Solution 02
-summary: Untuk ide yang punya ketidakpastian teknis atau bisnis yang terlalu besar untuk langsung dibangun penuh.
+title: Uji ide sebelum melangkah lebih jauh
+eyebrow: Kurangi ketidakpastian
+summary: Saat ide perlu dibuktikan sebelum waktu dan budget masuk terlalu jauh.
 problem: 'PoC dipakai untuk menjawab pertanyaan penting lebih dulu: apakah pendekatan ini feasible, data cukup, device cocok, atau workflow benar-benar bisa diperbaiki dengan cara yang dipikirkan?'
 when:
   - AI / computer vision belum teruji di kondisi nyata

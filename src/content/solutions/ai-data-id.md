@@ -1,9 +1,9 @@
 ---
 routeSlug: ai-data
 locale: id
-title: AI, Computer Vision & Data
-eyebrow: Solution 05
-summary: Untuk data, gambar, video, atau event yang bisa membantu bisnis melihat pola dan mengambil keputusan.
+title: Ubah data menjadi keputusan
+eyebrow: Lihat hal yang penting
+summary: Saat data, gambar, atau event tersedia tetapi belum menghasilkan tindakan.
 problem: AI berguna ketika ada keputusan atau pekerjaan yang bisa dibuat lebih baik. Kami tidak memulai dari “pakai AI”, tetapi dari event, data, dan keputusan apa yang perlu dihasilkan.
 when:
   - Data ada tetapi belum menjadi informasi
