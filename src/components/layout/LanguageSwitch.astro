@@ -16,8 +16,8 @@ const targetCode = targetLocale.toUpperCase();
 
 <a
   class:list={[
-    'group border-indigo-deep/15 bg-indigo-deep/[.045] text-ink hover:border-indigo-deep/30 hover:bg-indigo-deep/[.075] inline-flex items-center gap-2 rounded-full border no-underline transition-colors',
-    compact ? 'px-3 py-2 text-xs font-bold' : 'px-3.5 py-2.5 text-[.78rem] font-bold',
+    'group text-ink hover:text-indigo-deep inline-flex items-center gap-1.5 no-underline transition-colors',
+    compact ? 'px-1 py-2 text-[.68rem] font-bold' : 'px-2 py-3 text-[.76rem] font-bold',
   ]}
   href={href}
   hreflang={targetLocale}
@@ -27,22 +27,14 @@ const targetCode = targetLocale.toUpperCase();
   data-track-event="language_change"
   data-track-label={targetLocale}
 >
-  <svg class="text-indigo-deep size-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"></circle>
-    <path
-      d="M3.5 12h17M12 3c2.2 2.45 3.3 5.45 3.3 9s-1.1 6.55-3.3 9c-2.2-2.45-3.3-5.45-3.3-9S9.8 5.45 12 3Z"
-      stroke="currentColor"
-      stroke-width="1.7"
-      stroke-linecap="round"></path>
-  </svg>
   {
     !compact && (
-      <span class="text-dark-muted text-[.62rem] font-extrabold tracking-[.08em] uppercase">
-        {locale === 'id' ? 'Bahasa' : 'Language'}
+      <span class="text-dark-muted text-[.62rem] font-bold tracking-[.08em] uppercase">
+        {locale === 'id' ? 'Bahasa:' : 'Language:'}
       </span>
     )
   }
-  <span class="font-extrabold tracking-[.04em]">{currentCode}</span>
-  <span class="text-dark-muted" aria-hidden="true">→</span>
-  <span class="text-indigo-deep font-extrabold">{targetCode}</span>
+  <span class="font-bold tracking-[.05em]">{currentCode}</span>
+  <span class="text-dark-muted" aria-hidden="true">/</span>
+  <span class="text-indigo-deep font-bold tracking-[.05em]">{targetCode}</span>
 </a>

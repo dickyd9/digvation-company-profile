@@ -9,13 +9,13 @@ const copy =
   locale === 'id'
     ? {
         eyebrow: 'Tentang Digvation',
-        title: 'Teknologi seharusnya meringankan bisnis. Bukan menambah beban baru.',
+        title: 'Teknologi seharusnya meringankan bisnis.',
         intro:
-          'Itulah alasan Digvation ada. Kami membantu bisnis mengambil keputusan digital dengan lebih jernih, lalu membawa keputusan itu menjadi solusi yang benar-benar bekerja.',
+          'Digvation membantu keputusan digital menjadi lebih jernih, berguna, dan benar-benar bekerja.',
         whyEyebrow: 'Mengapa kami ada',
         whyTitle: 'Karena masalah bisnis jarang datang dalam bentuk spesifikasi teknis.',
         whyBody:
-          'Sering kali yang terasa hanyalah proses makin lambat, informasi tercecer, atau peluang sulit ditindaklanjuti. Digvation hadir untuk memahami situasi itu lebih dulu. Teknologinya dipilih setelah arah perubahannya jelas.',
+          'Yang terasa biasanya proses lambat, informasi tercecer, atau pekerjaan yang terus berulang. Kami memahami situasinya dulu. Teknologinya menyusul setelah arah perubahan jelas.',
         beliefsEyebrow: 'Yang kami percaya',
         beliefs: [
           [
@@ -34,7 +34,7 @@ const copy =
         directionEyebrow: 'Ke mana kami menuju',
         directionTitle: 'Menjadi partner digitalisasi yang tumbuh bersama bisnis yang kami bantu.',
         directionBody:
-          'Kami ingin membantu lebih banyak bisnis melakukan digitalisasi secara bermakna, memperkuat kemampuan Digvation, dan membangun hubungan kerja yang tetap berguna jauh setelah project diluncurkan.',
+          'Kami ingin membangun lebih banyak solusi yang tetap berguna setelah diluncurkan, bersama bisnis yang ingin terus bertumbuh.',
         principles: [
           'Terus belajar dari penggunaan nyata',
           'Membangun kemampuan yang relevan',
@@ -48,13 +48,12 @@ const copy =
       }
     : {
         eyebrow: 'About Digvation',
-        title: 'Technology should make a business lighter to run. Not create another burden.',
-        intro:
-          'That is why Digvation exists. We help businesses make clearer digital decisions, then carry those decisions through to solutions that actually work.',
+        title: 'Technology should make business lighter to run.',
+        intro: 'Digvation helps digital decisions become clearer, useful, and genuinely workable.',
         whyEyebrow: 'Why we exist',
         whyTitle: 'Because business problems rarely arrive as technical specifications.',
         whyBody:
-          'What people feel is a slower process, scattered information, or an opportunity that is difficult to act on. Digvation starts by understanding that situation. Technology is chosen after the direction is clear.',
+          'What people usually feel is a slow process, scattered information, or work that keeps repeating. We understand that first. Technology comes after the direction is clear.',
         beliefsEyebrow: 'What we believe',
         beliefs: [
           [
@@ -73,7 +72,7 @@ const copy =
         directionEyebrow: 'Where we are going',
         directionTitle: 'To be a digitalization partner that grows with the businesses we help.',
         directionBody:
-          'We want to help more businesses digitalize with purpose, strengthen Digvation’s capabilities, and build working relationships that remain useful long after launch.',
+          'We want to build more solutions that remain useful after launch, alongside businesses that want to keep growing.',
         principles: [
           'Keep learning from real use',
           'Build relevant capabilities',
@@ -88,7 +87,7 @@ const copy =
 ---
 
 <section class="about-hero bg-paper-warm text-ink">
-  <div class="shell about-hero__inner" data-reveal="up">
+  <div class="shell about-hero__inner" data-reveal="mask">
     <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
     <h1>{copy.title}</h1>
     <p>{copy.intro}</p>
@@ -97,8 +96,8 @@ const copy =
 
 <section class="about-why bg-ink text-paper" data-track-section="about-purpose">
   <div class="shell-wide section-pad about-why__grid">
-    <div data-reveal="left"><BrandLogo locale={locale} tone="light" compact /></div>
-    <div data-reveal="up">
+    <div data-reveal="line"><BrandLogo locale={locale} tone="light" compact /></div>
+    <div data-reveal="mask">
       <p class="eyebrow text-accent">{copy.whyEyebrow}</p>
       <h2>{copy.whyTitle}</h2>
       <p>{copy.whyBody}</p>
@@ -112,7 +111,7 @@ const copy =
     <ol>
       {
         copy.beliefs.map(([title, body], index) => (
-          <li data-reveal="up">
+          <li data-reveal="line">
             <>
               <span>{String(index + 1).padStart(2, '0')}</span>
               <h2>{title}</h2>
@@ -156,16 +155,16 @@ const copy =
 
 <style>
   .about-hero__inner {
-    padding-block: clamp(5rem, 11vw, 10rem);
+    padding-block: clamp(5rem, 9vw, 8rem);
   }
   .about-hero h1 {
     max-width: 14ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(3.3rem, 7.4vw, 7.8rem);
-    font-weight: 620;
-    line-height: 0.95;
-    letter-spacing: -0.064em;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 570;
+    line-height: 0.98;
+    letter-spacing: -0.054em;
   }
   .about-hero__inner > p:last-child {
     max-width: 43rem;
@@ -182,10 +181,10 @@ const copy =
     max-width: 17ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.8rem, 5.4vw, 5.7rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.058em;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .about-why__grid > div:last-child > p:last-child {
     max-width: 42rem;
@@ -219,10 +218,10 @@ const copy =
     max-width: 18ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.5vw, 3.5rem);
-    font-weight: 620;
-    line-height: 1;
-    letter-spacing: -0.05em;
+    font-size: clamp(1.75rem, 2.8vw, 2.75rem);
+    font-weight: 580;
+    line-height: 1.04;
+    letter-spacing: -0.043em;
   }
   .about-beliefs li > p {
     max-width: 34rem;
@@ -239,10 +238,10 @@ const copy =
     max-width: 16ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.8rem, 5.5vw, 5.8rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.058em;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .about-direction__intro > p:last-child {
     max-width: 40rem;
@@ -280,10 +279,10 @@ const copy =
     max-width: 23ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 4.1vw, 4.2rem);
-    font-weight: 620;
-    line-height: 1.02;
-    letter-spacing: -0.052em;
+    font-size: clamp(2rem, 3.35vw, 3.3rem);
+    font-weight: 580;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
   }
   @media (min-width: 900px) {
     .about-why__grid {

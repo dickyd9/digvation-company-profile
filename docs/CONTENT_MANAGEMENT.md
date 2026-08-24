@@ -66,9 +66,8 @@ The public disclaimer must continue to explain that final investment follows sco
 
 The WhatsApp number is configured once through `PUBLIC_WHATSAPP_NUMBER`. Starter messages live in `src/config/contact.ts`. WhatsApp actions stay hidden when the number is empty.
 
-## Client logos and FAQ
+## Proof and FAQ policy
 
-- Approved client relationships: `src/content/clients.ts`.
-- Homepage FAQ and FAQ schema: `src/content/faq.ts`.
+The homepage uses published work as its primary proof. Do not add a client-logo wall unless approved relationships provide context that the projects themselves cannot communicate.
 
-Client logos are relationship proof, not a duplicate portfolio. Add only approved clients and official logo assets.
+FAQ content belongs only on a page where it removes real decision friction. If FAQ is introduced, the visible content and structured data must share one source and remain identical.

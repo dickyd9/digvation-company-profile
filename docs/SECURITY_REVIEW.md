@@ -15,6 +15,7 @@
 ### Implemented
 
 - Inquiry payloads reject unsupported content types and bodies above 64 KB.
+- The 64 KB limit checks the actual request body even when `Content-Length` is missing or inaccurate.
 - User-controlled email content is HTML escaped.
 - JSON-LD output escapes script-breaking characters before inline rendering.
 - Provider tokens and mail credentials remain server-only.
@@ -23,6 +24,16 @@
 - External links opened in a new tab use `noopener noreferrer`.
 - CSP, HSTS, frame denial, MIME-sniffing protection, referrer policy, and permissions policy are configured.
 - Inquiry responses and API paths use no-store caching.
+- Turnstile network failure returns a controlled verification error instead of leaking an unhandled exception.
+
+### Local validation result
+
+- Full `npm audit`: 0 known vulnerabilities across production and development dependencies.
+- Credential-pattern scan: no matches in 103 tracked source, function, and public files.
+- `.env`, `.env.local`, and `.dev.vars` remain ignored by Git.
+- Production output contains no source maps.
+- Seven security header directives and fourteen permanent legacy redirects are configured.
+- Inquiry handler tests cover valid dry-run delivery, unsupported content type, and oversized bodies without a content-length header.
 
 ### Requires deployment validation
 

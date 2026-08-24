@@ -2,12 +2,6 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-const workPreview = z.object({
-  mode: z.enum(['live', 'image', 'default']).optional(),
-  embedUrl: z.url().optional(),
-  image: z.string().optional(),
-});
-
 const workBase = z.object({
   routeSlug: z.string(),
   locale: z.enum(['id', 'en']),
@@ -23,8 +17,6 @@ const workBase = z.object({
   order: z.number().default(0),
   visualVariant: z.enum(['ink', 'navy', 'paper']).default('navy'),
   coverImage: z.string().optional(),
-  showLiveInCard: z.boolean().default(false),
-  preview: workPreview.optional(),
 });
 
 const workCaseStudy = workBase.extend({

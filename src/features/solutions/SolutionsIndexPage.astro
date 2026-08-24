@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import PricingAnchor from '@/components/commercial/PricingAnchor.astro';
+import ProjectFrame from '@/components/work/ProjectFrame.astro';
 import { getLocalizedPath } from '@/config/navigation';
+import { pricingConfig } from '@/config/pricing';
 import type { Locale } from '@/config/site';
 
 type Props = { locale: Locale };
@@ -9,35 +10,44 @@ const { locale } = Astro.props;
 const solutions = (await getCollection('solutions'))
   .filter((entry) => entry.data.locale === locale)
   .sort((a, b) => a.data.order - b.data.order);
+const relatedProjects = (await getCollection('work')).filter(
+  (entry) =>
+    entry.data.locale === locale &&
+    entry.data.entryType === 'case-study' &&
+    !entry.data.draft &&
+    entry.data.status === 'published',
+);
+const PricingAnchor =
+  pricingConfig.enabled && pricingConfig.items.length > 0
+    ? (await import('@/components/commercial/PricingAnchor.astro')).default
+    : null;
 const copy =
   locale === 'id'
     ? {
         eyebrow: 'Solusi',
         title: 'Mulai dari kebutuhan bisnisnya.',
-        intro:
-          'Pilih situasi yang paling dekat. Detailnya terbuka di halaman ini, tanpa membawa Anda ke tujuh halaman berbeda.',
-        hint: 'Buka satu untuk melihat detail',
+        intro: 'Pilih situasi yang paling dekat dengan apa yang sedang ingin Anda benahi.',
+        hint: 'Buka satu untuk melihat pendekatannya',
         fit: 'Cocok saat',
         help: 'Yang kami bantu',
         output: 'Yang Anda dapat',
         example: 'Contoh bentuk solusi',
         start: 'Mulai dari sini',
         cta: 'Ceritakan kebutuhan Anda',
-        close: 'Tutup detail',
+        proof: 'Hasil kerja terkait',
       }
     : {
         eyebrow: 'Solutions',
         title: 'Start with the business need.',
-        intro:
-          'Choose the closest situation. The detail opens here without sending you through seven separate pages.',
-        hint: 'Open one to see the detail',
+        intro: 'Choose the situation closest to what you are trying to improve.',
+        hint: 'Open one to see the approach',
         fit: 'A good fit when',
         help: 'How we help',
         output: 'What you receive',
         example: 'Possible solution forms',
         start: 'Start here',
         cta: 'Tell us what you need',
-        close: 'Close detail',
+        proof: 'Related work',
       };
 ---
 
@@ -56,89 +66,117 @@ const copy =
 
     <div class="solutions-directory__list">
       {
-        solutions.map((entry, index) => (
-          <details
-            class="solution-directory-row"
-            id={entry.data.routeSlug}
-            data-solution-detail
-            data-solution-slug={entry.data.routeSlug}
-          >
-            <summary>
-              <span class="solution-directory-row__number">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <div>
-                <small>{entry.data.eyebrow}</small>
-                <h2>{entry.data.title}</h2>
-              </div>
-              <p>{entry.data.summary}</p>
-              <span class="solution-directory-row__toggle" aria-hidden="true">
-                +
-              </span>
-            </summary>
+        solutions.map((entry, index) => {
+          const relatedProject = relatedProjects.find(
+            (project) =>
+              project.data.entryType === 'case-study' &&
+              project.data.relatedSolution === entry.data.routeSlug,
+          );
+          return (
+            <details
+              class="solution-directory-row"
+              id={entry.data.routeSlug}
+              data-solution-detail
+              data-solution-slug={entry.data.routeSlug}
+            >
+              <summary>
+                <span class="solution-directory-row__number">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <small>{entry.data.eyebrow}</small>
+                  <h2>{entry.data.title}</h2>
+                </div>
+                <p>{entry.data.summary}</p>
+                <span class="solution-directory-row__toggle" aria-hidden="true">
+                  +
+                </span>
+              </summary>
 
-            <div class="solution-directory-row__detail">
-              <div class="solution-directory-row__lead">
-                <p class="eyebrow text-accent">{copy.start}</p>
-                <h3>{entry.data.problem}</h3>
-                <p>{entry.data.start}</p>
-                <a
-                  class="button-primary bg-paper! text-ink!"
-                  href={getLocalizedPath(locale, '/contact')}
-                  data-track-event="cta_click"
-                  data-track-label={`solution-${entry.data.routeSlug}`}
-                >
-                  {copy.cta}
-                  <span aria-hidden="true">↗</span>
-                </a>
-              </div>
+              <div class="solution-directory-row__detail">
+                <div class="solution-directory-row__lead">
+                  <p class="eyebrow text-indigo-deep">{copy.start}</p>
+                  <p class="solution-directory-row__problem">{entry.data.problem}</p>
+                  <strong>{entry.data.start}</strong>
+                  <a
+                    class="button-primary bg-paper! text-ink!"
+                    href={getLocalizedPath(locale, '/contact')}
+                    data-track-event="cta_click"
+                    data-track-label={`solution-${entry.data.routeSlug}`}
+                  >
+                    {copy.cta}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
 
-              <div class="solution-directory-row__facts">
-                <section>
-                  <h4>{copy.fit}</h4>
-                  <ul>
-                    {entry.data.when.slice(0, 3).map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h4>{copy.help}</h4>
-                  <ul>
-                    {entry.data.whatWeDo.slice(0, 3).map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h4>{copy.output}</h4>
-                  <ul>
-                    {entry.data.outputs.slice(0, 4).map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h4>{copy.example}</h4>
-                  <p>{entry.data.examples.slice(0, 3).join(' / ')}</p>
-                </section>
+                <div class="solution-directory-row__facts">
+                  <section>
+                    <h3>{copy.fit}</h3>
+                    <ul>
+                      {entry.data.when.slice(0, 3).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section>
+                    <h3>{copy.help}</h3>
+                    <ul>
+                      {entry.data.whatWeDo.slice(0, 3).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section>
+                    <h3>{copy.output}</h3>
+                    <ul>
+                      {entry.data.outputs.slice(0, 4).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section>
+                    <h3>{copy.example}</h3>
+                    <p>{entry.data.examples.slice(0, 3).join(' / ')}</p>
+                  </section>
+                </div>
+
+                {relatedProject && (
+                  <aside class="solution-directory-row__proof">
+                    <div>
+                      <p class="eyebrow text-indigo-deep">{copy.proof}</p>
+                      <strong>{relatedProject.data.title}</strong>
+                    </div>
+                    <ProjectFrame
+                      image={relatedProject.data.coverImage ?? ''}
+                      alt={`${relatedProject.data.title}. ${relatedProject.data.summary}`}
+                      href={getLocalizedPath(locale, `/work/${relatedProject.data.routeSlug}`)}
+                      width={relatedProject.data.routeSlug === 'poseidon-filter' ? 1348 : 1363}
+                      height={relatedProject.data.routeSlug === 'poseidon-filter' ? 945 : 936}
+                      imageClass={
+                        relatedProject.data.routeSlug === 'poseidon-filter'
+                          ? 'aspect-[1.43] object-top'
+                          : 'aspect-[1.46]'
+                      }
+                    />
+                  </aside>
+                )}
               </div>
-            </div>
-          </details>
-        ))
+            </details>
+          );
+        })
       }
     </div>
   </div>
 </section>
 
-<PricingAnchor locale={locale} />
+{PricingAnchor && <PricingAnchor locale={locale} />}
 
 <style>
   .solutions-directory {
-    min-height: calc(100svh - 4.75rem);
+    min-height: calc(100svh - 4.5rem);
   }
   .solutions-directory__inner {
-    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+    padding-block: clamp(4rem, 7vw, 6rem);
   }
   .solutions-directory__header {
     display: grid;
@@ -150,10 +188,10 @@ const copy =
     max-width: 12ch;
     margin: 0.8rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(3rem, 6vw, 6.2rem);
-    font-weight: 620;
-    line-height: 0.95;
-    letter-spacing: -0.062em;
+    font-size: clamp(2.85rem, 4.8vw, 4.8rem);
+    font-weight: 570;
+    line-height: 0.98;
+    letter-spacing: -0.054em;
   }
   .solutions-directory__header > div:last-child > p {
     max-width: 34rem;
@@ -167,7 +205,7 @@ const copy =
     margin-top: 0.75rem;
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.63rem;
-    font-weight: 800;
+    font-weight: 700;
   }
   .solutions-directory__list {
     border-top: 1px solid rgba(11, 13, 16, 0.17);
@@ -191,12 +229,12 @@ const copy =
   .solution-directory-row__number {
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.6rem;
-    font-weight: 800;
+    font-weight: 700;
   }
   .solution-directory-row summary small {
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.56rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -204,7 +242,7 @@ const copy =
     margin: 0.18rem 0 0;
     font-family: var(--font-display);
     font-size: clamp(1.25rem, 2vw, 1.85rem);
-    font-weight: 650;
+    font-weight: 580;
     letter-spacing: -0.04em;
   }
   .solution-directory-row summary > p {
@@ -218,73 +256,71 @@ const copy =
     width: 2rem;
     height: 2rem;
     place-items: center;
-    border: 1px solid rgba(11, 13, 16, 0.18);
-    border-radius: 999px;
+    border: 0;
     transition:
       transform 220ms ease,
       background-color 220ms ease,
       color 220ms ease;
   }
   .solution-directory-row[open] .solution-directory-row__toggle {
-    background: var(--color-ink);
-    color: var(--color-paper);
     transform: rotate(45deg);
   }
   .solution-directory-row[open] > summary {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    background: var(--color-ink);
-    color: var(--color-paper);
+    border-bottom: 1px solid rgba(11, 13, 16, 0.12);
+    background: #eef0fa;
+    color: var(--color-ink);
     margin-inline: calc(50% - 50vw);
     padding-inline: calc(50vw - 50%);
   }
   .solution-directory-row[open] summary small,
   .solution-directory-row[open] summary > p,
   .solution-directory-row[open] .solution-directory-row__number {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(11, 13, 16, 0.52);
   }
   .solution-directory-row[open] .solution-directory-row__toggle {
-    border-color: rgba(255, 255, 255, 0.3);
-    background: var(--color-paper);
     color: var(--color-ink);
   }
   .solution-directory-row__detail {
     display: grid;
-    gap: 3rem;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
     margin-inline: calc(50% - 50vw);
     padding: clamp(3rem, 6vw, 5rem) max(calc(50vw - 44rem), clamp(0.75rem, 3vw, 2.5rem));
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: #eef0fa;
+    color: var(--color-ink);
+    animation: directory-detail-in 440ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .solution-directory-row__lead h3 {
-    max-width: 16ch;
-    margin: 1rem 0 0;
+  .solution-directory-row__problem {
+    max-width: 38rem;
+    margin: 1.15rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.3rem, 4.6vw, 4.8rem);
-    font-weight: 620;
-    line-height: 0.99;
-    letter-spacing: -0.055em;
+    font-size: clamp(1.35rem, 2.25vw, 2.05rem);
+    font-weight: 560;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
   }
-  .solution-directory-row__lead > p:not(.eyebrow) {
+  .solution-directory-row__lead > strong {
+    display: block;
     max-width: 35rem;
-    margin: 1.25rem 0 0;
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 0.88rem;
-    line-height: 1.7;
+    margin: 1.15rem 0 0;
+    color: rgba(11, 13, 16, 0.58);
+    font-size: 0.82rem;
+    font-weight: 550;
+    line-height: 1.65;
   }
   .solution-directory-row__lead a {
     margin-top: 1.5rem;
   }
   .solution-directory-row__facts {
     display: grid;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
   }
   .solution-directory-row__facts section {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
     padding: 1.25rem 0;
   }
-  .solution-directory-row__facts h4 {
+  .solution-directory-row__facts h3 {
     margin: 0 0 0.8rem;
-    color: rgba(147, 166, 255, 0.82);
+    color: var(--color-indigo-deep);
     font-size: 0.61rem;
     font-weight: 800;
     letter-spacing: 0.08em;
@@ -300,9 +336,32 @@ const copy =
   .solution-directory-row__facts li,
   .solution-directory-row__facts p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(11, 13, 16, 0.62);
     font-size: 0.78rem;
     line-height: 1.55;
+  }
+  .solution-directory-row__proof {
+    display: grid;
+    gap: 1.25rem;
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    padding-top: 1.5rem;
+  }
+  .solution-directory-row__proof > div > strong {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  @keyframes directory-detail-in {
+    from {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+    }
+    to {
+      clip-path: inset(0);
+      opacity: 1;
+    }
   }
   @media (min-width: 900px) {
     .solutions-directory__header {
@@ -316,7 +375,7 @@ const copy =
     }
     .solution-directory-row__facts section:nth-child(odd) {
       padding-right: 1.5rem;
-      border-right: 1px solid rgba(255, 255, 255, 0.16);
+      border-right: 1px solid rgba(11, 13, 16, 0.16);
     }
     .solution-directory-row__facts section:nth-child(even) {
       padding-left: 1.5rem;
@@ -337,7 +396,9 @@ const copy =
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .solution-directory-row__toggle {
+    .solution-directory-row__toggle,
+    .solution-directory-row__detail {
+      animation: none;
       transition: none;
     }
   }
@@ -364,7 +425,6 @@ const copy =
     const target = rows.find((row) => row.id === hash);
     if (target) {
       target.open = true;
-      openRow(target, false);
       requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
     }
   };

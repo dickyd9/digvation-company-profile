@@ -14,7 +14,6 @@ draft: false
 order: 2
 visualVariant: paper
 coverImage: /work/leaf-lab/cover.webp
-showLiveInCard: false
 challenge: Photosynthesis material needed a digital experience that was easier to explore than a static document.
 context: Users needed to open the material from one link, follow a clear learning sequence, and interact with the important parts directly.
 insight: Complex material becomes easier to follow when the sequence is clear and users can discover answers through interaction.
@@ -47,10 +46,6 @@ outcome: Leaf Lab now has an interactive learning experience that can be opened 
 nextStep: The material and exercises can grow with future learning needs.
 relatedSolution: digital-build
 liveUrl: https://leaf-lab.digvation.id/
-preview:
-  mode: image
-  embedUrl: https://leaf-lab.digvation.id/
-  image: /work/leaf-lab/cover.webp
 browserScreenshots:
   - /work/leaf-lab/product.webp
 gallery:

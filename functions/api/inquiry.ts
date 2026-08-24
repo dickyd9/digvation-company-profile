@@ -143,7 +143,15 @@ export const onRequestPost: PageHandler<Env> = async (context) => {
 
   let form: FormData;
   try {
-    form = await context.request.formData();
+    const payload = await context.request.arrayBuffer();
+    if (payload.byteLength > 64 * 1024)
+      return json({ ok: false, message: 'Request too large.' }, 413);
+    const formRequest = new Request(context.request.url, {
+      method: 'POST',
+      headers: context.request.headers,
+      body: payload,
+    });
+    form = await formRequest.formData();
   } catch {
     return json({ ok: false, message: 'Invalid request.' }, 400);
   }
@@ -158,7 +166,13 @@ export const onRequestPost: PageHandler<Env> = async (context) => {
   if (honeypot) return json({ ok: true });
 
   const ip = context.request.headers.get('CF-Connecting-IP') ?? 'unknown';
-  if (!(await verifyTurnstile(context.env, turnstileToken, ip))) {
+  let turnstileVerified = false;
+  try {
+    turnstileVerified = await verifyTurnstile(context.env, turnstileToken, ip);
+  } catch {
+    console.error('[digvation.inquiry.turnstile_failed]');
+  }
+  if (!turnstileVerified) {
     return json(
       {
         ok: false,

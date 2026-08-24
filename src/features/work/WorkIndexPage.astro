@@ -11,9 +11,8 @@ const copy =
   locale === 'id'
     ? {
         eyebrow: 'Hasil Kerja',
-        title: 'Masalah nyata. Solusi yang benar-benar digunakan.',
-        intro:
-          'Setiap project dimulai dari konteks yang berbeda. Lihat apa yang perlu berubah, apa yang kami bangun, dan bagaimana hasilnya digunakan.',
+        title: 'Pekerjaan yang sudah berjalan.',
+        intro: 'Lihat kebutuhannya, apa yang kami bangun, dan bagaimana hasilnya digunakan.',
         story: 'Baca cerita project',
         live: 'Buka project live',
         close: 'Ada kebutuhan yang belum terlihat di sini?',
@@ -23,9 +22,8 @@ const copy =
       }
     : {
         eyebrow: 'Work',
-        title: 'Real problems. Solutions people actually use.',
-        intro:
-          'Every project starts from a different context. See what needed to change, what we built, and how the result is used.',
+        title: 'Work that is already live.',
+        intro: 'See the need, what we built, and how the result is used.',
         story: 'Read the project story',
         live: 'Open the live project',
         close: 'Have a need you do not see here?',
@@ -57,27 +55,34 @@ const copy =
               ? { width: 1348, height: 945 }
               : { width: 1363, height: 936 };
           return (
-            <article class:list={['work-entry', index % 2 === 1 && 'work-entry--offset']}>
+            <article
+              class:list={[
+                'work-entry',
+                entry.data.visualVariant === 'paper' ? 'work-entry--paper' : 'work-entry--navy',
+              ]}
+            >
               <div class="work-entry__meta">
                 <span>{String(index + 1).padStart(2, '0')}</span>
                 <span>{entry.data.client}</span>
                 <span>{entry.data.projectType}</span>
                 <span>{entry.data.year}</span>
               </div>
-              <div class="work-entry__visual" data-reveal="up">
-                <ProjectFrame
-                  image={entry.data.coverImage ?? ''}
-                  alt={`${entry.data.title}. ${entry.data.summary}`}
-                  href={caseHref}
-                  url={entry.data.liveUrl ? new URL(entry.data.liveUrl).hostname : undefined}
-                  width={imageSize.width}
-                  height={imageSize.height}
-                  imageClass={
-                    entry.data.routeSlug === 'poseidon-filter'
-                      ? 'aspect-[1.43] object-top'
-                      : 'aspect-[1.46]'
-                  }
-                />
+              <div class="work-entry__visual" data-reveal="visual">
+                <div>
+                  <ProjectFrame
+                    image={entry.data.coverImage ?? ''}
+                    alt={`${entry.data.title}. ${entry.data.summary}`}
+                    href={caseHref}
+                    url={entry.data.liveUrl ? new URL(entry.data.liveUrl).hostname : undefined}
+                    width={imageSize.width}
+                    height={imageSize.height}
+                    imageClass={
+                      entry.data.routeSlug === 'poseidon-filter'
+                        ? 'aspect-[1.43] object-top'
+                        : 'aspect-[1.46]'
+                    }
+                  />
+                </div>
               </div>
               <div class="work-entry__copy">
                 <h2>{entry.data.title}</h2>
@@ -131,16 +136,16 @@ const copy =
 
 <style>
   .work-intro__inner {
-    padding-block: clamp(5rem, 11vw, 10rem);
+    padding-block: clamp(5rem, 9vw, 8rem);
   }
   .work-intro h1 {
     max-width: 13ch;
     margin: 1.1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(3.4rem, 7.6vw, 8rem);
-    font-weight: 620;
-    line-height: 0.95;
-    letter-spacing: -0.063em;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 570;
+    line-height: 0.98;
+    letter-spacing: -0.054em;
   }
   .work-intro__inner > p:last-child {
     max-width: 41rem;
@@ -151,7 +156,7 @@ const copy =
   }
   .work-collection__list {
     display: grid;
-    gap: clamp(6rem, 12vw, 11rem);
+    gap: clamp(7rem, 13vw, 12rem);
   }
   .work-entry__meta {
     display: grid;
@@ -170,13 +175,34 @@ const copy =
     gap: 1.5rem;
     margin-top: 1.8rem;
   }
+  .work-entry__visual {
+    display: grid;
+    min-height: clamp(25rem, 61vw, 46rem);
+    place-items: center;
+    overflow: clip;
+    padding: clamp(2rem, 6vw, 6rem);
+  }
+  .work-entry--navy .work-entry__visual {
+    background: #08213e;
+    color: var(--color-paper);
+  }
+  .work-entry--paper .work-entry__visual {
+    background: #edf2eb;
+    color: var(--color-ink);
+  }
+  .work-entry__visual > div {
+    width: min(100%, 68rem);
+  }
+  .work-entry--paper .work-entry__visual > div {
+    width: min(88%, 59rem);
+  }
   .work-entry__copy h2 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5.5vw, 5.8rem);
-    font-weight: 620;
-    line-height: 0.96;
-    letter-spacing: -0.058em;
+    font-size: clamp(2.15rem, 3.8vw, 3.75rem);
+    font-weight: 580;
+    line-height: 1;
+    letter-spacing: -0.048em;
   }
   .work-entry__copy p {
     max-width: 38rem;
@@ -215,24 +241,27 @@ const copy =
     max-width: 25ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 4rem);
-    font-weight: 620;
-    line-height: 1.02;
-    letter-spacing: -0.05em;
+    font-size: clamp(2rem, 3.4vw, 3.35rem);
+    font-weight: 580;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
   }
   @media (min-width: 900px) {
     .work-entry__copy {
       grid-template-columns: 0.9fr 1.1fr;
-    }
-    .work-entry--offset {
-      width: 78%;
-      margin-left: auto;
     }
     .work-close__inner {
       grid-template-columns: 1fr auto;
     }
   }
   @media (max-width: 640px) {
+    .work-entry__visual {
+      min-height: 23rem;
+      padding: 1rem;
+    }
+    .work-entry--paper .work-entry__visual > div {
+      width: 96%;
+    }
     .work-entry__meta {
       grid-template-columns: 2rem 1fr auto;
     }

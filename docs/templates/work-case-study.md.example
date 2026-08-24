@@ -14,7 +14,6 @@ draft: true
 order: 99
 visualVariant: navy
 coverImage: /work/project-slug/cover.webp
-showLiveInCard: false
 challenge: Masalah bisnis yang ingin diselesaikan.
 context: Kondisi awal sebelum project dimulai.
 previousCondition: Kondisi atau cara kerja sebelumnya.
@@ -35,10 +34,6 @@ outcome: Hasil yang benar-benar dapat diverifikasi. Jangan membuat angka palsu.
 nextStep: Improvement atau langkah lanjutan.
 relatedSolution: digital-build
 liveUrl: https://example.com
-preview:
-  mode: image
-  embedUrl: https://example.com/
-  image: /work/project-slug/cover.webp
 browserScreenshots:
   - /work/project-slug/cover.webp
 gallery:

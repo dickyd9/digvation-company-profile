@@ -8,8 +8,8 @@ const { copy, locale } = Astro.props;
 ---
 
 <section class="home-process bg-indigo-deep text-paper" data-track-section="process">
-  <div class="shell-wide section-pad">
-    <div class="home-process__intro" data-reveal="up">
+  <div class="shell-wide home-process__inner">
+    <header class="home-process__intro" data-reveal="mask">
       <div>
         <p class="eyebrow text-accent">{copy.eyebrow}</p>
         <h2>{copy.title}</h2>
@@ -20,64 +20,90 @@ const { copy, locale } = Astro.props;
           >{copy.linkLabel}<span aria-hidden="true">↗</span></a
         >
       </div>
-    </div>
+    </header>
 
-    <ol class="home-process__steps" data-reveal="up" style="--reveal-delay:80ms">
-      {
-        copy.items.map((item, index) => (
-          <li>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <div>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+    <div class="home-process__path" data-reveal="line">
+      <i class="home-process__progress" aria-hidden="true"></i>
+      <ol class="home-process__steps">
+        {
+          copy.items.map((item, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </div>
 </section>
 
 <style>
+  .home-process__inner {
+    padding-block: clamp(7rem, 12vw, 11rem);
+  }
   .home-process__intro {
     display: grid;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: end;
-    margin-bottom: clamp(3.5rem, 7vw, 6rem);
+    margin-bottom: clamp(5rem, 9vw, 8rem);
   }
   .home-process__intro h2 {
-    max-width: 14ch;
+    max-width: 12ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.7rem, 5.4vw, 5.8rem);
-    font-weight: 620;
-    line-height: 0.97;
-    letter-spacing: -0.06em;
+    font-size: clamp(2.75rem, 4.6vw, 4.7rem);
+    font-weight: 560;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
   }
   .home-process__intro > div:last-child > p {
-    max-width: 35rem;
+    max-width: 31rem;
     margin: 0;
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 0.95rem;
-    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.91rem;
+    line-height: 1.72;
   }
   .home-process__intro a {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    margin-top: 1.4rem;
+    margin-top: 1.5rem;
     border-bottom: 1px solid currentColor;
     padding-bottom: 0.22rem;
     color: var(--color-paper);
-    font-size: 0.78rem;
-    font-weight: 800;
+    font-size: 0.77rem;
+    font-weight: 750;
     text-decoration: none;
+  }
+  .home-process__intro a span {
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .home-process__intro a:hover span {
+    transform: translate(0.18rem, -0.1rem);
+  }
+  .home-process__path {
+    position: relative;
+  }
+  .home-process__progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
   }
   .home-process__steps {
     display: grid;
     margin: 0;
     padding: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     list-style: none;
   }
   .home-process__steps li {
@@ -86,41 +112,54 @@ const { copy, locale } = Astro.props;
     grid-template-columns: 2.5rem 1fr;
     gap: 1rem;
     min-width: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    padding: 1.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.17);
+    padding: 1.45rem 0;
+  }
+  .home-process__steps li::before {
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+    background: var(--color-indigo-deep);
+    content: '';
   }
   .home-process__steps li > span {
-    color: rgba(147, 166, 255, 0.72);
-    font-size: 0.61rem;
-    font-weight: 800;
+    color: rgba(147, 166, 255, 0.76);
+    font-size: 0.58rem;
+    font-weight: 750;
     letter-spacing: 0.08em;
   }
   .home-process__steps h3 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.45rem, 2.1vw, 2rem);
-    font-weight: 620;
-    letter-spacing: -0.04em;
+    font-size: clamp(1.35rem, 1.8vw, 1.75rem);
+    font-weight: 560;
+    letter-spacing: -0.035em;
   }
   .home-process__steps p {
-    margin: 0.75rem 0 0;
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 0.76rem;
-    line-height: 1.6;
+    max-width: 15rem;
+    margin: 0.65rem 0 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.74rem;
+    line-height: 1.62;
   }
   @media (min-width: 900px) {
     .home-process__intro {
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.15fr 0.85fr;
     }
     .home-process__steps {
       grid-template-columns: repeat(6, 1fr);
     }
     .home-process__steps li {
-      min-height: 15rem;
+      min-height: 12.5rem;
       grid-template-columns: 1fr;
       align-content: space-between;
-      border-right: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 1.25rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.17);
+      border-bottom: 0;
+      padding: 1.45rem clamp(0.8rem, 1.4vw, 1.35rem);
     }
     .home-process__steps li:first-child {
       padding-left: 0;
@@ -128,6 +167,33 @@ const { copy, locale } = Astro.props;
     .home-process__steps li:last-child {
       border-right: 0;
       padding-right: 0;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .home-process__progress {
+        animation: process-line linear both;
+        animation-range: entry 20% cover 55%;
+        animation-timeline: view();
+      }
+      @keyframes process-line {
+        to {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+  @media (max-width: 640px) {
+    .home-process__inner {
+      padding-block: 5.5rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-process__intro a span {
+      transition: none;
+    }
+    .home-process__progress {
+      transform: scaleX(1);
     }
   }
 </style>

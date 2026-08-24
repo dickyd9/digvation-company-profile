@@ -10,14 +10,9 @@ const copy =
   locale === 'id'
     ? {
         eyebrow: 'Mulai percakapan',
-        title: 'Mari bicara tentang apa yang bisnis Anda butuhkan.',
+        title: 'Ceritakan apa yang ingin Anda perbaiki.',
         intro:
           'Tidak perlu proposal panjang atau istilah teknis. Ceritakan proses yang terasa lambat, manual, sulit dipantau, atau belum memiliki solusi.',
-        promise: [
-          ['Kami baca konteksnya', 'Bukan sekadar menghitung jumlah fitur.'],
-          ['Kami bantu memilih prioritas', 'Tidak semua hal harus dibangun sekaligus.'],
-          ['Kami jelaskan langkah berikutnya', 'Agar keputusan tetap mudah dipahami.'],
-        ],
         emailLabel: 'Lebih nyaman lewat email?',
         whatsappLabel: 'Lebih cepat lewat WhatsApp?',
         whatsappCta: 'Mulai chat',
@@ -25,14 +20,9 @@ const copy =
       }
     : {
         eyebrow: 'Start a conversation',
-        title: 'Let us talk about what your business needs.',
+        title: 'Tell us what you want to improve.',
         intro:
           'No long proposal or technical language needed. Tell us about a process that feels slow, manual, hard to monitor, or still has no solution.',
-        promise: [
-          ['We read the context', 'Not merely count the number of features.'],
-          ['We help choose the priority', 'Not everything has to be built at once.'],
-          ['We explain the next move', 'So the decision remains understandable.'],
-        ],
         emailLabel: 'Prefer email?',
         whatsappLabel: 'Prefer WhatsApp?',
         whatsappCta: 'Start a chat',
@@ -42,28 +32,10 @@ const copy =
 
 <section class="contact-page bg-paper-warm text-ink">
   <div class="shell-wide contact-page__grid">
-    <header class="contact-page__intro" data-reveal="left">
+    <header class="contact-page__intro" data-reveal="mask">
       <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
       <h1>{copy.title}</h1>
       <p class="contact-page__lead">{copy.intro}</p>
-
-      <ol class="contact-page__promise">
-        {
-          copy.promise.map(([title, body], index) => (
-            <li>
-              <>
-                <span>0{index + 1}</span>
-                <div>
-                  <>
-                    <strong>{title}</strong>
-                    <p>{body}</p>
-                  </>
-                </div>
-              </>
-            </li>
-          ))
-        }
-      </ol>
 
       <div class="contact-page__alternatives">
         <div>
@@ -91,7 +63,7 @@ const copy =
       </div>
     </header>
 
-    <div class="contact-page__form" data-reveal="right">
+    <div class="contact-page__form" data-reveal="line">
       <div class="contact-page__form-head">
         <span>01 / INQUIRY</span><p>{copy.response}</p>
       </div>
@@ -110,10 +82,10 @@ const copy =
     max-width: 13ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(3.1rem, 6.5vw, 6.7rem);
-    font-weight: 620;
-    line-height: 0.95;
-    letter-spacing: -0.063em;
+    font-size: clamp(2.85rem, 4.7vw, 4.65rem);
+    font-weight: 570;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
   }
   .contact-page__lead {
     max-width: 38rem;
@@ -122,38 +94,11 @@ const copy =
     font-size: 0.94rem;
     line-height: 1.78;
   }
-  .contact-page__promise {
-    margin: 2.5rem 0 0;
-    padding: 0;
-    border-top: 1px solid rgba(11, 13, 16, 0.16);
-    list-style: none;
-  }
-  .contact-page__promise li {
-    display: grid;
-    grid-template-columns: 2.5rem 1fr;
-    gap: 1rem;
-    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
-    padding: 1rem 0;
-  }
-  .contact-page__promise li > span {
-    color: rgba(11, 13, 16, 0.3);
-    font-size: 0.6rem;
-    font-weight: 800;
-  }
-  .contact-page__promise strong {
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-  .contact-page__promise p {
-    margin: 0.2rem 0 0;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.73rem;
-  }
   .contact-page__alternatives {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem 3rem;
-    margin-top: 2rem;
+    margin-top: 2.75rem;
   }
   .contact-page__alternatives p {
     margin: 0 0 0.3rem;
@@ -169,10 +114,8 @@ const copy =
     text-underline-offset: 0.25rem;
   }
   .contact-page__form {
-    padding: clamp(1.5rem, 3vw, 3rem);
-    border: 1px solid rgba(11, 13, 16, 0.14);
-    background: var(--color-paper);
-    box-shadow: 0 2.5rem 6rem rgba(11, 13, 16, 0.08);
+    padding: clamp(1.5rem, 3vw, 3rem) 0 clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 4vw, 4rem);
+    border-left: 1px solid rgba(11, 13, 16, 0.14);
   }
   .contact-page__form-head {
     display: flex;
@@ -206,6 +149,13 @@ const copy =
     .contact-page__intro {
       position: sticky;
       top: 7rem;
+    }
+  }
+  @media (max-width: 1023px) {
+    .contact-page__form {
+      border-top: 1px solid rgba(11, 13, 16, 0.14);
+      border-left: 0;
+      padding: 2.5rem 0 0;
     }
   }
 </style>

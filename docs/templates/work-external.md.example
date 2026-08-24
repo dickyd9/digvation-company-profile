@@ -12,12 +12,7 @@ status: hidden
 featured: false
 draft: true
 order: 99
-showLiveInCard: false
 visualVariant: paper
 coverImage: /work/project-slug/cover.webp
 liveUrl: https://example.com/
-preview:
-  mode: image
-  embedUrl: https://example.com/
-  image: /work/project-slug/cover.webp
 ---

@@ -56,8 +56,14 @@ const coverSize =
   slug === 'poseidon-filter' ? { width: 1348, height: 945 } : { width: 1363, height: 936 };
 ---
 
-<article class="case-study bg-paper text-ink" data-case-study={slug}>
-  <header class="case-hero bg-ink text-paper">
+<article
+  class:list={[
+    'case-study bg-paper text-ink',
+    entry.data.visualVariant === 'paper' ? 'case-study--paper' : 'case-study--navy',
+  ]}
+  data-case-study={slug}
+>
+  <header class="case-hero">
     <div class="shell-wide case-hero__inner">
       <a class="case-hero__back" href={getLocalizedPath(locale, '/work')}>← {copy.back}</a>
       <div class="case-hero__meta">
@@ -70,8 +76,8 @@ const coverSize =
     </div>
   </header>
 
-  <section class="case-cover bg-ink text-paper" aria-label={entry.data.title}>
-    <div class="shell-wide" data-reveal="up">
+  <section class="case-cover" aria-label={entry.data.title}>
+    <div class="shell-wide" data-reveal="visual">
       <ProjectFrame
         image={entry.data.coverImage ?? ''}
         alt={`${entry.data.title}. ${entry.data.summary}`}
@@ -88,19 +94,19 @@ const coverSize =
   <section class="case-story section-pad bg-paper">
     <div class="shell case-story__grid">
       <div class="case-story__index"><span>01</span><p>{copy.context}</p></div>
-      <div class="case-story__lead" data-reveal="up">
+      <div class="case-story__lead" data-reveal="mask">
         <h2>{entry.data.context}</h2>
       </div>
       <div class="case-story__blocks">
-        <article data-reveal="up">
+        <article data-reveal="line">
           <p class="eyebrow text-indigo-deep">{copy.problem}</p>
           <h3>{entry.data.challenge}</h3>
         </article>
-        <article data-reveal="up">
+        <article data-reveal="line">
           <p class="eyebrow text-indigo-deep">{copy.change}</p>
           <h3>{entry.data.businessRequirement ?? entry.data.insight}</h3>
         </article>
-        <article data-reveal="up">
+        <article data-reveal="line">
           <p class="eyebrow text-indigo-deep">{copy.approach}</p>
           <h3>{entry.data.approach}</h3>
         </article>
@@ -110,7 +116,7 @@ const coverSize =
 
   <section class="case-built bg-indigo-deep text-paper">
     <div class="shell-wide section-pad">
-      <div class="case-built__intro" data-reveal="up">
+      <div class="case-built__intro" data-reveal="mask">
         <p class="eyebrow text-accent">02 / {copy.built}</p>
         <h2>{entry.data.solution}</h2>
       </div>
@@ -147,7 +153,7 @@ const coverSize =
               return (
                 <figure
                   class:list={[imageIndex % 2 === 1 && 'case-product__figure--offset']}
-                  data-reveal="up"
+                  data-reveal="visual"
                 >
                   <img
                     src={image}
@@ -244,12 +250,27 @@ const coverSize =
 </article>
 
 <style>
+  .case-study {
+    --case-hero-bg: #0b0d10;
+    --case-hero-fg: #ffffff;
+    --case-hero-muted: rgba(255, 255, 255, 0.66);
+  }
+  .case-study--paper {
+    --case-hero-bg: #edf2eb;
+    --case-hero-fg: #0b0d10;
+    --case-hero-muted: rgba(11, 13, 16, 0.6);
+  }
+  .case-hero,
+  .case-cover {
+    background: var(--case-hero-bg);
+    color: var(--case-hero-fg);
+  }
   .case-hero__inner {
     padding-top: 2rem;
     padding-bottom: clamp(4rem, 9vw, 8rem);
   }
   .case-hero__back {
-    color: rgba(255, 255, 255, 0.68);
+    color: var(--case-hero-muted);
     font-size: 0.72rem;
     font-weight: 750;
     text-decoration: none;
@@ -259,7 +280,7 @@ const coverSize =
     flex-wrap: wrap;
     gap: 0.75rem 1.5rem;
     margin-top: clamp(4rem, 8vw, 7rem);
-    color: rgba(255, 255, 255, 0.68);
+    color: var(--case-hero-muted);
     font-size: 0.61rem;
     font-weight: 800;
     letter-spacing: 0.08em;
@@ -269,15 +290,15 @@ const coverSize =
     max-width: 12ch;
     margin: 1.25rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(4rem, 10vw, 10rem);
-    font-weight: 620;
-    line-height: 0.9;
-    letter-spacing: -0.07em;
+    font-size: clamp(3.7rem, 7vw, 6.8rem);
+    font-weight: 570;
+    line-height: 0.93;
+    letter-spacing: -0.06em;
   }
   .case-hero__inner > p {
     max-width: 44rem;
     margin: 2rem 0 0 auto;
-    color: rgba(255, 255, 255, 0.68);
+    color: var(--case-hero-muted);
     font-size: clamp(1rem, 1.4vw, 1.18rem);
     line-height: 1.75;
   }
@@ -302,10 +323,10 @@ const coverSize =
   .case-story__lead h2 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.3rem, 4.6vw, 4.9rem);
-    font-weight: 620;
-    line-height: 1;
-    letter-spacing: -0.055em;
+    font-size: clamp(2.1rem, 3.8vw, 3.75rem);
+    font-weight: 570;
+    line-height: 1.04;
+    letter-spacing: -0.048em;
   }
   .case-story__blocks {
     display: grid;
@@ -332,10 +353,10 @@ const coverSize =
     max-width: 24ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 5.2rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.055em;
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .case-built__list {
     display: grid;
@@ -369,10 +390,10 @@ const coverSize =
     max-width: 15ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.7rem, 5.4vw, 5.7rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.058em;
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .case-product__gallery {
     display: grid;
@@ -404,10 +425,10 @@ const coverSize =
     max-width: 16ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 5.2rem);
-    font-weight: 620;
-    line-height: 0.99;
-    letter-spacing: -0.055em;
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .case-result ul {
     margin: 0;
@@ -448,8 +469,8 @@ const coverSize =
     max-width: 25ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 4rem);
-    font-weight: 620;
+    font-size: clamp(2rem, 3.4vw, 3.35rem);
+    font-weight: 580;
     line-height: 1.02;
     letter-spacing: -0.05em;
   }

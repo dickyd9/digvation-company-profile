@@ -9,9 +9,9 @@ const copy =
   locale === 'id'
     ? {
         eyebrow: 'Cara Kerja',
-        title: 'Bekerja dengan Digvation harus terasa jelas.',
+        title: 'Sederhana untuk diikuti.',
         intro:
-          'Tidak perlu memahami proses engineering. Anda cukup memahami bisnisnya. Kami menjaga agar keputusan, progres, dan hasilnya mudah diikuti.',
+          'Anda membawa konteks bisnis. Kami menjaga keputusan, progres, dan hasilnya tetap jelas.',
         stages: [
           [
             'Pahami',
@@ -65,9 +65,8 @@ const copy =
       }
     : {
         eyebrow: 'How We Work',
-        title: 'Working with Digvation should feel clear.',
-        intro:
-          'You do not need to understand the engineering process. You understand the business. We keep decisions, progress, and outcomes easy to follow.',
+        title: 'Simple to follow.',
+        intro: 'You bring the business context. We keep decisions, progress, and outcomes clear.',
         stages: [
           [
             'Understand',
@@ -122,7 +121,7 @@ const copy =
 ---
 
 <section class="process-hero bg-paper-warm text-ink">
-  <div class="shell process-hero__inner" data-reveal="up">
+  <div class="shell process-hero__inner" data-reveal="mask">
     <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
     <h1>{copy.title}</h1>
     <p>{copy.intro}</p>
@@ -134,7 +133,7 @@ const copy =
     <ol class="process-stages__list">
       {
         copy.stages.map(([title, body, artifact], index) => (
-          <li class="process-stage" data-reveal="up">
+          <li class="process-stage" data-reveal="line">
             <span class="process-stage__number">{String(index + 1).padStart(2, '0')}</span>
             <h2>{title}</h2>
             <p>{body}</p>
@@ -145,7 +144,7 @@ const copy =
               </>
             </div>
             {index === 2 && (
-              <div class="process-stage__visual">
+              <div class="process-stage__visual" data-reveal="visual">
                 <ProjectFrame
                   image="/work/leaf-lab/product.webp"
                   alt={
@@ -160,7 +159,7 @@ const copy =
               </div>
             )}
             {index === 4 && (
-              <div class="process-stage__visual process-stage__visual--wide">
+              <div class="process-stage__visual process-stage__visual--wide" data-reveal="visual">
                 <ProjectFrame
                   image="/work/poseidon-filter/cover.webp"
                   alt={
@@ -224,16 +223,16 @@ const copy =
 
 <style>
   .process-hero__inner {
-    padding-block: clamp(5rem, 11vw, 10rem);
+    padding-block: clamp(5rem, 9vw, 8rem);
   }
   .process-hero h1 {
     max-width: 13ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(3.4rem, 7.5vw, 8rem);
-    font-weight: 620;
-    line-height: 0.94;
-    letter-spacing: -0.065em;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 570;
+    line-height: 0.98;
+    letter-spacing: -0.054em;
   }
   .process-hero__inner > p:last-child {
     max-width: 41rem;
@@ -259,16 +258,16 @@ const copy =
   .process-stage__number {
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.61rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.08em;
   }
   .process-stage h2 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 4rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.052em;
+    font-size: clamp(1.9rem, 3vw, 2.9rem);
+    font-weight: 580;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
   }
   .process-stage > p {
     max-width: 36rem;
@@ -287,7 +286,7 @@ const copy =
   .process-stage__artifact small {
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.58rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
   }
@@ -314,10 +313,10 @@ const copy =
     max-width: 18ch;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.7rem, 5.3vw, 5.6rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.058em;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .process-roles__columns {
     display: grid;
@@ -363,10 +362,10 @@ const copy =
     max-width: 20ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 4vw, 4rem);
-    font-weight: 620;
-    line-height: 1.02;
-    letter-spacing: -0.05em;
+    font-size: clamp(2rem, 3.35vw, 3.3rem);
+    font-weight: 580;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
   }
   @media (min-width: 900px) {
     .process-roles__header {

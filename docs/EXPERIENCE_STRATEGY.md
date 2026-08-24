@@ -25,6 +25,15 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 - Let case studies carry depth; keep the homepage selective.
 - Make mobile layouts intentional rather than stacked desktop leftovers.
 
+## Typography and spacing
+
+- Use one neutral variable grotesk family, Inter, across display and text roles.
+- Create hierarchy through weight, width, line breaks, and whitespace before increasing size.
+- Reserve the largest type for a small number of hero and case-study moments.
+- Keep supporting copy narrow and normally limited to one or two short sentences.
+- Avoid pills, bordered containers, and card grids unless the container communicates a real interaction or product frame.
+- Allow large vertical gaps between ideas. Empty space is part of the narrative.
+
 ## Navigation
 
 - Beranda / Home
@@ -38,4 +47,10 @@ Campaign pages, Privacy, and Terms stay outside primary navigation.
 
 ## Motion
 
-Scroll reveals, image entrances, hover response, and route transitions may support hierarchy. Avoid continuous floating objects, blanket AOS-style movement, and effects without narrative value. All content remains usable without JavaScript and with `prefers-reduced-motion`.
+Motion has three levels:
+
+1. **Micro**: link, button, navigation, input, and summary feedback.
+2. **Section**: mask reveals, directional entrances, line wipes, and project-image expansion.
+3. **Hero**: the staged opening and a small number of high-impact visual moments.
+
+Route transitions use a brief masked reveal. Project scenes may use CSS scroll timelines where supported, with a stable non-animated fallback. Avoid continuous floating objects, blanket AOS-style movement, and effects without narrative value. All content remains usable without JavaScript and with `prefers-reduced-motion`.

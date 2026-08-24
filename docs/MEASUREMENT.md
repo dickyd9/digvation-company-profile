@@ -19,7 +19,7 @@ PUBLIC_GOOGLE_SITE_VERIFICATION=xxxxxxxxxx
 | `page_view`                           | One deduplicated page view, including Astro route changes |
 | `project_view`                        | A visitor chooses a project from a listing or homepage    |
 | `case_study_view`                     | A case-study page is loaded                               |
-| `service_view`                        | An inline solution detail is opened                       |
+| `service_view`                        | An inline solution detail is opened once                  |
 | `cta_click`                           | A primary or supporting CTA is selected                   |
 | `contact_start`                       | The visitor first interacts with the inquiry form         |
 | `contact_submit`                      | A valid form submission attempt starts                    |
@@ -35,6 +35,8 @@ PUBLIC_GOOGLE_SITE_VERIFICATION=xxxxxxxxxx
 | `outbound_click`                      | Another external destination is opened                    |
 
 Use `contact_success` as the primary website lead conversion. Do not use the submit-button click as a conversion.
+
+Interaction listeners are re-bound through one route controller after Astro transitions. Consent settings use one persistent document bridge, preventing duplicate listeners across navigation.
 
 ## Attribution
 

@@ -2,8 +2,6 @@
 export const prerender = true;
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import HomePage from '@/features/home/HomePage.astro';
-import { getFaq } from '@/content/faq';
-import { faqSchema } from '@/lib/seo/schema';
 const locale = 'en' as const;
 ---
 
@@ -11,7 +9,6 @@ const locale = 'en' as const;
   locale={locale}
   title="Your Digitalization Partner"
   description="Digvation helps businesses understand the problem, shape the digital decision, and build a solution that people actually use."
-  structuredData={[faqSchema(getFaq(locale))]}
 >
   <HomePage locale={locale} />
 </BaseLayout>

@@ -1,12 +1,9 @@
 ---
-import ClientSection from '@/components/sections/ClientSection.astro';
-import FaqSection from '@/components/sections/FaqSection.astro';
 import FeaturedWork from '@/components/sections/FeaturedWork.astro';
 import FinalCta from '@/components/sections/FinalCta.astro';
 import HomeHero from '@/components/sections/HomeHero.astro';
 import ProcessSection from '@/components/sections/ProcessSection.astro';
 import SolutionAreas from '@/components/sections/SolutionAreas.astro';
-import { homeSectionConfig } from '@/config/home-sections';
 import type { Locale } from '@/config/site';
 import { homeCopy } from '@/content/home';
 
@@ -17,8 +14,6 @@ const copy = homeCopy[locale];
 
 <HomeHero locale={locale} copy={copy.hero} />
 <FeaturedWork locale={locale} />
-<ClientSection locale={locale} />
 <SolutionAreas locale={locale} copy={copy.solutions} />
 <ProcessSection locale={locale} copy={copy.process} />
-{homeSectionConfig.faq && <FaqSection locale={locale} />}
 <FinalCta locale={locale} copy={copy.finalCta} />

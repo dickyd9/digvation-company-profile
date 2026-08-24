@@ -7,32 +7,34 @@ type Props = { locale: Locale; copy: HomeCopy['solutions'] };
 const { locale, copy } = Astro.props;
 ---
 
-<section class="solution-areas bg-paper text-ink" data-track-section="solutions">
-  <div class="shell-wide section-pad">
-    <header class="solution-areas__intro" data-reveal="up">
-      <div>
-        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-        <h2>{copy.title}</h2>
-      </div>
-      <div>
-        <p>{copy.intro}</p>
-        <small>{copy.prompt}</small>
-      </div>
+<section class="solution-areas bg-paper-warm text-ink" data-track-section="solutions">
+  <div class="shell-wide solution-areas__layout">
+    <header class="solution-areas__intro" data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+      <h2>{copy.title}</h2>
+      <p>{copy.intro}</p>
+      <small>{copy.prompt}</small>
+      <a class="text-link" href={getLocalizedPath(locale, '/solutions')}>
+        {copy.linkLabel}<span aria-hidden="true">↗</span>
+      </a>
     </header>
 
-    <div class="solution-areas__list" data-solution-list>
+    <div class="solution-areas__list" data-solution-list data-reveal="line">
       {
         copy.items.map((item, index) => (
           <details class="solution-row" open={index === 0} data-solution-row>
             <summary>
               <span class="solution-row__index">{String(index + 1).padStart(2, '0')}</span>
               <span class="solution-row__verb">{item.verb}</span>
-              <strong>{item.title}</strong>
               <span class="solution-row__toggle" aria-hidden="true">
-                +
+                <>
+                  <i />
+                  <i />
+                </>
               </span>
             </summary>
             <div class="solution-row__detail">
+              <strong>{item.title}</strong>
               <p>{item.body}</p>
               <small>{item.examples}</small>
             </div>
@@ -40,55 +42,58 @@ const { locale, copy } = Astro.props;
         ))
       }
     </div>
-
-    <a class="text-link solution-areas__link" href={getLocalizedPath(locale, '/solutions')}>
-      {copy.linkLabel}<span aria-hidden="true">↗</span>
-    </a>
   </div>
 </section>
 
 <style>
-  .solution-areas__intro {
+  .solution-areas {
+    border-top: 1px solid rgba(11, 13, 16, 0.1);
+  }
+  .solution-areas__layout {
     display: grid;
-    gap: 2rem;
-    align-items: end;
-    margin-bottom: clamp(3rem, 6vw, 5rem);
+    gap: clamp(3rem, 7vw, 7rem);
+    padding-block: clamp(7rem, 12vw, 11rem);
   }
   .solution-areas__intro h2 {
-    max-width: 15ch;
-    margin: 1rem 0 0;
+    max-width: 14ch;
+    margin: 1.1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.6rem, 5.4vw, 5.7rem);
-    font-weight: 620;
-    line-height: 0.98;
-    letter-spacing: -0.058em;
+    font-size: clamp(2.65rem, 4.4vw, 4.45rem);
+    font-weight: 570;
+    line-height: 1;
+    letter-spacing: -0.052em;
   }
-  .solution-areas__intro p {
-    max-width: 35rem;
-    margin: 0;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.96rem;
-    line-height: 1.75;
+  .solution-areas__intro > p:not(.eyebrow) {
+    max-width: 29rem;
+    margin: 1.6rem 0 0;
+    color: rgba(11, 13, 16, 0.6);
+    font-size: 0.91rem;
+    line-height: 1.7;
   }
-  .solution-areas__intro small {
+  .solution-areas__intro > small {
     display: block;
-    margin-top: 1rem;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.69rem;
-    font-weight: 750;
+    margin-top: 0.5rem;
+    color: rgba(11, 13, 16, 0.46);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .solution-areas__intro .text-link {
+    margin-top: 2.2rem;
   }
   .solution-areas__list {
-    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    align-self: start;
+    border-top: 1px solid rgba(11, 13, 16, 0.18);
   }
   .solution-row {
-    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    overflow: clip;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.18);
   }
   .solution-row summary {
     display: grid;
-    grid-template-columns: 3rem minmax(5rem, 0.35fr) minmax(0, 1fr) 2rem;
-    gap: 1.25rem;
+    min-height: 5rem;
+    grid-template-columns: 2.25rem minmax(0, 1fr) 2rem;
+    gap: 1rem;
     align-items: center;
-    padding: clamp(1.35rem, 2.5vw, 2rem) 0;
     cursor: pointer;
     list-style: none;
   }
@@ -96,100 +101,108 @@ const { locale, copy } = Astro.props;
     display: none;
   }
   .solution-row__index {
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.62rem;
-    font-weight: 800;
+    color: rgba(11, 13, 16, 0.42);
+    font-size: 0.58rem;
+    font-weight: 750;
     letter-spacing: 0.08em;
   }
   .solution-row__verb {
-    color: var(--color-indigo-deep);
-    font-size: clamp(1rem, 1.6vw, 1.25rem);
-    font-weight: 800;
-  }
-  .solution-row strong {
     font-family: var(--font-display);
-    font-size: clamp(1.45rem, 2.9vw, 2.75rem);
-    font-weight: 620;
-    line-height: 1.08;
+    font-size: clamp(1.8rem, 3vw, 2.85rem);
+    font-weight: 560;
     letter-spacing: -0.045em;
   }
   .solution-row__toggle {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border: 1px solid rgba(11, 13, 16, 0.18);
-    border-radius: 999px;
-    font-size: 1rem;
-    font-weight: 400;
-    transition:
-      transform 220ms ease,
-      background-color 220ms ease,
-      color 220ms ease;
+    position: relative;
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
   }
-  .solution-row[open] .solution-row__toggle {
-    background: var(--color-ink);
-    color: var(--color-paper);
-    transform: rotate(45deg);
+  .solution-row__toggle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 1rem;
+    height: 1px;
+    background: currentColor;
+    transform: translate(-50%, -50%);
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solution-row__toggle i:last-child {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  .solution-row[open] .solution-row__verb {
+    color: var(--color-indigo-deep);
+  }
+  .solution-row[open] .solution-row__toggle i:last-child {
+    transform: translate(-50%, -50%) rotate(0);
   }
   .solution-row__detail {
     display: grid;
-    grid-template-columns: 3rem minmax(5rem, 0.35fr) minmax(0, 1fr) 2rem;
-    gap: 1rem 1.25rem;
-    padding: 0 0 1.75rem;
+    gap: 0.85rem;
+    padding: 0 2.5rem 2.1rem 3.25rem;
+  }
+  .solution-row__detail strong {
+    max-width: 32rem;
+    font-size: 0.96rem;
+    font-weight: 650;
+    line-height: 1.55;
   }
   .solution-row__detail p {
-    grid-column: 3;
-    max-width: 38rem;
-    margin: 0 0 0 auto;
-    color: rgba(11, 13, 16, 0.6);
-    font-size: 0.9rem;
+    max-width: 33rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.58);
+    font-size: 0.85rem;
     line-height: 1.7;
   }
   .solution-row__detail small {
-    grid-column: 3;
-    max-width: 38rem;
-    margin-left: auto;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.64rem;
-    font-weight: 750;
-    letter-spacing: 0.03em;
+    color: rgba(11, 13, 16, 0.42);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.035em;
   }
-  .solution-areas__link {
-    margin-top: 2rem;
+  .solution-row[open] .solution-row__detail {
+    animation: solution-detail-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes solution-detail-in {
+    from {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+    }
+    to {
+      clip-path: inset(0);
+      opacity: 1;
+    }
   }
   @media (min-width: 900px) {
+    .solution-areas__layout {
+      grid-template-columns: minmax(19rem, 0.82fr) minmax(0, 1.18fr);
+      align-items: start;
+    }
     .solution-areas__intro {
-      grid-template-columns: 1.25fr 0.75fr;
+      position: sticky;
+      top: 8rem;
     }
   }
-  @media (max-width: 760px) {
+  @media (max-width: 640px) {
+    .solution-areas__layout {
+      padding-block: 5.5rem;
+    }
     .solution-row summary {
-      grid-template-columns: 2rem minmax(0, 1fr) 2rem;
-      gap: 0.75rem;
-    }
-    .solution-row__verb {
-      grid-column: 2;
-    }
-    .solution-row strong {
-      grid-column: 2;
-    }
-    .solution-row__toggle {
-      grid-row: 1 / span 2;
-      grid-column: 3;
+      min-height: 4.5rem;
     }
     .solution-row__detail {
-      display: block;
-      padding: 0 0 1.5rem 2.75rem;
-    }
-    .solution-row__detail p,
-    .solution-row__detail small {
-      margin-left: 0;
+      padding-right: 1rem;
+      padding-left: 3.25rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .solution-row__toggle {
+    .solution-row__toggle i {
       transition: none;
+    }
+    .solution-row[open] .solution-row__detail {
+      animation: none;
     }
   }
 </style>

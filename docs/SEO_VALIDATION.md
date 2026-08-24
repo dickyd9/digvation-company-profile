@@ -33,7 +33,6 @@ The website uses these terms only where they match the page intent. No search-vo
 - Organization and Website schema site-wide.
 - Service schemas on the inline Solutions directory.
 - Breadcrumb and CreativeWork schemas on case studies.
-- FAQ schema shares the same homepage source content.
 - Generated sitemap and robots route.
 - Noindex 404 and configurable noindex campaign routes.
 - Permanent redirects from historical solution details to matching inline fragments.

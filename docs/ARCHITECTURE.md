@@ -27,6 +27,8 @@ The inquiry handler owns server validation, payload limits, honeypot handling, o
 
 Projects, solutions, and campaigns use typed Astro Content Collections. Page components never hard-code an individual client project.
 
+The homepage reads featured projects from the Work collection. Solution details can surface a related published project through the solution relationship in Work content, so proof stays content-driven and disappears cleanly when no valid match exists.
+
 Solution details open inline on `/solutions` and `/en/solutions`. Historical detail URLs are permanently redirected to the matching fragment.
 
 Campaign routes are `/campaign/[slug]` and `/en/campaign/[slug]`. They are not included in primary navigation. Each entry controls its publication status and `noindex` value.

@@ -37,7 +37,7 @@ const proof = entry.data.proofProject
           {locale === 'id' ? 'Masalah yang dikenali' : 'The problem'}
         </p><h2>{entry.data.problem[0]}</h2>
       </div>
-      <ul>{entry.data.problem.map((item) => <li>{item}</li>)}</ul>
+      <ul>{entry.data.problem.slice(1).map((item) => <li>{item}</li>)}</ul>
     </div>
   </section>
 
@@ -66,7 +66,7 @@ const proof = entry.data.proofProject
           {locale === 'id' ? 'Yang Digvation bantu' : 'How Digvation helps'}
         </p><h2>{entry.data.solution[0]}</h2>
       </div>
-      <ul>{entry.data.solution.map((item) => <li>{item}</li>)}</ul>
+      <ul>{entry.data.solution.slice(1).map((item) => <li>{item}</li>)}</ul>
     </div>
   </section>
 
@@ -112,10 +112,10 @@ const proof = entry.data.proofProject
     max-width: 13ch;
     margin: 1rem auto 0;
     font-family: var(--font-display);
-    font-size: clamp(3.2rem, 7vw, 7.2rem);
-    font-weight: 620;
-    line-height: 0.95;
-    letter-spacing: -0.063em;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 570;
+    line-height: 0.98;
+    letter-spacing: -0.054em;
   }
   .campaign-hero__inner > p:not(.eyebrow) {
     max-width: 40rem;
@@ -133,10 +133,10 @@ const proof = entry.data.proofProject
     max-width: 17ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2.4rem, 4.8vw, 5rem);
-    font-weight: 620;
-    line-height: 0.99;
-    letter-spacing: -0.055em;
+    font-size: clamp(2.25rem, 3.8vw, 3.8rem);
+    font-weight: 570;
+    line-height: 1.02;
+    letter-spacing: -0.048em;
   }
   .campaign-split ul {
     margin: 0;

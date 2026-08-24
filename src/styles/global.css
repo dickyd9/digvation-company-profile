@@ -24,9 +24,8 @@
   --color-sand: #ece8df;
   --color-accent: #93a6ff;
 
-  --font-sans: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display:
-    'Manrope', 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, ui-sans-serif, sans-serif;
+  --font-display: 'Inter', 'Helvetica Neue', Arial, ui-sans-serif, sans-serif;
   --breakpoint-nav: 62rem;
 }
 
@@ -46,6 +45,7 @@
     background: var(--color-paper-warm);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    font-weight: 400;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -84,7 +84,7 @@
     margin-inline: auto;
   }
   .section-pad {
-    padding-block: clamp(4.5rem, 7vw, 7rem);
+    padding-block: clamp(5.5rem, 9vw, 8.5rem);
   }
   .section-pad-sm {
     padding-block: clamp(3rem, 5vw, 4.75rem);
@@ -92,40 +92,40 @@
 
   .eyebrow {
     font-size: 0.66rem;
-    font-weight: 800;
-    letter-spacing: 0.09em;
+    font-weight: 750;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
   .display-hero {
     font-family: var(--font-display);
-    font-size: clamp(3.1rem, 7.2vw, 7.5rem);
-    font-weight: 650;
-    line-height: 0.96;
-    letter-spacing: -0.052em;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 570;
+    line-height: 0.97;
+    letter-spacing: -0.054em;
     text-wrap: balance;
   }
 
   .display-xl {
     font-family: var(--font-display);
-    font-size: clamp(2.75rem, 5.2vw, 4.85rem);
-    font-weight: 650;
-    line-height: 0.99;
-    letter-spacing: -0.048em;
+    font-size: clamp(2.6rem, 4.6vw, 4.5rem);
+    font-weight: 570;
+    line-height: 1;
+    letter-spacing: -0.05em;
   }
 
   .display-lg {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.6vw, 3.2rem);
-    font-weight: 650;
+    font-size: clamp(2rem, 3.25vw, 3rem);
+    font-weight: 580;
     line-height: 1.03;
     letter-spacing: -0.042em;
   }
 
   .display-md {
     font-family: var(--font-display);
-    font-size: clamp(1.65rem, 2.7vw, 2.45rem);
-    font-weight: 650;
+    font-size: clamp(1.65rem, 2.5vw, 2.3rem);
+    font-weight: 590;
     line-height: 1.06;
     letter-spacing: -0.038em;
   }
@@ -164,7 +164,7 @@
     border-radius: 0.28rem;
     padding: 0.76rem 1.12rem;
     font-size: 0.86rem;
-    font-weight: 750;
+    font-weight: 700;
     text-decoration: none;
     transition:
       transform 160ms ease,
@@ -177,6 +177,16 @@
   .button-secondary:hover,
   .button-accent:hover {
     transform: translateY(-2px);
+  }
+  .button-primary > span[aria-hidden='true'],
+  .button-secondary > span[aria-hidden='true'],
+  .button-accent > span[aria-hidden='true'] {
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .button-primary:hover > span[aria-hidden='true'],
+  .button-secondary:hover > span[aria-hidden='true'],
+  .button-accent:hover > span[aria-hidden='true'] {
+    transform: translate(0.16rem, -0.08rem);
   }
   .button-primary {
     background: var(--color-ink);
@@ -310,57 +320,71 @@
   }
 }
 
-/* Progressive motion: content stays visible when JavaScript is unavailable. */
+/* Progressive motion. Content stays visible when JavaScript is unavailable. */
 html.motion-ready [data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-duration: 760ms;
+  transition-property: clip-path, opacity, transform;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
+  will-change: clip-path, opacity, transform;
 }
 
+html.motion-ready [data-reveal='up'] {
+  clip-path: inset(0 0 8% 0);
+  opacity: 0;
+  transform: translateY(14px);
+}
 html.motion-ready [data-reveal='left'] {
-  transform: translateX(-24px);
+  clip-path: inset(0 10% 0 0);
+  opacity: 0;
+  transform: translateX(-12px);
 }
 html.motion-ready [data-reveal='right'] {
-  transform: translateX(24px);
+  clip-path: inset(0 0 0 10%);
+  opacity: 0;
+  transform: translateX(12px);
 }
-html.motion-ready [data-reveal='scale'] {
-  transform: translateY(14px) scale(0.985);
+html.motion-ready [data-reveal='scale'],
+html.motion-ready [data-reveal='visual'] {
+  clip-path: inset(8% 0 0);
+  transform: scale(0.97);
+}
+html.motion-ready [data-reveal='mask'] {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(6%);
+}
+html.motion-ready [data-reveal='line'] {
+  clip-path: inset(0 100% 0 0);
 }
 
 html.motion-ready [data-reveal].is-revealed {
+  clip-path: inset(0);
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   will-change: auto;
 }
 
-/* Keep route changes subtle; project-specific matched transitions can still sit on top. */
 ::view-transition-old(root) {
-  animation: digvation-page-out 170ms ease both;
+  animation: digvation-page-out 220ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 ::view-transition-new(root) {
-  animation: digvation-page-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: digvation-page-in 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes digvation-page-out {
   to {
-    opacity: 0;
-    transform: translateY(-5px);
+    clip-path: inset(0 0 100% 0);
+    opacity: 0.72;
   }
 }
 
 @keyframes digvation-page-in {
   from {
-    opacity: 0;
-    transform: translateY(8px);
+    clip-path: inset(100% 0 0 0);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    clip-path: inset(0);
   }
 }
 
@@ -368,7 +392,11 @@ html.motion-ready [data-reveal].is-revealed {
   html.motion-ready [data-reveal],
   html.motion-ready [data-reveal='left'],
   html.motion-ready [data-reveal='right'],
-  html.motion-ready [data-reveal='scale'] {
+  html.motion-ready [data-reveal='scale'],
+  html.motion-ready [data-reveal='visual'],
+  html.motion-ready [data-reveal='mask'],
+  html.motion-ready [data-reveal='line'] {
+    clip-path: none;
     opacity: 1;
     transform: none;
     transition: none;

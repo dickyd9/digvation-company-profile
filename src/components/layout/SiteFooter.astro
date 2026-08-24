@@ -24,7 +24,11 @@ const whatsappUrl = getWhatsAppUrl(locale);
           }
         </p>
         <p class="text-paper/60 mt-5 text-xs font-semibold">
-          Jakarta, Indonesia · Bekerja dengan bisnis di mana pun.
+          {
+            locale === 'id'
+              ? 'Jakarta, Indonesia · Bekerja dengan bisnis di mana pun.'
+              : 'Jakarta, Indonesia · Working with businesses wherever they are.'
+          }
         </p>
       </div>
       <div>

@@ -33,12 +33,7 @@ draft: false
 order: 1
 visualVariant: navy
 coverImage: /work/poseidon-filter/cover.webp
-showLiveInCard: false
 liveUrl: https://poseidonfilter.id/
-preview:
-  mode: image
-  embedUrl: https://poseidonfilter.id/
-  image: /work/poseidon-filter/cover.webp
 browserScreenshots:
   - /work/poseidon-filter/product.webp
 gallery:

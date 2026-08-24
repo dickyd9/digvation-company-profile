@@ -9,7 +9,7 @@
 - Consent-aware GA4, GTM, and Clarity foundation.
 - Session campaign attribution.
 - Canonical, hreflang, sitemap, robots, OG/Twitter, JSON-LD, and legal pages.
-- Progressive reveal and Astro route transitions.
+- Astro route transitions and content-first progressive enhancement.
 
 ## Changed
 
@@ -23,6 +23,9 @@
 - Analytics events now match business intent and avoid duplicate success events.
 - Work content schema now supports visibility, order, feature status, richer evidence, and optional results.
 - Pricing and campaign systems are configurable without publishing invented commercial content.
+- The corrective homepage is reduced to five moments: proposition, real proof, business actions, process, and final conversation.
+- One Inter variable family replaces the two-family typography setup.
+- Repeated fade-up animation is replaced by a tiered system of masks, line wipes, directional reveals, project expansion, and restrained micro-interactions.
 
 ## Removed after reference verification
 
@@ -32,6 +35,7 @@
 - Live iframe preview and preview modal.
 - Generic project fallback visual.
 - Fourteen localized solution-detail routes, replaced by redirects.
+- Homepage client-logo and FAQ sections that competed with stronger project proof.
 
 ## External validation boundary
 

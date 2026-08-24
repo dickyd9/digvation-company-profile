@@ -14,7 +14,6 @@ draft: false
 order: 2
 visualVariant: paper
 coverImage: /work/leaf-lab/cover.webp
-showLiveInCard: false
 challenge: Materi fotosintesis perlu disampaikan melalui pengalaman digital yang lebih mudah dijelajahi daripada dokumen statis.
 context: Pengguna perlu membuka materi dari satu link, mengikuti urutan belajar, dan berinteraksi langsung dengan bagian-bagian penting di dalamnya.
 insight: Materi yang kompleks lebih mudah dipahami ketika urutannya jelas dan pengguna dapat menemukan jawabannya melalui interaksi.
@@ -47,10 +46,6 @@ outcome: Leaf Lab memiliki media pembelajaran interaktif yang dapat dibuka dan d
 nextStep: Materi dan latihan dapat dikembangkan lebih lanjut mengikuti kebutuhan pembelajaran berikutnya.
 relatedSolution: digital-build
 liveUrl: https://leaf-lab.digvation.id/
-preview:
-  mode: image
-  embedUrl: https://leaf-lab.digvation.id/
-  image: /work/leaf-lab/cover.webp
 browserScreenshots:
   - /work/leaf-lab/product.webp
 gallery:
