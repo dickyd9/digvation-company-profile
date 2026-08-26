@@ -2,6 +2,8 @@
 import FeaturedWork from '@/components/sections/FeaturedWork.astro';
 import FinalCta from '@/components/sections/FinalCta.astro';
 import HomeHero from '@/components/sections/HomeHero.astro';
+import BusinessShift from '@/components/sections/BusinessShift.astro';
+import PartnerSection from '@/components/sections/PartnerSection.astro';
 import ProcessSection from '@/components/sections/ProcessSection.astro';
 import SolutionAreas from '@/components/sections/SolutionAreas.astro';
 import type { Locale } from '@/config/site';
@@ -14,6 +16,8 @@ const copy = homeCopy[locale];
 
 <HomeHero locale={locale} copy={copy.hero} />
 <FeaturedWork locale={locale} />
+<BusinessShift copy={copy.shift} />
 <SolutionAreas locale={locale} copy={copy.solutions} />
 <ProcessSection locale={locale} copy={copy.process} />
+<PartnerSection locale={locale} copy={copy.partner} />
 <FinalCta locale={locale} copy={copy.finalCta} />

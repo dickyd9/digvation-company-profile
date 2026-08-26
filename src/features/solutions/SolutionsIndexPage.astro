@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import ProjectFrame from '@/components/work/ProjectFrame.astro';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import { pricingConfig } from '@/config/pricing';
 import type { Locale } from '@/config/site';
@@ -35,6 +37,20 @@ const copy =
         start: 'Mulai dari sini',
         cta: 'Ceritakan kebutuhan Anda',
         proof: 'Hasil kerja terkait',
+        decisionEyebrow: 'Keputusan sebelum teknologi',
+        decisionTitle: 'Kadang perlu dibangun. Kadang cukup dibenahi.',
+        decisionBody:
+          'Peran kami membantu melihat langkah yang paling masuk akal. Termasuk mengatakan ketika sesuatu belum perlu dibuat.',
+        decisionSteps: [
+          'Lihat konteks',
+          'Tentukan prioritas',
+          'Pilih bentuk solusi',
+          'Bangun dan tingkatkan',
+        ],
+        closeEyebrow: 'Belum tahu masuk kategori yang mana?',
+        closeTitle: 'Mulai dari situasinya. Bentuk solusinya bisa kita tentukan bersama.',
+        closeBody: 'Anda tidak perlu datang dengan requirement teknis atau scope yang sudah final.',
+        closeCta: 'Ceritakan situasinya',
       }
     : {
         eyebrow: 'Solutions',
@@ -48,20 +64,34 @@ const copy =
         start: 'Start here',
         cta: 'Tell us what you need',
         proof: 'Related work',
+        decisionEyebrow: 'Decisions before technology',
+        decisionTitle: 'Sometimes it should be built. Sometimes it only needs improvement.',
+        decisionBody:
+          'Our role is to help find the most sensible next move, including saying when something does not need to be built yet.',
+        decisionSteps: [
+          'See the context',
+          'Set the priority',
+          'Choose the solution form',
+          'Build and improve',
+        ],
+        closeEyebrow: 'Not sure which category fits?',
+        closeTitle: 'Start with the situation. We can shape the solution together.',
+        closeBody: 'You do not need to arrive with technical requirements or a final scope.',
+        closeCta: 'Tell us the situation',
       };
 ---
 
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'SOLUSI / 01' : 'SOLUTIONS / 01'}
+/>
+
 <section class="solutions-directory bg-paper-warm text-ink" data-solutions-directory>
   <div class="shell-wide solutions-directory__inner">
-    <header class="solutions-directory__header" data-reveal="up">
-      <div>
-        <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-        <h1>{copy.title}</h1>
-      </div>
-      <div>
-        <p>{copy.intro}</p>
-        <small>{copy.hint} ↓</small>
-      </div>
+    <header class="solutions-directory__chapter" data-reveal="line">
+      <p>02 / DIRECTORY</p><small>{copy.hint} ↓</small>
     </header>
 
     <div class="solutions-directory__list">
@@ -169,43 +199,58 @@ const copy =
   </div>
 </section>
 
+<section class="solutions-decision bg-paper-soft text-ink" data-track-section="solution-decision">
+  <div class="shell-wide solutions-decision__inner">
+    <header data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.decisionEyebrow}</p>
+      <h2>{copy.decisionTitle}</h2>
+      <p>{copy.decisionBody}</p>
+    </header>
+    <ol data-reveal-group>
+      {
+        copy.decisionSteps.map((step, index) => (
+          <li data-reveal="line">
+            <>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{step}</strong>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
 {PricingAnchor && <PricingAnchor locale={locale} />}
 
+<PageClosing
+  locale={locale}
+  eyebrow={copy.closeEyebrow}
+  title={copy.closeTitle}
+  body={copy.closeBody}
+  ctaLabel={copy.closeCta}
+  trackLabel="solutions-closing"
+/>
+
 <style>
-  .solutions-directory {
-    min-height: calc(100svh - 4.5rem);
-  }
   .solutions-directory__inner {
-    padding-block: clamp(4rem, 7vw, 6rem);
+    padding-block: var(--space-section-compact) var(--space-section);
   }
-  .solutions-directory__header {
-    display: grid;
-    gap: 1.25rem;
-    align-items: end;
-    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  .solutions-directory__chapter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
-  .solutions-directory__header h1 {
-    max-width: 12ch;
-    margin: 0.8rem 0 0;
-    font-family: var(--font-display);
-    font-size: clamp(2.85rem, 4.8vw, 4.8rem);
-    font-weight: 570;
-    line-height: 0.98;
-    letter-spacing: -0.054em;
-  }
-  .solutions-directory__header > div:last-child > p {
-    max-width: 34rem;
+  .solutions-directory__chapter p,
+  .solutions-directory__chapter small {
     margin: 0;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.88rem;
-    line-height: 1.7;
-  }
-  .solutions-directory__header small {
-    display: block;
-    margin-top: 0.75rem;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.63rem;
-    font-weight: 700;
+    color: var(--text-soft);
+    font-size: 0.59rem;
+    font-weight: 760;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
   }
   .solutions-directory__list {
     border-top: 1px solid rgba(11, 13, 16, 0.17);
@@ -242,7 +287,7 @@ const copy =
     margin: 0.18rem 0 0;
     font-family: var(--font-display);
     font-size: clamp(1.25rem, 2vw, 1.85rem);
-    font-weight: 580;
+    font-weight: 555;
     letter-spacing: -0.04em;
   }
   .solution-directory-row summary > p {
@@ -353,6 +398,51 @@ const copy =
     font-size: 1rem;
     font-weight: 600;
   }
+  .solutions-decision__inner {
+    display: grid;
+    gap: clamp(4rem, 8vw, 7rem);
+    padding-block: var(--space-section);
+  }
+  .solutions-decision header h2 {
+    max-width: 15ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 4.8vw, 4.9rem);
+    font-weight: 545;
+    line-height: 0.99;
+    letter-spacing: -0.054em;
+  }
+  .solutions-decision header > p:last-child {
+    max-width: 35rem;
+    margin: 1.6rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.72;
+  }
+  .solutions-decision ol {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
+    list-style: none;
+  }
+  .solutions-decision li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.5rem 0;
+  }
+  .solutions-decision li span {
+    color: var(--color-indigo-deep);
+    font-size: 0.59rem;
+    font-weight: 780;
+  }
+  .solutions-decision li strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.3vw, 2.1rem);
+    font-weight: 550;
+    letter-spacing: -0.038em;
+  }
   @keyframes directory-detail-in {
     from {
       clip-path: inset(0 0 100% 0);
@@ -364,9 +454,6 @@ const copy =
     }
   }
   @media (min-width: 900px) {
-    .solutions-directory__header {
-      grid-template-columns: 1.1fr 0.9fr;
-    }
     .solution-directory-row__detail {
       grid-template-columns: 0.85fr 1.15fr;
     }
@@ -379,6 +466,10 @@ const copy =
     }
     .solution-directory-row__facts section:nth-child(even) {
       padding-left: 1.5rem;
+    }
+    .solutions-decision__inner {
+      grid-template-columns: minmax(18rem, 0.82fr) minmax(0, 1.18fr);
+      align-items: start;
     }
   }
   @media (max-width: 760px) {

@@ -1,6 +1,7 @@
 ---
 import ProjectFrame from '@/components/work/ProjectFrame.astro';
-import { getLocalizedPath } from '@/config/navigation';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import type { Locale } from '@/config/site';
 
 type Props = { locale: Locale };
@@ -59,6 +60,15 @@ const copy =
         ],
         clientLabel: 'Dari Anda',
         usLabel: 'Dari Digvation',
+        continuityEyebrow: 'Setelah launch',
+        continuityTitle: 'Solusi mulai membuktikan nilainya ketika digunakan.',
+        continuityBody:
+          'Kami melihat penggunaan nyata, menemukan bagian yang masih menghambat, lalu menentukan peningkatan berikutnya bersama Anda.',
+        continuity: [
+          ['Pantau', 'Lihat apa yang benar-benar terjadi setelah digunakan.'],
+          ['Benahi', 'Perbaiki friction, risiko, atau kebutuhan operasional yang muncul.'],
+          ['Kembangkan', 'Tambah kemampuan ketika bisnis memang membutuhkannya.'],
+        ],
         ctaTitle: 'Mulai dari satu proses yang paling terasa berat.',
         ctaBody: 'Kami bantu melihat langkah pertama yang paling masuk akal.',
         cta: 'Mulai percakapan',
@@ -114,19 +124,27 @@ const copy =
         ],
         clientLabel: 'From you',
         usLabel: 'From Digvation',
+        continuityEyebrow: 'After launch',
+        continuityTitle: 'A solution starts proving its value when people use it.',
+        continuityBody:
+          'We look at real use, find what still creates friction, and shape the next improvement with you.',
+        continuity: [
+          ['Monitor', 'See what actually happens after the solution is in use.'],
+          ['Refine', 'Fix friction, risk, or operational needs that emerge.'],
+          ['Extend', 'Add capability when the business genuinely needs it.'],
+        ],
         ctaTitle: 'Start with the process that feels heaviest.',
         ctaBody: 'We will help find the most sensible first move.',
         cta: 'Start a conversation',
       };
 ---
 
-<section class="process-hero bg-paper-warm text-ink">
-  <div class="shell process-hero__inner" data-reveal="mask">
-    <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-    <h1>{copy.title}</h1>
-    <p>{copy.intro}</p>
-  </div>
-</section>
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'CARA KERJA / 01' : 'PROCESS / 01'}
+/>
 
 <section class="process-stages bg-paper text-ink" data-track-section="process-stages">
   <div class="shell-wide section-pad">
@@ -214,33 +232,36 @@ const copy =
   </div>
 </section>
 
-<section class="process-close bg-paper-warm text-ink">
-  <div class="shell process-close__inner">
-    <div><p class="eyebrow text-indigo-deep">{copy.ctaTitle}</p><h2>{copy.ctaBody}</h2></div>
-    <a class="button-primary" href={getLocalizedPath(locale, '/contact')}>{copy.cta} ↗</a>
+<section class="process-continuity bg-paper-soft text-ink" data-track-section="process-continuity">
+  <div class="shell-wide process-continuity__inner">
+    <header data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.continuityEyebrow}</p>
+      <h2>{copy.continuityTitle}</h2>
+      <p>{copy.continuityBody}</p>
+    </header>
+    <ol data-reveal-group>
+      {
+        copy.continuity.map(([title, body], index) => (
+          <li data-reveal="line">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
+<PageClosing
+  locale={locale}
+  eyebrow={copy.ctaTitle}
+  title={copy.ctaBody}
+  ctaLabel={copy.cta}
+  trackLabel="process-closing"
+/>
+
 <style>
-  .process-hero__inner {
-    padding-block: clamp(5rem, 9vw, 8rem);
-  }
-  .process-hero h1 {
-    max-width: 13ch;
-    margin: 1rem 0 0;
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 5vw, 5rem);
-    font-weight: 570;
-    line-height: 0.98;
-    letter-spacing: -0.054em;
-  }
-  .process-hero__inner > p:last-child {
-    max-width: 41rem;
-    margin: 2rem 0 0 auto;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.96rem;
-    line-height: 1.75;
-  }
   .process-stages__list {
     margin: 0;
     padding: 0;
@@ -265,7 +286,7 @@ const copy =
     margin: 0;
     font-family: var(--font-display);
     font-size: clamp(1.9rem, 3vw, 2.9rem);
-    font-weight: 580;
+    font-weight: 555;
     line-height: 1.02;
     letter-spacing: -0.045em;
   }
@@ -314,7 +335,7 @@ const copy =
     margin: 0;
     font-family: var(--font-display);
     font-size: clamp(2.4rem, 4vw, 4rem);
-    font-weight: 570;
+    font-weight: 545;
     line-height: 1.02;
     letter-spacing: -0.05em;
   }
@@ -352,20 +373,59 @@ const copy =
     color: rgba(255, 255, 255, 0.68);
     font-size: 0.61rem;
   }
-  .process-close__inner {
+  .process-continuity__inner {
     display: grid;
-    gap: 2rem;
-    align-items: end;
-    padding-block: clamp(4rem, 7vw, 6rem);
+    gap: clamp(4rem, 8vw, 7rem);
+    padding-block: var(--space-section);
   }
-  .process-close h2 {
-    max-width: 20ch;
+  .process-continuity header h2 {
+    max-width: 15ch;
     margin: 1rem 0 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.35vw, 3.3rem);
-    font-weight: 580;
-    line-height: 1.04;
-    letter-spacing: -0.045em;
+    font-size: clamp(2.7rem, 4.7vw, 4.75rem);
+    font-weight: 545;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
+  }
+  .process-continuity header > p:last-child {
+    max-width: 35rem;
+    margin: 1.6rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.72;
+  }
+  .process-continuity ol {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
+    list-style: none;
+  }
+  .process-continuity li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(8rem, 0.55fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.6rem 0;
+  }
+  .process-continuity li span {
+    color: var(--text-soft);
+    font-size: 0.59rem;
+    font-weight: 780;
+  }
+  .process-continuity li h3,
+  .process-continuity li p {
+    margin: 0;
+  }
+  .process-continuity li h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.1vw, 1.9rem);
+    font-weight: 560;
+    letter-spacing: -0.035em;
+  }
+  .process-continuity li p {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    line-height: 1.65;
   }
   @media (min-width: 900px) {
     .process-roles__header {
@@ -381,8 +441,9 @@ const copy =
     .process-roles__columns section:last-child {
       padding-left: 2rem;
     }
-    .process-close__inner {
-      grid-template-columns: 1fr auto;
+    .process-continuity__inner {
+      grid-template-columns: minmax(18rem, 0.76fr) minmax(0, 1.24fr);
+      align-items: start;
     }
   }
   @media (max-width: 760px) {
@@ -398,6 +459,13 @@ const copy =
     .process-stage__visual {
       grid-column: 1 / -1;
       width: 100%;
+    }
+    .process-continuity li {
+      grid-template-columns: 2rem 1fr;
+    }
+    .process-continuity li h3,
+    .process-continuity li p {
+      grid-column: 2;
     }
   }
 </style>

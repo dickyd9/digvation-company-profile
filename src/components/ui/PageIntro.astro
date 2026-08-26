@@ -1,0 +1,160 @@
+---
+type Props = {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  chapter?: string;
+};
+
+const { eyebrow, title, intro, chapter = 'DIGVATION' } = Astro.props;
+---
+
+<section
+  class="page-intro bg-paper-warm text-ink"
+  data-track-section={`page-intro:${chapter.toLowerCase().replaceAll(' ', '-')}`}
+>
+  <div class="shell-wide page-intro__inner">
+    <div class="page-intro__rail">
+      <p><span aria-hidden="true"></span>{eyebrow}</p>
+      <small>{chapter}</small>
+    </div>
+
+    <div class="page-intro__grid">
+      <div class="page-intro__title-mask">
+        <h1>{title}</h1>
+      </div>
+      <p>{intro}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-intro {
+    position: relative;
+    overflow: clip;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .page-intro__inner {
+    display: grid;
+    min-height: min(72svh, 46rem);
+    grid-template-rows: auto 1fr;
+    padding-block: clamp(1.5rem, 3vw, 2.25rem) clamp(4.5rem, 8vw, 7rem);
+  }
+  .page-intro__rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 1.15rem;
+  }
+  .page-intro__rail p {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.63rem;
+    font-weight: 760;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .page-intro__rail p span {
+    width: 1.7rem;
+    height: 1px;
+    background: var(--color-indigo-deep);
+  }
+  .page-intro__rail small {
+    color: var(--text-soft);
+    font-size: 0.57rem;
+    font-weight: 740;
+    letter-spacing: 0.1em;
+  }
+  .page-intro__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: end;
+    padding-top: clamp(4.5rem, 9vw, 8rem);
+  }
+  .page-intro__title-mask {
+    overflow: clip;
+  }
+  .page-intro h1 {
+    max-width: 14ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 5.8vw, 5.9rem);
+    font-weight: 545;
+    line-height: 0.96;
+    letter-spacing: -0.058em;
+    text-wrap: balance;
+  }
+  .page-intro__grid > p {
+    max-width: 36rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: clamp(0.96rem, 1.15vw, 1.08rem);
+    line-height: 1.72;
+  }
+  @media (min-width: 900px) {
+    .page-intro__grid {
+      grid-template-columns: minmax(0, 1.16fr) minmax(19rem, 0.64fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .page-intro__inner {
+      min-height: min(68svh, 38rem);
+      padding-bottom: 4rem;
+    }
+    .page-intro__grid {
+      padding-top: 4rem;
+    }
+    .page-intro h1 {
+      font-size: clamp(2.9rem, 13.5vw, 4.15rem);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .page-intro__rail {
+      animation: page-intro-rail 720ms 80ms both cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .page-intro h1 {
+      animation: page-intro-title 880ms 130ms both cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .page-intro__grid > p {
+      animation: page-intro-copy 680ms 410ms both cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    :global(html.digvation-opening) .page-intro__rail {
+      animation-delay: 840ms;
+    }
+    :global(html.digvation-opening) .page-intro h1 {
+      animation-delay: 870ms;
+    }
+    :global(html.digvation-opening) .page-intro__grid > p {
+      animation-delay: 1140ms;
+    }
+  }
+  @keyframes page-intro-rail {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+  @keyframes page-intro-title {
+    from {
+      clip-path: inset(0 0 100% 0);
+      transform: translateY(14%);
+    }
+    to {
+      clip-path: inset(0);
+      transform: translateY(0);
+    }
+  }
+  @keyframes page-intro-copy {
+    from {
+      clip-path: inset(0 100% 0 0);
+      opacity: 0;
+    }
+  }
+</style>

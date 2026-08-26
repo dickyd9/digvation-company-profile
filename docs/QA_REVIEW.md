@@ -44,21 +44,24 @@ npm run test
 npm run build
 ```
 
-Corrective redesign result:
+Cross-page experience correction result:
 
 - Prettier: passed.
 - ESLint: passed.
-- Astro diagnostics: 73 files, 0 errors, 0 warnings, 0 hints.
+- Astro diagnostics: 78 files, 0 errors, 0 warnings, 0 hints.
 - Vitest: 2 files and 6 tests passed, including actual-body inquiry size enforcement.
 - Production build: 21 pages generated.
-- Generated output: 21 valid JSON-LD blocks, 676 internal links, 99 local asset references, and no missing targets.
+- Generated output: 21 valid JSON-LD blocks, 680 internal links, 120 local asset references, and no missing targets.
 - Heading order, required image alt attributes, canonical tags, descriptions, locale alternates, and 404 noindex output passed the artifact audit.
+- Indonesian and English section counts match across Home, Solutions, Work, Process, About, and Contact.
+- Homepage now renders seven purposeful sections in both languages; Contact renders three and Process renders seven.
 - Sitemap: 20 indexable URLs.
 - Source maps: none.
 - Largest emitted JavaScript file: 16,075 bytes.
-- Largest emitted CSS file: 39,567 bytes.
+- Largest emitted CSS file: 43,119 bytes.
+- Local HTTP checks returned 200 for the primary Indonesian and English journeys and 404 for an unknown route.
 
-The local preview responded correctly through a local HTTP check. The isolated visual browser could not reach loopback and returned `ERR_BLOCKED_BY_CLIENT`, so final rendered viewport and console verification remains an explicit Cloudflare preview gate rather than a claimed local pass.
+The production output responded correctly through a local HTTP check. The isolated visual browser previously could not reach loopback and returned `ERR_BLOCKED_BY_CLIENT`, so final rendered viewport and console verification remains an explicit Cloudflare preview gate rather than a claimed local pass.
 
 ## Authorized production gate
 

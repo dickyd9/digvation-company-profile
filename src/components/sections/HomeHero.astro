@@ -88,7 +88,7 @@ const { locale, copy } = Astro.props;
     margin: 0;
     font-family: var(--font-display);
     font-size: clamp(3.45rem, 6.2vw, 6.4rem);
-    font-weight: 570;
+    font-weight: 545;
     line-height: 0.95;
     letter-spacing: -0.058em;
     text-wrap: balance;
@@ -103,7 +103,7 @@ const { locale, copy } = Astro.props;
   .home-hero__body {
     max-width: 34rem;
     margin: 0;
-    color: rgba(11, 13, 16, 0.62);
+    color: var(--text-muted);
     font-size: clamp(0.96rem, 1.2vw, 1.08rem);
     line-height: 1.72;
   }
@@ -194,6 +194,18 @@ const { locale, copy } = Astro.props;
     }
     .home-hero::after {
       animation: hero-rule-in 900ms 420ms both cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    :global(html.digvation-opening) .home-hero__eyebrow {
+      animation-delay: 850ms;
+    }
+    :global(html.digvation-opening) .home-hero h1 {
+      animation-delay: 820ms;
+    }
+    :global(html.digvation-opening) .home-hero__footer {
+      animation-delay: 1120ms;
+    }
+    :global(html.digvation-opening) .home-hero::after {
+      animation-delay: 1080ms;
     }
   }
   @keyframes hero-title-in {

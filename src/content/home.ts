@@ -9,6 +9,14 @@ export type HomeCopy = {
     secondaryCta: string;
     scrollLabel: string;
   };
+  shift: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    beforeLabel: string;
+    afterLabel: string;
+    items: Array<{ before: string; after: string; detail: string }>;
+  };
   solutions: {
     eyebrow: string;
     title: string;
@@ -18,6 +26,13 @@ export type HomeCopy = {
     items: Array<{ verb: string; title: string; body: string; examples: string }>;
   };
   process: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    linkLabel: string;
+    items: Array<{ title: string; body: string }>;
+  };
+  partner: {
     eyebrow: string;
     title: string;
     body: string;
@@ -35,6 +50,30 @@ const id: HomeCopy = {
     primaryCta: 'Ceritakan yang ingin diperbaiki',
     secondaryCta: 'Lihat hasil kerja',
     scrollLabel: 'Lihat hasil kerja',
+  },
+  shift: {
+    eyebrow: 'Dari yang terasa sehari-hari',
+    title: 'Digitalisasi dimulai dari sesuatu yang perlu bekerja lebih baik.',
+    intro: 'Kami mencari perubahan yang paling berguna. Bukan software yang paling banyak.',
+    beforeLabel: 'Sebelum dibenahi',
+    afterLabel: 'Setelah dibuat digital',
+    items: [
+      {
+        before: 'Order tersebar di chat dan spreadsheet.',
+        after: 'Satu alur terlihat.',
+        detail: 'Order, PIC, approval, dan status berada dalam konteks yang sama.',
+      },
+      {
+        before: 'Status harus ditanyakan berulang.',
+        after: 'Informasi siap dipantau.',
+        detail: 'Tim melihat apa yang berjalan, tertunda, dan perlu ditindaklanjuti.',
+      },
+      {
+        before: 'Rekap manual menunda keputusan.',
+        after: 'Data siap dibaca.',
+        detail: 'Informasi penting muncul saat dibutuhkan, bukan setelah semuanya terlambat.',
+      },
+    ],
   },
   solutions: {
     eyebrow: 'Yang bisa dibenahi',
@@ -89,6 +128,30 @@ const id: HomeCopy = {
       { title: 'Tingkatkan', body: 'Memperbaiki saat bisnis terus bergerak.' },
     ],
   },
+  partner: {
+    eyebrow: 'Arti sebuah partner',
+    title: 'Tidak berhenti saat sistem selesai dibuat.',
+    body: 'Digvation tetap melihat bagaimana solusi digunakan, apa yang berubah, dan apa yang perlu ditingkatkan berikutnya.',
+    linkLabel: 'Kenal Digvation lebih dekat',
+    items: [
+      {
+        title: 'Pahami bisnisnya',
+        body: 'Proses, orang, data, dan hambatan dibaca sebelum bentuk solusi diputuskan.',
+      },
+      {
+        title: 'Jaga keputusannya',
+        body: 'Prioritas, scope, dan risiko tetap jelas selama proses berjalan.',
+      },
+      {
+        title: 'Dampingi penggunaannya',
+        body: 'Solusi dinilai dari pekerjaan nyata, bukan hanya dari hari peluncuran.',
+      },
+      {
+        title: 'Tingkatkan saat perlu',
+        body: 'Ketika bisnis bergerak, solusi dapat ikut dibenahi dan dikembangkan.',
+      },
+    ],
+  },
   finalCta: {
     eyebrow: 'Mulai dari masalahnya',
     title: 'Ada yang seharusnya bisa berjalan lebih baik?',
@@ -106,6 +169,30 @@ const en: HomeCopy = {
     primaryCta: 'Tell us what should improve',
     secondaryCta: 'See the work',
     scrollLabel: 'See the work',
+  },
+  shift: {
+    eyebrow: 'What the business feels every day',
+    title: 'Digitalization starts with something that should work better.',
+    intro: 'We look for the most useful change, not the largest amount of software.',
+    beforeLabel: 'Before improvement',
+    afterLabel: 'After the digital change',
+    items: [
+      {
+        before: 'Orders are scattered across chats and spreadsheets.',
+        after: 'One visible flow.',
+        detail: 'Orders, owners, approvals, and status share the same context.',
+      },
+      {
+        before: 'Status has to be requested repeatedly.',
+        after: 'Information is ready to monitor.',
+        detail: 'The team can see what is moving, delayed, and needs attention.',
+      },
+      {
+        before: 'Manual recaps delay decisions.',
+        after: 'Data is ready to read.',
+        detail: 'Important information appears when it is needed, not after it is too late.',
+      },
+    ],
   },
   solutions: {
     eyebrow: 'What can improve',
@@ -158,6 +245,30 @@ const en: HomeCopy = {
       { title: 'Validate', body: 'Test against real-use scenarios.' },
       { title: 'Launch', body: 'Release the solution safely.' },
       { title: 'Improve', body: 'Refine it as the business moves.' },
+    ],
+  },
+  partner: {
+    eyebrow: 'What partnership means',
+    title: 'It does not stop when the system is built.',
+    body: 'Digvation keeps looking at how the solution is used, what has changed, and what should improve next.',
+    linkLabel: 'Get to know Digvation',
+    items: [
+      {
+        title: 'Understand the business',
+        body: 'Process, people, data, and friction come before the shape of the solution.',
+      },
+      {
+        title: 'Keep decisions clear',
+        body: 'Priorities, scope, and risks remain understandable throughout delivery.',
+      },
+      {
+        title: 'Support real use',
+        body: 'The solution is judged by daily work, not only by launch day.',
+      },
+      {
+        title: 'Improve when needed',
+        body: 'As the business changes, the solution can be refined and extended.',
+      },
     ],
   },
   finalCta: {

@@ -1,0 +1,209 @@
+---
+import type { HomeCopy } from '@/content/home';
+
+type Props = { copy: HomeCopy['shift'] };
+const { copy } = Astro.props;
+---
+
+<section class="business-shift bg-paper-soft text-ink" data-track-section="business-shift">
+  <div class="shell-wide business-shift__inner">
+    <header class="business-shift__intro" data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
+      <h2>{copy.title}</h2>
+      <p>{copy.intro}</p>
+    </header>
+
+    <div class="business-shift__flow">
+      <div class="business-shift__labels" aria-hidden="true">
+        <span>{copy.beforeLabel}</span><span>{copy.afterLabel}</span>
+      </div>
+      <ol data-reveal-group>
+        {
+          copy.items.map((item, index) => (
+            <li data-reveal="line">
+              <span class="business-shift__index">{String(index + 1).padStart(2, '0')}</span>
+              <p>
+                <span class="sr-only">{copy.beforeLabel}: </span>
+                {item.before}
+              </p>
+              <span class="business-shift__arrow" aria-hidden="true">
+                <i />
+              </span>
+              <div>
+                <strong>
+                  <span class="sr-only">{copy.afterLabel}: </span>
+                  {item.after}
+                </strong>
+                <small>{item.detail}</small>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .business-shift__inner {
+    display: grid;
+    gap: clamp(4rem, 8vw, 8rem);
+    padding-block: var(--space-section);
+  }
+  .business-shift__intro {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .business-shift__intro h2 {
+    max-width: 14ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 4.8vw, 4.9rem);
+    font-weight: 545;
+    line-height: 0.99;
+    letter-spacing: -0.054em;
+  }
+  .business-shift__intro > p:last-child {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.94rem;
+    line-height: 1.72;
+  }
+  .business-shift__flow {
+    border-top: 1px solid var(--border-strong);
+  }
+  .business-shift__labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.9rem 0;
+    color: var(--text-soft);
+    font-size: 0.57rem;
+    font-weight: 760;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .business-shift__labels span:last-child {
+    text-align: right;
+  }
+  .business-shift ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .business-shift li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(5rem, 0.34fr) minmax(0, 1fr);
+    gap: clamp(0.75rem, 2vw, 1.75rem);
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: clamp(1.6rem, 3vw, 2.4rem) 0;
+  }
+  .business-shift__index {
+    color: var(--text-soft);
+    font-size: 0.59rem;
+    font-weight: 780;
+    letter-spacing: 0.08em;
+  }
+  .business-shift li > p {
+    margin: 0;
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.8vw, 1.55rem);
+    font-weight: 520;
+    letter-spacing: -0.025em;
+  }
+  .business-shift__arrow {
+    position: relative;
+    display: block;
+    height: 1px;
+    overflow: visible;
+    background: rgba(18, 26, 47, 0.22);
+  }
+  .business-shift__arrow::after {
+    position: absolute;
+    top: -0.18rem;
+    right: 0;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-top: 1px solid var(--color-indigo-deep);
+    border-right: 1px solid var(--color-indigo-deep);
+    content: '';
+    transform: rotate(45deg);
+  }
+  .business-shift__arrow i {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--color-indigo-deep);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .business-shift li > div {
+    display: grid;
+    gap: 0.45rem;
+    justify-items: end;
+    text-align: right;
+  }
+  .business-shift li strong {
+    color: var(--color-indigo-deep);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+    font-weight: 565;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+  .business-shift li small {
+    max-width: 21rem;
+    color: var(--text-soft);
+    font-size: 0.67rem;
+    line-height: 1.55;
+  }
+  @media (min-width: 900px) {
+    .business-shift__inner {
+      grid-template-columns: minmax(18rem, 0.67fr) minmax(0, 1.33fr);
+      align-items: start;
+    }
+    .business-shift__intro {
+      position: sticky;
+      top: 8rem;
+    }
+  }
+  @media (max-width: 680px) {
+    .business-shift li {
+      grid-template-columns: 2rem minmax(0, 1fr) 2.75rem;
+    }
+    .business-shift__arrow {
+      grid-column: 3;
+    }
+    .business-shift li > div {
+      grid-column: 2 / -1;
+      justify-items: start;
+      text-align: left;
+    }
+    .business-shift__labels {
+      display: none;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .business-shift__arrow i {
+        animation: business-shift-line linear both;
+        animation-range: entry 25% cover 50%;
+        animation-timeline: view();
+      }
+      @keyframes business-shift-line {
+        to {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .business-shift__arrow i {
+      transform: scaleX(1);
+    }
+  }
+</style>

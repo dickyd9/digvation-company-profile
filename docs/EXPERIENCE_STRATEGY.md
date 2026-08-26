@@ -34,6 +34,14 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 - Avoid pills, bordered containers, and card grids unless the container communicates a real interaction or product frame.
 - Allow large vertical gaps between ideas. Empty space is part of the narrative.
 
+## Cross-page rhythm
+
+- Primary index pages share one calm opening grammar: a thin context rail, one dominant headline, one short supporting paragraph, and enough height for the idea to land.
+- Work, Solutions, Process, About, and Contact keep different content compositions. Consistency comes from scale, spacing, borders, type, and motion, not from repeating the same cards.
+- Work, Solutions, Process, About, and case studies share one deliberate closing grammar when the next useful action is a conversation.
+- Contact remains the conversion destination. It uses a separate form chapter and a short expectation-setting chapter instead of compressing the full page into one split layout.
+- A first-session brand opening may run for about one second. It must never repeat during the same session, block reduced-motion users, or delay access for more than the stated opening.
+
 ## Navigation
 
 - Beranda / Home
@@ -54,3 +62,5 @@ Motion has three levels:
 3. **Hero**: the staged opening and a small number of high-impact visual moments.
 
 Route transitions use a brief masked reveal. Project scenes may use CSS scroll timelines where supported, with a stable non-animated fallback. Avoid continuous floating objects, blanket AOS-style movement, and effects without narrative value. All content remains usable without JavaScript and with `prefers-reduced-motion`.
+
+Grouped section content may use short staggered delays. The delay is capped so related information never feels artificially slow or arrives all at once.

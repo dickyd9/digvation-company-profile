@@ -11,95 +11,202 @@ const navigation = getNavigation(locale).filter((item) => item.href !== '/' && i
 const whatsappUrl = getWhatsAppUrl(locale);
 ---
 
-<footer class="border-paper/10 bg-ink text-paper border-t">
-  <div class="shell-wide">
-    <div class="grid gap-10 py-12 sm:py-14 lg:grid-cols-[1.35fr_.65fr_.65fr] lg:gap-14">
-      <div>
-        <BrandLogo locale={locale} tone="light" />
-        <p class="text-paper/70 mt-6 max-w-md text-sm leading-7">
+<footer class="site-footer bg-ink text-paper">
+  <div class="shell-wide site-footer__inner">
+    <div class="site-footer__rail">
+      <BrandLogo locale={locale} tone="light" />
+      <span>Your Digitalization Partner</span>
+    </div>
+
+    <div class="site-footer__main">
+      <div class="site-footer__statement">
+        <h2>
           {
             locale === 'id'
-              ? 'Kami membantu bisnis merapikan proses, membangun sistem, menghubungkan data, dan menciptakan pengalaman digital yang benar-benar dipakai.'
-              : 'We help businesses improve processes, build systems, connect data, and create digital experiences that people genuinely use.'
+              ? 'Teknologi yang tepat membuat bisnis lebih mudah dijalankan.'
+              : 'The right technology makes a business easier to run.'
           }
-        </p>
-        <p class="text-paper/60 mt-5 text-xs font-semibold">
+        </h2>
+        <p>
           {
             locale === 'id'
-              ? 'Jakarta, Indonesia · Bekerja dengan bisnis di mana pun.'
-              : 'Jakarta, Indonesia · Working with businesses wherever they are.'
+              ? 'Mulai dari masalahnya. Kami bantu menentukan dan mewujudkan langkah digitalnya.'
+              : 'Start with the problem. We help decide and deliver the digital next step.'
           }
         </p>
       </div>
-      <div>
-        <p class="eyebrow text-paper/60">{locale === 'id' ? 'Jelajahi' : 'Explore'}</p>
-        <nav class="mt-5 grid gap-3 text-sm" aria-label="Footer navigation">
-          {
-            navigation.map((item) => (
-              <a
-                class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
-                href={item.href}
-              >
-                {item.label}
-              </a>
-            ))
-          }
-        </nav>
-      </div>
-      <div>
-        <p class="eyebrow text-paper/60">{locale === 'id' ? 'Kontak' : 'Contact'}</p>
-        <div class="mt-5 grid gap-3 text-sm">
-          <a
-            class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
-            href={`mailto:${siteConfig.contact.email}`}
-            data-track-event="email_click"
-            data-track-label="footer">{siteConfig.contact.email}</a
-          >
-          {
-            whatsappUrl && (
-              <a
-                class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-event="whatsapp_click"
-                data-track-label="footer"
-              >
-                WhatsApp
-              </a>
-            )
-          }
-          <a
-            class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
-            href={locale === 'id' ? '/privacy' : '/en/privacy'}>Privacy</a
-          >
-          <a
-            class="text-paper/70 hover:border-paper/50 hover:text-paper w-fit border-b border-transparent no-underline transition-colors"
-            href={locale === 'id' ? '/terms' : '/en/terms'}>Terms</a
-          >
-          {
-            analyticsConfig.enabled && analyticsConfig.mode === 'consent' && (
-              <button
-                class="text-paper/70 hover:text-paper w-fit cursor-pointer border-0 bg-transparent p-0 text-left"
-                type="button"
-                data-analytics-settings
-              >
-                {locale === 'id' ? 'Pengaturan privasi' : 'Privacy settings'}
-              </button>
-            )
-          }
+
+      <div class="site-footer__links">
+        <div>
+          <p class="eyebrow">{locale === 'id' ? 'Jelajahi' : 'Explore'}</p>
+          <nav aria-label="Footer navigation">
+            {
+              navigation.map((item) => (
+                <a href={item.href}>
+                  {item.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ))
+            }
+          </nav>
+        </div>
+        <div>
+          <p class="eyebrow">{locale === 'id' ? 'Kontak' : 'Contact'}</p>
+          <div class="site-footer__contact">
+            <a
+              href={`mailto:${siteConfig.contact.email}`}
+              data-track-event="email_click"
+              data-track-label="footer">{siteConfig.contact.email}</a
+            >
+            {
+              whatsappUrl && (
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track-event="whatsapp_click"
+                  data-track-label="footer"
+                >
+                  WhatsApp
+                </a>
+              )
+            }
+            <a href={locale === 'id' ? '/privacy' : '/en/privacy'}>Privacy</a>
+            <a href={locale === 'id' ? '/terms' : '/en/terms'}>Terms</a>
+            {
+              analyticsConfig.enabled && analyticsConfig.mode === 'consent' && (
+                <button type="button" data-analytics-settings>
+                  {locale === 'id' ? 'Pengaturan privasi' : 'Privacy settings'}
+                </button>
+              )
+            }
+          </div>
         </div>
       </div>
     </div>
 
-    <div
-      class="border-paper/10 text-paper/60 flex flex-col gap-2 border-t py-5 text-xs sm:flex-row sm:items-center sm:justify-between"
-    >
+    <div class="site-footer__bottom">
       <span>© {new Date().getFullYear()} Digvation</span>
-      <span>Your Digitalization Partner.</span>
+      <span>
+        {
+          locale === 'id'
+            ? 'Jakarta, Indonesia. Bekerja dengan bisnis di mana pun.'
+            : 'Jakarta, Indonesia. Working with businesses wherever they are.'
+        }
+      </span>
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer__inner {
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+  .site-footer__rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    padding-bottom: 1.25rem;
+  }
+  .site-footer__rail span {
+    color: rgba(255, 255, 255, 0.46);
+    font-size: 0.58rem;
+    font-weight: 760;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .site-footer__main {
+    display: grid;
+    gap: clamp(4rem, 9vw, 8rem);
+    padding-block: clamp(5rem, 9vw, 8rem);
+  }
+  .site-footer__statement h2 {
+    max-width: 15ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 4.6vw, 4.7rem);
+    font-weight: 535;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
+  }
+  .site-footer__statement p {
+    max-width: 31rem;
+    margin: 1.75rem 0 0;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.88rem;
+    line-height: 1.72;
+  }
+  .site-footer__links {
+    display: grid;
+    gap: 2.5rem;
+    align-self: end;
+  }
+  .site-footer__links .eyebrow {
+    margin: 0 0 1.35rem;
+    color: rgba(255, 255, 255, 0.42);
+  }
+  .site-footer nav,
+  .site-footer__contact {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .site-footer nav a,
+  .site-footer__contact a,
+  .site-footer__contact button {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.55rem;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    padding: 0 0 0.1rem;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 0.76rem;
+    font-weight: 620;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      color 180ms ease;
+  }
+  .site-footer nav a:hover,
+  .site-footer__contact a:hover,
+  .site-footer__contact button:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: var(--color-paper);
+  }
+  .site-footer nav a span {
+    color: rgba(255, 255, 255, 0.36);
+  }
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding-block: 1.4rem;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 0.62rem;
+    font-weight: 620;
+  }
+  @media (min-width: 900px) {
+    .site-footer__main {
+      grid-template-columns: minmax(0, 1.22fr) minmax(20rem, 0.58fr);
+    }
+    .site-footer__links {
+      grid-template-columns: 0.75fr 1.25fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .site-footer__rail span {
+      display: none;
+    }
+  }
+</style>
 
 <script>
   const setupPrivacySettings = () => {

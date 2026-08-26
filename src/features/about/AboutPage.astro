@@ -1,6 +1,7 @@
 ---
 import BrandLogo from '@/components/brand/BrandLogo.astro';
-import { getLocalizedPath } from '@/config/navigation';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import type { Locale } from '@/config/site';
 
 type Props = { locale: Locale };
@@ -86,13 +87,12 @@ const copy =
       };
 ---
 
-<section class="about-hero bg-paper-warm text-ink">
-  <div class="shell about-hero__inner" data-reveal="mask">
-    <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-    <h1>{copy.title}</h1>
-    <p>{copy.intro}</p>
-  </div>
-</section>
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'TENTANG / 01' : 'ABOUT / 01'}
+/>
 
 <section class="about-why bg-ink text-paper" data-track-section="about-purpose">
   <div class="shell-wide section-pad about-why__grid">
@@ -144,35 +144,15 @@ const copy =
   </div>
 </section>
 
-<section class="about-close bg-indigo-deep text-paper">
-  <div class="shell about-close__inner">
-    <div><p class="eyebrow text-accent">{copy.closeEyebrow}</p><h2>{copy.closeTitle}</h2></div>
-    <a class="button-primary bg-paper! text-ink!" href={getLocalizedPath(locale, '/contact')}
-      >{copy.cta} ↗</a
-    >
-  </div>
-</section>
+<PageClosing
+  locale={locale}
+  eyebrow={copy.closeEyebrow}
+  title={copy.closeTitle}
+  ctaLabel={copy.cta}
+  trackLabel="about-closing"
+/>
 
 <style>
-  .about-hero__inner {
-    padding-block: clamp(5rem, 9vw, 8rem);
-  }
-  .about-hero h1 {
-    max-width: 14ch;
-    margin: 1rem 0 0;
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 5vw, 5rem);
-    font-weight: 570;
-    line-height: 0.98;
-    letter-spacing: -0.054em;
-  }
-  .about-hero__inner > p:last-child {
-    max-width: 43rem;
-    margin: 2rem 0 0 auto;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.98rem;
-    line-height: 1.8;
-  }
   .about-why__grid {
     display: grid;
     gap: 3rem;
@@ -182,7 +162,7 @@ const copy =
     margin: 1rem 0 0;
     font-family: var(--font-display);
     font-size: clamp(2.4rem, 4vw, 4rem);
-    font-weight: 570;
+    font-weight: 545;
     line-height: 1.02;
     letter-spacing: -0.05em;
   }
@@ -219,7 +199,7 @@ const copy =
     margin: 0;
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 2.8vw, 2.75rem);
-    font-weight: 580;
+    font-weight: 555;
     line-height: 1.04;
     letter-spacing: -0.043em;
   }
@@ -239,7 +219,7 @@ const copy =
     margin: 0;
     font-family: var(--font-display);
     font-size: clamp(2.4rem, 4vw, 4rem);
-    font-weight: 570;
+    font-weight: 545;
     line-height: 1.02;
     letter-spacing: -0.05em;
   }
@@ -269,30 +249,12 @@ const copy =
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.61rem;
   }
-  .about-close__inner {
-    display: grid;
-    gap: 2rem;
-    align-items: end;
-    padding-block: clamp(4rem, 7vw, 6rem);
-  }
-  .about-close h2 {
-    max-width: 23ch;
-    margin: 1rem 0 0;
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 3.35vw, 3.3rem);
-    font-weight: 580;
-    line-height: 1.04;
-    letter-spacing: -0.045em;
-  }
   @media (min-width: 900px) {
     .about-why__grid {
       grid-template-columns: 0.45fr 1.55fr;
     }
     .about-direction__intro {
       grid-template-columns: 0.35fr 1fr 0.65fr;
-    }
-    .about-close__inner {
-      grid-template-columns: 1fr auto;
     }
   }
   @media (max-width: 760px) {

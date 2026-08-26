@@ -1,5 +1,7 @@
 ---
 import ProjectFrame from '@/components/work/ProjectFrame.astro';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import { getWorkEntries } from '@/lib/content/catalog';
@@ -33,13 +35,12 @@ const copy =
       };
 ---
 
-<section class="work-intro bg-paper-warm text-ink">
-  <div class="shell work-intro__inner" data-reveal="up">
-    <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
-    <h1>{copy.title}</h1>
-    <p>{copy.intro}</p>
-  </div>
-</section>
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'HASIL KERJA / 01' : 'WORK / 01'}
+/>
 
 <section class="work-collection bg-paper text-ink" data-track-section="work-index">
   <div class="shell-wide section-pad">
@@ -122,38 +123,15 @@ const copy =
   </div>
 </section>
 
-<section class="work-close bg-indigo-deep text-paper">
-  <div class="shell work-close__inner">
-    <div>
-      <p class="eyebrow text-accent">{copy.close}</p>
-      <h2>{copy.closeBody}</h2>
-    </div>
-    <a class="button-primary bg-paper! text-ink!" href={getLocalizedPath(locale, '/contact')}>
-      {copy.closeCta}<span aria-hidden="true">↗</span>
-    </a>
-  </div>
-</section>
+<PageClosing
+  locale={locale}
+  eyebrow={copy.close}
+  title={copy.closeBody}
+  ctaLabel={copy.closeCta}
+  trackLabel="work-closing"
+/>
 
 <style>
-  .work-intro__inner {
-    padding-block: clamp(5rem, 9vw, 8rem);
-  }
-  .work-intro h1 {
-    max-width: 13ch;
-    margin: 1.1rem 0 0;
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 5vw, 5rem);
-    font-weight: 570;
-    line-height: 0.98;
-    letter-spacing: -0.054em;
-  }
-  .work-intro__inner > p:last-child {
-    max-width: 41rem;
-    margin: 2rem 0 0 auto;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.96rem;
-    line-height: 1.75;
-  }
   .work-collection__list {
     display: grid;
     gap: clamp(7rem, 13vw, 12rem);
@@ -200,7 +178,7 @@ const copy =
     margin: 0;
     font-family: var(--font-display);
     font-size: clamp(2.15rem, 3.8vw, 3.75rem);
-    font-weight: 580;
+    font-weight: 555;
     line-height: 1;
     letter-spacing: -0.048em;
   }
@@ -231,27 +209,9 @@ const copy =
   .work-entry__links a:last-child {
     color: rgba(11, 13, 16, 0.62);
   }
-  .work-close__inner {
-    display: grid;
-    gap: 2rem;
-    align-items: end;
-    padding-block: clamp(4rem, 7vw, 6rem);
-  }
-  .work-close h2 {
-    max-width: 25ch;
-    margin: 1rem 0 0;
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 3.4vw, 3.35rem);
-    font-weight: 580;
-    line-height: 1.04;
-    letter-spacing: -0.045em;
-  }
   @media (min-width: 900px) {
     .work-entry__copy {
       grid-template-columns: 0.9fr 1.1fr;
-    }
-    .work-close__inner {
-      grid-template-columns: 1fr auto;
     }
   }
   @media (max-width: 640px) {

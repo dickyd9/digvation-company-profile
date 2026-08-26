@@ -9,6 +9,14 @@
     const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
     if (elements.length === 0) return;
 
+    document.querySelectorAll<HTMLElement>('[data-reveal-group]').forEach((group) => {
+      const grouped = Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-reveal]'));
+      grouped.forEach((element, index) => {
+        if (element.style.getPropertyValue('--reveal-delay')) return;
+        element.style.setProperty('--reveal-delay', `${Math.min(index * 85, 340)}ms`);
+      });
+    });
+
     document.documentElement.classList.add('motion-ready');
 
     if (
@@ -30,13 +38,18 @@
         });
       },
       {
-        threshold: 0.12,
-        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.08,
+        rootMargin: '0px 0px -6% 0px',
       },
     );
 
     elements.forEach((element) => {
       if (element.classList.contains('is-revealed')) return;
+      const bounds = element.getBoundingClientRect();
+      if (bounds.top < window.innerHeight * 0.92 && bounds.bottom > 0) {
+        requestAnimationFrame(() => element.classList.add('is-revealed'));
+        return;
+      }
       revealObserver?.observe(element);
     });
   };

@@ -52,21 +52,21 @@ const { locale, copy } = Astro.props;
   .solution-areas__layout {
     display: grid;
     gap: clamp(3rem, 7vw, 7rem);
-    padding-block: clamp(7rem, 12vw, 11rem);
+    padding-block: var(--space-section);
   }
   .solution-areas__intro h2 {
     max-width: 14ch;
     margin: 1.1rem 0 0;
     font-family: var(--font-display);
     font-size: clamp(2.65rem, 4.4vw, 4.45rem);
-    font-weight: 570;
+    font-weight: 545;
     line-height: 1;
     letter-spacing: -0.052em;
   }
   .solution-areas__intro > p:not(.eyebrow) {
     max-width: 29rem;
     margin: 1.6rem 0 0;
-    color: rgba(11, 13, 16, 0.6);
+    color: var(--text-muted);
     font-size: 0.91rem;
     line-height: 1.7;
   }
@@ -109,7 +109,7 @@ const { locale, copy } = Astro.props;
   .solution-row__verb {
     font-family: var(--font-display);
     font-size: clamp(1.8rem, 3vw, 2.85rem);
-    font-weight: 560;
+    font-weight: 550;
     letter-spacing: -0.045em;
   }
   .solution-row__toggle {
@@ -152,7 +152,7 @@ const { locale, copy } = Astro.props;
   .solution-row__detail p {
     max-width: 33rem;
     margin: 0;
-    color: rgba(11, 13, 16, 0.58);
+    color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.7;
   }
@@ -186,9 +186,6 @@ const { locale, copy } = Astro.props;
     }
   }
   @media (max-width: 640px) {
-    .solution-areas__layout {
-      padding-block: 5.5rem;
-    }
     .solution-row summary {
       min-height: 4.5rem;
     }

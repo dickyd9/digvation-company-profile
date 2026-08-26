@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from 'astro:env/client';
 import AnalyticsManager from '@/components/analytics/AnalyticsManager.astro';
+import OpeningSequence from '@/components/animations/OpeningSequence.astro';
 import ScrollMotion from '@/components/animations/ScrollMotion.astro';
 import BackToTop from '@/components/layout/BackToTop.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
@@ -92,12 +93,27 @@ const faviconDark = brandConfig.assets.markWhite;
     />
     <link rel="icon" href={faviconLight} media="(prefers-color-scheme: light)" />
     <link rel="icon" href={faviconDark} media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      try {
+        if (!sessionStorage.getItem('digvation:opening-seen')) {
+          document.documentElement.classList.add('digvation-opening');
+          sessionStorage.setItem('digvation:opening-seen', 'true');
+          window.setTimeout(
+            () => document.documentElement.classList.remove('digvation-opening'),
+            2200,
+          );
+        }
+      } catch {
+        document.documentElement.classList.remove('digvation-opening');
+      }
+    </script>
     <StructuredData value={schemas} />
     <ClientRouter fallback="animate" />
   </head>
   <body>
     <AnalyticsManager locale={locale} />
     <ScrollMotion />
+    <OpeningSequence />
     <a
       class="bg-ink text-paper fixed top-4 left-4 z-[100] -translate-y-[180%] rounded-full px-4 py-3 transition-transform focus:translate-y-0"
       href="#main-content">{locale === 'id' ? 'Lewati ke konten' : 'Skip to content'}</a

@@ -46,3 +46,13 @@ Vendor-specific conversion tags belong in GTM. Do not add a second GA4 implement
 ## Visual evidence
 
 Approved project screenshots live under `public/work/<slug>/`. Project lists, homepage proof, and case studies use these local optimized assets. Live project URLs remain available as outbound actions, not as fragile iframe previews.
+
+## Experience primitives
+
+- `PageIntro.astro` owns the shared opening rhythm for primary index pages.
+- `PageClosing.astro` owns the shared conversation handoff used by Work, Solutions, Process, About, and case studies.
+- `OpeningSequence.astro` owns the brief first-session brand reveal and remains disabled for reduced motion.
+- `BusinessShift.astro` visualizes operational before-and-after states without pretending to be a client product.
+- `PartnerSection.astro` communicates the ongoing relationship without a generic agency trust-card grid.
+
+Page features remain responsible for their own narrative composition. The shared primitives must not turn every route into an identical template.

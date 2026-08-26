@@ -128,7 +128,7 @@ const copy =
 
 <style>
   .featured-work__inner {
-    padding-block: clamp(6.5rem, 11vw, 10.5rem);
+    padding-block: var(--space-section);
   }
   .featured-work__header {
     display: grid;
@@ -140,14 +140,14 @@ const copy =
     margin: 0.35rem 0 0;
     font-family: var(--font-display);
     font-size: clamp(2.8rem, 4.9vw, 5rem);
-    font-weight: 570;
+    font-weight: 545;
     line-height: 0.98;
     letter-spacing: -0.052em;
   }
   .featured-work__header > p:last-child {
     max-width: 31rem;
     margin: 0;
-    color: rgba(11, 13, 16, 0.58);
+    color: var(--text-muted);
     font-size: 0.92rem;
     line-height: 1.7;
   }
@@ -210,14 +210,14 @@ const copy =
     margin: 0.5rem 0 0;
     font-family: var(--font-display);
     font-size: clamp(2.2rem, 3.8vw, 3.85rem);
-    font-weight: 580;
+    font-weight: 555;
     line-height: 1;
     letter-spacing: -0.048em;
   }
   .featured-project__copy p {
     max-width: 36rem;
     margin: 0;
-    color: rgba(11, 13, 16, 0.6);
+    color: var(--text-muted);
     font-size: 0.9rem;
     line-height: 1.72;
   }
@@ -267,9 +267,6 @@ const copy =
     }
   }
   @media (max-width: 640px) {
-    .featured-work__inner {
-      padding-block: 5.5rem;
-    }
     .featured-project__stage {
       min-height: 25rem;
       padding: 4.25rem 0.75rem 1.2rem;
