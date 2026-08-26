@@ -42,13 +42,13 @@ import { brandConfig } from '@/config/brand';
   }
   :global(html.digvation-opening) .opening-sequence {
     visibility: visible;
-    animation: opening-canvas 1180ms both var(--ease-emphasis);
+    animation: opening-canvas 980ms both var(--ease-emphasis);
   }
   :global(html.digvation-opening) .opening-sequence img {
-    animation: opening-brand 720ms 100ms both var(--ease-out);
+    animation: opening-brand 520ms 80ms both var(--ease-out);
   }
   :global(html.digvation-opening) .opening-sequence span {
-    animation: opening-line 720ms 120ms both var(--ease-out);
+    animation: opening-line 560ms 90ms both var(--ease-out);
   }
   @keyframes opening-brand {
     0% {
@@ -67,7 +67,7 @@ import { brandConfig } from '@/config/brand';
   }
   @keyframes opening-canvas {
     0%,
-    70% {
+    65% {
       clip-path: inset(0);
     }
     100% {

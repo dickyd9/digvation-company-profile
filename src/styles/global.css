@@ -336,8 +336,8 @@
   }
 }
 
-/* Progressive motion. Content stays visible when JavaScript is unavailable. */
-html.motion-ready [data-reveal] {
+/* Progressive motion. JavaScript manages only off-screen elements and always has a visible fallback. */
+html.motion-ready [data-reveal].is-reveal-managed {
   transition-duration: 760ms;
   transition-property: clip-path, opacity, transform;
   transition-timing-function: var(--ease-out);
@@ -345,35 +345,39 @@ html.motion-ready [data-reveal] {
   will-change: clip-path, opacity, transform;
 }
 
-html.motion-ready [data-reveal='up'] {
-  clip-path: inset(0 0 8% 0);
-  opacity: 0;
-  transform: translateY(14px);
+html.motion-ready [data-reveal='up'].is-reveal-managed:not(.is-revealed) {
+  clip-path: inset(0 0 3% 0);
+  opacity: 0.86;
+  transform: translateY(10px);
 }
-html.motion-ready [data-reveal='left'] {
-  clip-path: inset(0 10% 0 0);
-  opacity: 0;
-  transform: translateX(-12px);
+html.motion-ready [data-reveal='left'].is-reveal-managed:not(.is-revealed) {
+  clip-path: inset(0 4% 0 0);
+  opacity: 0.86;
+  transform: translateX(-8px);
 }
-html.motion-ready [data-reveal='right'] {
-  clip-path: inset(0 0 0 10%);
-  opacity: 0;
-  transform: translateX(12px);
+html.motion-ready [data-reveal='right'].is-reveal-managed:not(.is-revealed) {
+  clip-path: inset(0 0 0 4%);
+  opacity: 0.86;
+  transform: translateX(8px);
 }
-html.motion-ready [data-reveal='scale'],
-html.motion-ready [data-reveal='visual'] {
-  clip-path: inset(8% 0 0);
-  transform: scale(0.97);
+html.motion-ready [data-reveal='scale'].is-reveal-managed:not(.is-revealed),
+html.motion-ready [data-reveal='visual'].is-reveal-managed:not(.is-revealed) {
+  clip-path: inset(4% 0 0);
+  opacity: 0.94;
+  transform: scale(0.985);
 }
-html.motion-ready [data-reveal='mask'] {
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(4%);
+html.motion-ready [data-reveal='mask'].is-reveal-managed:not(.is-revealed) {
+  clip-path: inset(0 0 14% 0);
+  opacity: 0.88;
+  transform: translateY(10px);
 }
-html.motion-ready [data-reveal='line'] {
-  clip-path: inset(0 100% 0 0);
+html.motion-ready [data-reveal='line'].is-reveal-managed:not(.is-revealed) {
+  clip-path: inset(0 8% 0 0);
+  opacity: 0.88;
+  transform: translateX(-4px);
 }
 
-html.motion-ready [data-reveal].is-revealed {
+html.motion-ready [data-reveal].is-reveal-managed.is-revealed {
   clip-path: inset(0);
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
@@ -405,13 +409,13 @@ html.motion-ready [data-reveal].is-revealed {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.motion-ready [data-reveal],
-  html.motion-ready [data-reveal='left'],
-  html.motion-ready [data-reveal='right'],
-  html.motion-ready [data-reveal='scale'],
-  html.motion-ready [data-reveal='visual'],
-  html.motion-ready [data-reveal='mask'],
-  html.motion-ready [data-reveal='line'] {
+  html.motion-ready [data-reveal].is-reveal-managed,
+  html.motion-ready [data-reveal='left'].is-reveal-managed,
+  html.motion-ready [data-reveal='right'].is-reveal-managed,
+  html.motion-ready [data-reveal='scale'].is-reveal-managed,
+  html.motion-ready [data-reveal='visual'].is-reveal-managed,
+  html.motion-ready [data-reveal='mask'].is-reveal-managed,
+  html.motion-ready [data-reveal='line'].is-reveal-managed {
     clip-path: none;
     opacity: 1;
     transform: none;

@@ -64,3 +64,5 @@ Motion has three levels:
 Route transitions use a brief masked reveal. Project scenes may use CSS scroll timelines where supported, with a stable non-animated fallback. Avoid continuous floating objects, blanket AOS-style movement, and effects without narrative value. All content remains usable without JavaScript and with `prefers-reduced-motion`.
 
 Grouped section content may use short staggered delays. The delay is capped so related information never feels artificially slow or arrives all at once.
+
+Reveal motion is progressive enhancement. Content is visible by default, only off-screen elements are enrolled in motion, scroll and resize provide an observer fallback, and every pending element is released automatically. A failed or delayed motion script must never leave an empty section.

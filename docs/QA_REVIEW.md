@@ -14,6 +14,7 @@
 - Mobile navigation supports Escape and focus restoration.
 - Inline solution details allow only one open item and support deep links.
 - Content remains visible without JavaScript.
+- Delayed or failed reveal observation cannot leave homepage headings, project screens, or section content clipped indefinitely.
 - Reduced motion removes non-essential animation.
 - Form loading, validation, server error, and success states remain announced.
 

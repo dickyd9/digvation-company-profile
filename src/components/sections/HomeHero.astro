@@ -183,29 +183,17 @@ const { locale, copy } = Astro.props;
     }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .home-hero__eyebrow {
-      animation: hero-detail-in 700ms 120ms both cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .home-hero h1 {
-      animation: hero-title-in 900ms 80ms both cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .home-hero__footer {
-      animation: hero-footer-in 760ms 430ms both cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .home-hero::after {
-      animation: hero-rule-in 900ms 420ms both cubic-bezier(0.22, 1, 0.36, 1);
-    }
     :global(html.digvation-opening) .home-hero__eyebrow {
-      animation-delay: 850ms;
+      animation: hero-detail-in 600ms 500ms both cubic-bezier(0.22, 1, 0.36, 1);
     }
     :global(html.digvation-opening) .home-hero h1 {
-      animation-delay: 820ms;
+      animation: hero-title-in 760ms 420ms both cubic-bezier(0.16, 1, 0.3, 1);
     }
     :global(html.digvation-opening) .home-hero__footer {
-      animation-delay: 1120ms;
+      animation: hero-footer-in 620ms 700ms both cubic-bezier(0.22, 1, 0.36, 1);
     }
     :global(html.digvation-opening) .home-hero::after {
-      animation-delay: 1080ms;
+      animation: hero-rule-in 700ms 680ms both cubic-bezier(0.22, 1, 0.36, 1);
     }
   }
   @keyframes hero-title-in {

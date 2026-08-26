@@ -55,13 +55,13 @@ const copy =
 
           return (
             <article class:list={['featured-project', `featured-project--${scene}`]}>
-              <div class="featured-project__stage" data-reveal="visual">
+              <div class="featured-project__stage">
                 <div class="featured-project__stage-meta" aria-hidden="true">
                   <span>{String(index + 1).padStart(2, '0')}</span>
                   <span>{entry.data.projectType}</span>
                   <span>{entry.data.year}</span>
                 </div>
-                <div class="featured-project__frame">
+                <div class="featured-project__frame" data-reveal="visual">
                   <ProjectFrame
                     image={image}
                     alt={`${entry.data.title}. ${entry.data.summary}`}
