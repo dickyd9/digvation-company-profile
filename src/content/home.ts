@@ -7,7 +7,6 @@ export type HomeCopy = {
     body: string;
     primaryCta: string;
     secondaryCta: string;
-    scrollLabel: string;
   };
   shift: {
     eyebrow: string;
@@ -15,7 +14,16 @@ export type HomeCopy = {
     intro: string;
     beforeLabel: string;
     afterLabel: string;
-    items: Array<{ before: string; after: string; detail: string }>;
+    items: Array<{
+      before: string;
+      after: string;
+      detail: string;
+      diagram: {
+        action: string;
+        before: string[];
+        after: string[];
+      };
+    }>;
   };
   solutions: {
     eyebrow: string;
@@ -49,7 +57,6 @@ const id: HomeCopy = {
     body: 'Kami membantu menentukan apa yang perlu dibuat digital, lalu membangunnya sampai benar-benar dipakai.',
     primaryCta: 'Ceritakan yang ingin diperbaiki',
     secondaryCta: 'Lihat hasil kerja',
-    scrollLabel: 'Lihat hasil kerja',
   },
   shift: {
     eyebrow: 'Dari yang terasa sehari-hari',
@@ -62,16 +69,31 @@ const id: HomeCopy = {
         before: 'Order tersebar di chat dan spreadsheet.',
         after: 'Satu alur terlihat.',
         detail: 'Order, PIC, approval, dan status berada dalam konteks yang sama.',
+        diagram: {
+          action: 'Satukan',
+          before: ['Chat', 'Spreadsheet', 'Catatan'],
+          after: ['Order', 'PIC', 'Approval', 'Status'],
+        },
       },
       {
         before: 'Status harus ditanyakan berulang.',
         after: 'Informasi siap dipantau.',
         detail: 'Tim melihat apa yang berjalan, tertunda, dan perlu ditindaklanjuti.',
+        diagram: {
+          action: 'Tampilkan',
+          before: ['Tanya PIC', 'Cek chat', 'Tunggu kabar'],
+          after: ['Berjalan', 'Tertunda', 'Perlu aksi'],
+        },
       },
       {
         before: 'Rekap manual menunda keputusan.',
         after: 'Data siap dibaca.',
         detail: 'Informasi penting muncul saat dibutuhkan, bukan setelah semuanya terlambat.',
+        diagram: {
+          action: 'Ringkas',
+          before: ['Salin data', 'Cocokkan', 'Buat rekap'],
+          after: ['Data masuk', 'Ringkasan', 'Keputusan'],
+        },
       },
     ],
   },
@@ -168,7 +190,6 @@ const en: HomeCopy = {
     body: 'We help decide what should become digital, then build it through to real use.',
     primaryCta: 'Tell us what should improve',
     secondaryCta: 'See the work',
-    scrollLabel: 'See the work',
   },
   shift: {
     eyebrow: 'What the business feels every day',
@@ -181,16 +202,31 @@ const en: HomeCopy = {
         before: 'Orders are scattered across chats and spreadsheets.',
         after: 'One visible flow.',
         detail: 'Orders, owners, approvals, and status share the same context.',
+        diagram: {
+          action: 'Connect',
+          before: ['Chat', 'Spreadsheet', 'Notes'],
+          after: ['Order', 'Owner', 'Approval', 'Status'],
+        },
       },
       {
         before: 'Status has to be requested repeatedly.',
         after: 'Information is ready to monitor.',
         detail: 'The team can see what is moving, delayed, and needs attention.',
+        diagram: {
+          action: 'Make visible',
+          before: ['Ask owner', 'Check chat', 'Wait for news'],
+          after: ['Moving', 'Delayed', 'Needs action'],
+        },
       },
       {
         before: 'Manual recaps delay decisions.',
         after: 'Data is ready to read.',
         detail: 'Important information appears when it is needed, not after it is too late.',
+        diagram: {
+          action: 'Summarize',
+          before: ['Copy data', 'Reconcile', 'Build recap'],
+          after: ['Data in', 'Summary', 'Decision'],
+        },
       },
     ],
   },
