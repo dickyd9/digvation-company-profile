@@ -8,7 +8,7 @@ Clarity -> Proof -> Recognition -> Choice -> Process -> Partnership -> Action
 
 ## Current flow
 
-1. **Minimal hero**: one problem-led proposition, one primary CTA, one quiet link to work, and deliberate whitespace. The statement uses an editorial split on larger screens and never repeats the work link in the same viewport.
+1. **Minimal hero**: one centered partner-led proposition, one primary CTA, one quiet link to work, and deliberate whitespace. Three short commitments clarify that Digvation understands the business first, builds through real use, and stays involved as the business grows. The work link never repeats in the same viewport.
 2. **Featured work as proof**: actual optimized screenshots from live Digvation projects expand through large project-specific stages. No illustrative dashboard is used as evidence.
 3. **Business shift**: familiar operational friction is paired with the change a connected digital flow can create. Three compact operation maps make the before, intervention, and after state visible. These are process diagrams, not fake product dashboards.
 4. **How Digvation helps**: Build, Improve, Connect, Automate, and Understand expressed through five concise business actions. Details expand inline instead of creating a card grid. Open and close transitions animate height and content gently while preserving native details semantics and reduced-motion behavior.

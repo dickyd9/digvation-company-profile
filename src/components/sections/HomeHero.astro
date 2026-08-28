@@ -9,14 +9,14 @@ const { locale, copy } = Astro.props;
 
 <section class="home-hero bg-paper-warm text-ink" data-track-section="hero">
   <div class="shell-wide home-hero__inner">
-    <div class="home-hero__statement">
+    <div class="home-hero__main">
       <p class="home-hero__eyebrow"><span aria-hidden="true"></span>{copy.eyebrow}</p>
       <div class="home-hero__title-mask">
-        <h1>{copy.title}</h1>
+        <h1>
+          <span class="home-hero__title-lead">{copy.titleLead}</span>
+          <span>{copy.titleRest}</span>
+        </h1>
       </div>
-    </div>
-
-    <div class="home-hero__footer">
       <p class="home-hero__body">{copy.body}</p>
       <div class="home-hero__actions">
         <a
@@ -32,6 +32,17 @@ const { locale, copy } = Astro.props;
         </a>
       </div>
     </div>
+
+    <ul class="home-hero__commitments" aria-label={copy.commitmentsLabel}>
+      {
+        copy.commitments.map((commitment) => (
+          <li>
+            <span aria-hidden="true" />
+            {commitment}
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
 
@@ -55,17 +66,24 @@ const { locale, copy } = Astro.props;
     display: grid;
     min-height: calc(100svh - 4.5rem);
     grid-template-rows: minmax(0, 1fr) auto;
-    padding-top: clamp(4.5rem, 9vh, 7rem);
-    padding-bottom: clamp(2rem, 4vh, 3.25rem);
+    padding-top: clamp(3.5rem, 7vh, 5.5rem);
+    padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
   }
-  .home-hero__statement {
+  .home-hero__main {
+    display: grid;
+    width: 100%;
+    max-width: 78rem;
     align-self: center;
+    justify-self: center;
+    justify-items: center;
+    padding-block: clamp(2.5rem, 6vh, 5rem);
+    text-align: center;
   }
   .home-hero__eyebrow {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.7rem;
-    margin: 0 0 clamp(1.6rem, 3vw, 2.6rem);
+    margin: 0 0 clamp(1.5rem, 2.5vw, 2.15rem);
     color: rgba(11, 13, 16, 0.58);
     font-size: 0.64rem;
     font-weight: 750;
@@ -73,42 +91,48 @@ const { locale, copy } = Astro.props;
     text-transform: uppercase;
   }
   .home-hero__eyebrow span {
-    width: 1.8rem;
+    width: 2.4rem;
     height: 1px;
     background: var(--color-indigo-deep);
   }
+  .home-hero__eyebrow::after {
+    width: 2.4rem;
+    height: 1px;
+    background: var(--color-indigo-deep);
+    content: '';
+  }
   .home-hero__title-mask {
+    width: 100%;
     overflow: clip;
   }
   .home-hero h1 {
-    max-width: 14ch;
-    margin: 0;
+    max-width: 13.5ch;
+    margin: 0 auto;
     font-family: var(--font-display);
-    font-size: clamp(3.45rem, 5.45vw, 5.9rem);
+    font-size: clamp(3.6rem, 6.4vw, 7rem);
     font-weight: 545;
-    line-height: 0.95;
-    letter-spacing: -0.058em;
+    line-height: 0.94;
+    letter-spacing: -0.062em;
     text-wrap: balance;
   }
-  .home-hero__footer {
-    display: grid;
-    gap: 1.5rem 3rem;
-    align-items: end;
-    border-top: 1px solid rgba(11, 13, 16, 0.12);
-    padding-top: 1.4rem;
+  .home-hero__title-lead {
+    display: block;
+    color: var(--color-indigo-deep);
   }
   .home-hero__body {
-    max-width: 34rem;
-    margin: 0;
+    max-width: 45rem;
+    margin: clamp(1.5rem, 2.8vw, 2.2rem) auto 0;
     color: var(--text-muted);
-    font-size: clamp(0.96rem, 1.2vw, 1.08rem);
-    line-height: 1.72;
+    font-size: clamp(1rem, 1.3vw, 1.14rem);
+    line-height: 1.7;
   }
   .home-hero__actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     gap: 0.9rem 1.4rem;
+    margin-top: clamp(1.7rem, 3vw, 2.35rem);
   }
   .home-hero__work {
     display: inline-flex;
@@ -129,23 +153,30 @@ const { locale, copy } = Astro.props;
   .home-hero__work:hover span {
     transform: translateY(0.18rem);
   }
-  @media (min-width: 820px) {
-    .home-hero__statement {
-      display: grid;
-      grid-template-columns: minmax(10rem, 0.28fr) minmax(0, 1fr);
-      gap: clamp(2rem, 5vw, 5rem);
-      align-items: start;
-    }
-    .home-hero__eyebrow {
-      margin-top: 0.85rem;
-      margin-bottom: 0;
-    }
-    .home-hero__footer {
-      grid-template-columns: minmax(0, 1fr) auto;
-    }
-    .home-hero__actions {
-      justify-self: end;
-    }
+  .home-hero__commitments {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem clamp(1.25rem, 3vw, 3rem);
+    margin: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.12);
+    padding: clamp(1rem, 2vh, 1.35rem) 0 0;
+    color: rgba(11, 13, 16, 0.58);
+    font-size: 0.69rem;
+    font-weight: 680;
+    letter-spacing: 0.015em;
+    list-style: none;
+  }
+  .home-hero__commitments li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .home-hero__commitments li > span {
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 50%;
+    background: var(--color-indigo-deep);
   }
   @media (max-width: 640px) {
     .home-hero {
@@ -153,21 +184,35 @@ const { locale, copy } = Astro.props;
     }
     .home-hero__inner {
       min-height: calc(100svh - 4.25rem);
-      padding-top: clamp(3.5rem, 10vh, 5rem);
-      padding-bottom: 1.5rem;
+      padding-top: clamp(2.5rem, 7vh, 3.75rem);
+      padding-bottom: 1.1rem;
+    }
+    .home-hero__main {
+      padding-block: 2.25rem 2.75rem;
     }
     .home-hero h1 {
-      max-width: 10.5ch;
-      font-size: clamp(3.15rem, 14.8vw, 4.35rem);
+      max-width: 10.8ch;
+      font-size: clamp(3.05rem, 13.5vw, 4.15rem);
       letter-spacing: -0.062em;
     }
+    .home-hero__eyebrow {
+      gap: 0.55rem;
+      font-size: 0.58rem;
+    }
+    .home-hero__eyebrow span,
+    .home-hero__eyebrow::after {
+      width: 1.5rem;
+    }
     .home-hero__body {
-      max-width: 29rem;
-      line-height: 1.64;
+      max-width: 30rem;
+      line-height: 1.62;
     }
     .home-hero__actions {
-      align-items: flex-start;
-      flex-direction: column;
+      gap: 0.6rem 1.1rem;
+    }
+    .home-hero__commitments {
+      gap: 0.55rem 1rem;
+      font-size: 0.62rem;
     }
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -177,8 +222,12 @@ const { locale, copy } = Astro.props;
     :global(html.digvation-opening) .home-hero h1 {
       animation: hero-title-in 760ms 420ms both cubic-bezier(0.16, 1, 0.3, 1);
     }
-    :global(html.digvation-opening) .home-hero__footer {
+    :global(html.digvation-opening) .home-hero__body,
+    :global(html.digvation-opening) .home-hero__actions {
       animation: hero-footer-in 620ms 700ms both cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    :global(html.digvation-opening) .home-hero__commitments {
+      animation: hero-detail-in 600ms 820ms both cubic-bezier(0.22, 1, 0.36, 1);
     }
     :global(html.digvation-opening) .home-hero::after {
       animation: hero-rule-in 700ms 680ms both cubic-bezier(0.22, 1, 0.36, 1);

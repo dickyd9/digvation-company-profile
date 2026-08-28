@@ -3,10 +3,13 @@ import type { Locale } from '@/config/site';
 export type HomeCopy = {
   hero: {
     eyebrow: string;
-    title: string;
+    titleLead: string;
+    titleRest: string;
     body: string;
     primaryCta: string;
     secondaryCta: string;
+    commitmentsLabel: string;
+    commitments: string[];
   };
   shift: {
     eyebrow: string;
@@ -53,10 +56,17 @@ export type HomeCopy = {
 const id: HomeCopy = {
   hero: {
     eyebrow: 'Your Digitalization Partner',
-    title: 'Bisnis yang lebih mudah dijalankan.',
-    body: 'Kami membantu melihat apa yang perlu dibuat digital, menentukan langkahnya bersama Anda, lalu membangunnya sampai benar-benar dipakai.',
+    titleLead: 'Partner digital',
+    titleRest: 'agar bisnis lebih mudah dijalankan.',
+    body: 'Ceritakan apa yang belum berjalan sebagaimana mestinya. Kami bantu memahami masalahnya, menentukan langkah digital yang tepat, lalu membangun dan mendampingi solusinya sampai benar-benar digunakan.',
     primaryCta: 'Ceritakan kebutuhan Anda',
     secondaryCta: 'Lihat hasil kerja',
+    commitmentsLabel: 'Cara Digvation mendampingi bisnis Anda',
+    commitments: [
+      'Pahami bisnisnya dulu',
+      'Bangun sampai benar-benar dipakai',
+      'Tetap terlibat saat bisnis berkembang',
+    ],
   },
   shift: {
     eyebrow: 'Dari yang terasa sehari-hari',
@@ -186,10 +196,17 @@ const id: HomeCopy = {
 const en: HomeCopy = {
   hero: {
     eyebrow: 'Your Digitalization Partner',
-    title: 'A business that is easier to run.',
-    body: 'We help see what should become digital, choose the next step with you, and build it through to real use.',
+    titleLead: 'A digital partner',
+    titleRest: 'for a business that is easier to run.',
+    body: 'Tell us what is not working as it should. We help clarify the problem, choose the right digital step, then build and support the solution through real use.',
     primaryCta: 'Tell us what you need',
     secondaryCta: 'See the work',
+    commitmentsLabel: 'How Digvation supports your business',
+    commitments: [
+      'Understand the business first',
+      'Build through real use',
+      'Stay involved as the business grows',
+    ],
   },
   shift: {
     eyebrow: 'What the business feels every day',
