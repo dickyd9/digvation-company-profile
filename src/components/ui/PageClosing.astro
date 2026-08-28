@@ -21,7 +21,9 @@ const { locale, eyebrow, title, body, ctaLabel, trackLabel } = Astro.props;
   <div class="shell-wide page-closing__inner">
     <div class="page-closing__rail" data-reveal="line">
       <p><span aria-hidden="true"></span>{eyebrow}</p>
-      <small>{locale === 'id' ? 'BERIKUTNYA / PERCAKAPAN' : 'NEXT / CONVERSATION'}</small>
+      <small
+        >{locale === 'id' ? 'LANGKAH BERIKUTNYA / MARI BICARA' : "NEXT STEP / LET'S TALK"}</small
+      >
     </div>
 
     <div class="page-closing__grid" data-reveal="mask">

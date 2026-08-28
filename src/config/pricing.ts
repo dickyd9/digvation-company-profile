@@ -26,8 +26,8 @@ export const pricingConfig: {
     en: 'Enable this section once Digvation has approved its commercial anchors.',
   },
   disclaimer: {
-    id: 'Nilai akhir mengikuti scope, kompleksitas, integrasi, dan kebutuhan bisnis.',
-    en: 'Final investment depends on scope, complexity, integrations, and business requirements.',
+    id: 'Nilai akhir mengikuti batas kebutuhan, kompleksitas, integrasi, dan kondisi bisnis.',
+    en: 'Final investment depends on the need, complexity, integrations, and business conditions.',
   },
   items: [],
 };

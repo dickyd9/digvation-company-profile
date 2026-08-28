@@ -3,29 +3,29 @@ routeSlug: iot
 locale: id
 title: Pantau kondisi dari lapangan
 eyebrow: Hubungkan dunia fisik
-summary: Saat kondisi device, sensor, kamera, atau lokasi perlu terlihat dari satu alur.
-problem: 'Connected system harus tetap dipikirkan sebagai sistem operasional: bagaimana device terhubung, apa yang terjadi ketika offline, data apa yang penting, dan siapa yang perlu menerima alert.'
+summary: Saat kondisi perangkat, sensor, kamera, atau lokasi perlu dipantau dari satu alur.
+problem: 'Sistem yang saling terhubung tetap harus mengikuti kebutuhan operasi: bagaimana perangkat tersambung, apa yang terjadi ketika koneksi terputus, data apa yang penting, dan siapa yang perlu menerima peringatan.'
 when:
-  - Perlu monitoring kondisi fisik
+  - Kondisi fisik perlu dipantau
   - Data lapangan terlambat atau tidak konsisten
-  - Device perlu terhubung ke workflow bisnis
+  - Perangkat perlu terhubung ke alur kerja bisnis
 whatWeDo:
-  - Mengecek kondisi lapangan dan connectivity
-  - Merancang hubungan device, data, backend, dan operasi
-  - Membangun backend dan monitoring workflow
-  - Menyiapkan alert, dashboard, dan operational handover
+  - Memeriksa kondisi lapangan dan ketersediaan koneksi
+  - Merancang hubungan antara perangkat, data, sistem, dan operasi
+  - Membangun sistem pengelolaan data dan alur pemantauan
+  - Menyiapkan peringatan, dashboard, dan serah terima operasional
 outputs:
-  - Connected device flow
-  - Data ingestion
-  - Monitoring atau dashboard
-  - Alerting dan dokumentasi operasional
+  - Alur perangkat yang saling terhubung
+  - Penerimaan dan pengolahan data
+  - Pemantauan atau dashboard
+  - Peringatan dan dokumentasi operasional
 examples:
   - Sensor kondisi lokasi
-  - Field device telemetry
-  - Camera event pipeline
-start: Mulai dari kondisi lapangan dan constraint konektivitas sebelum menentukan device atau platform.
+  - Telemetri perangkat di lapangan
+  - Alur kejadian dari kamera
+start: Mulai dari kondisi lapangan dan keterbatasan koneksi sebelum menentukan perangkat atau platform.
 order: 6
 seo:
   title: IoT & Connected Systems | Digvation
-  description: Untuk operasi yang bergantung pada device, sensor, camera, atau data dari lapangan.
+  description: Untuk operasi yang bergantung pada perangkat, sensor, kamera, atau data dari lapangan.
 ---

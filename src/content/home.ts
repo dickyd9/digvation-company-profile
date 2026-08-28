@@ -54,8 +54,8 @@ const id: HomeCopy = {
   hero: {
     eyebrow: 'Your Digitalization Partner',
     title: 'Bisnis yang lebih mudah dijalankan.',
-    body: 'Kami membantu menentukan apa yang perlu dibuat digital, lalu membangunnya sampai benar-benar dipakai.',
-    primaryCta: 'Ceritakan yang ingin diperbaiki',
+    body: 'Kami membantu melihat apa yang perlu dibuat digital, menentukan langkahnya bersama Anda, lalu membangunnya sampai benar-benar dipakai.',
+    primaryCta: 'Ceritakan kebutuhan Anda',
     secondaryCta: 'Lihat hasil kerja',
   },
   shift: {
@@ -139,10 +139,10 @@ const id: HomeCopy = {
   process: {
     eyebrow: 'Cara kami bekerja',
     title: 'Pahami dulu. Bangun yang tepat.',
-    body: 'Anda membawa konteks bisnis. Kami menjaga keputusan dan delivery digitalnya tetap jelas.',
+    body: 'Anda paling memahami bisnisnya. Kami membantu mengubah kebutuhannya menjadi langkah digital yang jelas.',
     linkLabel: 'Lihat cara kerja lengkap',
     items: [
-      { title: 'Pahami', body: 'Melihat masalah dan konteks sebenarnya.' },
+      { title: 'Pahami', body: 'Mendengarkan cara kerja dan masalah yang sebenarnya.' },
       { title: 'Bentuk', body: 'Menentukan solusi dan prioritas yang masuk akal.' },
       { title: 'Bangun', body: 'Merancang dan mengembangkan secara bertahap.' },
       { title: 'Validasi', body: 'Menguji dengan skenario penggunaan nyata.' },
@@ -161,8 +161,8 @@ const id: HomeCopy = {
         body: 'Proses, orang, data, dan hambatan dibaca sebelum bentuk solusi diputuskan.',
       },
       {
-        title: 'Jaga keputusannya',
-        body: 'Prioritas, scope, dan risiko tetap jelas selama proses berjalan.',
+        title: 'Tentukan langkah bersama',
+        body: 'Prioritas, batas kerja, dan risiko dibahas dengan bahasa yang sama selama proses berjalan.',
       },
       {
         title: 'Dampingi penggunaannya',
@@ -177,9 +177,9 @@ const id: HomeCopy = {
   finalCta: {
     eyebrow: 'Mulai dari masalahnya',
     title: 'Ada yang seharusnya bisa berjalan lebih baik?',
-    body: 'Ceritakan situasinya. Satu masalah yang jelas sudah cukup untuk memulai.',
-    button: 'Bicarakan dengan Digvation',
-    note: 'Kami mulai dengan memahami, bukan langsung menawarkan software.',
+    body: 'Ceritakan situasinya. Kami bantu mengurai langkah pertama bersama Anda.',
+    button: 'Mulai percakapan',
+    note: 'Percakapan dimulai dari bisnis Anda, bukan dari daftar teknologi.',
   },
 };
 
@@ -187,8 +187,8 @@ const en: HomeCopy = {
   hero: {
     eyebrow: 'Your Digitalization Partner',
     title: 'A business that is easier to run.',
-    body: 'We help decide what should become digital, then build it through to real use.',
-    primaryCta: 'Tell us what should improve',
+    body: 'We help see what should become digital, choose the next step with you, and build it through to real use.',
+    primaryCta: 'Tell us what you need',
     secondaryCta: 'See the work',
   },
   shift: {
@@ -272,10 +272,10 @@ const en: HomeCopy = {
   process: {
     eyebrow: 'How we work',
     title: 'Understand first. Build the right thing.',
-    body: 'You bring the business context. We keep the digital decisions and delivery clear.',
+    body: 'You know the business best. We help turn the need into a clear digital next step.',
     linkLabel: 'See the full process',
     items: [
-      { title: 'Understand', body: 'See the real problem and context.' },
+      { title: 'Understand', body: 'Listen to how the work runs and what is getting in the way.' },
       { title: 'Shape', body: 'Define a sensible solution and priority.' },
       { title: 'Build', body: 'Design and develop in clear iterations.' },
       { title: 'Validate', body: 'Test against real-use scenarios.' },
@@ -294,8 +294,8 @@ const en: HomeCopy = {
         body: 'Process, people, data, and friction come before the shape of the solution.',
       },
       {
-        title: 'Keep decisions clear',
-        body: 'Priorities, scope, and risks remain understandable throughout delivery.',
+        title: 'Choose the next step together',
+        body: 'Priorities, boundaries, and risks stay clear in language everyone can follow.',
       },
       {
         title: 'Support real use',
@@ -310,9 +310,9 @@ const en: HomeCopy = {
   finalCta: {
     eyebrow: 'Start with the problem',
     title: 'Something should be working better?',
-    body: 'Tell us the situation. One clear problem is enough to start.',
-    button: 'Talk with Digvation',
-    note: 'We start by understanding, not by immediately selling software.',
+    body: 'Tell us the situation. We will help make the first step clear with you.',
+    button: 'Start a conversation',
+    note: 'The conversation starts with your business, not a list of technologies.',
   },
 };
 

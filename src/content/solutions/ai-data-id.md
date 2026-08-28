@@ -3,27 +3,27 @@ routeSlug: ai-data
 locale: id
 title: Ubah data menjadi keputusan
 eyebrow: Lihat hal yang penting
-summary: Saat data, gambar, atau event tersedia tetapi belum menghasilkan tindakan.
-problem: AI berguna ketika ada keputusan atau pekerjaan yang bisa dibuat lebih baik. Kami tidak memulai dari “pakai AI”, tetapi dari event, data, dan keputusan apa yang perlu dihasilkan.
+summary: Saat data, gambar, atau kejadian sudah tersedia tetapi belum membantu tim mengambil tindakan.
+problem: AI berguna ketika bisa membantu sebuah keputusan atau pekerjaan menjadi lebih baik. Kami tidak memulai dengan “harus pakai AI”, tetapi dengan memahami data yang tersedia dan keputusan apa yang ingin dibantu.
 when:
-  - Data ada tetapi belum menjadi informasi
-  - Camera/device menghasilkan data yang belum dimanfaatkan
+  - Data sudah ada tetapi belum menjadi informasi yang berguna
+  - Kamera atau perangkat menghasilkan data yang belum dimanfaatkan
   - Pekerjaan klasifikasi atau pengecekan terlalu manual
 whatWeDo:
-  - Menentukan event, metric, atau keputusan yang ingin dihasilkan
-  - Mengecek data dan kondisi environment yang sebenarnya
-  - Membuat PoC ketika uncertainty masih tinggi
-  - Membangun analytics, alert, atau assisted workflow yang relevan
+  - Menentukan kejadian, ukuran, atau keputusan yang ingin dibantu
+  - Memeriksa kualitas data dan kondisi pemakaian yang sebenarnya
+  - Membuat uji awal ketika ketidakpastian masih tinggi
+  - Membangun analitik, peringatan, atau alur kerja yang membantu tim
 outputs:
-  - Feasibility assessment
-  - Data pipeline
-  - Analytics atau dashboard
-  - AI atau computer-vision workflow jika memang justified
+  - Penilaian kelayakan
+  - Alur pengolahan data
+  - Analitik atau dashboard
+  - Alur AI atau computer vision bila memang diperlukan
 examples:
-  - Visitor/event analytics dari CCTV
-  - Document classification
-  - Operational anomaly alerts
-start: Mulai dari keputusan atau event yang ingin dihasilkan dan bukti data yang tersedia.
+  - Analitik pengunjung atau kejadian dari CCTV
+  - Klasifikasi dokumen
+  - Peringatan ketika ada kondisi operasional yang tidak biasa
+start: Mulai dari keputusan yang ingin dibantu dan data yang sudah tersedia.
 order: 5
 seo:
   title: AI, Computer Vision & Data | Digvation

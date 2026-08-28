@@ -64,7 +64,7 @@ The public disclaimer must continue to explain that final investment follows sco
 
 ## Contact and WhatsApp
 
-The WhatsApp number is configured once through `PUBLIC_WHATSAPP_NUMBER`. Starter messages live in `src/config/contact.ts`. WhatsApp actions stay hidden when the number is empty.
+The WhatsApp number is configured once through `PUBLIC_WHATSAPP_NUMBER`. Starter messages live in `src/config/contact.ts`. WhatsApp actions stay hidden when the number is empty. On the inquiry form, the WhatsApp route progressively enhances the starter message with the fields the visitor has already completed. It opens a draft in WhatsApp; it does not claim or track a successful delivery automatically.
 
 ## Proof and FAQ policy
 

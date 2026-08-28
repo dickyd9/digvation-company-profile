@@ -3,27 +3,27 @@ routeSlug: automation-integration
 locale: id
 title: Hubungkan proses yang terputus
 eyebrow: Kurangi pekerjaan berulang
-summary: Saat data dipindahkan manual dan pekerjaan berhenti di antara beberapa sistem.
-problem: Banyak bottleneck bukan karena kurang aplikasi, tetapi karena informasi berhenti di satu sistem lalu harus dipindahkan manusia ke sistem berikutnya.
+summary: Saat informasi masih dipindahkan manual dan pekerjaan terhenti di antara beberapa sistem.
+problem: Banyak proses lambat bukan karena kurang aplikasi, tetapi karena informasi berhenti di satu sistem lalu harus dipindahkan lagi oleh orang ke sistem berikutnya.
 when:
   - Input yang sama diketik berulang
-  - Approval dan notification tidak konsisten
-  - Sistem berbeda punya data yang sama tetapi tidak sinkron
+  - Persetujuan dan pemberitahuan tidak berjalan konsisten
+  - Beberapa sistem menyimpan data yang sama tetapi tidak saling mengikuti
 whatWeDo:
-  - Memetakan workflow dan boundary antar sistem
-  - Menentukan trigger, aturan, exception, dan failure handling
-  - Membangun integration dan automation yang diperlukan
-  - Menambahkan visibility dan audit trail jika dibutuhkan
+  - Memetakan alur kerja dan batas setiap sistem
+  - Menentukan pemicu, aturan, pengecualian, dan penanganan ketika proses gagal
+  - Menyambungkan sistem dan mengotomatiskan langkah yang tepat
+  - Menambahkan pemantauan dan riwayat aktivitas bila dibutuhkan
 outputs:
-  - Workflow terotomasi
-  - API atau system integration
-  - Aturan notification dan approval
+  - Alur kerja yang terotomasi
+  - API atau penyambungan sistem
+  - Aturan pemberitahuan dan persetujuan
   - Log operasional atau dashboard jika relevan
 examples:
-  - Order masuk lalu dibuat manual di sistem lain
-  - Approval dokumen lewat chat
+  - Pesanan masuk lalu diketik ulang ke sistem lain
+  - Persetujuan dokumen lewat chat
   - Status pekerjaan yang tersebar di spreadsheet
-start: Mulai dari satu alur yang paling sering membuang waktu atau menimbulkan error.
+start: Mulai dari satu alur yang paling sering membuang waktu atau menimbulkan kesalahan.
 order: 4
 seo:
   title: Automation & Integration | Digvation

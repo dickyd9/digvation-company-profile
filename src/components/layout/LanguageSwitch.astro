@@ -10,31 +10,126 @@ type Props = {
 const { locale, href, compact = false } = Astro.props;
 const targetLocale = locale === 'id' ? 'en' : 'id';
 const targetLabel = locale === 'id' ? 'English' : 'Bahasa Indonesia';
-const currentCode = locale.toUpperCase();
-const targetCode = targetLocale.toUpperCase();
+const locales = ['id', 'en'] as const;
 ---
 
-<a
-  class:list={[
-    'group text-ink hover:text-indigo-deep inline-flex items-center gap-1.5 no-underline transition-colors',
-    compact ? 'px-1 py-2 text-[.68rem] font-bold' : 'px-2 py-3 text-[.76rem] font-bold',
-  ]}
-  href={href}
-  hreflang={targetLocale}
-  lang={targetLocale}
-  aria-label={`${locale === 'id' ? 'Ganti bahasa ke' : 'Switch language to'} ${targetLabel}`}
-  title={`${locale === 'id' ? 'Ganti bahasa ke' : 'Switch language to'} ${targetLabel}`}
-  data-track-event="language_change"
-  data-track-label={targetLocale}
+<div
+  class:list={['language-switch', compact ? 'language-switch--compact' : 'language-switch--full']}
+  role="group"
+  aria-label={locale === 'id' ? 'Pilih bahasa situs' : 'Choose site language'}
 >
   {
     !compact && (
-      <span class="text-dark-muted text-[.62rem] font-bold tracking-[.08em] uppercase">
-        {locale === 'id' ? 'Bahasa:' : 'Language:'}
+      <span class="language-switch__label">
+        {locale === 'id' ? 'Bahasa situs' : 'Site language'}
       </span>
     )
   }
-  <span class="font-bold tracking-[.05em]">{currentCode}</span>
-  <span class="text-dark-muted" aria-hidden="true">/</span>
-  <span class="text-indigo-deep font-bold tracking-[.05em]">{targetCode}</span>
-</a>
+  <span class="language-switch__options">
+    {
+      locales.map((language) =>
+        language === locale ? (
+          <span
+            class="language-switch__option language-switch__option--active"
+            lang={language}
+            aria-current="true"
+            aria-label={language === 'id' ? 'Bahasa Indonesia, aktif' : 'English, current language'}
+          >
+            {language.toUpperCase()}
+          </span>
+        ) : (
+          <a
+            class="language-switch__option language-switch__option--link"
+            href={href}
+            hreflang={targetLocale}
+            lang={targetLocale}
+            aria-label={`${locale === 'id' ? 'Ganti bahasa ke' : 'Switch language to'} ${targetLabel}`}
+            title={`${locale === 'id' ? 'Ganti bahasa ke' : 'Switch language to'} ${targetLabel}`}
+            data-track-event="language_change"
+            data-track-label={targetLocale}
+          >
+            {language.toUpperCase()}
+          </a>
+        ),
+      )
+    }
+  </span>
+</div>
+
+<style>
+  .language-switch {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-ink);
+  }
+
+  .language-switch--compact {
+    flex: none;
+  }
+
+  .language-switch--full {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid var(--color-line-light);
+    border-radius: 0.3rem;
+    padding: 0.42rem 0.42rem 0.42rem 0.85rem;
+    background: var(--color-paper-warm);
+  }
+
+  .language-switch__label {
+    color: var(--color-dark-muted);
+    font-size: 0.65rem;
+    font-weight: 750;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .language-switch__options {
+    display: inline-grid;
+    grid-template-columns: repeat(2, minmax(2rem, 1fr));
+    gap: 0.15rem;
+    border: 1px solid var(--color-line-light);
+    border-radius: 999px;
+    padding: 0.18rem;
+    background: var(--color-paper-soft);
+  }
+
+  .language-switch__option {
+    display: grid;
+    min-width: 2rem;
+    min-height: 1.85rem;
+    place-items: center;
+    border-radius: 999px;
+    padding-inline: 0.42rem;
+    font-size: 0.65rem;
+    font-weight: 780;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .language-switch__option--active {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    box-shadow: 0 2px 8px rgba(11, 13, 16, 0.14);
+  }
+
+  .language-switch__option--link {
+    color: var(--color-dark-muted);
+    text-decoration: none;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .language-switch__option--link:hover {
+    background: var(--color-paper);
+    color: var(--color-indigo-deep);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .language-switch__option--link {
+      transition: none;
+    }
+  }
+</style>

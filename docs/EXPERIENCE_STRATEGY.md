@@ -53,6 +53,17 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 
 Campaign pages, Privacy, and Terms stay outside primary navigation.
 
+The language control is visually separate from primary navigation. It uses a compact segmented
+control with a clear active language, while the mobile version includes an explicit site-language
+label. Language options must not look like additional page links.
+
+## Inquiry affordance
+
+The inquiry chapter is allowed to use a bounded panel and clearly outlined fields because the
+surface communicates a real interaction. Labels remain visible, required fields are explained,
+and representative placeholders help visitors understand what to enter. Email/form delivery and
+WhatsApp are presented as distinct routes rather than visually ambiguous links.
+
 ## Motion
 
 Motion has three levels:

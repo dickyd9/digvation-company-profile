@@ -1,52 +1,79 @@
 ---
 import type { Locale } from '@/config/site';
 import { getLocalizedPath } from '@/config/navigation';
+import { getWhatsAppUrl } from '@/config/contact';
 import { PUBLIC_TURNSTILE_SITEKEY } from 'astro:env/client';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const serverStatus = '';
+const whatsappUrl = getWhatsAppUrl(locale);
 
 const field =
-  'w-full border-0 border-b border-line-light bg-transparent px-0 py-3.5 text-base text-ink outline-none transition-colors placeholder:text-dark-muted/60 focus:border-indigo-deep user-invalid:border-[#9f3f32]';
+  'inquiry-control w-full rounded-[.32rem] border border-line-light bg-paper px-4 py-3.5 text-[.95rem] text-ink outline-none transition-[background-color,border-color,box-shadow] placeholder:text-dark-muted/55 hover:border-ink/30 focus:border-indigo-deep focus:bg-paper focus:shadow-[0_0_0_3px_rgba(18,26,47,.09)] user-invalid:border-[#9f3f32]';
 const copy =
   locale === 'id'
     ? {
-        title: 'Apa yang ingin dibuat lebih baik?',
-        helper: 'Satu masalah yang jelas sudah cukup untuk memulai.',
+        title: 'Apa yang bisa kami bantu buat lebih mudah?',
+        helper: 'Ceritakan dengan bahasa sehari-hari. Kami bantu mengurai langkah berikutnya.',
         name: 'Nama',
         email: 'Email',
         phone: 'WhatsApp / Telepon',
         company: 'Perusahaan / Organisasi',
-        problem: 'Apa yang ingin dibuat lebih mudah?',
+        problem: 'Bagian mana yang ingin dibuat lebih mudah?',
+        required: 'Wajib diisi',
+        namePlaceholder: 'Nama lengkap',
+        emailPlaceholder: 'nama@perusahaan.com',
+        phonePlaceholder: '+62 812 3456 7890',
+        companyPlaceholder: 'Nama bisnis atau organisasi',
         placeholder:
           'Contoh: order masih masuk dari WhatsApp, admin mencatat ulang ke spreadsheet, lalu statusnya sulit dipantau...',
         consent:
-          'Saya setuju informasi ini digunakan untuk menindaklanjuti percakapan saya dengan Digvation.',
+          'Saya setuju Digvation menggunakan informasi ini untuk menghubungi dan melanjutkan percakapan dengan saya.',
+        deliveryTitle: 'Mau mengirim lewat mana?',
+        deliveryFormOnly: 'Kirim lewat form agar cerita Anda langsung tercatat.',
+        deliveryWithWhatsapp: 'Kirim lewat form, atau lanjutkan obrolannya di WhatsApp.',
         submit: 'Kirim ke Digvation',
         sending: 'Mengirim…',
+        whatsapp: 'Lanjut di WhatsApp',
+        whatsappNote:
+          'Kami menyiapkan isi pesannya di WhatsApp. Anda tetap memeriksa dan menekan Kirim sendiri.',
+        privacy: 'Kebijakan Privasi',
         optional: 'opsional',
       }
     : {
-        title: 'What would you like to improve?',
-        helper: 'One clear problem is enough to start.',
+        title: 'What can we help make easier?',
+        helper: 'Use everyday language. We will help make the next step clear.',
         name: 'Name',
         email: 'Email',
         phone: 'WhatsApp / Phone',
         company: 'Company / Organization',
-        problem: 'What would you like to make easier?',
+        problem: 'What would you like us to help make easier?',
+        required: 'Required',
+        namePlaceholder: 'Full name',
+        emailPlaceholder: 'name@company.com',
+        phonePlaceholder: '+62 812 3456 7890',
+        companyPlaceholder: 'Business or organization name',
         placeholder:
           'Example: orders still come through WhatsApp, the team re-enters them into spreadsheets, and status is difficult to track...',
         consent:
-          'I agree that this information may be used to follow up on my conversation with Digvation.',
+          'I agree that Digvation may use this information to contact me and continue our conversation.',
+        deliveryTitle: 'How would you like to send it?',
+        deliveryFormOnly: 'Send the form so your story reaches us in one place.',
+        deliveryWithWhatsapp: 'Send the form, or continue the conversation on WhatsApp.',
         submit: 'Send to Digvation',
         sending: 'Sending…',
+        whatsapp: 'Continue on WhatsApp',
+        whatsappNote:
+          'We prepare the message in WhatsApp. You still review it and press Send yourself.',
+        privacy: 'Privacy Policy',
         optional: 'optional',
       };
 ---
 
 <form
-  class="grid gap-8"
+  class="inquiry-form grid gap-8"
+  aria-labelledby="inquiry-form-title"
   data-inquiry-form
   data-clarity-mask="true"
   method="POST"
@@ -70,23 +97,35 @@ const copy =
   />
 
   <div>
-    <div class="mb-4 flex items-center gap-3">
-      <span class="text-indigo-deep text-xs font-extrabold tracking-[.08em]">01</span><span
-        class="bg-ink/12 h-px w-7"
-        aria-hidden="true"></span><span
-        class="text-dark-muted text-xs font-extrabold tracking-[.08em] uppercase"
-        >{locale === 'id' ? 'Tentang kebutuhan Anda' : 'About your need'}</span
-      >
-    </div><h2 class="m-0 text-xl leading-tight font-semibold tracking-[-.02em]">{copy.title}</h2>
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="text-indigo-deep text-xs font-extrabold tracking-[.08em]">01</span><span
+          class="bg-ink/12 h-px w-7"
+          aria-hidden="true"></span><span
+          class="text-dark-muted text-xs font-extrabold tracking-[.08em] uppercase"
+          >{locale === 'id' ? 'Tentang kebutuhan Anda' : 'About your need'}</span
+        >
+      </div>
+      <p class="text-dark-muted m-0 text-[.68rem] font-semibold">
+        <span class="text-[#9f3f32]" aria-hidden="true">*</span>
+        {copy.required}
+      </p>
+    </div><h2
+      id="inquiry-form-title"
+      class="m-0 text-xl leading-tight font-semibold tracking-[-.02em]"
+    >
+      {copy.title}
+    </h2>
     <p class="text-dark-muted mt-3 max-w-2xl text-sm leading-6">{copy.helper}</p>
   </div>
 
   <div class="grid gap-x-5 gap-y-6 md:grid-cols-2">
-    <label class="grid gap-2">
-      <span class="text-sm font-medium">{copy.name} *</span>
+    <label class="inquiry-field grid gap-2.5">
+      <span class="text-sm font-semibold">{copy.name} <span aria-hidden="true">*</span></span>
       <input
         class={field}
         name="name"
+        placeholder={copy.namePlaceholder}
         autocomplete="name"
         enterkeyhint="next"
         minlength="2"
@@ -95,12 +134,13 @@ const copy =
       />
     </label>
 
-    <label class="grid gap-2">
-      <span class="text-sm font-medium">{copy.email} *</span>
+    <label class="inquiry-field grid gap-2.5">
+      <span class="text-sm font-semibold">{copy.email} <span aria-hidden="true">*</span></span>
       <input
         class={field}
         type="email"
         name="email"
+        placeholder={copy.emailPlaceholder}
         autocomplete="email"
         inputmode="email"
         enterkeyhint="next"
@@ -108,14 +148,15 @@ const copy =
       />
     </label>
 
-    <label class="grid gap-2">
-      <span class="text-sm font-medium"
+    <label class="inquiry-field grid gap-2.5">
+      <span class="text-sm font-semibold"
         >{copy.phone} <span class="text-dark-muted font-normal">({copy.optional})</span></span
       >
       <input
         class={field}
         type="tel"
         name="phone"
+        placeholder={copy.phonePlaceholder}
         autocomplete="tel"
         inputmode="tel"
         enterkeyhint="next"
@@ -123,21 +164,22 @@ const copy =
       />
     </label>
 
-    <label class="grid gap-2">
-      <span class="text-sm font-medium"
+    <label class="inquiry-field grid gap-2.5">
+      <span class="text-sm font-semibold"
         >{copy.company} <span class="text-dark-muted font-normal">({copy.optional})</span></span
       >
       <input
         class={field}
         name="company"
+        placeholder={copy.companyPlaceholder}
         autocomplete="organization"
         enterkeyhint="next"
         maxlength="120"
       />
     </label>
 
-    <label class="grid gap-2 md:col-span-2">
-      <span class="text-sm font-medium">{copy.problem} *</span>
+    <label class="inquiry-field grid gap-2.5 md:col-span-2">
+      <span class="text-sm font-semibold">{copy.problem} <span aria-hidden="true">*</span></span>
       <textarea
         class={field}
         name="improvement"
@@ -160,37 +202,114 @@ const copy =
     <input class="accent-ink mt-1 size-4" type="checkbox" name="consent" value="true" required />
     <span
       >{copy.consent}
-      <a class="underline underline-offset-4" href={getLocalizedPath(locale, '/privacy')}>Privacy</a
+      <a class="underline underline-offset-4" href={getLocalizedPath(locale, '/privacy')}
+        >{copy.privacy}</a
       ></span
     >
   </label>
 
-  <div
-    class="border-line-light flex flex-col items-start gap-4 border-t pt-7 sm:flex-row sm:items-center sm:justify-between"
-  >
-    <p
-      class="text-dark-muted data-[state=error]:text-ink data-[state=success]:border-indigo-deep data-[state=success]:text-ink m-0 max-w-xl border-l border-transparent pl-0 text-sm transition-[border-color,color,padding] data-[state=error]:border-[#b45d4d] data-[state=error]:pl-3 data-[state=success]:pl-3"
-      data-form-status
-      data-state="idle"
-      role="status"
-      aria-live="polite"
-    >
-      {serverStatus}
-    </p>
-    <button
-      type="submit"
-      class="button-accent shrink-0 cursor-pointer disabled:cursor-wait disabled:opacity-50"
-      data-submit-label={copy.submit}
-      data-sending-label={copy.sending}
-    >
-      <span data-submit-text>{copy.submit}</span>
-      <span aria-hidden="true">→</span>
-    </button>
+  <div class="inquiry-delivery border-line-light border-t pt-7">
+    <div class="inquiry-delivery__intro">
+      <p class="text-ink m-0 text-sm font-bold">{copy.deliveryTitle}</p>
+      <p class="text-dark-muted mt-1 mb-0 text-xs leading-5">
+        {whatsappUrl ? copy.deliveryWithWhatsapp : copy.deliveryFormOnly}
+      </p>
+    </div>
+    <div class="inquiry-delivery__actions">
+      <button
+        type="submit"
+        class="button-accent cursor-pointer disabled:cursor-wait disabled:opacity-50"
+        data-submit-label={copy.submit}
+        data-sending-label={copy.sending}
+      >
+        <span data-submit-text>{copy.submit}</span>
+        <span aria-hidden="true">→</span>
+      </button>
+      {
+        whatsappUrl && (
+          <a
+            class="button-secondary"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-whatsapp-inquiry
+            data-track-event="whatsapp_click"
+            data-track-label="inquiry-form"
+          >
+            {copy.whatsapp}
+            <span aria-hidden="true">↗</span>
+          </a>
+        )
+      }
+    </div>
   </div>
+
+  {whatsappUrl && <p class="text-dark-muted -mt-5 mb-0 text-xs leading-5">{copy.whatsappNote}</p>}
+
+  <p
+    class="text-dark-muted data-[state=error]:text-ink data-[state=success]:border-indigo-deep data-[state=success]:text-ink m-0 max-w-xl border-l border-transparent pl-0 text-sm transition-[border-color,color,padding] data-[state=error]:border-[#b45d4d] data-[state=error]:pl-3 data-[state=success]:pl-3"
+    data-form-status
+    data-state="idle"
+    role="status"
+    aria-live="polite"
+  >
+    {serverStatus}
+  </p>
 </form>
+
+<style>
+  .inquiry-field > span:first-child {
+    transition: color 160ms ease;
+  }
+
+  .inquiry-field:focus-within > span:first-child {
+    color: var(--color-indigo-deep);
+  }
+
+  textarea.inquiry-control {
+    min-height: 11rem;
+    resize: vertical;
+  }
+
+  .inquiry-delivery {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .inquiry-delivery__intro {
+    max-width: 31rem;
+  }
+
+  .inquiry-delivery__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 720px) {
+    .inquiry-delivery {
+      grid-template-columns: minmax(12rem, 1fr) auto;
+      align-items: end;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .inquiry-delivery__actions,
+    .inquiry-delivery__actions > :global(*) {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .inquiry-field > span:first-child {
+      transition: none;
+    }
+  }
+</style>
 
 <script>
   import { track } from '@/lib/analytics/client';
+  import { addMessageToWhatsAppUrl, buildWhatsAppInquiryMessage } from '@/lib/inquiry/whatsapp';
 
   type TurnstileApi = {
     render: (container: HTMLElement, options?: Record<string, unknown>) => string;
@@ -271,7 +390,23 @@ const copy =
     const status = form.querySelector<HTMLElement>('[data-form-status]');
     const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     const buttonText = button?.querySelector<HTMLElement>('[data-submit-text]');
+    const whatsappLink = form.querySelector<HTMLAnchorElement>('[data-whatsapp-inquiry]');
     let started = false;
+
+    whatsappLink?.addEventListener('click', () => {
+      const data = new FormData(form);
+      const localeInput = form.elements.namedItem('locale');
+      const locale = localeInput instanceof HTMLInputElement ? localeInput.value : 'id';
+      const value = (name: string) => String(data.get(name) ?? '');
+      const message = buildWhatsAppInquiryMessage(locale === 'en' ? 'en' : 'id', {
+        name: value('name'),
+        company: value('company'),
+        email: value('email'),
+        phone: value('phone'),
+        improvement: value('improvement'),
+      });
+      whatsappLink.href = addMessageToWhatsAppUrl(whatsappLink.href, message);
+    });
 
     form.addEventListener('focusin', () => {
       if (started) return;
@@ -311,8 +446,8 @@ const copy =
             status.textContent =
               result?.message ||
               (locale === 'id'
-                ? 'Inquiry belum dapat dikirim. Silakan coba lagi.'
-                : 'Your inquiry could not be sent. Please try again.');
+                ? 'Pesan belum berhasil dikirim. Silakan coba lagi.'
+                : 'Your message could not be sent. Please try again.');
           }
           return;
         }
@@ -325,8 +460,8 @@ const copy =
           status.dataset.state = 'success';
           status.textContent =
             locale === 'id'
-              ? 'Terima kasih. Ceritanya sudah kami terima. Kami akan membaca konteksnya sebelum melanjutkan percakapan.'
-              : 'Thank you. We received your message and will review the context before continuing the conversation.';
+              ? 'Terima kasih, ceritanya sudah kami terima. Kami akan membacanya dan menghubungi Anda untuk langkah berikutnya.'
+              : 'Thank you, we received your story. We will read it and get in touch about the next step.';
         }
       } catch {
         if (status) {

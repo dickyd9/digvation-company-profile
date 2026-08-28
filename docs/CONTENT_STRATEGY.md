@@ -24,6 +24,14 @@ The reason to contact Digvation must remain clear:
 - Avoid stacking symmetrical phrases only because they sound polished.
 - Keep Indonesian natural. The English version should preserve the intent rather than translate word for word.
 
+### Friendly partner tone
+
+- Sound like a calm, experienced partner sitting on the same side of the table.
+- Friendly means approachable and clear, not slang-heavy, overly casual, or eager to agree with everything.
+- Use everyday language on page openings, decision points, and calls to action. Keep technical terms for solution details where they add precision.
+- Prefer verbs and shared next steps over internal delivery nouns. In Indonesian, use phrases such as `langkah`, `prioritas`, `batas kebutuhan`, `mulai digunakan`, and `cara kami membantu` before terms such as `scope`, `deployment`, `launch`, or `delivery`.
+- Use `kita` or `together` only for decisions and work that are genuinely collaborative. Keep Digvation's responsibility explicit when Digvation owns the work.
+
 ## Priority content surfaces
 
 1. Solution pages for real business problems.
