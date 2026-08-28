@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from '@/components/ui/ChapterMarker.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
@@ -8,6 +9,12 @@ const { locale, copy } = Astro.props;
 ---
 
 <section class="home-hero bg-paper-warm text-ink" data-track-section="hero">
+  <ChapterMarker current={1} />
+  <div class="home-hero__marks" aria-hidden="true">
+    <span class="home-hero__mark home-hero__mark--left"></span>
+    <span class="home-hero__mark home-hero__mark--right"></span>
+  </div>
+
   <div class="shell-wide home-hero__inner">
     <div class="home-hero__main">
       <p class="home-hero__eyebrow"><span aria-hidden="true"></span>{copy.eyebrow}</p>
@@ -63,11 +70,13 @@ const { locale, copy } = Astro.props;
     transform-origin: left;
   }
   .home-hero__inner {
+    position: relative;
+    z-index: 1;
     display: grid;
     min-height: calc(100svh - 4.5rem);
     grid-template-rows: minmax(0, 1fr) auto;
-    padding-top: clamp(3.5rem, 7vh, 5.5rem);
-    padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
+    padding-top: clamp(1.4rem, 3.4dvh, 3rem);
+    padding-bottom: clamp(0.85rem, 1.7dvh, 1.4rem);
   }
   .home-hero__main {
     display: grid;
@@ -76,14 +85,14 @@ const { locale, copy } = Astro.props;
     align-self: center;
     justify-self: center;
     justify-items: center;
-    padding-block: clamp(2.5rem, 6vh, 5rem);
+    padding-block: clamp(1.2rem, 3dvh, 2.75rem);
     text-align: center;
   }
   .home-hero__eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
-    margin: 0 0 clamp(1.5rem, 2.5vw, 2.15rem);
+    margin: 0 0 clamp(0.9rem, 1.8dvh, 1.65rem);
     color: rgba(11, 13, 16, 0.58);
     font-size: 0.64rem;
     font-weight: 750;
@@ -109,7 +118,7 @@ const { locale, copy } = Astro.props;
     max-width: 13.5ch;
     margin: 0 auto;
     font-family: var(--font-display);
-    font-size: clamp(3.6rem, 6.4vw, 7rem);
+    font-size: clamp(3.4rem, min(6.4vw, 11.5dvh), 7rem);
     font-weight: 545;
     line-height: 0.94;
     letter-spacing: -0.062em;
@@ -121,10 +130,10 @@ const { locale, copy } = Astro.props;
   }
   .home-hero__body {
     max-width: 45rem;
-    margin: clamp(1.5rem, 2.8vw, 2.2rem) auto 0;
+    margin: clamp(1rem, 2.3dvh, 1.9rem) auto 0;
     color: var(--text-muted);
     font-size: clamp(1rem, 1.3vw, 1.14rem);
-    line-height: 1.7;
+    line-height: 1.62;
   }
   .home-hero__actions {
     display: flex;
@@ -132,7 +141,7 @@ const { locale, copy } = Astro.props;
     justify-content: center;
     align-items: center;
     gap: 0.9rem 1.4rem;
-    margin-top: clamp(1.7rem, 3vw, 2.35rem);
+    margin-top: clamp(1rem, 2.3dvh, 2rem);
   }
   .home-hero__work {
     display: inline-flex;
@@ -160,7 +169,7 @@ const { locale, copy } = Astro.props;
     gap: 0.65rem clamp(1.25rem, 3vw, 3rem);
     margin: 0;
     border-top: 1px solid rgba(11, 13, 16, 0.12);
-    padding: clamp(1rem, 2vh, 1.35rem) 0 0;
+    padding: clamp(0.75rem, 1.55dvh, 1.2rem) 0 0;
     color: rgba(11, 13, 16, 0.58);
     font-size: 0.69rem;
     font-weight: 680;
@@ -178,13 +187,58 @@ const { locale, copy } = Astro.props;
     border-radius: 50%;
     background: var(--color-indigo-deep);
   }
+  .home-hero__marks {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+  }
+  .home-hero__mark {
+    position: absolute;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: rgba(18, 26, 47, 0.2);
+  }
+  .home-hero__mark::before,
+  .home-hero__mark::after {
+    position: absolute;
+    background: currentColor;
+    content: '';
+  }
+  .home-hero__mark::before {
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 1px;
+  }
+  .home-hero__mark::after {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+  }
+  .home-hero__mark--left {
+    top: 42%;
+    left: max(1.35rem, calc(50% - 41rem));
+  }
+  .home-hero__mark--right {
+    right: max(1.35rem, calc(50% - 41rem));
+    bottom: 24%;
+  }
+  @media (min-width: 641px) and (min-height: 40rem) {
+    .home-hero,
+    .home-hero__inner {
+      min-height: 0;
+      height: calc(100dvh - 4.5rem - 1px);
+    }
+  }
   @media (max-width: 640px) {
     .home-hero {
       min-height: calc(100svh - 4.25rem);
     }
     .home-hero__inner {
       min-height: calc(100svh - 4.25rem);
-      padding-top: clamp(2.5rem, 7vh, 3.75rem);
+      padding-top: clamp(2.35rem, 6vh, 3.5rem);
       padding-bottom: 1.1rem;
     }
     .home-hero__main {
@@ -213,6 +267,9 @@ const { locale, copy } = Astro.props;
     .home-hero__commitments {
       gap: 0.55rem 1rem;
       font-size: 0.62rem;
+    }
+    .home-hero__marks {
+      display: none;
     }
   }
   @media (prefers-reduced-motion: no-preference) {

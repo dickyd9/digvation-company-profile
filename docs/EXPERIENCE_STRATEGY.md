@@ -33,6 +33,7 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 - Keep supporting copy narrow and normally limited to one or two short sentences.
 - Avoid pills, bordered containers, and card grids unless the container communicates a real interaction or product frame.
 - Allow large vertical gaps between ideas. Empty space is part of the narrative.
+- Use the small chapter marker as a quiet orientation accent across the homepage. Its line, diamond, and section count stay low contrast and never compete with headings or proof.
 
 ## Cross-page rhythm
 
@@ -74,6 +75,8 @@ Motion has three levels:
 3. **Hero**: the staged opening and a small number of high-impact visual moments.
 
 Route transitions use a brief masked reveal. Project scenes may use CSS scroll timelines where supported, with a stable non-animated fallback. Avoid continuous floating objects, blanket AOS-style movement, and effects without narrative value. All content remains usable without JavaScript and with `prefers-reduced-motion`.
+
+The desktop homepage hero occupies the viewport available beneath the sticky header when the viewport is tall enough to hold its content. Type scale and vertical spacing respond to viewport height so the primary CTA and partnership commitments remain visible in the first screen. Short and mobile viewports fall back to natural document height instead of clipping content.
 
 Grouped section content may use short staggered delays. The delay is capped so related information never feels artificially slow or arrives all at once.
 

@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from '@/components/ui/ChapterMarker.astro';
 import ProjectFrame from '@/components/work/ProjectFrame.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
@@ -32,6 +33,7 @@ const copy =
   id="featured-work"
   data-track-section="featured-work"
 >
+  <ChapterMarker current={2} align="left" />
   <div class="shell-wide featured-work__inner">
     <header class="featured-work__header" data-reveal="mask">
       <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
@@ -127,6 +129,9 @@ const copy =
 </section>
 
 <style>
+  .featured-work {
+    position: relative;
+  }
   .featured-work__inner {
     padding-block: var(--space-section);
   }

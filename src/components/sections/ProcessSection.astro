@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from '@/components/ui/ChapterMarker.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { HomeCopy } from '@/content/home';
 import type { Locale } from '@/config/site';
@@ -8,6 +9,7 @@ const { copy, locale } = Astro.props;
 ---
 
 <section class="home-process bg-indigo-deep text-paper" data-track-section="process">
+  <ChapterMarker current={5} tone="paper" />
   <div class="shell-wide home-process__inner">
     <header class="home-process__intro" data-reveal="mask">
       <div>
@@ -42,6 +44,9 @@ const { copy, locale } = Astro.props;
 </section>
 
 <style>
+  .home-process {
+    position: relative;
+  }
   .home-process__inner {
     padding-block: var(--space-section);
   }

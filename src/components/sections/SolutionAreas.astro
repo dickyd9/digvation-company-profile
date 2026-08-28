@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from '@/components/ui/ChapterMarker.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
@@ -8,6 +9,7 @@ const { locale, copy } = Astro.props;
 ---
 
 <section class="solution-areas bg-paper-warm text-ink" data-track-section="solutions">
+  <ChapterMarker current={4} align="left" />
   <div class="shell-wide solution-areas__layout">
     <header class="solution-areas__intro" data-reveal="mask">
       <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
@@ -47,6 +49,7 @@ const { locale, copy } = Astro.props;
 
 <style>
   .solution-areas {
+    position: relative;
     border-top: 1px solid rgba(11, 13, 16, 0.1);
   }
   .solution-areas__layout {

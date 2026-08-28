@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from '@/components/ui/ChapterMarker.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import type { HomeCopy } from '@/content/home';
@@ -8,6 +9,7 @@ const { locale, copy } = Astro.props;
 ---
 
 <section class="partner-section bg-paper text-ink" data-track-section="partner-model">
+  <ChapterMarker current={6} align="left" />
   <div class="shell-wide partner-section__inner">
     <header class="partner-section__intro" data-reveal="mask">
       <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
@@ -35,6 +37,9 @@ const { locale, copy } = Astro.props;
 </section>
 
 <style>
+  .partner-section {
+    position: relative;
+  }
   .partner-section__inner {
     padding-block: var(--space-section);
   }

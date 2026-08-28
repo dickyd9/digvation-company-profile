@@ -52,6 +52,7 @@ Approved project screenshots live under `public/work/<slug>/`. Project lists, ho
 - `PageIntro.astro` owns the shared opening rhythm for primary index pages.
 - `PageClosing.astro` owns the shared conversation handoff used by Work, Solutions, Process, About, and case studies.
 - `OpeningSequence.astro` owns the brief first-session brand reveal and remains disabled for reduced motion.
+- `ChapterMarker.astro` provides the low-contrast homepage chapter accent without affecting document flow or accessibility.
 - `BusinessShift.astro` visualizes operational before-and-after states without pretending to be a client product.
 - `PartnerSection.astro` communicates the ongoing relationship without a generic agency trust-card grid.
 

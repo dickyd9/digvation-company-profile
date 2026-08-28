@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from '@/components/ui/ChapterMarker.astro';
 import type { HomeCopy } from '@/content/home';
 
 type Props = { copy: HomeCopy['shift'] };
@@ -6,6 +7,7 @@ const { copy } = Astro.props;
 ---
 
 <section class="business-shift bg-paper-soft text-ink" data-track-section="business-shift">
+  <ChapterMarker current={3} />
   <div class="shell-wide business-shift__inner">
     <header class="business-shift__intro" data-reveal="mask">
       <p class="eyebrow text-indigo-deep">{copy.eyebrow}</p>
@@ -68,6 +70,9 @@ const { copy } = Astro.props;
 </section>
 
 <style>
+  .business-shift {
+    position: relative;
+  }
   .business-shift__inner {
     padding-block: var(--space-section);
   }
