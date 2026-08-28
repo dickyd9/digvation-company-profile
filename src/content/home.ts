@@ -3,318 +3,333 @@ import type { Locale } from '@/config/site';
 export type HomeCopy = {
   hero: {
     eyebrow: string;
-    titlePrefix: string;
-    titleWords: string[];
-    titleA11y: string;
+    titleLead: string;
+    titleRest: string;
     body: string;
     primaryCta: string;
     secondaryCta: string;
-    note: string;
-    proofLabel: string;
-    proofTitle: string;
-    proofBody: string;
-    outcomeLabel: string;
-    outcomes: string[];
+    commitmentsLabel: string;
+    commitments: string[];
   };
-  digitalize: {
+  shift: {
     eyebrow: string;
     title: string;
     intro: string;
-    signalLabel: string;
-    responseLabel: string;
-    visualNote: string;
-    linkLabel: string;
+    beforeLabel: string;
+    afterLabel: string;
     items: Array<{
-      index: string;
-      signal: string;
-      response: string;
-      preview: 'customer' | 'operations' | 'data';
+      before: string;
+      after: string;
+      detail: string;
+      diagram: {
+        action: string;
+        before: string[];
+        after: string[];
+      };
     }>;
-    note: string;
   };
   solutions: {
     eyebrow: string;
     title: string;
     intro: string;
-    contextLabel: string;
-    outputLabel: string;
-    visualNote: string;
-    items: Array<{
-      index: string;
-      title: string;
-      body: string;
-      preview: 'experience' | 'workspace' | 'automation' | 'monitoring';
-      outputs: string[];
-    }>;
+    prompt: string;
+    linkLabel: string;
+    items: Array<{ verb: string; title: string; body: string; examples: string }>;
   };
   process: {
     eyebrow: string;
     title: string;
     body: string;
-    note: string;
-    items: Array<{ title: string; body: string; owner: string }>;
+    linkLabel: string;
+    items: Array<{ title: string; body: string }>;
+  };
+  partner: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    linkLabel: string;
+    items: Array<{ title: string; body: string }>;
   };
   finalCta: { eyebrow: string; title: string; body: string; button: string; note: string };
 };
 
 const id: HomeCopy = {
   hero: {
-    eyebrow: 'DIGVATION / PARTNER TRANSFORMASI DIGITAL',
-    titlePrefix: 'Bisnis lebih mudah',
-    titleWords: ['dijalankan.', 'dipantau.', 'dikembangkan.'],
-    titleA11y: 'Bisnis lebih mudah dijalankan, dipantau, dan dikembangkan.',
-    body: 'Kami merapikan proses, menghubungkan data, dan membangun sistem yang benar-benar dipakai tim Anda.',
-    primaryCta: 'Ceritakan Hambatan Bisnis',
-    secondaryCta: 'Lihat Hasil Kerja',
-    note: 'Mulai dari hambatan bisnis. Detail digitalnya kami yang urus.',
-    proofLabel: 'Contoh solusi digital',
-    proofTitle: 'Satu sistem. Satu status.',
-    proofBody: 'Order, stok, approval, dan laporan terhubung dalam satu alur.',
-    outcomeLabel: 'Mengapa Digvation',
-    outcomes: [
-      'Mulai dari masalah, bukan daftar fitur',
-      'Satu partner sampai solusi berjalan',
-      'Tetap didampingi setelah solusi dipakai',
+    eyebrow: 'Your Digitalization Partner',
+    titleLead: 'Partner digital',
+    titleRest: 'agar bisnis lebih mudah dijalankan.',
+    body: 'Ceritakan apa yang belum berjalan sebagaimana mestinya. Kami bantu memahami masalahnya, menentukan langkah digital yang tepat, lalu membangun dan mendampingi solusinya sampai benar-benar digunakan.',
+    primaryCta: 'Ceritakan kebutuhan Anda',
+    secondaryCta: 'Lihat hasil kerja',
+    commitmentsLabel: 'Cara Digvation mendampingi bisnis Anda',
+    commitments: [
+      'Pahami bisnisnya dulu',
+      'Bangun sampai benar-benar dipakai',
+      'Tetap terlibat saat bisnis berkembang',
     ],
   },
-  digitalize: {
-    eyebrow: 'Tanda yang perlu dibenahi',
-    title: 'Masalah kecil. Dampaknya setiap hari.',
-    intro:
-      'Cari yang bikin lambat, bikin ragu, atau bikin keputusan tertunda. Kita mulai dari sana.',
-    signalLabel: 'Masalah yang terasa',
-    responseLabel: 'Yang perlu berubah',
-    visualNote: 'Mana yang paling mirip bisnis Anda?',
-    linkLabel: 'Ceritakan satu hambatan',
+  shift: {
+    eyebrow: 'Dari yang terasa sehari-hari',
+    title: 'Digitalisasi dimulai dari sesuatu yang perlu bekerja lebih baik.',
+    intro: 'Kami mencari perubahan yang paling berguna. Bukan software yang paling banyak.',
+    beforeLabel: 'Sebelum dibenahi',
+    afterLabel: 'Setelah dibuat digital',
     items: [
       {
-        index: '01',
-        signal: 'Sudah dikunjungi. Belum cukup meyakinkan.',
-        response: 'Perjelas nilai bisnis dan jalur menuju kontak.',
-        preview: 'customer',
+        before: 'Order tersebar di chat dan spreadsheet.',
+        after: 'Satu alur terlihat.',
+        detail: 'Order, PIC, approval, dan status berada dalam konteks yang sama.',
+        diagram: {
+          action: 'Satukan',
+          before: ['Chat', 'Spreadsheet', 'Catatan'],
+          after: ['Order', 'PIC', 'Approval', 'Status'],
+        },
       },
       {
-        index: '02',
-        signal: 'Order masuk. Statusnya hilang di chat.',
-        response: 'Satukan order, PIC, approval, dan status.',
-        preview: 'operations',
+        before: 'Status harus ditanyakan berulang.',
+        after: 'Informasi siap dipantau.',
+        detail: 'Tim melihat apa yang berjalan, tertunda, dan perlu ditindaklanjuti.',
+        diagram: {
+          action: 'Tampilkan',
+          before: ['Tanya PIC', 'Cek chat', 'Tunggu kabar'],
+          after: ['Berjalan', 'Tertunda', 'Perlu aksi'],
+        },
       },
       {
-        index: '03',
-        signal: 'Datanya ada. Keputusan tetap menunggu.',
-        response: 'Tampilkan data yang perlu segera ditindak.',
-        preview: 'data',
+        before: 'Rekap manual menunda keputusan.',
+        after: 'Data siap dibaca.',
+        detail: 'Informasi penting muncul saat dibutuhkan, bukan setelah semuanya terlambat.',
+        diagram: {
+          action: 'Ringkas',
+          before: ['Salin data', 'Cocokkan', 'Buat rekap'],
+          after: ['Data masuk', 'Ringkasan', 'Keputusan'],
+        },
       },
     ],
-    note: 'Teknologi mengikuti kebutuhan. Yang dibenahi tetap alur bisnisnya.',
   },
   solutions: {
-    eyebrow: 'Bentuk solusi',
-    title: 'Solusi harus terasa dampaknya.',
-    intro: 'Bentuknya mengikuti alur kerja, pengguna, dan perubahan yang dibutuhkan bisnis.',
-    contextLabel: 'Saat bisnis membutuhkan',
-    outputLabel: 'Bentuk yang mungkin',
-    visualNote: 'Pilih dampaknya dulu.',
+    eyebrow: 'Yang bisa dibenahi',
+    title: 'Bukan soal menambah software. Soal membuat bisnis bekerja lebih baik.',
+    intro: 'Pilih kondisi yang paling dekat dengan bisnis Anda.',
+    prompt: 'Buka untuk melihat bentuk bantuannya.',
+    linkLabel: 'Lihat seluruh solusi',
     items: [
       {
-        index: '01',
-        title: 'Customer lebih cepat percaya.',
-        body: 'Nilai bisnis jelas. Jalur kontak dekat.',
-        preview: 'experience',
-        outputs: ['Website', 'Portal', 'Inquiry Flow', 'Mobile'],
+        verb: 'Wujudkan',
+        title: 'Kebutuhan perlu menjadi produk yang bisa dipakai.',
+        body: 'Website, aplikasi, atau sistem internal dibangun dari cara orang benar-benar bekerja.',
+        examples: 'Website, web app, mobile app, internal system',
       },
       {
-        index: '02',
-        title: 'Tim bekerja dalam satu alur.',
-        body: 'Tugas, PIC, dan status terlihat bersama.',
-        preview: 'workspace',
-        outputs: ['Internal System', 'Backoffice', 'Workflow', 'Dashboard'],
+        verb: 'Benahi',
+        title: 'Yang sudah ada tidak lagi cukup.',
+        body: 'Kami mencari bagian yang lambat, membingungkan, atau sulit dipelihara, lalu memperbaikinya.',
+        examples: 'Redesign, modernization, performance, product improvement',
       },
       {
-        index: '03',
-        title: 'Pekerjaan berulang berjalan otomatis.',
-        body: 'Data berpindah tanpa salin ulang.',
-        preview: 'automation',
-        outputs: ['Automation', 'API', 'Integration', 'Notification'],
+        verb: 'Hubungkan',
+        title: 'Data dan proses berjalan sendiri-sendiri.',
+        body: 'Kami menyambungkan sistem agar informasi tidak berhenti di satu alat atau satu orang.',
+        examples: 'API, third-party integration, data flow',
       },
       {
-        index: '04',
-        title: 'Keputusan tidak menunggu rekap.',
-        body: 'Hal penting terlihat saat dibutuhkan.',
-        preview: 'monitoring',
-        outputs: ['Analytics', 'AI / CV', 'IoT', 'Monitoring'],
+        verb: 'Otomatiskan',
+        title: 'Pekerjaan berulang memakan terlalu banyak waktu.',
+        body: 'Kami mengubah langkah manual yang stabil menjadi alur yang berjalan konsisten.',
+        examples: 'Workflow automation, notification, operational rules',
+      },
+      {
+        verb: 'Pahami',
+        title: 'Data ada, tetapi belum membantu keputusan.',
+        body: 'Kami membuat informasi penting lebih mudah dibaca, dipantau, dan ditindaklanjuti.',
+        examples: 'Dashboard, analytics, AI-supported insight, IoT monitoring',
       },
     ],
   },
   process: {
-    eyebrow: 'Dari masalah sampai dipakai',
-    title: 'Pahami dulu. Bangun yang benar-benar dibutuhkan.',
-    body: 'Anda bawa konteks bisnis. Kami ubah menjadi prioritas, solusi, dan sistem yang siap dipakai.',
-    note: 'Keputusan bisnis tetap di tangan Anda.',
+    eyebrow: 'Cara kami bekerja',
+    title: 'Pahami dulu. Bangun yang tepat.',
+    body: 'Anda paling memahami bisnisnya. Kami membantu mengubah kebutuhannya menjadi langkah digital yang jelas.',
+    linkLabel: 'Lihat cara kerja lengkap',
+    items: [
+      { title: 'Pahami', body: 'Mendengarkan cara kerja dan masalah yang sebenarnya.' },
+      { title: 'Bentuk', body: 'Menentukan solusi dan prioritas yang masuk akal.' },
+      { title: 'Bangun', body: 'Merancang dan mengembangkan secara bertahap.' },
+      { title: 'Validasi', body: 'Menguji dengan skenario penggunaan nyata.' },
+      { title: 'Jalankan', body: 'Melepas solusi dengan aman dan terukur.' },
+      { title: 'Tingkatkan', body: 'Memperbaiki saat bisnis terus bergerak.' },
+    ],
+  },
+  partner: {
+    eyebrow: 'Arti sebuah partner',
+    title: 'Tidak berhenti saat sistem selesai dibuat.',
+    body: 'Digvation tetap melihat bagaimana solusi digunakan, apa yang berubah, dan apa yang perlu ditingkatkan berikutnya.',
+    linkLabel: 'Kenal Digvation lebih dekat',
     items: [
       {
-        title: 'Pahami konteks',
-        owner: 'Bersama',
-        body: 'Pahami proses, orang, data, dan masalah utamanya.',
+        title: 'Pahami bisnisnya',
+        body: 'Proses, orang, data, dan hambatan dibaca sebelum bentuk solusi diputuskan.',
       },
       {
-        title: 'Tentukan prioritas',
-        owner: 'Bersama',
-        body: 'Pilih yang paling penting untuk diselesaikan dulu.',
+        title: 'Tentukan langkah bersama',
+        body: 'Prioritas, batas kerja, dan risiko dibahas dengan bahasa yang sama selama proses berjalan.',
       },
       {
-        title: 'Rancang solusi',
-        owner: 'Digvation',
-        body: 'Ubah kebutuhan menjadi flow, scope, dan pengalaman.',
+        title: 'Dampingi penggunaannya',
+        body: 'Solusi dinilai dari pekerjaan nyata, bukan hanya dari hari peluncuran.',
       },
       {
-        title: 'Bangun dan jalankan',
-        owner: 'Digvation',
-        body: 'Bangun, integrasikan, uji, lalu jalankan.',
-      },
-      {
-        title: 'Pantau dan perbaiki',
-        owner: 'Bersama',
-        body: 'Lihat hasil penggunaan dan tingkatkan bila perlu.',
+        title: 'Tingkatkan saat perlu',
+        body: 'Ketika bisnis bergerak, solusi dapat ikut dibenahi dan dikembangkan.',
       },
     ],
   },
   finalCta: {
-    eyebrow: 'Ada proses yang terasa makin berat?',
-    title: 'Bawa masalahnya. Pulang dengan langkah yang lebih jelas.',
-    body: 'Kami akan membantu melihat apa yang perlu dibenahi lebih dulu, apa yang bisa menunggu, dan bentuk solusi yang masuk akal.',
-    button: 'Ceritakan Masalahnya',
-    note: 'Diskusi awal tidak mengikat Anda untuk langsung memulai project.',
+    eyebrow: 'Mulai dari masalahnya',
+    title: 'Ada yang seharusnya bisa berjalan lebih baik?',
+    body: 'Ceritakan situasinya. Kami bantu mengurai langkah pertama bersama Anda.',
+    button: 'Mulai percakapan',
+    note: 'Percakapan dimulai dari bisnis Anda, bukan dari daftar teknologi.',
   },
 };
 
 const en: HomeCopy = {
   hero: {
-    eyebrow: 'DIGVATION / DIGITAL TRANSFORMATION PARTNER',
-    titlePrefix: 'Make the business easier to',
-    titleWords: ['run.', 'monitor.', 'grow.'],
-    titleA11y: 'Make the business easier to run, monitor, and grow.',
-    body: 'We streamline processes, connect data, and build systems your team can actually use.',
-    primaryCta: 'Discuss a Business Bottleneck',
-    secondaryCta: 'See Our Work',
-    note: 'Start with the business bottleneck. We will handle the digital details.',
-    proofLabel: 'Digital solution example',
-    proofTitle: 'One system. One status.',
-    proofBody: 'Orders, stock, approvals, and reports move through one connected flow.',
-    outcomeLabel: 'Why Digvation',
-    outcomes: [
-      'Start with the problem, not a feature list',
-      'One partner from direction to launch',
-      'Continued support after the solution is in use',
+    eyebrow: 'Your Digitalization Partner',
+    titleLead: 'A digital partner',
+    titleRest: 'for a business that is easier to run.',
+    body: 'Tell us what is not working as it should. We help clarify the problem, choose the right digital step, then build and support the solution through real use.',
+    primaryCta: 'Tell us what you need',
+    secondaryCta: 'See the work',
+    commitmentsLabel: 'How Digvation supports your business',
+    commitments: [
+      'Understand the business first',
+      'Build through real use',
+      'Stay involved as the business grows',
     ],
   },
-  digitalize: {
-    eyebrow: 'Signs that something needs to change',
-    title: 'Small friction. Daily impact.',
-    intro: 'Find what slows work, creates doubt, or delays a decision. We start there.',
-    signalLabel: 'The problem you feel',
-    responseLabel: 'What needs to change',
-    visualNote: 'Which one feels familiar?',
-    linkLabel: 'Share one bottleneck',
+  shift: {
+    eyebrow: 'What the business feels every day',
+    title: 'Digitalization starts with something that should work better.',
+    intro: 'We look for the most useful change, not the largest amount of software.',
+    beforeLabel: 'Before improvement',
+    afterLabel: 'After the digital change',
     items: [
       {
-        index: '01',
-        signal: 'They visit. They are not convinced.',
-        response: 'Make the value and path to contact clear.',
-        preview: 'customer',
+        before: 'Orders are scattered across chats and spreadsheets.',
+        after: 'One visible flow.',
+        detail: 'Orders, owners, approvals, and status share the same context.',
+        diagram: {
+          action: 'Connect',
+          before: ['Chat', 'Spreadsheet', 'Notes'],
+          after: ['Order', 'Owner', 'Approval', 'Status'],
+        },
       },
       {
-        index: '02',
-        signal: 'Orders arrive. Status gets lost in chat.',
-        response: 'Connect orders, owners, approvals, and status.',
-        preview: 'operations',
+        before: 'Status has to be requested repeatedly.',
+        after: 'Information is ready to monitor.',
+        detail: 'The team can see what is moving, delayed, and needs attention.',
+        diagram: {
+          action: 'Make visible',
+          before: ['Ask owner', 'Check chat', 'Wait for news'],
+          after: ['Moving', 'Delayed', 'Needs action'],
+        },
       },
       {
-        index: '03',
-        signal: 'The data exists. Decisions still wait.',
-        response: 'Show what needs action now.',
-        preview: 'data',
+        before: 'Manual recaps delay decisions.',
+        after: 'Data is ready to read.',
+        detail: 'Important information appears when it is needed, not after it is too late.',
+        diagram: {
+          action: 'Summarize',
+          before: ['Copy data', 'Reconcile', 'Build recap'],
+          after: ['Data in', 'Summary', 'Decision'],
+        },
       },
     ],
-    note: 'Technology follows the need. The business flow is what we improve.',
   },
   solutions: {
-    eyebrow: 'Forms of solution',
-    title: 'A solution should feel different.',
-    intro: 'The form follows the workflow, the users, and the change the business needs.',
-    contextLabel: 'When the business needs',
-    outputLabel: 'Possible forms',
-    visualNote: 'Choose the impact first.',
+    eyebrow: 'What can improve',
+    title: 'Not more software. A business that works better.',
+    intro: 'Choose the situation closest to your business.',
+    prompt: 'Open one to see how we help.',
+    linkLabel: 'Explore all solutions',
     items: [
       {
-        index: '01',
-        title: 'Customers trust you faster.',
-        body: 'The value is clear. Contact is close.',
-        preview: 'experience',
-        outputs: ['Website', 'Portal', 'Inquiry Flow', 'Mobile'],
+        verb: 'Build',
+        title: 'A need has to become a product people can use.',
+        body: 'Websites, applications, and internal systems are shaped around how people actually work.',
+        examples: 'Website, web app, mobile app, internal system',
       },
       {
-        index: '02',
-        title: 'The team works in one flow.',
-        body: 'Tasks, owners, and status stay visible.',
-        preview: 'workspace',
-        outputs: ['Internal System', 'Backoffice', 'Workflow', 'Dashboard'],
+        verb: 'Improve',
+        title: 'What already exists is no longer enough.',
+        body: 'We find what is confusing, slow, or difficult to maintain and make it work better.',
+        examples: 'Redesign, modernization, performance, product improvement',
       },
       {
-        index: '03',
-        title: 'Repeated work runs automatically.',
-        body: 'Data moves without manual copying.',
-        preview: 'automation',
-        outputs: ['Automation', 'API', 'Integration', 'Notification'],
+        verb: 'Connect',
+        title: 'Data and processes operate separately.',
+        body: 'We connect systems so information no longer stops inside one tool or with one person.',
+        examples: 'API, third-party integration, data flow',
       },
       {
-        index: '04',
-        title: 'Decisions do not wait for a recap.',
-        body: 'What matters is visible when needed.',
-        preview: 'monitoring',
-        outputs: ['Analytics', 'AI / CV', 'IoT', 'Monitoring'],
+        verb: 'Automate',
+        title: 'Repetitive work takes too much time.',
+        body: 'We turn stable manual steps into a flow that runs consistently.',
+        examples: 'Workflow automation, notification, operational rules',
+      },
+      {
+        verb: 'Understand',
+        title: 'Data exists but does not support decisions.',
+        body: 'We make important information easier to read, monitor, and act on.',
+        examples: 'Dashboard, analytics, AI-supported insight, IoT monitoring',
       },
     ],
   },
   process: {
-    eyebrow: 'From problem to daily use',
-    title: 'Understand first. Build what the business needs.',
-    body: 'You bring the business context. We turn it into priorities, a solution, and a system ready to use.',
-    note: 'The business decisions stay with you.',
+    eyebrow: 'How we work',
+    title: 'Understand first. Build the right thing.',
+    body: 'You know the business best. We help turn the need into a clear digital next step.',
+    linkLabel: 'See the full process',
+    items: [
+      { title: 'Understand', body: 'Listen to how the work runs and what is getting in the way.' },
+      { title: 'Shape', body: 'Define a sensible solution and priority.' },
+      { title: 'Build', body: 'Design and develop in clear iterations.' },
+      { title: 'Validate', body: 'Test against real-use scenarios.' },
+      { title: 'Launch', body: 'Release the solution safely.' },
+      { title: 'Improve', body: 'Refine it as the business moves.' },
+    ],
+  },
+  partner: {
+    eyebrow: 'What partnership means',
+    title: 'It does not stop when the system is built.',
+    body: 'Digvation keeps looking at how the solution is used, what has changed, and what should improve next.',
+    linkLabel: 'Get to know Digvation',
     items: [
       {
-        title: 'Understand the context',
-        owner: 'Together',
-        body: 'Understand the process, people, data, and core problem.',
+        title: 'Understand the business',
+        body: 'Process, people, data, and friction come before the shape of the solution.',
       },
       {
-        title: 'Set the priority',
-        owner: 'Together',
-        body: 'Choose what matters most to solve first.',
+        title: 'Choose the next step together',
+        body: 'Priorities, boundaries, and risks stay clear in language everyone can follow.',
       },
       {
-        title: 'Design the solution',
-        owner: 'Digvation',
-        body: 'Turn the need into flow, scope, and experience.',
+        title: 'Support real use',
+        body: 'The solution is judged by daily work, not only by launch day.',
       },
       {
-        title: 'Build and launch',
-        owner: 'Digvation',
-        body: 'Build, integrate, test, and launch.',
-      },
-      {
-        title: 'Monitor and improve',
-        owner: 'Together',
-        body: 'Learn from real use and improve when needed.',
+        title: 'Improve when needed',
+        body: 'As the business changes, the solution can be refined and extended.',
       },
     ],
   },
   finalCta: {
-    eyebrow: 'Is a business process becoming harder to manage?',
-    title: 'Bring the problem. Leave with a clearer next step.',
-    body: 'We will help identify what needs attention first, what can wait, and which type of solution makes sense.',
-    button: 'Tell Us the Problem',
-    note: 'The first discussion does not commit you to starting a project.',
+    eyebrow: 'Start with the problem',
+    title: 'Something should be working better?',
+    body: 'Tell us the situation. We will help make the first step clear with you.',
+    button: 'Start a conversation',
+    note: 'The conversation starts with your business, not a list of technologies.',
   },
 };
 

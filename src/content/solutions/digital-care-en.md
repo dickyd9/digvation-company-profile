@@ -1,9 +1,9 @@
 ---
 routeSlug: digital-care
 locale: en
-title: Digital Improvement & Care
-eyebrow: Solution 07
-summary: For systems already running that need to become more reliable, maintainable, or continuously improved.
+title: Improve a system already in use
+eyebrow: Keep it useful
+summary: When a system needs to become more stable, maintainable, or ready to evolve.
 problem: Launch is not the end. A working system encounters traffic, edge cases, operational needs, and business changes that are not all visible at the start.
 when:
   - The existing system is hard to maintain

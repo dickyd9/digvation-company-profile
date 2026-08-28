@@ -1,6 +1,10 @@
 ---
 type Props = { value: Record<string, unknown> | Array<Record<string, unknown>> };
 const { value } = Astro.props;
+const json = JSON.stringify(value)
+  .replace(/&/g, '\\u0026')
+  .replace(/</g, '\\u003c')
+  .replace(/>/g, '\\u003e');
 ---
 
-<script is:inline type="application/ld+json" set:html={JSON.stringify(value)} />
+<script is:inline type="application/ld+json" set:html={json} />

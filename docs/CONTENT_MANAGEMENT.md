@@ -1,101 +1,75 @@
 # Content Management
 
-The marketing site is intentionally content-driven without requiring a CMS for V1.
+## Work and case studies
 
-## Work / Hasil Kerja
+Localized files live in `src/content/work/`. Use the same `routeSlug` for the Indonesian and English versions.
 
-Files live in:
-
-```text
-src/content/work/
-```
-
-Two modes are supported.
-
-### Link-only / external project
-
-Use `entryType: external` when the project only needs a live link and preview. Copy:
-
-```text
-docs/templates/work-external.md.example
-```
-
-Important fields:
+Important control fields:
 
 ```yaml
-entryType: external
-routeSlug: client-name
-locale: id
-title: Client Name
-client: Client Name
-industry: Retail
-year: 2026
-projectType: Website
-summary: ...
+status: published # published or hidden
 featured: true
 draft: false
-order: 3
-liveUrl: https://client.example/
-showLiveInCard: false
-preview:
-  mode: live
-  embedUrl: https://client.example/
+order: 1
 ```
 
-No client source code is stored in this repository.
+- Add: create the two localized Markdown files and approved image assets.
+- Edit: update the relevant Markdown fields.
+- Hide: set `status: hidden`.
+- Reorder: change `order`.
+- Feature or unfeature: change `featured`.
+- Remove: delete both localized files only after confirming no internal links depend on the slug.
 
-### Case study
+A case study supports business context, problem, previous condition, requirement, approach, solution, capabilities, delivered features, integrations, technologies, qualitative or quantitative results, outcome, cover, gallery, browser/mobile screens, video, before/after images, testimonial, project URL, and SEO. Optional evidence must remain absent when it is not available. Never invent metrics or testimonials.
 
-Use `entryType: case-study` for selected projects that deserve a real `/work/[slug]` story. Copy:
+Use optimized local screenshots under:
 
 ```text
-docs/templates/work-case-study.md.example
+public/work/<routeSlug>/
 ```
-
-Add/edit the Markdown file only. Listing, route, SEO metadata, homepage featured work, and preview behavior are generated from content.
-
-### Preview priority
-
-A project may use:
-
-1. `coverImage` / image preview — preferred for predictable visual quality.
-2. live iframe preview — only when the client site allows framing.
-3. Digvation-generated fallback — when no project asset is available.
-
-External image/CDN URLs are supported to keep the repository small.
 
 ## Solutions
 
-Solution content lives in:
+Localized solution files live in `src/content/solutions/`. They feed one directory page per language. Visitors choose a need from a horizontally scrollable selector, then one full detail panel appears inline. Deep links such as `/solutions#digital-build` continue to select the matching panel.
 
-```text
-src/content/solutions/
+Keep the selector title brief. The selected panel uses one wide problem statement, three concise
+decision columns, and a separate examples row. Keep the first two items in qualification, approach,
+and outputs strong enough to stand on their own because they are the primary scan path.
+
+## Campaigns
+
+Copy `src/content/campaigns/_template-id.md`, rename it, and complete every placeholder. Add the English pair only when required.
+
+Publication rules:
+
+```yaml
+status: draft
+noindex: true
 ```
 
-Each localized file automatically feeds `/solutions` and `/solutions/[slug]`. Update frontmatter/body content; do not duplicate route components.
+Change `status` to `published` only when the audience, offer, proof, CTA, tracking name, and SEO copy are approved. Keep `noindex: true` for paid or duplicated campaign pages. A published entry automatically builds `/campaign/<routeSlug>` or `/en/campaign/<routeSlug>`.
 
-Homepage solution summaries are intentionally sales-oriented entries in `src/content/home.ts` and link into the deeper solution routes. The homepage presentation is editorial rather than card-driven.
+Campaign pages may reference a real project with `proofProject`. Do not fabricate an offer, price, result, client, or testimonial.
 
-## Homepage client logos
+## Pricing
 
-The homepage client wall is managed in:
+Pricing is configured in `src/config/pricing.ts`. It is deliberately disabled until Digvation supplies approved values.
 
-```text
-src/content/clients.ts
-```
+To activate it:
 
-Add only approved, verifiable clients and use their official public logo asset. This section is relationship proof, not a second portfolio: it displays logos only and links each logo to the client's public website. Project summaries and case studies remain in `src/content/work/`. If the client array is empty, the logo wall does not render.
+1. Add approved `items` with actual starting values.
+2. Review Indonesian and English notes.
+3. Set `enabled: true`.
+4. Verify `pricing_view` and `pricing_cta_click`.
 
-## FAQ
+The public disclaimer must continue to explain that final investment follows scope, complexity, integrations, and business requirements.
 
-Edit:
+## Contact and WhatsApp
 
-```text
-src/content/faq.ts
-```
+The WhatsApp number is configured once through `PUBLIC_WHATSAPP_NUMBER`. Starter messages live in `src/config/contact.ts`. WhatsApp actions stay hidden when the number is empty. On the inquiry form, the WhatsApp route progressively enhances the starter message with the fields the visitor has already completed. It opens a draft in WhatsApp; it does not claim or track a successful delivery automatically.
 
-The FAQ UI and FAQPage JSON-LD use this same content.
+## Proof and FAQ policy
 
-## Why a build is still required
+The homepage uses published work as its primary proof. Do not add a client-logo wall unless approved relationships provide context that the projects themselves cannot communicate.
 
-The public marketing pages are static-first. Content changes become live on the next build/deploy. If non-technical publishing without Git becomes important later, the Content Collection loader can be replaced by a CMS without rewriting the presentation layer.
+FAQ content belongs only on a page where it removes real decision friction. If FAQ is introduced, the visible content and structured data must share one source and remain identical.

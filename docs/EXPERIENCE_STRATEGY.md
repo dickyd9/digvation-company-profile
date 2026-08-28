@@ -1,113 +1,84 @@
-# Digvation Experience Strategy: Current Direction
+# Digvation Experience Strategy
 
-## Core UX goal
+## Positioning
 
-A prospective client should understand these ideas quickly:
+Digvation is **Your Digitalization Partner**. The website must create this mental model:
 
-1. Digvation is a **digital transformation partner**, not only a software vendor.
-2. Digvation can help a business move from manual, repetitive, or disconnected ways of working toward better digital operations.
-3. The conversation can start from a business process or problem; the client does not need technical requirements first.
-4. Digvation helps decide what should be digitalized, designs the solution, builds and connects it, and can keep improving it after launch.
-5. Different business problems may require different forms of technology: web, internal systems, automation, integration, data/AI, IoT, discovery, or a combination.
-6. Real work and approved client evidence provide proof.
+> I have a business problem or need. Digvation can help understand it, shape the right digital decision, build the solution, connect what is needed, and improve it after launch.
 
-## Homepage priority
+Digvation is not positioned as a generic web agency, software outsourcing vendor, SaaS company, or AI automation shop.
 
-```text
-Partner positioning
-→ See trusted client relationships
-→ Recognize manual/disconnected work
-→ See what can be digitalized
-→ Understand why Digvation works as a partner
-→ See how the work is delivered
-→ See solution possibilities
-→ See real work
-→ Understand post-launch partnership
-→ FAQ
-→ Conversation
-```
+## Visitor journey
 
-The homepage should feel commercially clear before it feels technically impressive.
+1. **Clarity**: understand the proposition within the first screen.
+2. **Curiosity**: see a memorable real product immediately after it.
+3. **Proof**: understand the client context and what was built.
+4. **Trust**: see a clear delivery model and honest evidence.
+5. **Action**: start a low-friction conversation.
 
-## Visual direction
+## Editorial direction
 
-The design should be simple, mature, and confident.
+- Keep Indonesian as the primary language and English as a complete alternate.
+- Write short, natural sentences without corporate filler.
+- Vary section composition instead of repeating heading, description, and cards.
+- Use real project screens as the main visual language.
+- Let case studies carry depth; keep the homepage selective.
+- Make mobile layouts intentional rather than stacked desktop leftovers.
 
-Use:
+## Typography and spacing
 
-- strong display typography,
-- generous whitespace,
-- clear grid and separators,
-- restrained dark/light contrast,
-- real project visuals,
-- purposeful motion,
-- limited brand accent colour.
+- Use one neutral variable grotesk family, Inter, across display and text roles.
+- Create hierarchy through weight, width, line breaks, and whitespace before increasing size.
+- Reserve the largest type for a small number of hero and case-study moments.
+- Keep supporting copy narrow and normally limited to one or two short sentences.
+- Avoid pills, bordered containers, and card grids unless the container communicates a real interaction or product frame.
+- Allow large vertical gaps between ideas. Empty space is part of the narrative.
+- Use the small chapter marker as a quiet orientation accent across the homepage. Its line, diamond, and section count stay low contrast and never compete with headings or proof.
+- Operational illustrations should resemble recognizable work surfaces such as chats, spreadsheets, order workspaces, status boards, and reports. Their role is to explain a change in workflow; they must remain visually distinct from real client proof.
 
-Avoid:
+## Cross-page rhythm
 
-- excessive cards and nested containers,
-- decorative pills everywhere,
-- many unrelated pastel blocks,
-- generic SaaS dashboard aesthetics without a concrete business story,
-- technology jargon before business context,
-- fake metrics, fake testimonials, or fake proof.
-
-## Signature Digvation components
-
-1. **Digitalization-partner hero:** immediately communicates that the business becomes easier to run, monitor, and grow. A restrained word rotation adds rhythm while one concrete operational-flow illustration makes the promise tangible.
-2. **Client relationship wall:** a compact, light-background logo rail directly after the hero. It gives relationship proof without repeating portfolio content and remains at most two rows when the list grows.
-3. **What Can Be Digitalized?:** concrete day-to-day examples such as orders, approvals, and reporting.
-4. **Why Partner With Digvation:** context, clear decisions, and continuity after launch.
-5. **Working With Digvation:** understand the context → set the priority → design the solution → build and launch → monitor and improve. Present this as one connected journey with visible ownership, not a collection of decorative cards.
-6. **Solution possibilities:** technology appears after the business need is understood.
-7. **Selected Work:** real project proof with case-study/live-preview options. Published websites use a composed browser-stage presentation rather than raw iframe chrome.
-
-## Typography
-
-- Display: Manrope.
-- Body/UI: Inter.
-- Hero type is confident but no longer intentionally oversized; the business message and operational visual share the first viewport.
-- Section headings should create hierarchy without making every section compete for attention.
-- Body copy should remain easy to scan and use plain business language.
+- Primary index pages share one calm opening grammar: a thin context rail, one dominant headline, one short supporting paragraph, and enough height for the idea to land.
+- Work, Solutions, Process, About, and Contact keep different content compositions. Consistency comes from scale, spacing, borders, type, and motion, not from repeating the same cards.
+- Work, Solutions, Process, About, and case studies share one deliberate closing grammar when the next useful action is a conversation.
+- Contact remains the conversion destination. It uses a separate form chapter and a short expectation-setting chapter instead of compressing the full page into one split layout.
+- Solutions uses a horizontally scrollable need selector and one active detail panel. The active panel keeps its problem statement wide, limits the main scan path to three concise decision columns, and separates examples into a full-width row. Selection changes animate height and direction without blocking content, while native links, keyboard navigation, deep links, and reduced motion remain supported.
+- A first-session brand opening may run for about one second. It must never repeat during the same session, block reduced-motion users, or delay access for more than the stated opening.
 
 ## Navigation
-
-Primary navigation:
 
 - Beranda / Home
 - Solusi / Solutions
 - Hasil Kerja / Work
 - Cara Kerja / How We Work
 - Tentang / About
-- direct conversation CTA
+- Kontak / Contact
 
-The CTA should invite a business conversation, not imply that the visitor already knows what product or project they need.
+Campaign pages, Privacy, and Terms stay outside primary navigation.
 
-## Process page
+The language control is visually separate from primary navigation. It uses a compact segmented
+control with a clear active language, while the mobile version includes an explicit site-language
+label. Language options must not look like additional page links.
 
-The Process page should reinforce the partnership model:
+## Inquiry affordance
 
-- the client brings business context and decisions,
-- Digvation translates that context into digital scope and implementation,
-- responsibilities are explicit,
-- technical detail remains owned by Digvation,
-- project duration follows scope and uncertainty,
-- launch can continue into operation and improvement when needed.
+The inquiry chapter is allowed to use a bounded panel and clearly outlined fields because the
+surface communicates a real interaction. Labels remain visible, required fields are explained,
+and representative placeholders help visitors understand what to enter. Email/form delivery and
+WhatsApp are presented as distinct routes rather than visually ambiguous links.
 
-## Motion direction
+## Motion
 
-- Motion supports hierarchy and transformation; it does not run only for decoration.
-- The hero may rotate a short outcome word only when the complete sentence remains available to assistive technology and the first phrase remains visible without JavaScript.
-- The homepage opens directly on the commercial positioning; there is no blocking first-visit splash intro.
-- Below-the-fold motion remains progressive and restrained.
-- Continuous floating animation is not part of the core visual language.
-- Astro route transitions remain subtle.
-- `prefers-reduced-motion` removes non-essential motion.
+Motion has three levels:
 
-## Horizontal content
+1. **Micro**: link, button, navigation, input, and summary feedback.
+2. **Section**: mask reveals, directional entrances, line wipes, and project-image expansion.
+3. **Hero**: the staged opening and a small number of high-impact visual moments.
 
-- Use horizontal sliders only for long sequences that would otherwise create excessive page depth.
-- Keep part of the next item visible so the interaction is discoverable before JavaScript runs.
-- Always provide a current/total counter and accessible previous/next controls.
-- Preserve native touch scrolling and scroll snapping.
-- On desktop, keep enough of the next card visible to signal continuation without hiding the current card's content.
+Route transitions use a brief masked reveal. Project scenes may use CSS scroll timelines where supported, with a stable non-animated fallback. Avoid continuous floating objects, blanket AOS-style movement, and effects without narrative value. All content remains usable without JavaScript and with `prefers-reduced-motion`.
+
+The desktop homepage hero occupies the viewport available beneath the sticky header when the viewport is tall enough to hold its content. Type scale and vertical spacing respond to viewport height so the primary CTA and partnership commitments remain visible in the first screen. Short and mobile viewports fall back to natural document height instead of clipping content.
+
+Grouped section content may use short staggered delays. The delay is capped so related information never feels artificially slow or arrives all at once.
+
+Reveal motion is progressive enhancement. Content is visible by default, only off-screen elements are enrolled in motion, scroll and resize provide an observer fallback, and every pending element is released automatically. A failed or delayed motion script must never leave an empty section.

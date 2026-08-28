@@ -1,169 +1,118 @@
 ---
-import { getWorkEntries } from '@/lib/content/catalog';
-import { resolveWorkPreview } from '@/lib/content/work-preview';
-import PageHero from '@/components/ui/PageHero.astro';
-import ProjectVisual from '@/components/ui/ProjectVisual.astro';
-import LiveProjectVisual from '@/components/ui/LiveProjectVisual.astro';
+import ProjectFrame from '@/components/work/ProjectFrame.astro';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
+import { getWorkEntries } from '@/lib/content/catalog';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const entries = await getWorkEntries(locale);
+const copy =
+  locale === 'id'
+    ? {
+        eyebrow: 'Hasil Kerja',
+        title: 'Pekerjaan yang sudah berjalan.',
+        intro:
+          'Lihat kebutuhan yang dibawa klien, apa yang kami buat, dan bagaimana hasilnya digunakan.',
+        story: 'Baca cerita project',
+        live: 'Buka project live',
+        close: 'Ada kebutuhan yang belum terlihat di sini?',
+        closeBody:
+          'Bentuk project tidak harus sama. Mulai saja dari masalah bisnis yang ingin dibenahi.',
+        closeCta: 'Ceritakan kebutuhan Anda',
+      }
+    : {
+        eyebrow: 'Work',
+        title: 'Work that is already live.',
+        intro: 'See what the client needed, what we built, and how the result is used.',
+        story: 'Read the project story',
+        live: 'Open the live project',
+        close: 'Have a need you do not see here?',
+        closeBody:
+          'The project does not have to look the same. Start with the business problem you want to improve.',
+        closeCta: 'Tell us what you need',
+      };
 ---
 
-<PageHero
-  eyebrow={locale === 'id' ? 'Hasil Kerja' : 'Work'}
-  title={locale === 'id'
-    ? 'Pekerjaan nyata. Dibangun untuk kebutuhan yang nyata.'
-    : 'Real work. Built for real business needs.'}
-  body={locale === 'id'
-    ? 'Lihat masalahnya, keputusan yang diambil, dan solusi yang benar-benar dibuat.'
-    : 'See the problem, the decisions, and the solution that was actually built.'}
-  note={locale === 'id' ? 'Bukti lebih kuat daripada janji.' : 'Proof is stronger than promises.'}
-  ctaLabel={locale === 'id' ? 'Mulai project Anda' : 'Start your project'}
-  ctaHref={getLocalizedPath(locale, '/contact')}
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'HASIL KERJA / 01' : 'WORK / 01'}
 />
 
-<section class="section-pad bg-paper text-ink">
-  <div class="shell-wide">
-    <div class="grid gap-16 lg:gap-24">
+<section class="work-collection bg-paper text-ink" data-track-section="work-index">
+  <div class="shell-wide section-pad">
+    <div class="work-collection__list">
       {
         entries.map((entry, index) => {
-          const isExternal = entry.data.entryType === 'external';
-          const caseStudyHref = isExternal
-            ? undefined
-            : getLocalizedPath(locale, `/work/${entry.data.routeSlug}`);
-          const preview = resolveWorkPreview(entry.data);
-          const previewHref =
-            preview.liveUrl ?? preview.image ?? caseStudyHref ?? getLocalizedPath(locale, '/work');
-          const mediaClass =
-            index % 2 === 0
-              ? 'aspect-[16/9] min-h-0 rounded-none'
-              : 'aspect-[4/3] min-h-0 rounded-none';
-
+          const caseHref =
+            entry.data.entryType === 'case-study'
+              ? getLocalizedPath(locale, `/work/${entry.data.routeSlug}`)
+              : entry.data.liveUrl;
+          const imageSize =
+            entry.data.routeSlug === 'poseidon-filter'
+              ? { width: 1348, height: 945 }
+              : { width: 1363, height: 936 };
           return (
             <article
               class:list={[
-                'work-index-item',
-                index % 2 === 1 ? 'lg:grid lg:grid-cols-[.3fr_.7fr] lg:gap-10' : '',
+                'work-entry',
+                entry.data.visualVariant === 'paper' ? 'work-entry--paper' : 'work-entry--navy',
               ]}
-              data-reveal={index % 2 === 0 ? 'up' : 'right'}
             >
-              {index % 2 === 1 && <div class="hidden lg:block" />}
-              <div>
-                <div class="border-ink/14 mb-5 flex items-center justify-between gap-4 border-t pt-4">
-                  <span class="text-indigo-deep text-[.65rem] font-extrabold tracking-[.09em] uppercase">
-                    {String(index + 1).padStart(2, '0')} / {entry.data.projectType}
-                  </span>
-                  <span class="text-ink/36 text-[.65rem] font-bold tracking-[.06em] uppercase">
-                    {entry.data.client}
-                  </span>
+              <div class="work-entry__meta">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <span>{entry.data.client}</span>
+                <span>{entry.data.projectType}</span>
+                <span>{entry.data.year}</span>
+              </div>
+              <div class="work-entry__visual" data-reveal="visual">
+                <div>
+                  <ProjectFrame
+                    image={entry.data.coverImage ?? ''}
+                    alt={`${entry.data.title}. ${entry.data.summary}`}
+                    href={caseHref}
+                    url={entry.data.liveUrl ? new URL(entry.data.liveUrl).hostname : undefined}
+                    width={imageSize.width}
+                    height={imageSize.height}
+                    imageClass={
+                      entry.data.routeSlug === 'poseidon-filter'
+                        ? 'aspect-[1.43] object-top'
+                        : 'aspect-[1.46]'
+                    }
+                  />
                 </div>
-
-                <div class="work-index-media bg-ink/5 relative overflow-hidden">
-                  {isExternal ? (
-                    <a
-                      class="block text-inherit no-underline"
-                      href={previewHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-project-preview-trigger
-                      data-preview-mode={preview.mode}
-                      data-preview-url={preview.embedUrl}
-                      data-preview-live-url={preview.liveUrl}
-                      data-preview-image={preview.image}
-                      data-preview-title={entry.data.title}
-                      data-preview-descriptor={entry.data.projectType}
-                      data-preview-slug={entry.data.routeSlug}
-                    >
-                      {entry.data.showLiveInCard && preview.embedUrl ? (
-                        <LiveProjectVisual
-                          title={entry.data.title}
-                          url={preview.embedUrl}
-                          locale={locale}
-                          class={mediaClass}
-                        />
-                      ) : (
-                        <ProjectVisual
-                          title={entry.data.title}
-                          index={index + 1}
-                          descriptor={entry.data.projectType}
-                          variant={entry.data.visualVariant}
-                          image={entry.data.coverImage}
-                          class={mediaClass}
-                        />
-                      )}
-                    </a>
-                  ) : (
-                    <a
-                      class="block text-inherit no-underline"
-                      href={caseStudyHref}
-                      data-work-kind="case-study"
-                      data-project-slug={entry.data.routeSlug}
-                    >
-                      {entry.data.showLiveInCard && preview.embedUrl ? (
-                        <LiveProjectVisual
-                          title={entry.data.title}
-                          url={preview.embedUrl}
-                          locale={locale}
-                          class={mediaClass}
-                        />
-                      ) : (
-                        <ProjectVisual
-                          title={entry.data.title}
-                          index={index + 1}
-                          descriptor={entry.data.projectType}
-                          variant={entry.data.visualVariant}
-                          image={entry.data.coverImage}
-                          transitionName={`project-visual-${entry.data.routeSlug}`}
-                          class={mediaClass}
-                        />
-                      )}
-                    </a>
-                  )}
-                  <span
-                    class="work-view bg-paper text-ink pointer-events-none absolute right-5 bottom-5 grid size-20 place-items-center rounded-full text-[.64rem] font-extrabold tracking-[.08em] uppercase opacity-0 shadow-[0_12px_36px_rgba(11,13,16,.16)]"
-                    aria-hidden="true"
-                  >
-                    View ↗
-                  </span>
-                </div>
-
-                <div class="mt-6 grid gap-5 md:grid-cols-[.9fr_1.1fr] md:items-start">
-                  <h2 class="font-display m-0 text-[clamp(2rem,4vw,4.25rem)] leading-[.98] font-semibold tracking-[-.055em]">
-                    {entry.data.title}
-                  </h2>
-                  <div>
-                    <p class="text-ink/58 m-0 max-w-xl text-sm leading-7">{entry.data.summary}</p>
-                    <div class="mt-5 flex flex-wrap gap-5">
-                      {!isExternal && (
-                        <a
-                          class="border-ink text-ink inline-flex items-center gap-2 border-b pb-1 text-sm font-extrabold no-underline"
-                          href={caseStudyHref}
-                          data-work-kind="case-study"
-                          data-project-slug={entry.data.routeSlug}
-                        >
-                          {locale === 'id' ? 'Buka case study' : 'Open case study'} →
-                        </a>
-                      )}
+              </div>
+              <div class="work-entry__copy">
+                <h2>{entry.data.title}</h2>
+                <div>
+                  <p>{entry.data.summary}</p>
+                  <div class="work-entry__links">
+                    {entry.data.entryType === 'case-study' && (
                       <a
-                        class="border-ink/25 text-ink/58 inline-flex items-center gap-2 border-b pb-1 text-sm font-bold no-underline"
-                        href={previewHref}
+                        href={caseHref}
+                        data-track-event="project_view"
+                        data-track-label={entry.data.routeSlug}
+                      >
+                        {copy.story}
+                        <span aria-hidden="true">→</span>
+                      </a>
+                    )}
+                    {entry.data.liveUrl && (
+                      <a
+                        href={entry.data.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        data-project-preview-trigger
-                        data-preview-mode={preview.mode}
-                        data-preview-url={preview.embedUrl}
-                        data-preview-live-url={preview.liveUrl}
-                        data-preview-image={preview.image}
-                        data-preview-title={entry.data.title}
-                        data-preview-descriptor={entry.data.projectType}
-                        data-preview-slug={entry.data.routeSlug}
+                        data-track-event="outbound_project_click"
+                        data-track-label={entry.data.routeSlug}
                       >
-                        {locale === 'id' ? 'Preview project' : 'Preview project'} ↗
+                        {copy.live}
+                        <span aria-hidden="true">↗</span>
                       </a>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -175,63 +124,110 @@ const entries = await getWorkEntries(locale);
   </div>
 </section>
 
+<PageClosing
+  locale={locale}
+  eyebrow={copy.close}
+  title={copy.closeBody}
+  ctaLabel={copy.closeCta}
+  trackLabel="work-closing"
+/>
+
 <style>
-  .work-index-media :global(img),
-  .work-index-media :global(.project-visual) {
-    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  .work-collection__list {
+    display: grid;
+    gap: clamp(7rem, 13vw, 12rem);
   }
-  .work-index-item:hover .work-index-media :global(img),
-  .work-index-item:hover .work-index-media :global(.project-visual) {
-    transform: scale(1.018);
+  .work-entry__meta {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto auto;
+    gap: 1rem;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    padding: 1rem 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
   }
-  .work-view {
-    transition:
-      opacity 260ms ease,
-      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-    transform: translateY(8px) scale(0.96);
+  .work-entry__copy {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.8rem;
   }
-  .work-index-item:hover .work-view {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  .work-entry__visual {
+    display: grid;
+    min-height: clamp(25rem, 61vw, 46rem);
+    place-items: center;
+    overflow: clip;
+    padding: clamp(2rem, 6vw, 6rem);
   }
-  @media (max-width: 767px) {
-    .work-view {
+  .work-entry--navy .work-entry__visual {
+    background: #08213e;
+    color: var(--color-paper);
+  }
+  .work-entry--paper .work-entry__visual {
+    background: #edf2eb;
+    color: var(--color-ink);
+  }
+  .work-entry__visual > div {
+    width: min(100%, 68rem);
+  }
+  .work-entry--paper .work-entry__visual > div {
+    width: min(88%, 59rem);
+  }
+  .work-entry__copy h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.15rem, 3.8vw, 3.75rem);
+    font-weight: 555;
+    line-height: 1;
+    letter-spacing: -0.048em;
+  }
+  .work-entry__copy p {
+    max-width: 38rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .work-entry__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1.35rem;
+  }
+  .work-entry__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.22rem;
+    color: var(--color-ink);
+    font-size: 0.77rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .work-entry__links a:last-child {
+    color: rgba(11, 13, 16, 0.62);
+  }
+  @media (min-width: 900px) {
+    .work-entry__copy {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .work-entry__visual {
+      min-height: 23rem;
+      padding: 1rem;
+    }
+    .work-entry--paper .work-entry__visual > div {
+      width: 96%;
+    }
+    .work-entry__meta {
+      grid-template-columns: 2rem 1fr auto;
+    }
+    .work-entry__meta span:nth-child(3) {
       display: none;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .work-index-media :global(img),
-    .work-index-media :global(.project-visual),
-    .work-view {
-      transition: none;
-    }
-  }
 </style>
-
-<script>
-  const setupReturnTracking = () => {
-    document
-      .querySelectorAll<HTMLAnchorElement>('[data-work-kind="case-study"]')
-      .forEach((link) => {
-        if (link.dataset.returnReady === 'true') return;
-        link.dataset.returnReady = 'true';
-        link.addEventListener('click', (event) => {
-          if (
-            event.button !== 0 ||
-            event.metaKey ||
-            event.ctrlKey ||
-            event.shiftKey ||
-            event.altKey
-          )
-            return;
-          sessionStorage.setItem(
-            'digvation:project-return',
-            `${location.pathname}${location.search}${location.hash}`,
-          );
-          sessionStorage.setItem('digvation:project-depth', '1');
-        });
-      });
-  };
-  setupReturnTracking();
-  document.addEventListener('astro:page-load', setupReturnTracking);
-</script>

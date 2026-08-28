@@ -91,7 +91,7 @@ async function deliver(env: Env, input: InquirySubmission) {
   const rows = Object.entries(input)
     .map(
       ([key, value]) =>
-        `<p><strong>${escapeHtml(key)}</strong><br>${escapeHtml(String(value ?? '—'))}</p>`,
+        `<p><strong>${escapeHtml(key)}</strong><br>${escapeHtml(String(value ?? '-'))}</p>`,
     )
     .join('');
 
@@ -113,7 +113,7 @@ async function deliver(env: Env, input: InquirySubmission) {
     if (!response.ok) throw new Error('resend_delivery_failed');
   };
 
-  await send(env.INQUIRY_RECIPIENT, `New Digvation inquiry — ${input.name}`, rows, input.email);
+  await send(env.INQUIRY_RECIPIENT, `New Digvation inquiry: ${input.name}`, rows, input.email);
 
   try {
     const copy =
@@ -122,7 +122,7 @@ async function deliver(env: Env, input: InquirySubmission) {
         : 'Thank you. We received the context you shared and will review it before continuing the conversation.';
     await send(
       input.email,
-      input.locale === 'id' ? 'Inquiry diterima — Digvation' : 'Inquiry received — Digvation',
+      input.locale === 'id' ? 'Inquiry diterima | Digvation' : 'Inquiry received | Digvation',
       `<p>${escapeHtml(copy)}</p>`,
     );
   } catch {
@@ -131,12 +131,27 @@ async function deliver(env: Env, input: InquirySubmission) {
 }
 
 export const onRequestPost: PageHandler<Env> = async (context) => {
+  const contentType = context.request.headers.get('content-type') ?? '';
+  if (
+    !contentType.startsWith('multipart/form-data') &&
+    !contentType.startsWith('application/x-www-form-urlencoded')
+  ) {
+    return json({ ok: false, message: 'Unsupported content type.' }, 415);
+  }
   const contentLength = Number(context.request.headers.get('content-length') ?? '0');
   if (contentLength > 64 * 1024) return json({ ok: false, message: 'Request too large.' }, 413);
 
   let form: FormData;
   try {
-    form = await context.request.formData();
+    const payload = await context.request.arrayBuffer();
+    if (payload.byteLength > 64 * 1024)
+      return json({ ok: false, message: 'Request too large.' }, 413);
+    const formRequest = new Request(context.request.url, {
+      method: 'POST',
+      headers: context.request.headers,
+      body: payload,
+    });
+    form = await formRequest.formData();
   } catch {
     return json({ ok: false, message: 'Invalid request.' }, 400);
   }
@@ -151,7 +166,13 @@ export const onRequestPost: PageHandler<Env> = async (context) => {
   if (honeypot) return json({ ok: true });
 
   const ip = context.request.headers.get('CF-Connecting-IP') ?? 'unknown';
-  if (!(await verifyTurnstile(context.env, turnstileToken, ip))) {
+  let turnstileVerified = false;
+  try {
+    turnstileVerified = await verifyTurnstile(context.env, turnstileToken, ip);
+  } catch {
+    console.error('[digvation.inquiry.turnstile_failed]');
+  }
+  if (!turnstileVerified) {
     return json(
       {
         ok: false,

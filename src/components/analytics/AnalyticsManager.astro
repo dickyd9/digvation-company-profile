@@ -76,26 +76,54 @@ const copy =
         sectionObserver: null,
         lastPageKey: '',
         eventBridgeReady: false,
+        consentSettingsReady: false,
       });
 
-    const hasConsent = () =>
-      analyticsMode === 'always' || localStorage.getItem(consentKey) === 'granted';
+    const readConsent = () => {
+      try {
+        return localStorage.getItem(consentKey);
+      } catch {
+        return null;
+      }
+    };
+
+    const writeConsent = (value) => {
+      try {
+        localStorage.setItem(consentKey, value);
+      } catch {
+        /* analytics remains disabled when storage is unavailable */
+      }
+    };
+
+    const clearConsent = () => {
+      try {
+        localStorage.removeItem(consentKey);
+      } catch {
+        /* the settings panel can still be shown */
+      }
+    };
+
+    const hasConsent = () => analyticsMode === 'always' || readConsent() === 'granted';
 
     const captureAttribution = () => {
-      const params = new URLSearchParams(location.search);
-      const campaign = {
-        utmSource: params.get('utm_source') || '',
-        utmMedium: params.get('utm_medium') || '',
-        utmCampaign: params.get('utm_campaign') || '',
-        utmContent: params.get('utm_content') || '',
-        utmTerm: params.get('utm_term') || '',
-        clickId: params.get('gclid') || params.get('fbclid') || '',
-        landingPage: `${location.pathname}${location.search}`,
-        referrer: document.referrer || '',
-      };
-      const hasCampaign = Object.values(campaign).slice(0, 6).some(Boolean);
-      if (hasCampaign || !sessionStorage.getItem(attributionKey)) {
-        sessionStorage.setItem(attributionKey, JSON.stringify(campaign));
+      try {
+        const params = new URLSearchParams(location.search);
+        const campaign = {
+          utmSource: params.get('utm_source') || '',
+          utmMedium: params.get('utm_medium') || '',
+          utmCampaign: params.get('utm_campaign') || '',
+          utmContent: params.get('utm_content') || '',
+          utmTerm: params.get('utm_term') || '',
+          clickId: params.get('gclid') || params.get('fbclid') || '',
+          landingPage: `${location.pathname}${location.search}`,
+          referrer: document.referrer || '',
+        };
+        const hasCampaign = Object.values(campaign).slice(0, 6).some(Boolean);
+        if (hasCampaign || !sessionStorage.getItem(attributionKey)) {
+          sessionStorage.setItem(attributionKey, JSON.stringify(campaign));
+        }
+      } catch {
+        /* attribution remains optional when storage is unavailable */
       }
     };
 
@@ -189,13 +217,13 @@ const copy =
       const banner = document.querySelector('[data-analytics-consent]');
       if (!banner || analyticsMode !== 'consent') return;
 
-      const stored = localStorage.getItem(consentKey);
+      const stored = readConsent();
       banner.classList.toggle('hidden', stored === 'granted' || stored === 'denied');
       if (banner.dataset.ready === 'true') return;
       banner.dataset.ready = 'true';
 
       const grant = () => {
-        localStorage.setItem(consentKey, 'granted');
+        writeConsent('granted');
         banner.classList.add('hidden');
         loadProviders();
         if (typeof window.clarity === 'function') window.clarity('consent', true);
@@ -203,18 +231,13 @@ const copy =
       };
 
       const deny = () => {
-        localStorage.setItem(consentKey, 'denied');
+        writeConsent('denied');
         banner.classList.add('hidden');
         if (typeof window.clarity === 'function') window.clarity('consent', false);
       };
 
       banner.querySelector('[data-analytics-accept]')?.addEventListener('click', grant);
       banner.querySelector('[data-analytics-reject]')?.addEventListener('click', deny);
-
-      document.addEventListener('digvation:analytics-settings', () => {
-        localStorage.removeItem(consentKey);
-        banner.classList.remove('hidden');
-      });
     };
 
     const setupInteractionTracking = () => {
@@ -238,11 +261,12 @@ const copy =
       });
 
       document.querySelectorAll('a[href^="http"]').forEach((link) => {
+        if (link.dataset.trackEvent) return;
         const url = new URL(link.href, location.href);
         if (url.origin === location.origin) return;
         link.addEventListener(
           'click',
-          () => send('outbound_clicked', { destination: url.hostname }),
+          () => send('outbound_click', { destination: url.hostname }),
           { signal },
         );
       });
@@ -256,7 +280,8 @@ const copy =
             const section = entry.target.dataset.trackSection;
             if (!section || seenSections.has(section)) continue;
             seenSections.add(section);
-            send('section_viewed', { section });
+            send('section_view', { section });
+            if (section === 'pricing') send('pricing_view');
           }
         },
         { threshold: [0.4] },
@@ -289,6 +314,14 @@ const copy =
         if (!(event instanceof CustomEvent) || !event.detail?.event) return;
         const { event: eventName, ...data } = event.detail;
         send(eventName, data);
+      });
+    }
+
+    if (!runtime.consentSettingsReady) {
+      runtime.consentSettingsReady = true;
+      document.addEventListener('digvation:analytics-settings', () => {
+        clearConsent();
+        document.querySelector('[data-analytics-consent]')?.classList.remove('hidden');
       });
     }
 

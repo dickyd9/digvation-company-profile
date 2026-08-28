@@ -1,8 +1,7 @@
 ---
-import BrandLogo from '@/components/brand/BrandLogo.astro';
-import PageHero from '@/components/ui/PageHero.astro';
-import ProcessBoard from '@/components/ui/ProcessBoard.astro';
-import { getLocalizedPath } from '@/config/navigation';
+import ProjectFrame from '@/components/work/ProjectFrame.astro';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import type { Locale } from '@/config/site';
 
 type Props = { locale: Locale };
@@ -10,252 +9,464 @@ const { locale } = Astro.props;
 const copy =
   locale === 'id'
     ? {
-        hero: [
-          'Cara Kerja',
-          'Anda bawa masalahnya. Kami bawa sampai jadi solusi digital yang berjalan.',
-          'Konteks bisnis dari Anda. Strategi, desain, build, dan launch dari kami.',
-          'Tidak perlu jadi project manager.',
-          'Diskusikan bisnis Anda',
+        eyebrow: 'Cara Kerja',
+        title: 'Sederhana untuk diikuti.',
+        intro:
+          'Anda paling memahami bisnisnya. Kami menjaga langkah, progres, dan hasilnya mudah diikuti.',
+        stages: [
+          [
+            'Pahami',
+            'Kami mendengarkan cara kerja, orang yang terlibat, data, dan hambatan yang sebenarnya.',
+            'Ringkasan situasi dan pertanyaan penting',
+          ],
+          [
+            'Bentuk',
+            'Bersama Anda, kami memilih perubahan yang paling berguna dan apa yang belum perlu dikerjakan.',
+            'Arah solusi, prioritas, dan alur awal',
+          ],
+          [
+            'Bangun',
+            'Kami merancang dan membangun secara bertahap agar hasilnya bisa dilihat lebih awal.',
+            'Alur, tampilan, dan versi yang bisa dicoba',
+          ],
+          [
+            'Validasi',
+            'Kami mencoba solusi pada situasi yang benar-benar akan dihadapi pengguna.',
+            'Hasil uji dan perbaikan yang disepakati',
+          ],
+          [
+            'Jalankan',
+            'Kami menyiapkan solusi agar aman dipakai, termasuk data dan panduan yang dibutuhkan tim.',
+            'Solusi siap dipakai dan panduan penggunaan',
+          ],
+          [
+            'Tingkatkan',
+            'Setelah digunakan, kami melihat apa yang masih perlu dipantau atau dibenahi.',
+            'Catatan penggunaan dan langkah berikutnya',
+          ],
         ],
-        intro: [
-          'Satu partner. Satu alur yang jelas.',
-          'Tidak ada lempar-lempar tanggung jawab antara strategi, desain, dan development.',
+        artifact: 'Yang bisa Anda lihat',
+        roleEyebrow: 'Pembagian peran',
+        roleTitle: 'Anda memahami bisnisnya. Kami membantu mewujudkan langkah digitalnya.',
+        client: [
+          'Ceritakan cara kerja dan hambatannya',
+          'Tunjukkan yang paling penting bagi bisnis',
+          'Bantu memastikan keputusan sesuai kebutuhan',
         ],
-        principles: [
-          ['Masalah dulu', 'Teknologi dipilih setelah kebutuhan jelas.'],
-          ['Keputusan terlihat', 'Scope, risiko, dan prioritas tidak disembunyikan.'],
-          ['Sampai dipakai', 'Launch bukan sekadar serah-terima file.'],
+        us: [
+          'Membantu merapikan kebutuhan dan prioritas',
+          'Menangani desain, pembangunan, dan penyambungan sistem',
+          'Menguji, meluncurkan, dan mendampingi penggunaan',
         ],
-        steps: [
-          {
-            phase: 'Konteks',
-            title: 'Pahami',
-            body: 'Kami melihat proses, orang, data, dan hambatan yang paling terasa.',
-          },
-          {
-            phase: 'Prioritas',
-            title: 'Tentukan',
-            body: 'Kita memilih apa yang perlu diselesaikan dulu dan apa yang belum perlu.',
-          },
-          {
-            phase: 'Flow & UI',
-            title: 'Rancang',
-            body: 'Kebutuhan diubah menjadi alur, pengalaman, scope, dan aturan yang jelas.',
-          },
-          {
-            phase: 'Build & QA',
-            title: 'Bangun',
-            body: 'Digvation mengerjakan development, integration, testing, dan review.',
-          },
-          {
-            phase: 'Launch',
-            title: 'Jalankan',
-            body: 'Solusi disiapkan untuk penggunaan nyata, lalu ditingkatkan bila diperlukan.',
-          },
+        clientLabel: 'Dari Anda',
+        usLabel: 'Dari Digvation',
+        continuityEyebrow: 'Setelah mulai digunakan',
+        continuityTitle: 'Solusi mulai membuktikan nilainya ketika digunakan.',
+        continuityBody:
+          'Kami melihat penggunaan nyata, menemukan bagian yang masih menghambat, lalu menentukan peningkatan berikutnya bersama Anda.',
+        continuity: [
+          ['Pantau', 'Lihat apa yang benar-benar terjadi setelah digunakan.'],
+          ['Benahi', 'Perbaiki hambatan, risiko, atau kebutuhan operasional yang muncul.'],
+          ['Kembangkan', 'Tambah kemampuan ketika bisnis memang membutuhkannya.'],
         ],
-        role: [
-          'Pembagian peran',
-          'Anda pegang bisnisnya. Kami pegang delivery digitalnya.',
-          'Kami tidak meminta Anda menerjemahkan bisnis menjadi jargon teknis.',
-        ],
-        client: ['Konteks bisnis', 'PIC untuk validasi', 'Keputusan penting'],
-        us: ['Strategi & scope', 'UI/UX & development', 'Integration, QA & launch'],
-        close: [
-          'Mulai dari satu masalah yang paling terasa.',
-          'Ceritakan prosesnya. Kami bantu menentukan langkah pertama.',
-          'Mulai Percakapan',
-        ],
+        ctaTitle: 'Mulai dari satu proses yang paling terasa berat.',
+        ctaBody: 'Kami bantu melihat langkah pertama yang paling masuk akal.',
+        cta: 'Mulai percakapan',
       }
     : {
-        hero: [
-          'How We Work',
-          'You bring the problem. We carry it through to a digital solution that works.',
-          'Business context from you. Strategy, design, build, and launch from us.',
-          'You do not need to become the project manager.',
-          'Discuss your business',
+        eyebrow: 'How We Work',
+        title: 'Simple to follow.',
+        intro:
+          'You know the business best. We keep the steps, progress, and outcomes easy to follow.',
+        stages: [
+          [
+            'Understand',
+            'We listen to how the work runs, who is involved, what data matters, and what gets in the way.',
+            'A shared summary and the important questions',
+          ],
+          [
+            'Shape',
+            'Together, we choose the most useful change and what does not need to be built yet.',
+            'A clear direction, priorities, and an initial flow',
+          ],
+          [
+            'Build',
+            'We design and build in clear steps so you can see and try the result early.',
+            'The flow, screens, and a version to try',
+          ],
+          [
+            'Validate',
+            'We try the solution against situations users will actually face.',
+            'Test findings and agreed improvements',
+          ],
+          [
+            'Launch',
+            'We prepare the solution for safe use, including the data and guidance the team needs.',
+            'A ready-to-use solution and usage guidance',
+          ],
+          [
+            'Improve',
+            'Once people use it, we see what should be monitored or improved next.',
+            'Usage notes and the next step',
+          ],
         ],
-        intro: [
-          'One partner. One clear delivery path.',
-          'No responsibility gaps between strategy, design, and development.',
+        artifact: 'What you can see',
+        roleEyebrow: 'Who owns what',
+        roleTitle: 'You know the business. We help make the digital step real.',
+        client: [
+          'Share how the work runs and what gets in the way',
+          'Show us what matters most to the business',
+          'Help make sure decisions fit the real need',
         ],
-        principles: [
-          ['Problem first', 'Technology is chosen after the need is clear.'],
-          ['Visible decisions', 'Scope, risk, and priorities stay explicit.'],
-          ['Through to use', 'Launch is more than handing over files.'],
+        us: [
+          'Help clarify the need and priorities',
+          'Handle design, building, and system connections',
+          'Test, launch, and stay involved through real use',
         ],
-        steps: [
-          {
-            phase: 'Context',
-            title: 'Understand',
-            body: 'We look at process, people, data, and the friction that matters most.',
-          },
-          {
-            phase: 'Priority',
-            title: 'Define',
-            body: 'We choose what should be solved first and what does not need to be built yet.',
-          },
-          {
-            phase: 'Flow & UI',
-            title: 'Design',
-            body: 'Needs become clear flows, experiences, scope, and business rules.',
-          },
-          {
-            phase: 'Build & QA',
-            title: 'Build',
-            body: 'Digvation handles development, integration, testing, and review.',
-          },
-          {
-            phase: 'Launch',
-            title: 'Run',
-            body: 'The solution enters real use and improves when the business needs it.',
-          },
+        clientLabel: 'From you',
+        usLabel: 'From Digvation',
+        continuityEyebrow: 'Once it is in use',
+        continuityTitle: 'A solution starts proving its value when people use it.',
+        continuityBody:
+          'We look at real use, find what still gets in the way, and choose the next improvement with you.',
+        continuity: [
+          ['Monitor', 'See what actually happens after the solution is in use.'],
+          ['Refine', 'Fix obstacles, risks, or operational needs that emerge.'],
+          ['Extend', 'Add capability when the business genuinely needs it.'],
         ],
-        role: [
-          'Who owns what',
-          'You own the business. We own digital delivery.',
-          'You should not have to translate the business into technical jargon.',
-        ],
-        client: ['Business context', 'A PIC for validation', 'Important decisions'],
-        us: ['Strategy & scope', 'UI/UX & development', 'Integration, QA & launch'],
-        close: [
-          'Start with the problem you feel most.',
-          'Tell us how it works today. We will help decide the first move.',
-          'Start a Conversation',
-        ],
+        ctaTitle: 'Start with the process that feels heaviest.',
+        ctaBody: 'We will help find the most sensible first move.',
+        cta: 'Start a conversation',
       };
-const contactHref = getLocalizedPath(locale, '/contact');
 ---
 
-<PageHero
-  eyebrow={copy.hero[0]!}
-  title={copy.hero[1]!}
-  body={copy.hero[2]!}
-  note={copy.hero[3]!}
-  ctaLabel={copy.hero[4]!}
-  ctaHref={contactHref}
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'CARA KERJA / 01' : 'PROCESS / 01'}
 />
 
-<section class="section-pad bg-paper text-ink" data-track-section="process-principles">
-  <div class="shell-wide">
-    <header
-      class="border-ink/12 grid gap-5 border-b pb-8 lg:grid-cols-[1fr_1fr] lg:items-end"
-      data-reveal="up"
-    >
-      <h2 class="display-lg max-w-[15ch]">{copy.intro[0]}</h2>
-      <p class="body-lg text-dark-muted m-0 max-w-xl">{copy.intro[1]}</p>
-    </header>
-    <div class="grid md:grid-cols-3" data-reveal="up" style="--reveal-delay:70ms">
+<section class="process-stages bg-paper text-ink" data-track-section="process-stages">
+  <div class="shell-wide section-pad">
+    <ol class="process-stages__list">
       {
-        copy.principles.map(([title, body], index) => (
-          <article class="border-ink/12 border-b py-7 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
-            <span class="text-indigo-deep/45 text-[.62rem] font-extrabold tracking-[.09em]">
-              0{index + 1}
-            </span>
-            <h3 class="font-display mt-4 text-2xl font-semibold tracking-[-.04em]">{title}</h3>
-            <p class="text-ink/56 mt-3 text-sm leading-6">{body}</p>
-          </article>
+        copy.stages.map(([title, body, artifact], index) => (
+          <li class="process-stage" data-reveal="line">
+            <span class="process-stage__number">{String(index + 1).padStart(2, '0')}</span>
+            <h2>{title}</h2>
+            <p>{body}</p>
+            <div class="process-stage__artifact">
+              <>
+                <small>{copy.artifact}</small>
+                <strong>{artifact}</strong>
+              </>
+            </div>
+            {index === 2 && (
+              <div class="process-stage__visual" data-reveal="visual">
+                <ProjectFrame
+                  image="/work/leaf-lab/product.webp"
+                  alt={
+                    locale === 'id'
+                      ? 'Interface Leaf Lab yang sedang dikembangkan'
+                      : 'Leaf Lab interface in development'
+                  }
+                  width={1348}
+                  height={926}
+                  imageClass="aspect-[1.46]"
+                />
+              </div>
+            )}
+            {index === 4 && (
+              <div class="process-stage__visual process-stage__visual--wide" data-reveal="visual">
+                <ProjectFrame
+                  image="/work/poseidon-filter/cover.webp"
+                  alt={
+                    locale === 'id'
+                      ? 'Website Poseidon Filter setelah dirilis'
+                      : 'Poseidon Filter website after launch'
+                  }
+                  width={1348}
+                  height={945}
+                  imageClass="aspect-[1.43] object-top"
+                />
+              </div>
+            )}
+          </li>
         ))
       }
+    </ol>
+  </div>
+</section>
+
+<section class="process-roles bg-indigo-deep text-paper" data-track-section="process-roles">
+  <div class="shell section-pad">
+    <header class="process-roles__header">
+      <p class="eyebrow text-accent">{copy.roleEyebrow}</p><h2>{copy.roleTitle}</h2>
+    </header>
+    <div class="process-roles__columns">
+      <section>
+        <h3>{copy.clientLabel}</h3><ol>
+          {
+            copy.client.map((item, index) => (
+              <li>
+                <span>0{index + 1}</span>
+                {item}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+      <section>
+        <h3>{copy.usLabel}</h3><ol>
+          {
+            copy.us.map((item, index) => (
+              <li>
+                <span>0{index + 1}</span>
+                {item}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
     </div>
   </div>
 </section>
 
-<section
-  class="section-pad border-ink/8 bg-paper-soft text-ink border-y"
-  data-track-section="process-board"
->
-  <div class="shell-wide">
-    <ProcessBoard
-      locale={locale}
-      steps={copy.steps}
-      note={locale === 'id'
-        ? 'Lima tahap. Satu pihak yang bertanggung jawab.'
-        : 'Five stages. One accountable partner.'}
-    />
+<section class="process-continuity bg-paper-soft text-ink" data-track-section="process-continuity">
+  <div class="shell-wide process-continuity__inner">
+    <header data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.continuityEyebrow}</p>
+      <h2>{copy.continuityTitle}</h2>
+      <p>{copy.continuityBody}</p>
+    </header>
+    <ol data-reveal-group>
+      {
+        copy.continuity.map(([title, body], index) => (
+          <li data-reveal="line">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
-<section class="section-pad bg-paper text-ink" data-track-section="process-responsibility">
-  <div class="shell">
-    <div class="grid gap-9 lg:grid-cols-[.78fr_1.22fr] lg:items-start lg:gap-14">
-      <div data-reveal="left">
-        <p class="eyebrow text-indigo-deep">{copy.role[0]}</p>
-        <h2 class="display-lg mt-4 max-w-[14ch]">{copy.role[1]}</h2>
-        <p class="text-dark-muted mt-5 max-w-lg text-base leading-7">{copy.role[2]}</p>
-      </div>
-      <div class="role-grid" data-reveal="right">
-        <article>
-          <span>01</span><h3>{locale === 'id' ? 'Dari Anda' : 'From you'}</h3>
-          <ul>{copy.client.map((item) => <li>{item}</li>)}</ul>
-        </article>
-        <article class="role-grid__digvation">
-          <BrandLogo locale={locale} tone="light" compact /><h3>
-            {locale === 'id' ? 'Dari Digvation' : 'From Digvation'}
-          </h3>
-          <ul>{copy.us.map((item) => <li>{item}</li>)}</ul>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-pad-sm bg-indigo-deep text-paper" data-track-section="process-cta">
-  <div class="shell conversion-strip">
-    <div>
-      <p class="eyebrow text-accent">{copy.close[0]}</p><h2
-        class="font-display mt-4 max-w-[18ch] text-[clamp(2rem,4vw,3.7rem)] leading-[1.02] font-semibold tracking-[-.05em]"
-      >
-        {copy.close[1]}
-      </h2>
-    </div>
-    <a class="button-primary bg-paper! text-ink! shrink-0" href={contactHref}>{copy.close[2]} ↗</a>
-  </div>
-</section>
+<PageClosing
+  locale={locale}
+  eyebrow={copy.ctaTitle}
+  title={copy.ctaBody}
+  ctaLabel={copy.cta}
+  trackLabel="process-closing"
+/>
 
 <style>
-  .role-grid {
+  .process-stages__list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    list-style: none;
+  }
+  .process-stage {
     display: grid;
-    border: 1px solid rgba(11, 13, 16, 0.14);
+    grid-template-columns: 3rem minmax(9rem, 0.55fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: clamp(2rem, 4vw, 3.25rem) 0;
   }
-  .role-grid article {
-    padding: 1.5rem;
-    background: #fff;
+  .process-stage__number {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.61rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
   }
-  .role-grid article > span {
-    color: rgba(78, 101, 243, 0.55);
-    font-size: 0.62rem;
-    font-weight: 800;
-  }
-  .role-grid h3 {
-    margin-top: 0.85rem;
+  .process-stage h2 {
+    margin: 0;
     font-family: var(--font-display);
-    font-size: 1.65rem;
-    font-weight: 650;
-    letter-spacing: -0.04em;
+    font-size: clamp(1.9rem, 3vw, 2.9rem);
+    font-weight: 555;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
   }
-  .role-grid ul {
+  .process-stage > p {
+    max-width: 36rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .process-stage__artifact {
+    grid-column: 3;
     display: grid;
-    gap: 0;
-    margin: 1.2rem 0 0;
+    gap: 0.45rem;
+    border-top: 1px solid rgba(11, 13, 16, 0.1);
+    padding-top: 0.9rem;
+  }
+  .process-stage__artifact small {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .process-stage__artifact strong {
+    font-size: 0.78rem;
+    font-weight: 650;
+  }
+  .process-stage__visual {
+    grid-column: 2 / -1;
+    width: 72%;
+    margin: 1.5rem 0 0 auto;
+    color: var(--color-ink);
+  }
+  .process-stage__visual--wide {
+    width: 90%;
+    margin-left: 0;
+  }
+  .process-roles__header {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .process-roles h2 {
+    max-width: 18ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 545;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  .process-roles__columns {
+    display: grid;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .process-roles__columns section {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .process-roles h3 {
+    margin: 0 0 1.5rem;
+    color: rgba(147, 166, 255, 0.82);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .process-roles ol {
+    margin: 0;
     padding: 0;
     list-style: none;
   }
-  .role-grid li {
-    padding: 0.7rem 0;
-    border-top: 1px solid rgba(11, 13, 16, 0.1);
-    font-size: 0.82rem;
+  .process-roles li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.9rem 0;
+    font-size: 0.86rem;
     font-weight: 650;
   }
-  .role-grid__digvation {
-    background: #121a2f !important;
-    color: #fff;
+  .process-roles li span {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.61rem;
   }
-  .role-grid__digvation li {
-    border-color: rgba(255, 255, 255, 0.13);
+  .process-continuity__inner {
+    display: grid;
+    gap: clamp(4rem, 8vw, 7rem);
+    padding-block: var(--space-section);
   }
-  @media (min-width: 640px) {
-    .role-grid {
+  .process-continuity header h2 {
+    max-width: 15ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 4.7vw, 4.75rem);
+    font-weight: 545;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
+  }
+  .process-continuity header > p:last-child {
+    max-width: 35rem;
+    margin: 1.6rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.72;
+  }
+  .process-continuity ol {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
+    list-style: none;
+  }
+  .process-continuity li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(8rem, 0.55fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.6rem 0;
+  }
+  .process-continuity li span {
+    color: var(--text-soft);
+    font-size: 0.59rem;
+    font-weight: 780;
+  }
+  .process-continuity li h3,
+  .process-continuity li p {
+    margin: 0;
+  }
+  .process-continuity li h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.1vw, 1.9rem);
+    font-weight: 560;
+    letter-spacing: -0.035em;
+  }
+  .process-continuity li p {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    line-height: 1.65;
+  }
+  @media (min-width: 900px) {
+    .process-roles__header {
+      grid-template-columns: 0.55fr 1.45fr;
+    }
+    .process-roles__columns {
       grid-template-columns: 1fr 1fr;
+    }
+    .process-roles__columns section:first-child {
+      padding-right: 2rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .process-roles__columns section:last-child {
+      padding-left: 2rem;
+    }
+    .process-continuity__inner {
+      grid-template-columns: minmax(18rem, 0.76fr) minmax(0, 1.24fr);
+      align-items: start;
+    }
+  }
+  @media (max-width: 760px) {
+    .process-stage {
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1rem;
+    }
+    .process-stage h2,
+    .process-stage > p,
+    .process-stage__artifact {
+      grid-column: 2;
+    }
+    .process-stage__visual {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+    .process-continuity li {
+      grid-template-columns: 2rem 1fr;
+    }
+    .process-continuity li h3,
+    .process-continuity li p {
+      grid-column: 2;
     }
   }
 </style>

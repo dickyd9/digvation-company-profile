@@ -1,7 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import PageHero from '@/components/ui/PageHero.astro';
+import ProjectFrame from '@/components/work/ProjectFrame.astro';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import { getLocalizedPath } from '@/config/navigation';
+import { pricingConfig } from '@/config/pricing';
 import type { Locale } from '@/config/site';
 
 type Props = { locale: Locale };
@@ -9,114 +12,871 @@ const { locale } = Astro.props;
 const solutions = (await getCollection('solutions'))
   .filter((entry) => entry.data.locale === locale)
   .sort((a, b) => a.data.order - b.data.order);
+const relatedProjects = (await getCollection('work')).filter(
+  (entry) =>
+    entry.data.locale === locale &&
+    entry.data.entryType === 'case-study' &&
+    !entry.data.draft &&
+    entry.data.status === 'published',
+);
+const solutionItems = solutions.map((entry, index) => ({
+  entry,
+  index,
+  relatedProject: relatedProjects.find(
+    (project) =>
+      project.data.entryType === 'case-study' &&
+      project.data.relatedSolution === entry.data.routeSlug,
+  ),
+}));
+const PricingAnchor =
+  pricingConfig.enabled && pricingConfig.items.length > 0
+    ? (await import('@/components/commercial/PricingAnchor.astro')).default
+    : null;
+const copy =
+  locale === 'id'
+    ? {
+        eyebrow: 'Solusi',
+        title: 'Mulai dari kebutuhan bisnisnya.',
+        intro: 'Pilih situasi yang paling dekat dengan apa yang sedang ingin Anda benahi.',
+        hint: 'Pilih satu yang paling terasa',
+        directoryChapter: '02 / PILIH KEBUTUHAN',
+        selectorLabel: 'Pilih kebutuhan bisnis yang ingin dibenahi',
+        previous: 'Lihat solusi sebelumnya',
+        next: 'Lihat solusi berikutnya',
+        fit: 'Cocok saat',
+        help: 'Yang kami bantu',
+        output: 'Yang Anda dapat',
+        example: 'Contoh bentuk solusi',
+        start: 'Mulai dari sini',
+        cta: 'Ceritakan kebutuhan Anda',
+        proof: 'Hasil kerja terkait',
+        decisionEyebrow: 'Keputusan sebelum teknologi',
+        decisionTitle: 'Kadang perlu dibangun. Kadang cukup dibenahi.',
+        decisionBody:
+          'Peran kami membantu melihat langkah yang paling masuk akal. Termasuk mengatakan ketika sesuatu belum perlu dibuat.',
+        decisionSteps: [
+          'Pahami situasinya',
+          'Pilih yang paling penting',
+          'Tentukan bentuk bantuannya',
+          'Bangun dan perbaiki bersama',
+        ],
+        closeEyebrow: 'Belum tahu masuk kategori yang mana?',
+        closeTitle: 'Mulai dari situasinya. Bentuk solusinya bisa kita tentukan bersama.',
+        closeBody: 'Anda tidak perlu datang dengan istilah teknis atau rencana yang sudah lengkap.',
+        closeCta: 'Ceritakan kebutuhan Anda',
+      }
+    : {
+        eyebrow: 'Solutions',
+        title: 'Start with the business need.',
+        intro: 'Choose the situation closest to what you are trying to improve.',
+        hint: 'Choose the one that feels closest',
+        directoryChapter: '02 / CHOOSE A NEED',
+        selectorLabel: 'Choose the business need you want to improve',
+        previous: 'View the previous solution',
+        next: 'View the next solution',
+        fit: 'A good fit when',
+        help: 'How we help',
+        output: 'What you receive',
+        example: 'Possible solution forms',
+        start: 'Start here',
+        cta: 'Tell us what you need',
+        proof: 'Related work',
+        decisionEyebrow: 'Decisions before technology',
+        decisionTitle: 'Sometimes it should be built. Sometimes it only needs improvement.',
+        decisionBody:
+          'Our role is to help find the most sensible next move, including saying when something does not need to be built yet.',
+        decisionSteps: [
+          'Understand the situation',
+          'Choose what matters most',
+          'Shape the right kind of help',
+          'Build and improve together',
+        ],
+        closeEyebrow: 'Not sure which category fits?',
+        closeTitle: 'Start with the situation. We can shape the solution together.',
+        closeBody: 'You do not need to arrive with technical language or a complete plan.',
+        closeCta: 'Tell us what you need',
+      };
 ---
 
-<PageHero
-  eyebrow={locale === 'id' ? 'Solusi' : 'Solutions'}
-  title={locale === 'id'
-    ? 'Solusi digital yang mengikuti bisnis Anda.'
-    : 'Digital solutions shaped around your business.'}
-  body={locale === 'id'
-    ? 'Website, sistem, automation, AI, atau IoT dipilih setelah kebutuhan bisnisnya jelas.'
-    : 'Websites, systems, automation, AI, or IoT are chosen after the business need is clear.'}
-  note={locale === 'id'
-    ? 'Mulai dari masalah. Bukan dari stack.'
-    : 'Start with the problem. Not the stack.'}
-  ctaLabel={locale === 'id' ? 'Ceritakan kebutuhan Anda' : 'Tell us what you need'}
-  ctaHref={getLocalizedPath(locale, '/contact')}
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'SOLUSI / 01' : 'SOLUTIONS / 01'}
 />
 
-<section class="section-pad bg-paper text-ink">
-  <div class="shell">
-    <div class="border-ink/12 border-t">
-      {
-        solutions.map((entry, index) => (
-          <a
-            class="solution-index-row group border-ink/12 grid gap-5 border-b py-8 text-inherit no-underline sm:py-9 lg:grid-cols-[5rem_.85fr_1.15fr_auto] lg:items-start lg:gap-9"
-            href={getLocalizedPath(locale, `/solutions/${entry.data.routeSlug}`)}
-            data-reveal="up"
-            style={`--reveal-delay:${Math.min(index * 35, 140)}ms`}
-          >
-            <span class="text-indigo-deep/42 pt-1 text-[.66rem] font-extrabold tracking-[.1em] uppercase">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <div>
-              <p class="text-ink/36 text-[.6rem] font-extrabold tracking-[.08em] uppercase">
-                {entry.data.eyebrow}
-              </p>
-              <h2 class="font-display mt-3 max-w-[18ch] text-[clamp(1.7rem,2.7vw,2.65rem)] leading-[1.02] font-semibold tracking-[-.05em]">
-                {entry.data.title}
-              </h2>
-            </div>
-            <div>
-              <p class="text-ink/58 m-0 max-w-2xl text-sm leading-7">{entry.data.summary}</p>
-              <div class="text-ink/34 mt-4 flex flex-wrap gap-x-3 gap-y-2 text-[.63rem] font-extrabold tracking-[.04em] uppercase">
-                {entry.data.outputs.slice(0, 4).map((output, outputIndex) => (
-                  <>
-                    <span>{output}</span>
-                    {outputIndex < Math.min(entry.data.outputs.length, 4) - 1 && <span>/</span>}
-                  </>
-                ))}
-              </div>
-            </div>
-            <span
-              class="solution-index-arrow text-ink/22 hidden pt-1 text-2xl font-light lg:block"
-              aria-hidden="true"
-            >
-              ↗
-            </span>
-          </a>
-        ))
-      }
-    </div>
-
-    <div
-      class="border-ink/12 mt-12 grid gap-7 border-t pt-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-12"
-    >
+<section class="solutions-directory bg-paper-warm text-ink" data-solutions-directory>
+  <div class="shell-wide solutions-directory__inner">
+    <header class="solutions-directory__chapter" data-reveal="line">
       <div>
-        <p class="eyebrow text-indigo-deep">
-          {locale === 'id' ? 'Belum tahu masuk yang mana?' : 'Not sure which one fits?'}
-        </p>
-        <h2
-          class="font-display mt-4 max-w-[21ch] text-[clamp(2rem,3.5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-.05em]"
-        >
-          {
-            locale === 'id'
-              ? 'Ceritakan prosesnya. Kami bantu menentukan jalannya.'
-              : 'Tell us the process. We will help find the way.'
-          }
-        </h2>
+        <p>{copy.directoryChapter}</p>
+        <small>{copy.hint}</small>
       </div>
-      <a class="button-primary shrink-0" href={getLocalizedPath(locale, '/contact')}
-        >{locale === 'id' ? 'Mulai Diskusi' : 'Start a Conversation'} ↗</a
-      >
+      <div class="solutions-directory__controls">
+        <button type="button" aria-label={copy.previous} data-solution-previous>
+          <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" aria-label={copy.next} data-solution-next>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </header>
+
+    <nav class="solutions-directory__slider" aria-label={copy.selectorLabel} data-solution-tabs>
+      <div class="solutions-directory__track">
+        {
+          solutionItems.map(({ entry, index }) => (
+            <a
+              class="solution-directory-tab"
+              href={`#${entry.data.routeSlug}`}
+              id={`solution-tab-${entry.data.routeSlug}`}
+              aria-controls={entry.data.routeSlug}
+              data-solution-tab
+              data-solution-index={index}
+              data-active={index === 0 ? 'true' : 'false'}
+            >
+              <span class="solution-directory-tab__number">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <small>{entry.data.eyebrow}</small>
+              <strong>{entry.data.title}</strong>
+              <span class="solution-directory-tab__arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+
+    <div class="solutions-directory__stage" data-solution-stage>
+      {
+        solutionItems.map(({ entry, index, relatedProject }) => {
+          return (
+            <article
+              class="solution-directory-panel"
+              id={entry.data.routeSlug}
+              aria-labelledby={`solution-tab-${entry.data.routeSlug}`}
+              data-solution-panel
+              data-solution-index={index}
+              data-active={index === 0 ? 'true' : 'false'}
+            >
+              <header class="solution-directory-panel__heading">
+                <span class="solution-directory-panel__number">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <small>{entry.data.eyebrow}</small>
+                  <h2>{entry.data.title}</h2>
+                </div>
+                <p>{entry.data.summary}</p>
+              </header>
+
+              <div class="solution-directory-panel__detail">
+                <div class="solution-directory-panel__lead">
+                  <div class="solution-directory-panel__lead-copy">
+                    <p class="eyebrow text-indigo-deep">{copy.start}</p>
+                    <p class="solution-directory-panel__problem">{entry.data.problem}</p>
+                  </div>
+                  <div class="solution-directory-panel__lead-action">
+                    <strong>{entry.data.start}</strong>
+                    <a
+                      class="button-primary bg-paper! text-ink!"
+                      href={getLocalizedPath(locale, '/contact')}
+                      data-track-event="cta_click"
+                      data-track-label={`solution-${entry.data.routeSlug}`}
+                    >
+                      {copy.cta}
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="solution-directory-panel__facts">
+                  <section class="solution-directory-panel__fact">
+                    <h3>{copy.fit}</h3>
+                    <ul>
+                      {entry.data.when.slice(0, 2).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section class="solution-directory-panel__fact">
+                    <h3>{copy.help}</h3>
+                    <ul>
+                      {entry.data.whatWeDo.slice(0, 2).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section class="solution-directory-panel__fact">
+                    <h3>{copy.output}</h3>
+                    <ul>
+                      {entry.data.outputs.slice(0, 2).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section class="solution-directory-panel__fact solution-directory-panel__fact--examples">
+                    <h3>{copy.example}</h3>
+                    <ul>
+                      {entry.data.examples.slice(0, 3).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
+
+                {relatedProject && (
+                  <aside class="solution-directory-panel__proof">
+                    <div>
+                      <p class="eyebrow text-indigo-deep">{copy.proof}</p>
+                      <strong>{relatedProject.data.title}</strong>
+                    </div>
+                    <ProjectFrame
+                      image={relatedProject.data.coverImage ?? ''}
+                      alt={`${relatedProject.data.title}. ${relatedProject.data.summary}`}
+                      href={getLocalizedPath(locale, `/work/${relatedProject.data.routeSlug}`)}
+                      width={relatedProject.data.routeSlug === 'poseidon-filter' ? 1348 : 1363}
+                      height={relatedProject.data.routeSlug === 'poseidon-filter' ? 945 : 936}
+                      imageClass={
+                        relatedProject.data.routeSlug === 'poseidon-filter'
+                          ? 'aspect-[1.43] object-top'
+                          : 'aspect-[1.46]'
+                      }
+                    />
+                  </aside>
+                )}
+              </div>
+            </article>
+          );
+        })
+      }
     </div>
   </div>
 </section>
 
+<section class="solutions-decision bg-paper-soft text-ink" data-track-section="solution-decision">
+  <div class="shell-wide solutions-decision__inner">
+    <header data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.decisionEyebrow}</p>
+      <h2>{copy.decisionTitle}</h2>
+      <p>{copy.decisionBody}</p>
+    </header>
+    <ol data-reveal-group>
+      {
+        copy.decisionSteps.map((step, index) => (
+          <li data-reveal="line">
+            <>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{step}</strong>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+{PricingAnchor && <PricingAnchor locale={locale} />}
+
+<PageClosing
+  locale={locale}
+  eyebrow={copy.closeEyebrow}
+  title={copy.closeTitle}
+  body={copy.closeBody}
+  ctaLabel={copy.closeCta}
+  trackLabel="solutions-closing"
+/>
+
 <style>
-  .solution-index-row {
+  .solutions-directory__inner {
+    padding-block: var(--space-section-compact) var(--space-section);
+  }
+  .solutions-directory__chapter {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .solutions-directory__chapter > div:first-child {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .solutions-directory__chapter p,
+  .solutions-directory__chapter small {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.59rem;
+    font-weight: 760;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .solutions-directory__controls {
+    display: none;
+    gap: 0.55rem;
+  }
+  [data-solutions-directory][data-ready='true'] .solutions-directory__controls {
+    display: flex;
+  }
+  .solutions-directory__controls button {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
     transition:
-      padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 220ms ease;
+      background-color 220ms ease,
+      color 220ms ease,
+      transform 220ms var(--ease-out);
   }
-  .solution-index-row:hover {
-    padding-left: 0.7rem;
-    background: rgba(147, 166, 255, 0.065);
+  .solutions-directory__controls button:hover {
+    background: var(--color-indigo-deep);
+    color: var(--color-paper);
+    transform: translateY(-2px);
   }
-  .solution-index-arrow {
+  .solutions-directory__slider {
+    overflow: hidden;
+    border-block: 1px solid var(--border-strong);
+  }
+  .solutions-directory__track {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 1px;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: rgba(18, 26, 47, 0.32) transparent;
+    scrollbar-width: thin;
+  }
+  .solutions-directory__track::-webkit-scrollbar {
+    height: 0.3rem;
+  }
+  .solutions-directory__track::-webkit-scrollbar-thumb {
+    background: rgba(18, 26, 47, 0.32);
+  }
+  .solution-directory-tab {
+    display: grid;
+    min-height: clamp(10.5rem, 16vw, 13.5rem);
+    flex: 0 0 clamp(17rem, 27vw, 24rem);
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.65rem 0.8rem;
+    padding: clamp(1.25rem, 2.3vw, 1.8rem);
+    border-right: 1px solid var(--border-subtle);
+    color: var(--color-ink);
+    scroll-snap-align: start;
+    text-decoration: none;
     transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 220ms ease;
+      background-color 360ms var(--ease-out),
+      color 360ms var(--ease-out);
   }
-  .solution-index-row:hover .solution-index-arrow {
-    transform: translate(3px, -3px);
+  .solution-directory-tab:first-child {
+    border-left: 1px solid var(--border-subtle);
+  }
+  .solution-directory-tab:hover {
+    background: var(--color-paper-soft);
+  }
+  .solution-directory-tab[data-active='true'] {
+    background: var(--color-indigo-deep);
+    color: var(--color-paper);
+  }
+  .solution-directory-tab__number,
+  .solution-directory-tab small {
+    font-size: 0.6rem;
+    font-weight: 700;
+  }
+  .solution-directory-tab__number {
+    color: var(--text-soft);
+  }
+  .solution-directory-tab small {
+    align-self: center;
+    color: var(--text-muted);
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .solution-directory-tab strong {
+    align-self: end;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2vw, 1.85rem);
+    font-weight: 555;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+  .solution-directory-tab__arrow {
+    align-self: end;
+    grid-row: 3;
+    grid-column: 3;
+    transition: transform 280ms var(--ease-out);
+  }
+  .solution-directory-tab:hover .solution-directory-tab__arrow,
+  .solution-directory-tab[data-active='true'] .solution-directory-tab__arrow {
+    transform: translate(0.18rem, -0.18rem);
+  }
+  .solution-directory-tab[data-active='true'] .solution-directory-tab__number,
+  .solution-directory-tab[data-active='true'] small {
+    color: rgba(255, 255, 255, 0.62);
+  }
+  .solutions-directory__stage {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .solution-directory-panel {
+    margin-inline: calc(50% - 50vw);
+    padding: clamp(2.4rem, 5vw, 4.5rem) max(calc(50vw - 44rem), clamp(0.75rem, 3vw, 2.5rem));
+    background: #eef0fa;
+    color: var(--color-ink);
+    scroll-margin-top: 6rem;
+  }
+  .solution-directory-panel + .solution-directory-panel {
+    border-top: 1px solid rgba(11, 13, 16, 0.14);
+  }
+  .solution-directory-panel__heading {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(14rem, 0.85fr) minmax(0, 1.15fr);
+    gap: 1.25rem;
+    align-items: end;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  .solution-directory-panel__number,
+  .solution-directory-panel__heading small {
+    color: rgba(11, 13, 16, 0.54);
+    font-size: 0.58rem;
+    font-weight: 720;
+  }
+  .solution-directory-panel__heading small {
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .solution-directory-panel__heading h2 {
+    max-width: 18ch;
+    margin: 0.35rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.6vw, 3.7rem);
+    font-weight: 550;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
+  }
+  .solution-directory-panel__heading > p {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.87rem;
+    line-height: 1.65;
+  }
+  .solution-directory-panel__detail {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    padding-top: clamp(2.5rem, 4vw, 3.75rem);
+  }
+  .solution-directory-panel__lead {
+    display: grid;
+    gap: 2rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding-bottom: clamp(2.5rem, 4vw, 3.75rem);
+  }
+  .solution-directory-panel__problem {
+    max-width: 62rem;
+    margin: 1.15rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.85vw, 1.72rem);
+    font-weight: 560;
+    line-height: 1.3;
+    letter-spacing: -0.035em;
+  }
+  .solution-directory-panel__lead-action {
+    display: grid;
+    gap: 1.35rem;
+    align-content: end;
+    justify-items: start;
+  }
+  .solution-directory-panel__lead-action > strong {
+    display: block;
+    max-width: 29rem;
+    color: rgba(11, 13, 16, 0.58);
+    font-size: 0.82rem;
+    font-weight: 550;
+    line-height: 1.65;
+  }
+  .solution-directory-panel__facts {
+    display: grid;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+  }
+  .solution-directory-panel__fact {
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: 1.5rem 0;
+  }
+  .solution-directory-panel__facts h3 {
+    margin: 0 0 1rem;
     color: var(--color-indigo-deep);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .solution-directory-panel__facts ul {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .solution-directory-panel__facts li {
+    display: grid;
+    grid-template-columns: 0.42rem minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.84rem;
+    line-height: 1.52;
+  }
+  .solution-directory-panel__facts li::before {
+    width: 0.26rem;
+    height: 0.26rem;
+    margin-top: 0.48rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    content: '';
+  }
+  .solution-directory-panel__proof {
+    display: grid;
+    gap: 1.25rem;
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    padding-top: 1.5rem;
+  }
+  .solution-directory-panel__proof > div > strong {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .solutions-decision__inner {
+    display: grid;
+    gap: clamp(4rem, 8vw, 7rem);
+    padding-block: var(--space-section);
+  }
+  .solutions-decision header h2 {
+    max-width: 15ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 4.8vw, 4.9rem);
+    font-weight: 545;
+    line-height: 0.99;
+    letter-spacing: -0.054em;
+  }
+  .solutions-decision header > p:last-child {
+    max-width: 35rem;
+    margin: 1.6rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.72;
+  }
+  .solutions-decision ol {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
+    list-style: none;
+  }
+  .solutions-decision li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.5rem 0;
+  }
+  .solutions-decision li span {
+    color: var(--color-indigo-deep);
+    font-size: 0.59rem;
+    font-weight: 780;
+  }
+  .solutions-decision li strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.3vw, 2.1rem);
+    font-weight: 550;
+    letter-spacing: -0.038em;
+  }
+  @media (min-width: 900px) {
+    .solution-directory-panel__lead {
+      grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+      gap: clamp(3rem, 7vw, 7rem);
+    }
+    .solution-directory-panel__facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .solution-directory-panel__fact:not(.solution-directory-panel__fact--examples) {
+      min-height: 12rem;
+      padding: 1.75rem clamp(1.5rem, 3vw, 3rem);
+    }
+    .solution-directory-panel__fact:first-child {
+      padding-left: 0;
+      border-right: 1px solid rgba(11, 13, 16, 0.16);
+    }
+    .solution-directory-panel__fact:nth-child(2) {
+      border-right: 1px solid rgba(11, 13, 16, 0.16);
+    }
+    .solution-directory-panel__fact:nth-child(3) {
+      padding-right: 0;
+    }
+    .solution-directory-panel__fact--examples {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(10rem, 0.3fr) minmax(0, 1fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+      padding-block: 1.5rem;
+    }
+    .solution-directory-panel__fact--examples h3 {
+      margin: 0;
+    }
+    .solution-directory-panel__fact--examples ul {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(1rem, 2.4vw, 2.5rem);
+    }
+    .solutions-decision__inner {
+      grid-template-columns: minmax(18rem, 0.82fr) minmax(0, 1.18fr);
+      align-items: start;
+    }
+  }
+  @media (max-width: 760px) {
+    .solution-directory-tab {
+      min-height: 10.5rem;
+      flex-basis: min(82vw, 20rem);
+    }
+    .solution-directory-panel__heading {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+    .solution-directory-panel__heading > p {
+      grid-column: 2;
+    }
+    .solution-directory-panel__heading h2 {
+      font-size: clamp(2rem, 9.5vw, 3rem);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .solution-index-row,
-    .solution-index-arrow {
+    .solutions-directory__controls button,
+    .solution-directory-tab,
+    .solution-directory-tab__arrow {
       transition: none;
     }
   }
 </style>
+
+<script>
+  import { track } from '@/lib/analytics/client';
+
+  type ActivationOptions = {
+    updateHash?: boolean;
+    focusTab?: boolean;
+    trackView?: boolean;
+    direction?: -1 | 1;
+  };
+
+  const setupSolutionsDirectory = () => {
+    const directory = document.querySelector<HTMLElement>('[data-solutions-directory]');
+    if (!directory || directory.dataset.ready === 'true') return;
+
+    const tablist = directory.querySelector<HTMLElement>('[data-solution-tabs]');
+    const stage = directory.querySelector<HTMLElement>('[data-solution-stage]');
+    const previous = directory.querySelector<HTMLButtonElement>('[data-solution-previous]');
+    const next = directory.querySelector<HTMLButtonElement>('[data-solution-next]');
+    const tabs = [...directory.querySelectorAll<HTMLAnchorElement>('[data-solution-tab]')];
+    const panels = [...directory.querySelectorAll<HTMLElement>('[data-solution-panel]')];
+    if (!tablist || !stage || !previous || !next || tabs.length !== panels.length) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activeIndex = 0;
+    let transitioning = false;
+    let queuedActivation: { index: number; options: ActivationOptions } | null = null;
+
+    const normalizeIndex = (index: number) => (index + tabs.length) % tabs.length;
+    const slugAt = (index: number) => panels[index]?.id ?? '';
+
+    const commitSelection = (index: number) => {
+      activeIndex = normalizeIndex(index);
+      tabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === activeIndex;
+        tab.dataset.active = String(selected);
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach((panel, panelIndex) => {
+        const selected = panelIndex === activeIndex;
+        panel.dataset.active = String(selected);
+        panel.hidden = !selected;
+      });
+    };
+
+    const completeActivation = (index: number, options: ActivationOptions) => {
+      const selectedTab = tabs[index];
+      const slug = slugAt(index);
+      if (options.updateHash !== false && slug) history.replaceState(null, '', `#${slug}`);
+      if (options.focusTab) selectedTab?.focus({ preventScroll: true });
+      selectedTab?.scrollIntoView({
+        behavior: motionPreference.matches ? 'auto' : 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+      if (options.trackView && slug) track('service_view', { slug });
+    };
+
+    const activate = async (requestedIndex: number, options: ActivationOptions = {}) => {
+      const index = normalizeIndex(requestedIndex);
+      if (index === activeIndex) {
+        completeActivation(index, { ...options, trackView: false });
+        return;
+      }
+      if (transitioning) {
+        queuedActivation = { index, options };
+        return;
+      }
+
+      transitioning = true;
+      const previousIndex = activeIndex;
+      const outgoingPanel = panels[previousIndex];
+      const incomingPanel = panels[index];
+      const direction = options.direction ?? (index > previousIndex ? 1 : -1);
+      const previousHeight = stage.getBoundingClientRect().height;
+
+      try {
+        if (!motionPreference.matches && typeof outgoingPanel?.animate === 'function') {
+          const exitAnimation = outgoingPanel.animate(
+            [
+              { opacity: 1, transform: 'translateX(0)' },
+              { opacity: 0, transform: `translateX(${-direction * 0.75}rem)` },
+            ],
+            { duration: 150, easing: 'ease-out', fill: 'forwards' },
+          );
+          await exitAnimation.finished.catch(() => undefined);
+          exitAnimation.cancel();
+        }
+
+        commitSelection(index);
+        const nextHeight = stage.getBoundingClientRect().height;
+
+        if (!motionPreference.matches && typeof incomingPanel?.animate === 'function') {
+          stage.style.height = `${previousHeight}px`;
+          stage.style.overflow = 'hidden';
+
+          const heightAnimation = stage.animate(
+            [{ height: `${previousHeight}px` }, { height: `${nextHeight}px` }],
+            { duration: 520, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+          );
+          const enterAnimation = incomingPanel.animate(
+            [
+              { opacity: 0, transform: `translateX(${direction * 1.25}rem)` },
+              { opacity: 1, transform: 'translateX(0)' },
+            ],
+            { duration: 520, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+          );
+          await Promise.all([
+            heightAnimation.finished.catch(() => undefined),
+            enterAnimation.finished.catch(() => undefined),
+          ]);
+          stage.style.height = '';
+          stage.style.overflow = '';
+        }
+
+        completeActivation(index, options);
+      } finally {
+        stage.style.height = '';
+        stage.style.overflow = '';
+        transitioning = false;
+        const queued = queuedActivation;
+        queuedActivation = null;
+        if (queued && queued.index !== activeIndex) void activate(queued.index, queued.options);
+      }
+    };
+
+    tablist.setAttribute('role', 'tablist');
+    tablist.setAttribute('aria-orientation', 'horizontal');
+    tabs.forEach((tab, index) => {
+      tab.setAttribute('role', 'tab');
+      tab.addEventListener(
+        'click',
+        (event) => {
+          event.preventDefault();
+          void activate(index, { updateHash: true, trackView: true });
+        },
+        { signal },
+      );
+      tab.addEventListener(
+        'keydown',
+        (event) => {
+          let targetIndex: number | null = null;
+          let direction: -1 | 1 | undefined;
+          if (event.key === 'ArrowRight') {
+            targetIndex = index + 1;
+            direction = 1;
+          } else if (event.key === 'ArrowLeft') {
+            targetIndex = index - 1;
+            direction = -1;
+          } else if (event.key === 'Home') {
+            targetIndex = 0;
+            direction = -1;
+          } else if (event.key === 'End') {
+            targetIndex = tabs.length - 1;
+            direction = 1;
+          }
+          if (targetIndex === null || direction === undefined) return;
+          event.preventDefault();
+          void activate(targetIndex, {
+            updateHash: true,
+            focusTab: true,
+            trackView: true,
+            direction,
+          });
+        },
+        { signal },
+      );
+    });
+    panels.forEach((panel) => panel.setAttribute('role', 'tabpanel'));
+
+    previous.addEventListener(
+      'click',
+      () => void activate(activeIndex - 1, { updateHash: true, trackView: true, direction: -1 }),
+      { signal },
+    );
+    next.addEventListener(
+      'click',
+      () => void activate(activeIndex + 1, { updateHash: true, trackView: true, direction: 1 }),
+      { signal },
+    );
+
+    const hash = decodeURIComponent(location.hash.slice(1));
+    const initialIndex = panels.findIndex((panel) => panel.id === hash);
+    commitSelection(initialIndex >= 0 ? initialIndex : 0);
+    directory.dataset.ready = 'true';
+    if (initialIndex >= 0) {
+      track('service_view', { slug: hash });
+      requestAnimationFrame(() => directory.scrollIntoView({ block: 'start' }));
+    }
+
+    window.addEventListener(
+      'hashchange',
+      () => {
+        const nextHash = decodeURIComponent(location.hash.slice(1));
+        const nextIndex = panels.findIndex((panel) => panel.id === nextHash);
+        if (nextIndex >= 0) void activate(nextIndex, { updateHash: false, trackView: true });
+      },
+      { signal },
+    );
+    document.addEventListener('astro:before-swap', () => controller.abort(), {
+      once: true,
+      signal,
+    });
+  };
+  setupSolutionsDirectory();
+  document.addEventListener('astro:page-load', setupSolutionsDirectory);
+</script>

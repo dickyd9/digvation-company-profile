@@ -1,0 +1,129 @@
+---
+import { getLocalizedPath } from '@/config/navigation';
+import type { Locale } from '@/config/site';
+
+type Props = {
+  locale: Locale;
+  eyebrow: string;
+  title: string;
+  body?: string;
+  ctaLabel: string;
+  trackLabel: string;
+};
+
+const { locale, eyebrow, title, body, ctaLabel, trackLabel } = Astro.props;
+---
+
+<section
+  class="page-closing bg-indigo-deep text-paper"
+  data-track-section={`page-closing:${trackLabel}`}
+>
+  <div class="shell-wide page-closing__inner">
+    <div class="page-closing__rail" data-reveal="line">
+      <p><span aria-hidden="true"></span>{eyebrow}</p>
+      <small
+        >{locale === 'id' ? 'LANGKAH BERIKUTNYA / MARI BICARA' : "NEXT STEP / LET'S TALK"}</small
+      >
+    </div>
+
+    <div class="page-closing__grid" data-reveal="mask">
+      <h2>{title}</h2>
+      <div>
+        {body && <p>{body}</p>}
+        <a
+          class="button-primary page-closing__action"
+          href={getLocalizedPath(locale, '/contact')}
+          data-track-event="cta_click"
+          data-track-label={trackLabel}
+        >
+          {ctaLabel}<span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-closing__inner {
+    display: grid;
+    min-height: min(74svh, 46rem);
+    grid-template-rows: auto 1fr;
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(5.5rem, 10vw, 9rem);
+  }
+  .page-closing__rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.17);
+    padding-bottom: 1.15rem;
+  }
+  .page-closing__rail p {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.62rem;
+    font-weight: 760;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .page-closing__rail p span {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .page-closing__rail small {
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 0.56rem;
+    font-weight: 740;
+    letter-spacing: 0.1em;
+  }
+  .page-closing__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: end;
+    padding-top: clamp(4.5rem, 9vw, 8rem);
+  }
+  .page-closing h2 {
+    max-width: 15ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.85rem, 5.2vw, 5.25rem);
+    font-weight: 540;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+  .page-closing__grid > div > p {
+    max-width: 31rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.94rem;
+    line-height: 1.72;
+  }
+  .page-closing__action {
+    margin-top: 2rem;
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .page-closing__action:only-child {
+    margin-top: 0;
+  }
+  .page-closing__action:hover {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+  @media (min-width: 900px) {
+    .page-closing__grid {
+      grid-template-columns: minmax(0, 1.16fr) minmax(19rem, 0.64fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .page-closing__inner {
+      min-height: auto;
+      padding-bottom: 5.5rem;
+    }
+  }
+</style>

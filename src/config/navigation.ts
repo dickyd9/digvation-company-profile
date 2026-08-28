@@ -17,6 +17,7 @@ export function getNavigation(locale: Locale): NavigationItem[] {
           ['Hasil Kerja', '/work'],
           ['Cara Kerja', '/process'],
           ['Tentang', '/about'],
+          ['Kontak', '/contact'],
         ]
       : [
           ['Home', '/'],
@@ -24,6 +25,7 @@ export function getNavigation(locale: Locale): NavigationItem[] {
           ['Work', '/work'],
           ['How We Work', '/process'],
           ['About', '/about'],
+          ['Contact', '/contact'],
         ];
 
   return items.map(([label, path]) => ({ label, href: getLocalizedPath(locale, path) }));

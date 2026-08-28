@@ -1,0 +1,809 @@
+---
+import type { HomeCopy } from '@/content/home';
+
+type Diagram = HomeCopy['shift']['items'][number]['diagram'];
+type Props = {
+  variant: 'order' | 'status' | 'report';
+  diagram: Diagram;
+  beforeLabel: string;
+  afterLabel: string;
+};
+
+const { variant, diagram, beforeLabel, afterLabel } = Astro.props;
+---
+
+<div class:list={['operational-scene', `operational-scene--${variant}`]} aria-hidden="true">
+  <div class="scene-chrome">
+    <span class="scene-chrome__dots"><i></i><i></i><i></i></span>
+    <span>{beforeLabel}</span>
+    <i class="scene-chrome__line"></i>
+    <span>{afterLabel}</span>
+  </div>
+
+  <div class="scene-workspace">
+    <div class="scene-before">
+      {
+        variant === 'order' ? (
+          <div class="source-stack">
+            <div class="source-card source-card--chat">
+              <span>{diagram.before[0]}</span>
+              <>
+                <i />
+                <i />
+                <i />
+              </>
+            </div>
+            <div class="source-card source-card--sheet">
+              <span>{diagram.before[1]}</span>
+              <div>
+                {Array.from({ length: 15 }).map(() => (
+                  <i />
+                ))}
+              </div>
+            </div>
+            <div class="source-card source-card--note">
+              <span>{diagram.before[2]}</span>
+              <>
+                <i />
+                <i />
+              </>
+            </div>
+          </div>
+        ) : variant === 'status' ? (
+          <div class="inbox-scene">
+            <div class="scene-panel-head">
+              <i />{' '}
+              <>
+                <span>{beforeLabel}</span>
+                <b />
+              </>
+            </div>
+            <div class="inbox-person">
+              <>
+                <i />
+                <span>
+                  <>
+                    <b />
+                    <b />
+                  </>
+                </span>
+              </>
+            </div>
+            <ul>
+              {diagram.before.map((label, index) => (
+                <li style={`--row-index: ${index}`}>
+                  <span>{label}</span>
+                  <i />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div class="raw-scene">
+            <div class="scene-panel-head">
+              <i />{' '}
+              <>
+                <span>{beforeLabel}</span>
+                <b>CSV</b>
+              </>
+            </div>
+            <div class="raw-scene__labels">
+              {diagram.before.map((label) => (
+                <span>{label}</span>
+              ))}
+            </div>
+            <div class="raw-scene__grid">
+              {Array.from({ length: 28 }).map((_, index) => (
+                <i class:list={{ 'is-filled': [1, 6, 11, 18, 23].includes(index) }} />
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="scene-connector">
+      <span>{diagram.action}</span>
+      <i></i>
+      <b></b>
+    </div>
+
+    <div class="scene-after">
+      <div class="scene-panel-head"><i></i> <span>{afterLabel}</span><b></b></div>
+      {
+        variant === 'order' ? (
+          <div class="order-workspace">
+            <div class="order-workspace__summary">
+              <span>DV</span>
+              <div>
+                <>
+                  <i />
+                  <i />
+                </>
+              </div>
+              <b />
+            </div>
+            <ul>
+              {diagram.after.map((label, index) => (
+                <li>
+                  <i style={`--row-index: ${index}`} />
+                  <span>{label}</span>
+                  <b />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : variant === 'status' ? (
+          <div class="status-workspace">
+            <div class="status-tabs">
+              <>
+                <i />
+                <i />
+                <i />
+              </>
+            </div>
+            <ul>
+              {diagram.after.map((label, index) => (
+                <li>
+                  <i class={`status-state status-state--${index + 1}`} />
+                  <span>{label}</span>
+                  <b>
+                    <i />
+                    <i />
+                  </b>
+                  <small>
+                    <i />
+                    <i />
+                  </small>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div class="report-workspace">
+            <div class="report-metrics">
+              {diagram.after.slice(0, 2).map((label, index) => (
+                <div>
+                  <span>{label}</span>
+                  <b style={`--metric-index: ${index}`} />
+                  <i />
+                </div>
+              ))}
+            </div>
+            <div class="report-chart">
+              <span>
+                <>
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </>
+              </span>
+              <b>
+                <>
+                  <i />
+                  <i />
+                  <i />
+                </>
+              </b>
+            </div>
+            <div class="report-decision">
+              <>
+                <i />
+                <span>{diagram.after[2]}</span>
+                <b />
+              </>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .operational-scene {
+    min-height: clamp(27rem, 42vw, 34rem);
+    overflow: hidden;
+    background: var(--color-indigo-deep);
+    box-shadow: 0 28px 70px rgba(18, 26, 47, 0.12);
+    color: var(--color-paper);
+  }
+  .scene-chrome {
+    display: grid;
+    min-height: 3rem;
+    grid-template-columns: auto auto 1fr auto;
+    gap: 0.8rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0 1.15rem;
+    color: rgba(255, 255, 255, 0.46);
+    font-size: 0.49rem;
+    font-weight: 760;
+    letter-spacing: 0.075em;
+    text-transform: uppercase;
+  }
+  .scene-chrome__dots {
+    display: flex;
+    gap: 0.3rem;
+  }
+  .scene-chrome__dots i {
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.28);
+  }
+  .scene-chrome__dots i:first-child {
+    background: var(--color-accent);
+  }
+  .scene-chrome__line {
+    height: 1px;
+    background: rgba(147, 166, 255, 0.36);
+  }
+  .scene-workspace {
+    display: grid;
+    min-height: calc(clamp(27rem, 42vw, 34rem) - 3rem);
+    grid-template-columns: minmax(0, 0.86fr) clamp(2.5rem, 7vw, 5.25rem) minmax(0, 1.2fr);
+    gap: clamp(0.65rem, 1.7vw, 1.35rem);
+    align-items: center;
+    padding: clamp(1.1rem, 3.4vw, 2.8rem);
+  }
+  .scene-before,
+  .scene-after {
+    min-width: 0;
+  }
+  .scene-after,
+  .inbox-scene,
+  .raw-scene {
+    overflow: hidden;
+    background: var(--color-paper-warm);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+    color: var(--color-ink);
+  }
+  .scene-panel-head {
+    display: grid;
+    min-height: 2.7rem;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.55rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(18, 26, 47, 0.1);
+    padding: 0 0.9rem;
+    color: rgba(11, 13, 16, 0.53);
+    font-size: 0.5rem;
+    font-weight: 760;
+    letter-spacing: 0.065em;
+    text-transform: uppercase;
+  }
+  .scene-panel-head > i {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 0.08rem;
+    background: var(--color-accent);
+  }
+  .scene-panel-head > b {
+    font-size: 0.46rem;
+    font-weight: 730;
+  }
+  .scene-connector {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 0;
+    align-items: center;
+  }
+  .scene-connector span {
+    grid-column: 1 / -1;
+    color: var(--color-accent);
+    font-size: 0.46rem;
+    font-weight: 760;
+    letter-spacing: 0.055em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .scene-connector > i {
+    height: 1px;
+    background: rgba(147, 166, 255, 0.72);
+    transform-origin: left;
+  }
+  .scene-connector > b {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-top: 1px solid var(--color-accent);
+    border-right: 1px solid var(--color-accent);
+    transform: rotate(45deg);
+  }
+
+  .source-stack {
+    position: relative;
+    min-height: 21rem;
+  }
+  .source-card {
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: #202a40;
+    box-shadow: 0 13px 28px rgba(0, 0, 0, 0.2);
+  }
+  .source-card > span {
+    display: block;
+    min-height: 2.15rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.7rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.53rem;
+    font-weight: 720;
+  }
+  .source-card--chat {
+    top: 0;
+    left: 0;
+    width: 78%;
+    min-height: 8.8rem;
+    padding-bottom: 0.55rem;
+    transform: rotate(-2deg);
+  }
+  .source-card--chat > i {
+    display: block;
+    width: 66%;
+    height: 0.9rem;
+    margin: 0.55rem 0.65rem 0;
+    border-radius: 0.12rem;
+    background: rgba(255, 255, 255, 0.09);
+  }
+  .source-card--chat > i:nth-of-type(2) {
+    width: 57%;
+    margin-left: auto;
+    background: rgba(147, 166, 255, 0.22);
+  }
+  .source-card--sheet {
+    right: 0;
+    bottom: 1rem;
+    width: 84%;
+    min-height: 9.2rem;
+    transform: rotate(1.5deg);
+  }
+  .source-card--sheet > div {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 0.65rem;
+  }
+  .source-card--sheet > div i {
+    min-height: 1.05rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.09);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  .source-card--sheet > div i:nth-child(5n + 2) {
+    background: rgba(147, 166, 255, 0.09);
+  }
+  .source-card--note {
+    bottom: 0;
+    left: 0.15rem;
+    z-index: 2;
+    display: grid;
+    width: 47%;
+    gap: 0.4rem;
+    padding-bottom: 0.7rem;
+    background: var(--color-sand);
+    color: var(--color-ink);
+    transform: rotate(-3deg);
+  }
+  .source-card--note > span {
+    border-color: rgba(11, 13, 16, 0.1);
+    color: var(--color-ink);
+  }
+  .source-card--note > i {
+    width: 76%;
+    height: 1px;
+    margin-left: 0.7rem;
+    background: rgba(11, 13, 16, 0.24);
+  }
+  .source-card--note > i:last-child {
+    width: 50%;
+  }
+  .order-workspace__summary {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(18, 26, 47, 0.1);
+    padding: 1rem 0.9rem;
+  }
+  .order-workspace__summary > span {
+    display: grid;
+    width: 2.1rem;
+    height: 2.1rem;
+    place-items: center;
+    background: var(--color-indigo-deep);
+    color: var(--color-paper);
+    font-size: 0.55rem;
+    font-weight: 800;
+  }
+  .order-workspace__summary > div {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .order-workspace__summary > div i {
+    width: 58%;
+    height: 0.35rem;
+    background: rgba(18, 26, 47, 0.16);
+  }
+  .order-workspace__summary > div i:last-child {
+    width: 36%;
+    background: rgba(18, 26, 47, 0.08);
+  }
+  .order-workspace__summary > b {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 50%;
+    background: #5ea877;
+    box-shadow: 0 0 0 0.22rem rgba(94, 168, 119, 0.14);
+  }
+  .order-workspace ul,
+  .inbox-scene ul,
+  .status-workspace ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .order-workspace li {
+    display: grid;
+    grid-template-columns: auto 1fr 32%;
+    gap: 0.65rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(18, 26, 47, 0.08);
+    padding: 0.8rem 0.9rem;
+    font-size: 0.55rem;
+    font-weight: 680;
+  }
+  .order-workspace li > i {
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    opacity: calc(1 - var(--row-index) * 0.14);
+  }
+  .order-workspace li > b {
+    height: 0.32rem;
+    background: rgba(18, 26, 47, 0.09);
+  }
+
+  .inbox-scene {
+    background: #202a40;
+    color: var(--color-paper);
+  }
+  .inbox-scene .scene-panel-head,
+  .raw-scene .scene-panel-head {
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .inbox-person {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem;
+    align-items: center;
+    padding: 0.85rem;
+  }
+  .inbox-person > i {
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .inbox-person > span {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .inbox-person b {
+    width: 46%;
+    height: 0.32rem;
+    background: rgba(255, 255, 255, 0.22);
+  }
+  .inbox-person b:last-child {
+    width: 28%;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .inbox-scene li {
+    display: grid;
+    gap: 0.38rem;
+    margin: 0 0.85rem 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    padding: 0.7rem;
+    background: rgba(255, 255, 255, 0.045);
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 0.53rem;
+    font-weight: 680;
+    transform: translateX(calc(var(--row-index) * 0.3rem));
+  }
+  .inbox-scene li i {
+    width: 40%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.17);
+  }
+  .status-tabs {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.75rem 0.85rem 0.3rem;
+  }
+  .status-tabs i {
+    width: 2rem;
+    height: 0.4rem;
+    background: rgba(18, 26, 47, 0.09);
+  }
+  .status-tabs i:first-child {
+    background: rgba(83, 103, 238, 0.55);
+  }
+  .status-workspace li {
+    display: grid;
+    grid-template-columns: auto minmax(3.5rem, 0.7fr) minmax(3rem, 1fr) auto;
+    gap: 0.6rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(18, 26, 47, 0.08);
+    padding: 0.9rem;
+    font-size: 0.53rem;
+    font-weight: 680;
+  }
+  .status-state {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: #5ea877;
+  }
+  .status-state--2 {
+    background: #d6a64a;
+  }
+  .status-state--3 {
+    background: #d06767;
+  }
+  .status-workspace li > b {
+    display: grid;
+    gap: 0.28rem;
+  }
+  .status-workspace li > b i {
+    width: 90%;
+    height: 0.28rem;
+    background: rgba(18, 26, 47, 0.11);
+  }
+  .status-workspace li > b i:last-child {
+    width: 52%;
+  }
+  .status-workspace li > small {
+    display: flex;
+  }
+  .status-workspace li > small i {
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 1px solid var(--color-paper-warm);
+    border-radius: 50%;
+    background: var(--color-indigo-deep);
+  }
+  .status-workspace li > small i + i {
+    margin-left: -0.25rem;
+    background: var(--color-accent);
+  }
+
+  .raw-scene {
+    background: #202a40;
+    color: var(--color-paper);
+  }
+  .raw-scene__labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0.7rem;
+  }
+  .raw-scene__labels span {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    padding: 0.32rem 0.44rem;
+    color: rgba(255, 255, 255, 0.61);
+    font-size: 0.45rem;
+    font-weight: 680;
+  }
+  .raw-scene__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 0.7rem 0.7rem;
+  }
+  .raw-scene__grid i {
+    min-height: 1.65rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.09);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  .raw-scene__grid i.is-filled {
+    background: rgba(147, 166, 255, 0.18);
+  }
+  .report-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+    padding: 0.7rem 0.7rem 0;
+  }
+  .report-metrics > div {
+    position: relative;
+    min-height: 4.2rem;
+    overflow: hidden;
+    border: 1px solid rgba(18, 26, 47, 0.1);
+    padding: 0.65rem;
+  }
+  .report-metrics span {
+    display: block;
+    color: rgba(11, 13, 16, 0.5);
+    font-size: 0.45rem;
+    font-weight: 720;
+  }
+  .report-metrics b {
+    display: block;
+    width: calc(40% + var(--metric-index) * 16%);
+    height: 0.5rem;
+    margin-top: 0.65rem;
+    background: var(--color-indigo-deep);
+  }
+  .report-metrics i {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 0.27rem solid rgba(147, 166, 255, 0.3);
+    border-top-color: var(--color-accent);
+    border-radius: 50%;
+  }
+  .report-chart {
+    display: grid;
+    min-height: 8rem;
+    grid-template-columns: minmax(0, 1fr) 3.8rem;
+    gap: 0.7rem;
+    align-items: end;
+    margin: 0.55rem 0.7rem;
+    border: 1px solid rgba(18, 26, 47, 0.1);
+    padding: 0.7rem;
+  }
+  .report-chart > span {
+    display: flex;
+    height: 5.6rem;
+    align-items: end;
+    gap: clamp(0.2rem, 0.7vw, 0.5rem);
+    border-bottom: 1px solid rgba(18, 26, 47, 0.12);
+  }
+  .report-chart > span i {
+    width: 100%;
+    height: 34%;
+    background: rgba(83, 103, 238, 0.2);
+  }
+  .report-chart > span i:nth-child(2) {
+    height: 62%;
+  }
+  .report-chart > span i:nth-child(3) {
+    height: 48%;
+  }
+  .report-chart > span i:nth-child(4) {
+    height: 78%;
+    background: var(--color-accent);
+  }
+  .report-chart > span i:nth-child(5) {
+    height: 56%;
+  }
+  .report-chart > span i:nth-child(6) {
+    height: 88%;
+    background: var(--color-indigo-deep);
+  }
+  .report-chart > b {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .report-chart > b i {
+    height: 0.3rem;
+    background: rgba(18, 26, 47, 0.09);
+  }
+  .report-decision {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.55rem;
+    align-items: center;
+    margin: 0.55rem 0.7rem 0.7rem;
+    padding: 0.65rem;
+    background: var(--color-indigo-deep);
+    color: var(--color-paper);
+    font-size: 0.49rem;
+    font-weight: 700;
+  }
+  .report-decision > i {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .report-decision > b {
+    width: 1.2rem;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 720px) {
+    .operational-scene {
+      min-height: 24rem;
+    }
+    .scene-workspace {
+      min-height: 21rem;
+      grid-template-columns: minmax(0, 0.82fr) 2rem minmax(0, 1.18fr);
+      gap: 0.45rem;
+      padding: 0.7rem;
+    }
+    .scene-chrome {
+      min-height: 2.6rem;
+      gap: 0.45rem;
+      padding-inline: 0.7rem;
+      font-size: 0.41rem;
+    }
+    .scene-chrome__dots {
+      display: none;
+    }
+    .source-stack {
+      min-height: 17.5rem;
+    }
+    .source-card--chat,
+    .source-card--sheet {
+      width: 92%;
+    }
+    .source-card--note {
+      width: 58%;
+    }
+    .order-workspace li {
+      grid-template-columns: auto 1fr;
+    }
+    .order-workspace li > b,
+    .status-workspace li > b,
+    .status-workspace li > small,
+    .report-metrics > div:last-child,
+    .report-chart > b {
+      display: none;
+    }
+    .status-workspace li {
+      grid-template-columns: auto 1fr;
+      padding: 0.7rem;
+    }
+    .report-metrics {
+      grid-template-columns: 1fr;
+    }
+    .report-chart {
+      grid-template-columns: 1fr;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .scene-before {
+        animation: operational-source linear both;
+        animation-range: entry 8% cover 32%;
+        animation-timeline: view();
+      }
+      .scene-connector > i {
+        animation: operational-flow linear both;
+        animation-range: entry 18% cover 38%;
+        animation-timeline: view();
+      }
+      .scene-after {
+        animation: operational-output linear both;
+        animation-range: entry 12% cover 38%;
+        animation-timeline: view();
+      }
+      @keyframes operational-source {
+        from {
+          opacity: 0.55;
+          transform: translateX(-0.7rem) scale(0.98);
+        }
+      }
+      @keyframes operational-flow {
+        from {
+          transform: scaleX(0);
+        }
+      }
+      @keyframes operational-output {
+        from {
+          clip-path: inset(0 10% 0 0);
+          opacity: 0.7;
+          transform: translateX(0.7rem) scale(0.98);
+        }
+      }
+    }
+  }
+</style>

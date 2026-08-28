@@ -1,74 +1,279 @@
 ---
-import BrandLogo from '@/components/brand/BrandLogo.astro';
 import InquiryForm from '@/components/inquiry/InquiryForm.astro';
-import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
+import { getWhatsAppUrl } from '@/config/contact';
 import { siteConfig, type Locale } from '@/config/site';
+
 type Props = { locale: Locale };
 const { locale } = Astro.props;
+const whatsappUrl = getWhatsAppUrl(locale);
+const copy =
+  locale === 'id'
+    ? {
+        eyebrow: 'Mari mulai dari ceritanya',
+        title: 'Ceritakan yang sedang ingin Anda benahi.',
+        intro:
+          'Tidak perlu menyiapkan proposal atau istilah teknis. Ceritakan saja bagian bisnis yang terasa lambat, manual, sulit dipantau, atau belum bekerja seperti yang Anda harapkan.',
+        channelEyebrow: 'Pilih cara yang paling nyaman',
+        channelTitle: 'Mulai dari yang sedang terjadi.',
+        channelBody:
+          'Isi beberapa hal singkat di samping, atau hubungi kami lewat email dan WhatsApp. Kami bantu merapikan kebutuhannya bersama Anda.',
+        emailLabel: 'Lebih nyaman lewat email?',
+        whatsappLabel: 'Ingin ngobrol lewat WhatsApp?',
+        whatsappCta: 'Mulai chat',
+        formEyebrow: 'Form singkat · sekitar 2 menit',
+        response: 'Isi sebisanya. Tidak harus lengkap atau teknis.',
+        nextEyebrow: 'Setelah pesan terkirim',
+        nextTitle: 'Kami bantu mengurai langkah berikutnya.',
+        next: [
+          ['Kami pahami ceritanya', 'Kami melihat situasi dan tujuan yang sedang Anda hadapi.'],
+          ['Kami tanyakan yang perlu', 'Hal penting kita perjelas sebelum membahas solusi.'],
+          [
+            'Kita tentukan langkah awal',
+            'Jika cocok, prioritas dan cara kerjanya dibuat jelas bersama.',
+          ],
+        ],
+      }
+    : {
+        eyebrow: "Let's start with the story",
+        title: 'Tell us what you want to improve.',
+        intro:
+          'No proposal or technical brief needed. Just tell us what feels slow, manual, hard to monitor, or not working the way you need.',
+        channelEyebrow: 'Choose what feels easiest',
+        channelTitle: 'Start with what is happening today.',
+        channelBody:
+          'Fill in a few short details, or reach us by email or WhatsApp. We will help shape the need with you.',
+        emailLabel: 'Prefer email?',
+        whatsappLabel: 'Prefer to chat on WhatsApp?',
+        whatsappCta: 'Start a chat',
+        formEyebrow: 'Short form · about 2 minutes',
+        response: 'Share what you can. It does not need to be complete or technical.',
+        nextEyebrow: 'After your message arrives',
+        nextTitle: 'We will help make the next step clear.',
+        next: [
+          ['We understand the story', 'We look at the situation and goal you are facing.'],
+          ['We ask what matters', 'We clarify the important details before discussing a solution.'],
+          [
+            'We choose the first step together',
+            'If it fits, we make the priorities and working approach clear together.',
+          ],
+        ],
+      };
 ---
 
-<section class="bg-paper-warm text-ink">
-  <div class="shell-wide py-12 sm:py-16 lg:py-20">
-    <div class="grid gap-10 lg:grid-cols-[.82fr_1.18fr] lg:items-start lg:gap-16">
-      <div class="lg:sticky lg:top-28" data-reveal="left">
-        <BrandLogo locale={locale} tone="brand" compact />
-        <p class="eyebrow text-indigo-deep mt-9">
-          {locale === 'id' ? 'Mulai dari bisnis Anda' : 'Start with your business'}
-        </p>
-        <h1
-          class="font-display mt-5 max-w-[12ch] text-[clamp(2.8rem,5.2vw,5.2rem)] leading-[.98] font-semibold tracking-[-.052em]"
-        >
-          {locale === 'id' ? 'Mulai dari satu masalah bisnis.' : 'Start with one business problem.'}
-        </h1>
-        <p class="text-dark-muted mt-7 max-w-lg text-base leading-8">
-          {
-            locale === 'id'
-              ? 'Ceritakan proses yang lambat, manual, atau sulit dipantau. Kami bantu menentukan langkah digitalnya.'
-              : 'Tell us what feels slow, manual, or hard to monitor. We will help define the digital next step.'
-          }
-        </p>
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'KONTAK / 01' : 'CONTACT / 01'}
+/>
 
-        <div class="mt-6 flex justify-end pr-[12%]" data-reveal="right">
-          <HandwrittenNote
-            text={locale === 'id'
-              ? 'Tidak perlu proposal atau istilah teknis.'
-              : 'No proposal or technical language needed.'}
-            direction="left"
-          />
-        </div>
-
-        <div class="border-ink/12 mt-9 border-y py-5">
-          {
-            [
-              locale === 'id' ? 'Kami pahami konteksnya' : 'We understand the context',
-              locale === 'id' ? 'Kami tentukan prioritasnya' : 'We define the priority',
-              locale === 'id' ? 'Kami sarankan langkahnya' : 'We recommend the next move',
-            ].map((item, index) => (
-              <div class="border-ink/10 grid grid-cols-[2.5rem_1fr] gap-3 border-b py-3 text-sm font-semibold last:border-b-0">
-                <>
-                  <span class="text-indigo-deep/42">0{index + 1}</span>
-                  <span>{item}</span>
-                </>
-              </div>
-            ))
-          }
-        </div>
-
-        <div class="text-ink/58 mt-7 text-sm">
-          <p>{locale === 'id' ? 'Lebih nyaman lewat email?' : 'Prefer email?'}</p>
-          <a
-            class="text-ink font-bold underline underline-offset-4"
-            href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a
+<section class="contact-page bg-paper text-ink" data-track-section="contact-form">
+  <div class="shell-wide contact-page__grid">
+    <aside class="contact-page__intro" data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.channelEyebrow}</p>
+      <h2>{copy.channelTitle}</h2>
+      <p class="contact-page__lead">{copy.channelBody}</p>
+      <div class="contact-page__alternatives">
+        <div>
+          <p>{copy.emailLabel}</p>
+          <a href={`mailto:${siteConfig.contact.email}`} data-track-event="email_click"
+            >{siteConfig.contact.email}</a
           >
         </div>
+        {
+          whatsappUrl && (
+            <div>
+              <p>{copy.whatsappLabel}</p>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-event="whatsapp_click"
+                data-track-label="contact-page"
+              >
+                {copy.whatsappCta} ↗
+              </a>
+            </div>
+          )
+        }
       </div>
+    </aside>
 
-      <div
-        class="border-ink/14 bg-paper lg:border-ink/12 border-t pt-7 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12"
-        data-reveal="right"
-      >
-        <InquiryForm locale={locale} />
+    <div class="contact-page__form" data-reveal="line">
+      <div class="contact-page__form-head">
+        <span>{copy.formEyebrow}</span><p>{copy.response}</p>
       </div>
+      <InquiryForm locale={locale} />
     </div>
   </div>
 </section>
+
+<section class="contact-next bg-paper-soft text-ink" data-track-section="contact-next">
+  <div class="shell-wide contact-next__inner">
+    <header data-reveal="mask">
+      <p class="eyebrow text-indigo-deep">{copy.nextEyebrow}</p>
+      <h2>{copy.nextTitle}</h2>
+    </header>
+    <ol data-reveal-group>
+      {
+        copy.next.map(([title, body], index) => (
+          <li data-reveal="line">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .contact-page__grid {
+    display: grid;
+    gap: clamp(3rem, 7vw, 7rem);
+    padding-block: var(--space-section);
+  }
+  .contact-page__intro h2 {
+    max-width: 14ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 3.9rem);
+    font-weight: 545;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .contact-page__lead {
+    max-width: 38rem;
+    margin: 1.75rem 0 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.94rem;
+    line-height: 1.78;
+  }
+  .contact-page__alternatives {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    margin-top: 2.75rem;
+  }
+  .contact-page__alternatives p {
+    margin: 0 0 0.3rem;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .contact-page__alternatives a {
+    color: var(--color-ink);
+    font-size: 0.83rem;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+  }
+  .contact-page__form {
+    border: 1px solid rgba(11, 13, 16, 0.14);
+    border-radius: 0.38rem;
+    padding: clamp(1.5rem, 3vw, 3rem);
+    background: var(--color-paper-warm);
+    box-shadow: 0 22px 65px rgba(11, 13, 16, 0.045);
+  }
+  .contact-page__form-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.14);
+    padding-bottom: 1rem;
+  }
+  .contact-page__form-head span {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .contact-page__form-head p {
+    max-width: 18rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.67rem;
+    line-height: 1.55;
+    text-align: right;
+  }
+  .contact-next__inner {
+    display: grid;
+    gap: clamp(3.5rem, 7vw, 6rem);
+    padding-block: var(--space-section-compact);
+  }
+  .contact-next h2 {
+    max-width: 14ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.35rem, 4vw, 3.9rem);
+    font-weight: 545;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .contact-next ol {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
+    list-style: none;
+  }
+  .contact-next li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(9rem, 0.72fr) minmax(0, 1.28fr);
+    gap: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.5rem 0;
+  }
+  .contact-next li span {
+    color: var(--text-soft);
+    font-size: 0.59rem;
+    font-weight: 780;
+  }
+  .contact-next h3,
+  .contact-next li p {
+    margin: 0;
+  }
+  .contact-next h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    font-weight: 560;
+    letter-spacing: -0.035em;
+  }
+  .contact-next li p {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.65;
+  }
+  @media (min-width: 1024px) {
+    .contact-page__grid {
+      grid-template-columns: 0.86fr 1.14fr;
+      gap: clamp(4rem, 7vw, 7rem);
+      align-items: start;
+    }
+    .contact-page__intro {
+      position: sticky;
+      top: 7rem;
+    }
+    .contact-next__inner {
+      grid-template-columns: minmax(18rem, 0.74fr) minmax(0, 1.26fr);
+    }
+  }
+  @media (max-width: 1023px) {
+    .contact-page__form {
+      padding: clamp(1.25rem, 5vw, 2.5rem);
+    }
+  }
+  @media (max-width: 680px) {
+    .contact-next li {
+      grid-template-columns: 2rem 1fr;
+    }
+    .contact-next h3,
+    .contact-next li p {
+      grid-column: 2;
+    }
+  }
+</style>

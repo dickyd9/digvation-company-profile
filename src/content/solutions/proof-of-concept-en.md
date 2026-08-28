@@ -1,9 +1,9 @@
 ---
 routeSlug: proof-of-concept
 locale: en
-title: Proof of Concept
-eyebrow: Solution 02
-summary: For ideas with enough technical or business uncertainty that a full build would be premature.
+title: Test the idea before going further
+eyebrow: Reduce uncertainty
+summary: When an idea needs proof before too much time and budget are committed.
 problem: 'A PoC answers the risky questions first: is the approach feasible, is the data sufficient, do the devices work in the environment, or does the workflow improve in practice?'
 when:
   - AI or computer vision has not been tested in real conditions

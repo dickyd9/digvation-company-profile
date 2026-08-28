@@ -1,107 +1,271 @@
 ---
 import BrandLogo from '@/components/brand/BrandLogo.astro';
-import PageHero from '@/components/ui/PageHero.astro';
-import { getLocalizedPath } from '@/config/navigation';
+import PageClosing from '@/components/ui/PageClosing.astro';
+import PageIntro from '@/components/ui/PageIntro.astro';
 import type { Locale } from '@/config/site';
+
 type Props = { locale: Locale };
 const { locale } = Astro.props;
-const principles =
+const copy =
   locale === 'id'
-    ? [
-        ['Pahami dulu', 'Lihat prosesnya sebelum memilih teknologi.'],
-        ['Buat seperlunya', 'Bangun yang penting, bukan yang terlihat ramai.'],
-        ['Jelaskan keputusan', 'Scope dan risiko harus mudah dipahami.'],
-        ['Sampai dipakai', 'Solusi harus bekerja di dunia nyata.'],
-      ]
-    : [
-        ['Understand first', 'See the process before choosing technology.'],
-        ['Build what matters', 'Build what is useful, not what looks busy.'],
-        ['Explain decisions', 'Scope and risk should be easy to understand.'],
-        ['Through to use', 'The solution has to work in real life.'],
-      ];
+    ? {
+        eyebrow: 'Tentang Digvation',
+        title: 'Teknologi seharusnya meringankan bisnis.',
+        intro:
+          'Digvation membantu bisnis memahami apa yang perlu dibenahi, memilih langkah digital yang tepat, dan mewujudkannya.',
+        whyEyebrow: 'Mengapa kami ada',
+        whyTitle: 'Karena masalah bisnis jarang datang dalam bentuk spesifikasi teknis.',
+        whyBody:
+          'Yang biasanya terasa adalah proses lambat, informasi tercecer, atau pekerjaan yang terus berulang. Kami mulai dengan memahami itu bersama Anda. Teknologi dipilih setelah arah perubahannya jelas.',
+        beliefsEyebrow: 'Yang kami percaya',
+        beliefs: [
+          [
+            'Kegunaan lebih penting daripada keramaian fitur.',
+            'Solusi yang baik membantu orang menyelesaikan pekerjaan, bukan sekadar terlihat canggih.',
+          ],
+          [
+            'Keputusan harus bisa dipahami.',
+            'Batas kerja, prioritas, dan risikonya perlu jelas bagi orang bisnis, bukan hanya tim teknis.',
+          ],
+          [
+            'Peluncuran bukan garis akhir.',
+            'Nilai baru terlihat ketika solusi digunakan, dipantau, dan terus disesuaikan dengan kebutuhan.',
+          ],
+        ],
+        directionEyebrow: 'Ke mana kami menuju',
+        directionTitle: 'Menjadi partner digitalisasi yang tumbuh bersama bisnis yang kami bantu.',
+        directionBody:
+          'Kami ingin membangun lebih banyak solusi yang tetap berguna setelah diluncurkan, bersama bisnis yang ingin terus bertumbuh.',
+        principles: [
+          'Terus belajar dari penggunaan nyata',
+          'Membangun kemampuan yang relevan',
+          'Menjaga hubungan kerja jangka panjang',
+          'Membuat teknologi tetap berguna setelah mulai dipakai',
+        ],
+        closeEyebrow: 'Your Digitalization Partner',
+        closeTitle:
+          'Kami tidak harus membawa jawaban jadi sejak awal. Tugas kami adalah membantu menemukannya bersama Anda.',
+        cta: 'Ceritakan bisnis Anda',
+      }
+    : {
+        eyebrow: 'About Digvation',
+        title: 'Technology should make business lighter to run.',
+        intro:
+          'Digvation helps businesses see what needs to improve, choose the right digital step, and make it real.',
+        whyEyebrow: 'Why we exist',
+        whyTitle: 'Because business problems rarely arrive as technical specifications.',
+        whyBody:
+          'What people usually feel is a slow process, scattered information, or work that keeps repeating. We start by understanding that with you. Technology comes after the direction is clear.',
+        beliefsEyebrow: 'What we believe',
+        beliefs: [
+          [
+            'Usefulness matters more than a crowded feature list.',
+            'A good solution helps people complete the work, not merely look sophisticated.',
+          ],
+          [
+            'Decisions should be understandable.',
+            'Boundaries, priorities, and risks must be clear to business people, not only the technical team.',
+          ],
+          [
+            'Launch is not the finish line.',
+            'Value becomes visible when a solution is used, monitored, and adjusted to the need.',
+          ],
+        ],
+        directionEyebrow: 'Where we are going',
+        directionTitle: 'To be a digitalization partner that grows with the businesses we help.',
+        directionBody:
+          'We want to build more solutions that remain useful after launch, alongside businesses that want to keep growing.',
+        principles: [
+          'Keep learning from real use',
+          'Build relevant capabilities',
+          'Maintain long-term working relationships',
+          'Keep technology useful once people start using it',
+        ],
+        closeEyebrow: 'Your Digitalization Partner',
+        closeTitle:
+          'We do not need to bring a finished answer on day one. Our job is to help find it with you.',
+        cta: 'Tell us about your business',
+      };
 ---
 
-<PageHero
-  eyebrow={locale === 'id' ? 'Tentang Digvation' : 'About Digvation'}
-  title={locale === 'id'
-    ? 'Bukan sekadar tim pembuat software.'
-    : 'More than a software delivery team.'}
-  body={locale === 'id'
-    ? 'Kami memahami bisnisnya, lalu membangun bagian digital yang paling penting.'
-    : 'We understand the business, then build the digital part that matters most.'}
-  note={locale === 'id'
-    ? 'Masalah dulu. Teknologi setelahnya.'
-    : 'Problem first. Technology second.'}
-  ctaLabel={locale === 'id' ? 'Ceritakan bisnis Anda' : 'Tell us about your business'}
-  ctaHref={getLocalizedPath(locale, '/contact')}
+<PageIntro
+  eyebrow={copy.eyebrow}
+  title={copy.title}
+  intro={copy.intro}
+  chapter={locale === 'id' ? 'TENTANG / 01' : 'ABOUT / 01'}
 />
 
-<section class="section-pad bg-paper text-ink">
-  <div class="shell-wide">
-    <div class="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
-      <div class="bg-ink text-paper p-7 sm:p-9 lg:sticky lg:top-28 lg:self-start">
-        <BrandLogo locale={locale} tone="light" compact />
-        <p class="eyebrow text-accent mt-9">
-          {locale === 'id' ? 'Cara kami berpikir' : 'How we think'}
-        </p>
-        <h2
-          class="font-display mt-5 max-w-[13ch] text-[clamp(2.5rem,5vw,5.2rem)] leading-[.96] font-semibold tracking-[-.058em]"
-        >
-          {
-            locale === 'id'
-              ? 'Pahami bisnisnya. Bangun yang perlu.'
-              : 'Understand the business. Build what matters.'
-          }
-        </h2>
-        <p class="text-paper/52 mt-7 max-w-xl text-sm leading-7">
-          {
-            locale === 'id'
-              ? 'Website, sistem, automation, AI, atau IoT hanyalah bentuk. Nilainya ada pada masalah yang selesai.'
-              : 'Websites, systems, automation, AI, and IoT are only forms. The value is in the problem solved.'
-          }
-        </p>
-      </div>
-
-      <div class="border-ink/12 border-t">
-        {
-          principles.map(([title, body], index) => (
-            <article
-              class="border-ink/12 grid gap-4 border-b py-7 sm:grid-cols-[4rem_.8fr_1.2fr] sm:gap-8 sm:py-8"
-              data-reveal="up"
-              style={`--reveal-delay:${index * 55}ms`}
-            >
-              <>
-                <span class="text-indigo-deep/42 text-[.65rem] font-extrabold tracking-[.1em] uppercase">
-                  0{index + 1}
-                </span>
-                <h3 class="font-display text-[clamp(1.6rem,2.5vw,2.4rem)] leading-[1.02] font-semibold tracking-[-.045em]">
-                  {title}
-                </h3>
-                <p class="text-ink/58 m-0 text-sm leading-7">{body}</p>
-              </>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="border-ink/12 mt-14 grid gap-6 border-t pt-8 lg:grid-cols-[1fr_auto] lg:items-end">
-      <div>
-        <p class="eyebrow text-indigo-deep">
-          {locale === 'id' ? 'Mulai dari masalahnya' : 'Start with the problem'}
-        </p><h2
-          class="font-display mt-4 max-w-[22ch] text-[clamp(2rem,3.5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-.05em]"
-        >
-          {
-            locale === 'id'
-              ? 'Ceritakan cara kerjanya hari ini.'
-              : 'Tell us how the work happens today.'
-          }
-        </h2>
-      </div>
-      <a class="button-primary shrink-0" href={getLocalizedPath(locale, '/contact')}
-        >{locale === 'id' ? 'Diskusikan dengan Digvation' : 'Discuss It with Digvation'} ↗</a
-      >
+<section class="about-why bg-ink text-paper" data-track-section="about-purpose">
+  <div class="shell-wide section-pad about-why__grid">
+    <div data-reveal="line"><BrandLogo locale={locale} tone="light" compact /></div>
+    <div data-reveal="mask">
+      <p class="eyebrow text-accent">{copy.whyEyebrow}</p>
+      <h2>{copy.whyTitle}</h2>
+      <p>{copy.whyBody}</p>
     </div>
   </div>
 </section>
+
+<section class="about-beliefs bg-paper text-ink" data-track-section="about-beliefs">
+  <div class="shell-wide section-pad">
+    <header><p class="eyebrow text-indigo-deep">{copy.beliefsEyebrow}</p></header>
+    <ol>
+      {
+        copy.beliefs.map(([title, body], index) => (
+          <li data-reveal="line">
+            <>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h2>{title}</h2>
+              <p>{body}</p>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="about-direction bg-paper-soft text-ink" data-track-section="about-direction">
+  <div class="shell section-pad">
+    <div class="about-direction__intro">
+      <p class="eyebrow text-indigo-deep">{copy.directionEyebrow}</p>
+      <h2>{copy.directionTitle}</h2>
+      <p>{copy.directionBody}</p>
+    </div>
+    <ul>
+      {
+        copy.principles.map((item, index) => (
+          <li>
+            <span>0{index + 1}</span>
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<PageClosing
+  locale={locale}
+  eyebrow={copy.closeEyebrow}
+  title={copy.closeTitle}
+  ctaLabel={copy.cta}
+  trackLabel="about-closing"
+/>
+
+<style>
+  .about-why__grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .about-why h2 {
+    max-width: 17ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 545;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  .about-why__grid > div:last-child > p:last-child {
+    max-width: 42rem;
+    margin: 1.75rem 0 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.94rem;
+    line-height: 1.8;
+  }
+  .about-beliefs header {
+    margin-bottom: 2rem;
+  }
+  .about-beliefs ol {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    list-style: none;
+  }
+  .about-beliefs li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: clamp(2rem, 4vw, 3.25rem) 0;
+  }
+  .about-beliefs li > span {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.61rem;
+    font-weight: 800;
+  }
+  .about-beliefs h2 {
+    max-width: 18ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 2.8vw, 2.75rem);
+    font-weight: 555;
+    line-height: 1.04;
+    letter-spacing: -0.043em;
+  }
+  .about-beliefs li > p {
+    max-width: 34rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .about-direction__intro {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .about-direction h2 {
+    max-width: 16ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 545;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  .about-direction__intro > p:last-child {
+    max-width: 40rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+  .about-direction ul {
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
+    padding: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    list-style: none;
+  }
+  .about-direction li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: 1.1rem 0;
+    font-size: 0.88rem;
+    font-weight: 650;
+  }
+  .about-direction li span {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.61rem;
+  }
+  @media (min-width: 900px) {
+    .about-why__grid {
+      grid-template-columns: 0.45fr 1.55fr;
+    }
+    .about-direction__intro {
+      grid-template-columns: 0.35fr 1fr 0.65fr;
+    }
+  }
+  @media (max-width: 760px) {
+    .about-beliefs li {
+      grid-template-columns: 2rem 1fr;
+      gap: 1rem;
+    }
+    .about-beliefs h2,
+    .about-beliefs li > p {
+      grid-column: 2;
+    }
+  }
+</style>

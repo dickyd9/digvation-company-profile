@@ -1,253 +1,246 @@
 ---
-import { getCaseStudyWorkEntries } from '@/lib/content/catalog';
-import { resolveWorkPreview } from '@/lib/content/work-preview';
-import ProjectVisual from '@/components/ui/ProjectVisual.astro';
-import LiveProjectVisual from '@/components/ui/LiveProjectVisual.astro';
-import HandwrittenNote from '@/components/ui/HandwrittenNote.astro';
+import ProjectFrame from '@/components/work/ProjectFrame.astro';
+import PageClosing from '@/components/ui/PageClosing.astro';
 import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
+import { getCaseStudyWorkEntries } from '@/lib/content/catalog';
+
 type Props = { locale: Locale; slug: string };
 const { locale, slug } = Astro.props;
 const all = await getCaseStudyWorkEntries(locale);
-const index = all.findIndex((entry) => entry.data.routeSlug === slug);
+const index = all.findIndex((item) => item.data.routeSlug === slug);
 const entry = all[index];
-if (!entry) throw new Error(`Work not found: ${slug}`);
+if (!entry) throw new Error(`Work entry not found: ${slug}`);
 const previous = all[(index - 1 + all.length) % all.length]!;
 const next = all[(index + 1) % all.length]!;
-const closeHref = getLocalizedPath(locale, '/work');
-const preview = resolveWorkPreview(entry.data);
-const previewHref = preview.liveUrl ?? preview.image ?? '#';
+const gallery = entry.data.browserScreenshots ?? entry.data.gallery ?? [];
+const results = entry.data.results ?? [];
+const copy =
+  locale === 'id'
+    ? {
+        back: 'Kembali ke Hasil Kerja',
+        context: 'Cerita awal',
+        problem: 'Yang dihadapi',
+        change: 'Yang perlu dibenahi',
+        approach: 'Cara kami membantu',
+        built: 'Yang kami buat',
+        product: 'Melihat produknya',
+        improvements: 'Perubahan yang terlihat',
+        result: 'Hasil',
+        technology: 'Teknologi yang digunakan',
+        live: 'Buka project live',
+        ctaTitle: 'Ada masalah bisnis yang perlu dibuat bekerja lebih baik?',
+        ctaBody: 'Ceritakan situasinya. Kami bantu menentukan langkah digital yang masuk akal.',
+        cta: 'Mulai percakapan',
+        previous: 'Sebelumnya',
+        next: 'Berikutnya',
+      }
+    : {
+        back: 'Back to Work',
+        context: 'The starting story',
+        problem: 'What they faced',
+        change: 'What needed to improve',
+        approach: 'How we helped',
+        built: 'What we made',
+        product: 'See the product',
+        improvements: 'The change we can see',
+        result: 'Result',
+        technology: 'Technology used',
+        live: 'Open the live project',
+        ctaTitle: 'A business problem should be working better?',
+        ctaBody: 'Tell us the situation. We will help shape a sensible digital next step.',
+        cta: 'Start a conversation',
+        previous: 'Previous',
+        next: 'Next',
+      };
+const coverSize =
+  slug === 'poseidon-filter' ? { width: 1348, height: 945 } : { width: 1363, height: 936 };
 ---
 
-<article class="bg-paper-warm text-ink" data-project-view data-project-slug={slug}>
-  <header class="border-line-light bg-paper-warm border-b">
-    <div class="shell flex flex-wrap items-center justify-between gap-3 py-5">
-      <button
-        class="text-dark-muted hover:text-ink inline-flex items-center gap-2 text-sm font-semibold"
-        type="button"
-        data-project-close
-        data-fallback={closeHref}
-        aria-label={locale === 'id' ? 'Tutup project' : 'Close project'}
-        >← {locale === 'id' ? 'Kembali ke work' : 'Back to work'}
-        <span class="hidden text-[.62rem] uppercase sm:inline" data-project-esc-hint>Esc</span
-        ></button
-      >
-      <span class="text-dark-muted text-[.66rem] font-bold tracking-[.08em] uppercase"
-        >{entry.data.projectType} · {entry.data.year}</span
-      >
-    </div>
-    <div class="shell grid gap-8 pt-5 pb-12 lg:grid-cols-[.82fr_1.18fr] lg:items-center lg:pb-16">
-      <div>
-        <p class="eyebrow text-indigo-deep">{entry.data.client} · {entry.data.industry}</p>
-        <h1
-          class="display-xl mt-4 max-w-[12ch]"
-          style={`view-transition-name: project-title-${slug}`}
+<article
+  class:list={[
+    'case-study bg-paper text-ink',
+    entry.data.visualVariant === 'paper' ? 'case-study--paper' : 'case-study--navy',
+  ]}
+  data-case-study={slug}
+>
+  <header class="case-hero">
+    <div class="shell-wide case-hero__inner">
+      <a class="case-hero__back" href={getLocalizedPath(locale, '/work')}>← {copy.back}</a>
+      <div class="case-hero__meta">
+        <span>{entry.data.client}</span><span>{entry.data.industry}</span><span
+          >{entry.data.year}</span
         >
-          {entry.data.title}
-        </h1>
-        <p class="body-lg text-dark-muted mt-5 max-w-lg">{entry.data.summary}</p>
-        <div class="mt-5 flex justify-end pr-[10%]">
-          <HandwrittenNote
-            text={locale === 'id'
-              ? 'Lihat masalahnya, bukan cuma tampilannya.'
-              : 'Look at the problem, not only the visuals.'}
-            direction="left"
-          />
+      </div>
+      <h1>{entry.data.title}</h1>
+      <p>{entry.data.summary}</p>
+    </div>
+  </header>
+
+  <section class="case-cover" aria-label={entry.data.title}>
+    <div class="shell-wide" data-reveal="visual">
+      <ProjectFrame
+        image={entry.data.coverImage ?? ''}
+        alt={`${entry.data.title}. ${entry.data.summary}`}
+        url={entry.data.liveUrl ? new URL(entry.data.liveUrl).hostname : undefined}
+        href={entry.data.liveUrl}
+        loading="eager"
+        width={coverSize.width}
+        height={coverSize.height}
+        imageClass={slug === 'poseidon-filter' ? 'aspect-[1.43] object-top' : 'aspect-[1.46]'}
+      />
+    </div>
+  </section>
+
+  <section class="case-story section-pad bg-paper">
+    <div class="shell case-story__grid">
+      <div class="case-story__index"><span>01</span><p>{copy.context}</p></div>
+      <div class="case-story__lead" data-reveal="mask">
+        <h2>{entry.data.context}</h2>
+      </div>
+      <div class="case-story__blocks">
+        <article data-reveal="line">
+          <p class="eyebrow text-indigo-deep">{copy.problem}</p>
+          <h3>{entry.data.challenge}</h3>
+        </article>
+        <article data-reveal="line">
+          <p class="eyebrow text-indigo-deep">{copy.change}</p>
+          <h3>{entry.data.businessRequirement ?? entry.data.insight}</h3>
+        </article>
+        <article data-reveal="line">
+          <p class="eyebrow text-indigo-deep">{copy.approach}</p>
+          <h3>{entry.data.approach}</h3>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-built bg-indigo-deep text-paper">
+    <div class="shell-wide section-pad">
+      <div class="case-built__intro" data-reveal="mask">
+        <p class="eyebrow text-accent">02 / {copy.built}</p>
+        <h2>{entry.data.solution}</h2>
+      </div>
+      <ol class="case-built__list">
+        {
+          entry.data.built.map((item, itemIndex) => (
+            <li>
+              <>
+                <span>{String(itemIndex + 1).padStart(2, '0')}</span>
+                <strong>{item}</strong>
+              </>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {
+    gallery.length > 0 && (
+      <section class="case-product section-pad bg-paper-soft text-ink">
+        <div class="shell-wide">
+          <header class="case-product__header">
+            <p class="eyebrow text-indigo-deep">03 / {copy.product}</p>
+            <h2>
+              {locale === 'id'
+                ? 'Lihat bagaimana solusinya bekerja.'
+                : 'See how the solution works.'}
+            </h2>
+          </header>
+          <div class="case-product__gallery">
+            {gallery.map((image, imageIndex) => {
+              const isProduct = image.includes('product');
+              return (
+                <figure
+                  class:list={[imageIndex % 2 === 1 && 'case-product__figure--offset']}
+                  data-reveal="visual"
+                >
+                  <img
+                    src={image}
+                    alt={`${entry.data.title}, ${locale === 'id' ? 'tampilan produk' : 'product screen'} ${imageIndex + 1}`}
+                    width={isProduct ? 1348 : coverSize.width}
+                    height={isProduct ? 926 : coverSize.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption>
+                    {entry.data.projectType} / {String(imageIndex + 1).padStart(2, '0')}
+                  </figcaption>
+                </figure>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="case-result section-pad bg-paper text-ink">
+    <div class="shell case-result__grid">
+      <div>
+        <p class="eyebrow text-indigo-deep">04 / {copy.improvements}</p>
+        <h2>{entry.data.outcome}</h2>
+      </div>
+      <div>
+        {
+          results.length > 0 && (
+            <ul>
+              {results.map((result) => (
+                <li>{result}</li>
+              ))}
+            </ul>
+          )
+        }
+        <p class="case-result__next">{entry.data.nextStep}</p>
+        <div class="case-result__tech">
+          <p class="eyebrow">{copy.technology}</p>
+          <p>{entry.data.technologies.join(' / ')}</p>
         </div>
         {
-          (preview.liveUrl || preview.image) && (
+          entry.data.liveUrl && (
             <a
-              class="button-secondary mt-6"
-              href={previewHref}
+              class="text-link"
+              href={entry.data.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              data-project-preview-trigger
-              data-preview-mode={preview.mode}
-              data-preview-url={preview.embedUrl}
-              data-preview-live-url={preview.liveUrl}
-              data-preview-image={preview.image}
-              data-preview-title={entry.data.title}
-              data-preview-descriptor={entry.data.projectType}
-              data-preview-slug={entry.data.routeSlug}
+              data-track-event="outbound_project_click"
+              data-track-label={slug}
             >
-              {locale === 'id' ? 'Lihat website asli' : 'View the live website'}{' '}
+              {copy.live}
               <span aria-hidden="true">↗</span>
             </a>
           )
         }
       </div>
-      <div class="border-ink/12 border-t pt-4">
-        {
-          entry.data.showLiveInCard && preview.embedUrl ? (
-            <LiveProjectVisual
-              title={entry.data.title}
-              url={preview.embedUrl}
-              locale={locale}
-              class="aspect-[4/3] min-h-0 rounded-none"
-            />
-          ) : (
-            <ProjectVisual
-              title={entry.data.title}
-              index={index + 1}
-              variant={entry.data.visualVariant}
-              image={entry.data.coverImage}
-              transitionName={`project-visual-${entry.data.routeSlug}`}
-              class="aspect-[4/3] min-h-0 rounded-none"
-            />
-          )
-        }
-      </div>
-    </div>
-  </header>
-
-  <section class="section-pad bg-paper text-ink" data-track-section="case-context">
-    <div class="shell grid gap-3 lg:grid-cols-12">
-      <article class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-7" data-reveal="up">
-        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Masalah' : 'Challenge'}</p><h2
-          class="mt-4 max-w-[24ch] text-2xl font-semibold tracking-[-.03em]"
-        >
-          {entry.data.challenge}
-        </h2><p class="text-ink/65 mt-4 max-w-2xl text-sm leading-6">{entry.data.context}</p>
-      </article>
-      <article
-        class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-5 lg:pl-8"
-        data-reveal="up"
-        style="--reveal-delay:70ms"
-      >
-        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Keputusan' : 'Decision'}</p><h2
-          class="mt-4 text-xl font-semibold tracking-[-.03em]"
-        >
-          {entry.data.insight}
-        </h2><p class="text-ink/65 mt-3 text-sm leading-6">{entry.data.approach}</p>
-      </article>
-      <article class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-12" data-reveal="up">
-        <div class="grid gap-5 lg:grid-cols-[.35fr_.65fr] lg:items-start">
-          <p class="eyebrow text-ink/50">{locale === 'id' ? 'Solusi' : 'Solution'}</p><h2
-            class="m-0 max-w-3xl text-2xl font-semibold tracking-[-.03em]"
-          >
-            {entry.data.solution}
-          </h2>
-        </div>
-      </article>
     </div>
   </section>
 
-  <section class="pb-12 sm:pb-16" data-track-section="case-built">
-    <div class="shell bg-indigo-deep text-paper p-6 sm:p-8">
-      <div class="grid gap-7 lg:grid-cols-[.75fr_1.25fr] lg:gap-12">
-        <div>
-          <p class="eyebrow text-fog">{locale === 'id' ? 'Yang dibangun' : 'What we built'}</p><h2
-            class="display-md mt-4"
-          >
-            {
-              locale === 'id'
-                ? 'Bagian yang benar-benar diperlukan untuk menjawab masalahnya.'
-                : 'The parts actually needed to solve the problem.'
-            }
-          </h2>
-        </div>
-        <div class="grid gap-3 sm:grid-cols-2">
-          {
-            entry.data.built.map((item, idx) => (
-              <div class="border-paper/16 text-paper border-t py-4">
-                <>
-                  <span class="text-[.62rem] font-extrabold opacity-45">0{idx + 1}</span>
-                  <p class="mt-3 text-sm font-bold">{item}</p>
-                </>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
+  <PageClosing
+    locale={locale}
+    eyebrow={copy.ctaTitle}
+    title={copy.ctaBody}
+    ctaLabel={copy.cta}
+    trackLabel={`case-study-${slug}`}
+  />
 
-  <section class="section-pad bg-paper-warm text-ink" data-track-section="case-outcome">
-    <div class="shell grid gap-3 lg:grid-cols-12">
-      <div class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-7">
-        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Hasil' : 'Outcome'}</p><h2
-          class="mt-4 text-xl font-semibold tracking-[-.02em]"
-        >
-          {entry.data.outcome}
-        </h2><p class="text-ink/65 mt-4 text-sm leading-6">{entry.data.nextStep}</p>
-      </div>
-      <div class="border-ink/12 border-t py-6 sm:py-7 lg:col-span-5 lg:pl-8">
-        <p class="eyebrow text-ink/50">{locale === 'id' ? 'Teknologi' : 'Technology'}</p><div
-          class="mt-4 flex flex-wrap gap-2"
-        >
-          {
-            entry.data.technologies.map((item) => (
-              <span class="border-ink/14 text-ink/55 border-b pb-1 text-xs font-bold">{item}</span>
-            ))
-          }
-        </div>{
-          entry.data.relatedSolution && (
-            <a
-              class="mt-5 inline-flex text-sm font-bold underline underline-offset-4"
-              href={getLocalizedPath(locale, `/solutions/${entry.data.relatedSolution}`)}
-            >
-              {locale === 'id' ? 'Lihat solusi terkait' : 'See related solution'} →
-            </a>
-          )
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-paper pb-12">
-    <div class="shell">
-      <div class="bg-indigo-deep text-paper grid lg:grid-cols-[1fr_auto]">
-        <div class="p-6 sm:p-8">
-          <h2 class="text-2xl font-semibold">
-            {locale === 'id' ? 'Punya masalah yang mirip?' : 'Have a similar problem?'}
-          </h2><p class="text-fog-light mt-2 text-sm">
-            {
-              locale === 'id'
-                ? 'Mulai dari konteks bisnisnya. Solusinya kita tentukan setelah itu.'
-                : 'Start with the business context. We can decide the solution after that.'
-            }
-          </p>
-        </div><div
-          class="border-paper/12 grid place-items-center border-t p-6 lg:border-t-0 lg:border-l"
-        >
-          <a class="button-primary" href={getLocalizedPath(locale, '/contact')}
-            >{locale === 'id' ? 'Mulai Diskusi' : 'Start a Conversation'} ↗</a
-          >
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="h-px" data-project-complete aria-hidden="true"></div>
   {
     all.length > 1 && (
       <nav
-        class="border-line-light bg-paper text-ink border-t"
+        class="case-nav bg-paper"
         aria-label={locale === 'id' ? 'Navigasi project' : 'Project navigation'}
       >
-        <div class="shell grid md:grid-cols-2">
-          <a
-            class="border-line-light border-b py-6 text-inherit no-underline md:border-r md:border-b-0 md:pr-6"
-            href={getLocalizedPath(locale, `/work/${previous.data.routeSlug}`)}
-            data-project-navigation
-          >
+        <div class="shell case-nav__grid">
+          <a href={getLocalizedPath(locale, `/work/${previous.data.routeSlug}`)}>
             <>
-              <span class="text-dark-muted text-xs">
-                ← {locale === 'id' ? 'Sebelumnya' : 'Previous'}
-              </span>
-              <strong class="mt-2 block text-xl font-semibold">{previous.data.title}</strong>
+              <span>← {copy.previous}</span>
+              <strong>{previous.data.title}</strong>
             </>
           </a>
-          <a
-            class="py-6 text-inherit no-underline md:pl-6 md:text-right"
-            href={getLocalizedPath(locale, `/work/${next.data.routeSlug}`)}
-            data-project-navigation
-          >
+          <a href={getLocalizedPath(locale, `/work/${next.data.routeSlug}`)}>
             <>
-              <span class="text-dark-muted text-xs">
-                {locale === 'id' ? 'Berikutnya' : 'Next'} →
-              </span>
-              <strong class="mt-2 block text-xl font-semibold">{next.data.title}</strong>
+              <span>{copy.next} →</span>
+              <strong>{next.data.title}</strong>
             </>
           </a>
         </div>
@@ -255,79 +248,305 @@ const previewHref = preview.liveUrl ?? preview.image ?? '#';
     )
   }
 </article>
+
+<style>
+  .case-study {
+    --case-hero-bg: #0b0d10;
+    --case-hero-fg: #ffffff;
+    --case-hero-muted: rgba(255, 255, 255, 0.66);
+  }
+  .case-study--paper {
+    --case-hero-bg: #edf2eb;
+    --case-hero-fg: #0b0d10;
+    --case-hero-muted: rgba(11, 13, 16, 0.6);
+  }
+  .case-hero,
+  .case-cover {
+    background: var(--case-hero-bg);
+    color: var(--case-hero-fg);
+  }
+  .case-hero__inner {
+    padding-top: 2rem;
+    padding-bottom: clamp(4rem, 9vw, 8rem);
+  }
+  .case-hero__back {
+    color: var(--case-hero-muted);
+    font-size: 0.72rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+  .case-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: clamp(4rem, 8vw, 7rem);
+    color: var(--case-hero-muted);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .case-hero h1 {
+    max-width: 12ch;
+    margin: 1.25rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.7rem, 7vw, 6.8rem);
+    font-weight: 545;
+    line-height: 0.93;
+    letter-spacing: -0.06em;
+  }
+  .case-hero__inner > p {
+    max-width: 44rem;
+    margin: 2rem 0 0 auto;
+    color: var(--case-hero-muted);
+    font-size: clamp(1rem, 1.4vw, 1.18rem);
+    line-height: 1.75;
+  }
+  .case-cover {
+    padding-bottom: clamp(4rem, 8vw, 8rem);
+  }
+  .case-story__grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .case-story__index {
+    border-top: 1px solid rgba(11, 13, 16, 0.18);
+    padding-top: 1rem;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .case-story__index p {
+    margin: 0.45rem 0 0;
+  }
+  .case-story__lead h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 3.8vw, 3.75rem);
+    font-weight: 545;
+    line-height: 1.04;
+    letter-spacing: -0.048em;
+  }
+  .case-story__blocks {
+    display: grid;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+  }
+  .case-story__blocks article {
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: 1.5rem 0;
+  }
+  .case-story__blocks h3 {
+    max-width: 42rem;
+    margin: 0.8rem 0 0;
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    font-weight: 620;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+  }
+  .case-built__intro {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .case-built__intro h2 {
+    max-width: 24ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    font-weight: 545;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  .case-built__list {
+    display: grid;
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    list-style: none;
+  }
+  .case-built__list li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 1.25rem 0;
+  }
+  .case-built__list span {
+    color: rgba(147, 166, 255, 0.75);
+    font-size: 0.61rem;
+    font-weight: 800;
+  }
+  .case-built__list strong {
+    font-size: clamp(1.1rem, 2vw, 1.55rem);
+    font-weight: 620;
+  }
+  .case-product__header {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .case-product__header h2 {
+    max-width: 15ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    font-weight: 545;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  .case-product__gallery {
+    display: grid;
+    gap: clamp(3rem, 7vw, 6rem);
+  }
+  .case-product figure {
+    margin: 0;
+  }
+  .case-product figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(11, 13, 16, 0.12);
+    box-shadow: 0 2rem 5rem rgba(11, 13, 16, 0.11);
+  }
+  .case-product figcaption {
+    margin-top: 0.8rem;
+    color: rgba(11, 13, 16, 0.4);
+    font-size: 0.59rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .case-result__grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .case-result h2 {
+    max-width: 16ch;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    font-weight: 545;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+  .case-result ul {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    list-style: none;
+  }
+  .case-result li {
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    font-weight: 650;
+  }
+  .case-result__next {
+    margin: 1.5rem 0 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .case-result__tech {
+    margin: 2rem 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.16);
+    padding-top: 1rem;
+  }
+  .case-result__tech p:last-child {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.69rem;
+    font-weight: 700;
+    line-height: 1.7;
+  }
+  .case-nav {
+    border-top: 1px solid rgba(11, 13, 16, 0.14);
+  }
+  .case-nav__grid {
+    display: grid;
+  }
+  .case-nav a {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.5rem 0;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .case-nav a span {
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.65rem;
+    font-weight: 750;
+  }
+  .case-nav a strong {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 620;
+    letter-spacing: -0.04em;
+  }
+  .case-nav a:last-child {
+    text-align: right;
+  }
+  @media (min-width: 900px) {
+    .case-story__grid {
+      grid-template-columns: 0.2fr 0.8fr;
+    }
+    .case-story__lead,
+    .case-story__blocks {
+      grid-column: 2;
+    }
+    .case-story__blocks {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .case-story__blocks article {
+      padding-right: 1.5rem;
+      border-right: 1px solid rgba(11, 13, 16, 0.16);
+    }
+    .case-story__blocks article + article {
+      padding-left: 1.5rem;
+    }
+    .case-story__blocks article:last-child {
+      border-right: 0;
+    }
+    .case-built__intro,
+    .case-product__header,
+    .case-result__grid {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+    .case-built__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .case-built__list li:nth-child(odd) {
+      padding-right: 1.5rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .case-built__list li:nth-child(even) {
+      padding-left: 1.5rem;
+    }
+    .case-product__figure--offset {
+      width: 76%;
+      margin-left: auto !important;
+    }
+    .case-nav__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .case-nav a:first-child {
+      padding-right: 2rem;
+      border-right: 1px solid rgba(11, 13, 16, 0.14);
+    }
+    .case-nav a:last-child {
+      padding-left: 2rem;
+    }
+  }
+</style>
+
 <script>
   import { track } from '@/lib/analytics/client';
-
-  let projectCompletionObserver: IntersectionObserver | null = null;
-
-  const setupProjectControls = () => {
-    const close = document.querySelector<HTMLButtonElement>('[data-project-close]');
-    if (!close || close.dataset.ready === 'true') return;
-    close.dataset.ready = 'true';
-
-    const project = document.querySelector<HTMLElement>('[data-project-view]');
-    const returnTo = sessionStorage.getItem('digvation:project-return');
-    const escHint = close.querySelector<HTMLElement>('[data-project-esc-hint]');
-    if (escHint) escHint.classList.toggle('hidden', !returnTo);
-
-    track('portfolio_opened', { slug: project?.dataset.projectSlug ?? '' });
-
-    projectCompletionObserver?.disconnect();
-    const complete = document.querySelector<HTMLElement>('[data-project-complete]');
-    if (complete && 'IntersectionObserver' in window) {
-      projectCompletionObserver = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          track('portfolio_completed', { slug: project?.dataset.projectSlug ?? '' });
-          projectCompletionObserver?.disconnect();
-          projectCompletionObserver = null;
-        },
-        { threshold: 0.5 },
-      );
-      projectCompletionObserver.observe(complete);
-    }
-
-    const leave = () => {
-      const fallback = close.dataset.fallback || '/work';
-      const storedReturn = sessionStorage.getItem('digvation:project-return');
-      const depth = Number(sessionStorage.getItem('digvation:project-depth') || '0');
-      sessionStorage.removeItem('digvation:project-return');
-      sessionStorage.removeItem('digvation:project-depth');
-      if (storedReturn && storedReturn.startsWith('/') && depth > 0) history.go(-depth);
-      else location.href = fallback;
-    };
-
-    document.querySelectorAll<HTMLAnchorElement>('[data-project-navigation]').forEach((link) => {
-      if (link.dataset.depthReady === 'true') return;
-      link.dataset.depthReady = 'true';
-      link.addEventListener('click', () => {
-        const depth = Number(sessionStorage.getItem('digvation:project-depth') || '0');
-        if (depth > 0) sessionStorage.setItem('digvation:project-depth', String(depth + 1));
-      });
-    });
-
-    close.addEventListener('click', leave);
-    const onKeydown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      if (document.querySelector('[data-project-preview-dialog][open]')) return;
-      if (!sessionStorage.getItem('digvation:project-return')) return;
-      leave();
-    };
-    document.addEventListener('keydown', onKeydown);
-
-    document.addEventListener(
-      'astro:before-swap',
-      () => {
-        document.removeEventListener('keydown', onKeydown);
-        projectCompletionObserver?.disconnect();
-        projectCompletionObserver = null;
-      },
-      { once: true },
-    );
-
-    if (returnTo) close.focus({ preventScroll: true });
+  const setupCaseStudyTracking = () => {
+    const page = document.querySelector<HTMLElement>('[data-case-study]');
+    if (!page || page.dataset.tracked === 'true') return;
+    page.dataset.tracked = 'true';
+    track('case_study_view', { slug: page.dataset.caseStudy ?? '' });
   };
-
-  setupProjectControls();
-  document.addEventListener('astro:page-load', setupProjectControls);
+  setupCaseStudyTracking();
+  document.addEventListener('astro:page-load', setupCaseStudyTracking);
 </script>

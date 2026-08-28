@@ -1,31 +1,31 @@
-# Commercial readiness
+# Commercial Readiness
 
-This document separates what the website already covers from what still needs an operational setup or more business evidence.
+## Ready in the repository
 
-## Ready in the website
+- Positioning as a digitalization partner.
+- Real project evidence for Poseidon Filter and Leaf Lab.
+- Structured, bilingual case studies without invented metrics.
+- Inline solution directory with historical redirects.
+- Premium inquiry form, server validation, campaign attribution, and consent-aware analytics.
+- Central WhatsApp configuration and starter message.
+- Configurable pricing UI that remains disabled without approved values.
+- Content-driven campaign routes with draft and `noindex` controls.
+- Canonical, hreflang, sitemap, robots, Open Graph, Twitter cards, structured data, and a noindex 404.
+- Security headers, payload limits, honeypot support, and optional Turnstile verification.
 
-- Clear positioning as a digitalization partner, not a generic software vendor.
-- Short conversion copy and one primary call to action across core pages.
-- Real project proof for Poseidon Filter and Leaf Lab without invented metrics.
-- Technical SEO: canonical URLs, Indonesian and English alternates, sitemap, robots, Open Graph, Twitter cards, and structured data.
-- Analytics hooks for GA4, Google Tag Manager, and Microsoft Clarity with consent handling.
-- Campaign attribution from UTM parameters, Google Ads click IDs, and Meta click IDs through to the inquiry payload.
-- Lead conversion event (`generate_lead`) after a successful inquiry.
-- Secure inquiry delivery through a webhook or Resend, with optional Turnstile protection.
+## Required external configuration
 
-## Configure before launch
+- Approved WhatsApp number.
+- Approved commercial starting values before enabling pricing.
+- Inquiry provider credentials and recipient.
+- Turnstile keys and production hostname allowlist.
+- GA4, GTM, Clarity, and Search Console identifiers as selected.
+- Production or staging access for external behavior and header verification.
 
-- Set the production site URL and analytics IDs.
-- Connect the inquiry form to the chosen CRM, webhook, or inbox.
-- Configure Turnstile and verify the full submission flow in production.
-- Connect Google Search Console and submit the generated sitemap.
-- Define a lead-response owner and response-time target.
-- Verify GA4 and ad-platform conversions using test leads before spending on campaigns.
+## Before paid campaigns
 
-## Commercial priorities after launch
-
-1. Create focused landing pages for each paid-search intent instead of sending every ad to the homepage.
-2. Add more verified case studies with a clear before, decision, and outcome as projects become available.
-3. Publish a simple engagement guide or starting range to qualify enquiries earlier.
-4. Build remarketing audiences only after consent and privacy requirements are confirmed.
-5. Review search queries, qualified-lead rate, and landing-page conversion monthly; do not optimize only for traffic.
+1. Publish a campaign entry with a real audience, offer, and proof.
+2. Keep paid duplicate pages `noindex`.
+3. Submit a test inquiry with UTM and click attribution.
+4. Confirm `contact_success` reaches each configured provider once.
+5. Verify form delivery, Turnstile, consent, and privacy masking on the authorized production target.

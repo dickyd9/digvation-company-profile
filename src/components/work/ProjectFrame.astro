@@ -1,0 +1,132 @@
+---
+type Props = {
+  image: string;
+  alt: string;
+  url?: string | undefined;
+  label?: string | undefined;
+  href?: string | undefined;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+  imageClass?: string;
+  width?: number;
+  height?: number;
+};
+
+const {
+  image,
+  alt,
+  url,
+  label,
+  href,
+  loading = 'lazy',
+  class: className = '',
+  imageClass = '',
+  width = 1363,
+  height = 936,
+} = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class="project-frame-link" href={href} aria-label={href ? alt : undefined}>
+  <div class:list={['project-frame', className]}>
+    <div class="project-frame__bar" aria-hidden="true">
+      <span class="project-frame__dots"><i></i><i></i><i></i></span>
+      {url && <span class="project-frame__url">{url}</span>}
+      <span class="project-frame__open">↗</span>
+    </div>
+    <div class="project-frame__viewport">
+      <img
+        class:list={['project-frame__image', imageClass]}
+        src={image}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding={loading === 'eager' ? 'sync' : 'async'}
+      />
+      {label && <span class="project-frame__label">{label}</span>}
+    </div>
+  </div>
+</Tag>
+
+<style>
+  .project-frame-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .project-frame {
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    background: var(--color-paper);
+    box-shadow: 0 2.25rem 6rem rgba(11, 13, 16, 0.14);
+  }
+  .project-frame__bar {
+    display: grid;
+    min-height: 2.65rem;
+    grid-template-columns: 4rem minmax(0, 1fr) 2rem;
+    align-items: center;
+    gap: 0.65rem;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.11);
+    padding: 0 0.9rem;
+    background: #f5f5f3;
+    color: rgba(11, 13, 16, 0.62);
+  }
+  .project-frame__dots {
+    display: flex;
+    gap: 0.28rem;
+  }
+  .project-frame__dots i {
+    display: block;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: rgba(11, 13, 16, 0.18);
+  }
+  .project-frame__url {
+    overflow: hidden;
+    font-size: 0.61rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .project-frame__open {
+    font-size: 0.72rem;
+    text-align: right;
+  }
+  .project-frame__viewport {
+    position: relative;
+    overflow: hidden;
+    background: #eef0f3;
+  }
+  .project-frame__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .project-frame__label {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    padding: 0.5rem 0.65rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-ink);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+  }
+  .project-frame-link:hover .project-frame__image {
+    transform: scale(1.018);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project-frame__image {
+      transition: none;
+    }
+  }
+</style>

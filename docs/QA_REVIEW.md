@@ -1,59 +1,74 @@
-# Digvation website QA review
+# Digvation Website QA Review
 
-This checklist covers the current Astro implementation after the commercial copy and UI alignment pass.
+## Content and evidence
 
-## Content and visual consistency
-
-- Every primary page has one clear `h1`, one main conversion action, and concise supporting copy.
-- About, Solutions, Work, and Process use the shared `PageHero` system.
-- Home, Contact, solution detail, and work detail keep purpose-built layouts while using the same type, spacing, colour, button, and motion tokens.
-- Handwritten notes are supporting cues, not decoration that blocks content.
-- The home hero uses a clearly labelled representative business-operations interface, not invented client proof.
-- Poseidon Filter and Leaf Lab remain the only project proof; no fabricated client, testimonial, or performance metric is used.
-- The process board explains five stages and separates the client's responsibility from Digvation's responsibility.
+- Every primary page has one clear H1 and one dominant action.
+- Homepage proof and Work use optimized screenshots from live projects.
+- No generic dashboard fallback, invented result, fake testimonial, fake client, or fake price is published.
+- Technology appears after the business context.
+- Indonesian and English content remain aligned.
 
 ## Interaction and accessibility
 
-- Reveal motion leaves content visible when JavaScript is unavailable and is disabled for `prefers-reduced-motion`.
-- Hand-drawn arrows animate only when visible and respect reduced motion.
-- FAQ remains usable as native `<details>` without custom animation.
-- Mobile navigation supports Escape, focus restoration, and Astro route changes.
-- Project preview returns focus to its opener and retains a direct link when embedding is blocked.
-- Focus states, skip link, language switch, and semantic headings remain available.
+- Skip link, semantic landmarks, native details/summary, labels, and visible focus remain available.
+- Mobile navigation supports Escape and focus restoration.
+- Inline solution details allow only one open item and support deep links.
+- Content remains visible without JavaScript.
+- Delayed or failed reveal observation cannot leave homepage headings, project screens, or section content clipped indefinitely.
+- Reduced motion removes non-essential animation.
+- Form loading, validation, server error, and success states remain announced.
 
 ## Contact and attribution
 
-- Required fields are server validated through the Cloudflare Pages Function.
-- Form success is shown only after delivery succeeds.
-- Turnstile can be enabled in production and is verified server-side.
-- UTM parameters, click ID, landing page, and referrer are carried into the lead payload.
-- `inquiry_submitted` and `generate_lead` fire only after successful delivery.
-- Inquiry fields are masked from Clarity.
+- Client and server validation agree.
+- Repeated submission is blocked while a request is active.
+- Success appears only after delivery succeeds.
+- UTM, click ID, landing page, and referrer reach the inquiry payload.
+- `contact_success` fires only after server confirmation.
+- Inquiry fields remain masked from Clarity.
 
-## SEO and indexing
+## SEO
 
-- Canonical, ID/EN alternates, sitemap, robots, Open Graph, and structured data are centralized.
-- Each built HTML page has one title, description, canonical, and `h1`.
-- The 404 page is `noindex`.
-- Project and solution detail pages have their own metadata and structured data.
+- Canonical, ID/EN alternates, sitemap, robots, OG/Twitter, and schemas are centralized.
+- Work detail pages have independent metadata and breadcrumbs.
+- Solution schemas point to inline fragments.
+- Historical solution routes redirect permanently.
+- Campaign pages can be `noindex` and do not appear in primary navigation.
 
-## Automated checks
+## Automated gate
 
 ```bash
+npm run format:check
 npm run lint
 npm run check
 npm run test
 npm run build
 ```
 
-## Production checks before ads
+Cross-page experience correction result:
 
-- Verify the real enquiry delivery path and acknowledgement email.
-- Confirm Turnstile on the production hostname.
-- Confirm GA4/GTM events are not duplicated.
-- Submit one test campaign lead and check UTM/click ID in the received payload.
-- Verify Search Console ownership and submit the sitemap.
-- Check mobile navigation, process board, notes, project preview, and form at 390px, tablet, and desktop widths.
-- Check keyboard-only and reduced-motion modes.
+- Prettier: passed.
+- ESLint: passed.
+- Astro diagnostics: 78 files, 0 errors, 0 warnings, 0 hints.
+- Vitest: 2 files and 6 tests passed, including actual-body inquiry size enforcement.
+- Production build: 21 pages generated.
+- Generated output: 21 valid JSON-LD blocks, 680 internal links, 120 local asset references, and no missing targets.
+- Heading order, required image alt attributes, canonical tags, descriptions, locale alternates, and 404 noindex output passed the artifact audit.
+- Indonesian and English section counts match across Home, Solutions, Work, Process, About, and Contact.
+- Homepage now renders seven purposeful sections in both languages; Contact renders three and Process renders seven.
+- Sitemap: 20 indexable URLs.
+- Source maps: none.
+- Largest emitted JavaScript file: 16,075 bytes.
+- Largest emitted CSS file: 43,119 bytes.
+- Local HTTP checks returned 200 for the primary Indonesian and English journeys and 404 for an unknown route.
 
-An external client website may block iframe embedding through CSP or `X-Frame-Options`. Keep the original-site link and a local preview fallback available.
+The production output responded correctly through a local HTTP check. The isolated visual browser previously could not reach loopback and returned `ERR_BLOCKED_BY_CLIENT`, so final rendered viewport and console verification remains an explicit Cloudflare preview gate rather than a claimed local pass.
+
+## Authorized production gate
+
+- Test inquiry delivery and acknowledgement.
+- Verify Turnstile hostname enforcement.
+- Confirm CSP and security headers from the public response.
+- Confirm analytics events do not duplicate.
+- Verify mobile, tablet, desktop, keyboard, and reduced-motion behavior.
+- Confirm sitemap, robots, redirects, 404, canonical domain, and hreflang.

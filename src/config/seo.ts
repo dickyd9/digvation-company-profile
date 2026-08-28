@@ -2,7 +2,7 @@ import { brandConfig } from './brand';
 import { siteConfig, type Locale } from './site';
 
 export const seoConfig = {
-  defaultTitle: 'Digvation - Your Digitalization Partner.',
+  defaultTitle: 'Digvation | Your Digitalization Partner',
   titleTemplate: `%s | ${siteConfig.name}`,
   defaultDescription: siteConfig.description,
   ogImage: brandConfig.assets.defaultOgImage,

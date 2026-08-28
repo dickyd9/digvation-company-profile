@@ -1,9 +1,9 @@
 ---
 routeSlug: ai-data
 locale: en
-title: AI, Computer Vision & Data
-eyebrow: Solution 05
-summary: For data, images, video, or events that can help the business see patterns and make decisions.
+title: Turn data into a decision
+eyebrow: See what matters
+summary: When data, images, or events exist but do not yet lead to action.
 problem: AI is useful when a decision or task can become better. We do not start with “use AI”; we start with the events, data, and decisions the business needs.
 when:
   - Data exists but has not become useful information

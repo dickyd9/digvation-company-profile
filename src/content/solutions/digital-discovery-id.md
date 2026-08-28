@@ -1,30 +1,30 @@
 ---
 routeSlug: digital-discovery
 locale: id
-title: Digital Discovery
-eyebrow: Solution 01
-summary: Untuk saat masalahnya nyata, tapi belum jelas apa yang seharusnya dibangun.
-problem: 'Masalah bisnis sering datang dalam bentuk gejala: proses lambat, pekerjaan berulang, data sulit dilihat, atau sistem yang tidak nyambung. Discovery membantu memisahkan gejala dari akar masalah sebelum budget masuk ke implementasi.'
+title: Temukan langkah digital yang tepat
+eyebrow: Pahami sebelum membangun
+summary: Saat masalahnya terasa, tetapi solusi dan prioritasnya belum jelas.
+problem: 'Masalah bisnis sering terasa sebagai gejala: proses lambat, pekerjaan berulang, data sulit dilihat, atau sistem yang tidak saling terhubung. Discovery membantu menemukan akar masalah sebelum waktu dan biaya digunakan untuk membangun solusi.'
 when:
-  - Masalah terasa nyata tetapi scope belum jelas
+  - Masalahnya nyata tetapi batas kebutuhannya belum jelas
   - Ada beberapa kemungkinan solusi dan belum tahu mana yang masuk akal
-  - Perlu roadmap dan budget range sebelum memulai project
+  - Perlu arah kerja dan kisaran biaya sebelum memulai project
 whatWeDo:
   - Memetakan masalah dan proses saat ini
-  - Memetakan stakeholder, sistem, data, dan dependency
-  - Menentukan opportunity yang paling masuk akal diprioritaskan
-  - Menyusun arah solusi dan roadmap bertahap
+  - Memetakan pihak yang terlibat, sistem, data, dan ketergantungan
+  - Menentukan peluang perbaikan yang paling masuk akal untuk diprioritaskan
+  - Menyusun arah solusi dan tahapan kerja
 outputs:
   - Peta masalah dan proses
-  - Opportunity brief
+  - Ringkasan peluang perbaikan
   - Konsep solusi yang direkomendasikan
-  - Arah scope
-  - Roadmap implementasi
-  - Kisaran budget
+  - Batas kebutuhan awal
+  - Tahapan implementasi
+  - Kisaran biaya
 examples:
-  - Approval manual yang terlalu panjang
+  - Persetujuan manual yang terlalu panjang
   - Operasi yang sulit dipantau
-  - Ide digital yang belum punya scope
+  - Ide digital yang batas kebutuhannya belum jelas
 start: Mulai dengan percakapan singkat tentang proses yang sekarang berjalan.
 order: 1
 seo:

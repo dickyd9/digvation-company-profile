@@ -42,6 +42,7 @@ PUBLIC_GTM_ID=GTM-XXXXXXX
 PUBLIC_CLARITY_ID=xxxxxxxxxx
 PUBLIC_TURNSTILE_SITEKEY=...
 PUBLIC_GOOGLE_SITE_VERIFICATION=
+PUBLIC_WHATSAPP_NUMBER=
 ```
 
 Prefer Search Console DNS verification, so the HTML verification token may stay empty.
@@ -71,13 +72,14 @@ After production deploy, verify:
 
 - initial `page_view`
 - route changes through Astro client navigation
-- `cta_clicked`
-- `portfolio_previewed`
-- `inquiry_started`
-- `inquiry_submitted`
-- `generate_lead`
+- `cta_click`
+- `project_view`
+- `case_study_view`
+- `contact_start`
+- `contact_submit`
+- `contact_success`
 
-Mark one successful-lead event as the GA4 **key event**. `generate_lead` is the standard option; keep `inquiry_submitted` for Digvation's internal funnel analysis.
+Mark `contact_success` as the GA4 **key event**. It fires only after the inquiry endpoint confirms delivery.
 
 ## 5. Configure Google Tag Manager
 
@@ -91,14 +93,14 @@ When Google Ads is enabled later:
 
 - add Conversion Linker on all pages after consent;
 - create a Google Ads conversion action for a qualified website lead;
-- fire its conversion tag on one successful-lead event (`generate_lead` is recommended);
+- fire its conversion tag on `contact_success`;
 - do not create a second primary conversion by also importing the same GA4 event as primary.
 
 When Meta Ads is enabled later:
 
 - add Meta Pixel through GTM after optional-measurement consent;
 - map normal page tracking to PageView;
-- map the chosen successful-lead event to Lead;
+- map `contact_success` to Lead;
 - test with Meta Events Manager before spending budget.
 
 ## 6. Configure Clarity
@@ -171,7 +173,7 @@ Verify indexing for:
 
 - `/`
 - `/solutions`
-- important `/solutions/[slug]`
+- `/solutions` and representative inline solution fragments
 - `/work`
 - case studies
 - `/process`
@@ -187,13 +189,13 @@ Do not launch paid campaigns until all of these pass:
 [ ] mobile navigation works
 [ ] animations do not break route changes
 [ ] reduced-motion works
-[ ] Work preview modal works
-[ ] external project iframe fallback works
+[ ] project screenshots and live outbound links work
+[ ] inline solution details and historical redirects work
 [ ] inquiry delivers a real email/webhook
 [ ] Turnstile validation works
 [ ] form failure state works
 [ ] GA4 receives events once (no duplicates)
-[ ] inquiry_submitted only fires after successful delivery
+[ ] contact_success only fires after successful delivery
 [ ] UTM/click ID appears in a test lead payload
 [ ] Clarity masks the inquiry form
 [ ] privacy consent can be accepted/rejected and reopened
@@ -210,7 +212,7 @@ Google Ads / Meta Ads
        ↓
 GTM
        ↓
-existing event: inquiry_submitted
+existing event: contact_success
        ↓
 Lead conversion
 ```
