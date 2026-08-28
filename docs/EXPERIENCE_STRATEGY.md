@@ -34,6 +34,7 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 - Avoid pills, bordered containers, and card grids unless the container communicates a real interaction or product frame.
 - Allow large vertical gaps between ideas. Empty space is part of the narrative.
 - Use the small chapter marker as a quiet orientation accent across the homepage. Its line, diamond, and section count stay low contrast and never compete with headings or proof.
+- Operational illustrations should resemble recognizable work surfaces such as chats, spreadsheets, order workspaces, status boards, and reports. Their role is to explain a change in workflow; they must remain visually distinct from real client proof.
 
 ## Cross-page rhythm
 
@@ -41,7 +42,7 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 - Work, Solutions, Process, About, and Contact keep different content compositions. Consistency comes from scale, spacing, borders, type, and motion, not from repeating the same cards.
 - Work, Solutions, Process, About, and case studies share one deliberate closing grammar when the next useful action is a conversation.
 - Contact remains the conversion destination. It uses a separate form chapter and a short expectation-setting chapter instead of compressing the full page into one split layout.
-- Solutions uses a horizontally scrollable need selector and one active detail panel. Selection changes animate height and direction without blocking content, while native links, keyboard navigation, deep links, and reduced motion remain supported.
+- Solutions uses a horizontally scrollable need selector and one active detail panel. The active panel keeps its problem statement wide, limits the main scan path to three concise decision columns, and separates examples into a full-width row. Selection changes animate height and direction without blocking content, while native links, keyboard navigation, deep links, and reduced motion remain supported.
 - A first-session brand opening may run for about one second. It must never repeat during the same session, block reduced-motion users, or delay access for more than the stated opening.
 
 ## Navigation

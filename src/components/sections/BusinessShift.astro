@@ -1,5 +1,6 @@
 ---
 import ChapterMarker from '@/components/ui/ChapterMarker.astro';
+import OperationalScene from '@/components/ui/OperationalScene.astro';
 import type { HomeCopy } from '@/content/home';
 
 type Props = { copy: HomeCopy['shift'] };
@@ -35,30 +36,12 @@ const { copy } = Astro.props;
               </div>
 
               <figure aria-labelledby={titleId}>
-                <div class="business-shift__map" aria-hidden="true">
-                  <div class="business-shift__map-column">
-                    <span class="business-shift__map-label">{copy.beforeLabel}</span>
-                    <div class="business-shift__nodes business-shift__nodes--before">
-                      {item.diagram.before.map((label) => (
-                        <span>{label}</span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div class="business-shift__bridge">
-                    <span>{item.diagram.action}</span>
-                    <i />
-                  </div>
-
-                  <div class="business-shift__map-column">
-                    <span class="business-shift__map-label">{copy.afterLabel}</span>
-                    <div class="business-shift__nodes business-shift__nodes--after">
-                      {item.diagram.after.map((label) => (
-                        <span>{label}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <OperationalScene
+                  variant={index === 0 ? 'order' : index === 1 ? 'status' : 'report'}
+                  diagram={item.diagram}
+                  beforeLabel={copy.beforeLabel}
+                  afterLabel={copy.afterLabel}
+                />
                 <figcaption>{item.detail}</figcaption>
               </figure>
             </li>
@@ -107,8 +90,11 @@ const { copy } = Astro.props;
     list-style: none;
   }
   .business-shift__story {
+    display: grid;
     min-width: 0;
-    padding: clamp(2rem, 4vw, 3.25rem) 0;
+    gap: clamp(2.5rem, 6vw, 7rem);
+    align-items: center;
+    padding: clamp(4rem, 8vw, 7rem) 0;
   }
   .business-shift__story + .business-shift__story {
     border-top: 1px solid var(--border-subtle);
@@ -116,9 +102,8 @@ const { copy } = Astro.props;
   .business-shift__copy {
     display: grid;
     grid-template-columns: 2.5rem minmax(0, 1fr);
-    gap: 0.85rem 1rem;
-    align-content: start;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    align-content: center;
   }
   .business-shift__index {
     padding-top: 0.35rem;
@@ -128,14 +113,14 @@ const { copy } = Astro.props;
     letter-spacing: 0.08em;
   }
   .business-shift__copy > p {
-    max-width: 20rem;
+    max-width: 19rem;
     margin: 0;
     color: var(--text-muted);
     font-family: var(--font-display);
-    font-size: clamp(1.12rem, 1.6vw, 1.42rem);
+    font-size: clamp(1.16rem, 1.65vw, 1.5rem);
     font-weight: 520;
     line-height: 1.22;
-    letter-spacing: -0.028em;
+    letter-spacing: -0.03em;
   }
   .business-shift__result {
     display: grid;
@@ -143,7 +128,7 @@ const { copy } = Astro.props;
     grid-template-columns: 1.5rem minmax(0, 1fr);
     gap: 0.65rem;
     align-items: start;
-    margin-top: 0.35rem;
+    margin-top: 0.5rem;
   }
   .business-shift__result > span {
     padding-top: 0.32rem;
@@ -151,151 +136,25 @@ const { copy } = Astro.props;
     font-size: 0.9rem;
   }
   .business-shift h3 {
-    max-width: 13ch;
+    max-width: 11ch;
     margin: 0;
     color: var(--color-indigo-deep);
     font-family: var(--font-display);
-    font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+    font-size: clamp(2rem, 3.2vw, 3.25rem);
     font-weight: 565;
-    line-height: 1.04;
-    letter-spacing: -0.045em;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
   }
   .business-shift figure {
     min-width: 0;
     margin: 0;
   }
-  .business-shift__map {
-    display: grid;
-    min-height: 17rem;
-    grid-template-columns: minmax(0, 1fr) minmax(2.9rem, 0.42fr) minmax(0, 1.08fr);
-    gap: clamp(0.55rem, 1.2vw, 0.9rem);
-    align-items: stretch;
-    overflow: hidden;
-    padding: clamp(1rem, 2vw, 1.4rem);
-    background: var(--color-indigo-deep);
-    color: var(--color-paper);
-  }
-  .business-shift__map-column {
-    display: grid;
-    min-width: 0;
-    grid-template-rows: auto 1fr;
-    gap: 1rem;
-  }
-  .business-shift__map-label {
-    overflow: hidden;
-    color: rgba(255, 255, 255, 0.48);
-    font-size: 0.49rem;
-    font-weight: 760;
-    letter-spacing: 0.075em;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .business-shift__nodes {
-    display: grid;
-    min-width: 0;
-    gap: 0.55rem;
-    align-content: center;
-  }
-  .business-shift__nodes > span {
-    min-width: 0;
-    overflow: hidden;
-    padding: 0.65rem 0.7rem;
-    font-size: clamp(0.53rem, 0.65vw, 0.62rem);
-    font-weight: 680;
-    line-height: 1.25;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .business-shift__nodes--before > span {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.055);
-    color: rgba(255, 255, 255, 0.68);
-  }
-  .business-shift__nodes--before > span:nth-child(2) {
-    margin-left: 0.55rem;
-  }
-  .business-shift__nodes--before > span:nth-child(3) {
-    margin-right: 0.55rem;
-  }
-  .business-shift__nodes--after > span {
-    position: relative;
-    padding-left: 1.75rem;
-    background: var(--color-paper-warm);
-    color: var(--color-ink);
-  }
-  .business-shift__nodes--after > span::before {
-    position: absolute;
-    top: 50%;
-    left: 0.75rem;
-    width: 0.36rem;
-    height: 0.36rem;
-    border-radius: 50%;
-    background: var(--color-accent);
-    content: '';
-    transform: translateY(-50%);
-  }
-  .business-shift__nodes--after > span:not(:last-child)::after {
-    position: absolute;
-    top: calc(50% + 0.18rem);
-    left: 0.91rem;
-    width: 1px;
-    height: calc(100% + 0.55rem);
-    background: rgba(18, 26, 47, 0.2);
-    content: '';
-  }
-  .business-shift__bridge {
-    display: grid;
-    align-content: center;
-    justify-items: center;
-    gap: 0.65rem;
-    min-width: 0;
-  }
-  .business-shift__bridge span {
-    max-width: 5rem;
-    color: var(--color-accent);
-    font-size: 0.49rem;
-    font-weight: 760;
-    letter-spacing: 0.045em;
-    line-height: 1.25;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  .business-shift__bridge i {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: rgba(147, 166, 255, 0.72);
-    transform-origin: left;
-  }
-  .business-shift__bridge i::after {
-    position: absolute;
-    top: -0.18rem;
-    right: 0;
-    width: 0.38rem;
-    height: 0.38rem;
-    border-top: 1px solid var(--color-accent);
-    border-right: 1px solid var(--color-accent);
-    content: '';
-    transform: rotate(45deg);
-  }
   .business-shift figcaption {
-    max-width: 28rem;
-    margin-top: 0.85rem;
+    max-width: 34rem;
+    margin-top: 0.9rem;
     color: var(--text-soft);
     font-size: 0.7rem;
     line-height: 1.58;
-  }
-  @media (min-width: 760px) and (max-width: 1099px) {
-    .business-shift__story {
-      display: grid;
-      grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr);
-      gap: clamp(2rem, 5vw, 4rem);
-    }
-    .business-shift__copy {
-      margin-bottom: 0;
-    }
   }
   @media (min-width: 900px) {
     .business-shift__intro {
@@ -306,70 +165,26 @@ const { copy } = Astro.props;
       margin-top: 0.75rem;
     }
   }
-  @media (min-width: 1100px) {
-    .business-shift__stories {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  @media (min-width: 980px) {
     .business-shift__story {
-      padding-right: clamp(1.4rem, 2.3vw, 2.3rem);
-      padding-left: clamp(1.4rem, 2.3vw, 2.3rem);
+      grid-template-columns: minmax(17rem, 0.42fr) minmax(0, 1fr);
     }
-    .business-shift__story:first-child {
-      padding-left: 0;
+    .business-shift__story:nth-child(even) {
+      grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.42fr);
     }
-    .business-shift__story:last-child {
-      padding-right: 0;
+    .business-shift__story:nth-child(even) figure {
+      grid-column: 1;
+      grid-row: 1;
     }
-    .business-shift__story + .business-shift__story {
-      border-top: 0;
-      border-left: 1px solid var(--border-subtle);
-    }
-    .business-shift__copy {
-      min-height: 13.5rem;
+    .business-shift__story:nth-child(even) .business-shift__copy {
+      grid-column: 2;
+      grid-row: 1;
     }
   }
-  @media (max-width: 480px) {
-    .business-shift__map {
-      min-height: 15.5rem;
-      grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1.08fr);
-      padding: 0.85rem;
-    }
-    .business-shift__bridge span {
-      font-size: 0.43rem;
-    }
-    .business-shift__map-label {
-      line-height: 1.25;
-      white-space: normal;
-    }
-    .business-shift__nodes > span {
-      padding: 0.58rem 0.5rem;
-      font-size: 0.5rem;
-    }
-    .business-shift__nodes--after > span {
-      padding-left: 1.45rem;
-    }
-    .business-shift__nodes--after > span::before {
-      left: 0.58rem;
-    }
-    .business-shift__nodes--after > span:not(:last-child)::after {
-      left: 0.74rem;
-    }
-  }
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .business-shift__bridge i {
-        animation: business-shift-bridge linear both;
-        animation-range: entry 20% cover 42%;
-        animation-timeline: view();
-      }
-      @keyframes business-shift-bridge {
-        from {
-          transform: scaleX(0);
-        }
-        to {
-          transform: scaleX(1);
-        }
-      }
+  @media (max-width: 720px) {
+    .business-shift__story {
+      gap: 2rem;
+      padding-block: 4rem;
     }
   }
 </style>

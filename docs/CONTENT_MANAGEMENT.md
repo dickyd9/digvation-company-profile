@@ -32,7 +32,9 @@ public/work/<routeSlug>/
 
 Localized solution files live in `src/content/solutions/`. They feed one directory page per language. Visitors choose a need from a horizontally scrollable selector, then one full detail panel appears inline. Deep links such as `/solutions#digital-build` continue to select the matching panel.
 
-Keep the selector title brief. Put qualification, approach, outputs, and examples inside the selected detail panel.
+Keep the selector title brief. The selected panel uses one wide problem statement, three concise
+decision columns, and a separate examples row. Keep the first two items in qualification, approach,
+and outputs strong enough to stand on their own because they are the primary scan path.
 
 ## Campaigns
 
