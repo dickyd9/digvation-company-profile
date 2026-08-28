@@ -30,9 +30,9 @@ public/work/<routeSlug>/
 
 ## Solutions
 
-Localized solution files live in `src/content/solutions/`. They feed one directory page per language. Details open inline and support deep links such as `/solutions#digital-build`.
+Localized solution files live in `src/content/solutions/`. They feed one directory page per language. Visitors choose a need from a horizontally scrollable selector, then one full detail panel appears inline. Deep links such as `/solutions#digital-build` continue to select the matching panel.
 
-Keep the closed-state title and summary brief. Put qualification, approach, outputs, and examples inside the expanded detail.
+Keep the selector title brief. Put qualification, approach, outputs, and examples inside the selected detail panel.
 
 ## Campaigns
 

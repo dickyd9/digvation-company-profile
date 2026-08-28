@@ -40,6 +40,7 @@ Digvation is not positioned as a generic web agency, software outsourcing vendor
 - Work, Solutions, Process, About, and Contact keep different content compositions. Consistency comes from scale, spacing, borders, type, and motion, not from repeating the same cards.
 - Work, Solutions, Process, About, and case studies share one deliberate closing grammar when the next useful action is a conversation.
 - Contact remains the conversion destination. It uses a separate form chapter and a short expectation-setting chapter instead of compressing the full page into one split layout.
+- Solutions uses a horizontally scrollable need selector and one active detail panel. Selection changes animate height and direction without blocking content, while native links, keyboard navigation, deep links, and reduced motion remain supported.
 - A first-session brand opening may run for about one second. It must never repeat during the same session, block reduced-motion users, or delay access for more than the stated opening.
 
 ## Navigation

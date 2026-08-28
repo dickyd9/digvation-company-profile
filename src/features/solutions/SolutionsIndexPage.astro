@@ -19,6 +19,15 @@ const relatedProjects = (await getCollection('work')).filter(
     !entry.data.draft &&
     entry.data.status === 'published',
 );
+const solutionItems = solutions.map((entry, index) => ({
+  entry,
+  index,
+  relatedProject: relatedProjects.find(
+    (project) =>
+      project.data.entryType === 'case-study' &&
+      project.data.relatedSolution === entry.data.routeSlug,
+  ),
+}));
 const PricingAnchor =
   pricingConfig.enabled && pricingConfig.items.length > 0
     ? (await import('@/components/commercial/PricingAnchor.astro')).default
@@ -30,6 +39,10 @@ const copy =
         title: 'Mulai dari kebutuhan bisnisnya.',
         intro: 'Pilih situasi yang paling dekat dengan apa yang sedang ingin Anda benahi.',
         hint: 'Pilih satu yang paling terasa',
+        directoryChapter: '02 / PILIH KEBUTUHAN',
+        selectorLabel: 'Pilih kebutuhan bisnis yang ingin dibenahi',
+        previous: 'Lihat solusi sebelumnya',
+        next: 'Lihat solusi berikutnya',
         fit: 'Cocok saat',
         help: 'Yang kami bantu',
         output: 'Yang Anda dapat',
@@ -57,6 +70,10 @@ const copy =
         title: 'Start with the business need.',
         intro: 'Choose the situation closest to what you are trying to improve.',
         hint: 'Choose the one that feels closest',
+        directoryChapter: '02 / CHOOSE A NEED',
+        selectorLabel: 'Choose the business need you want to improve',
+        previous: 'View the previous solution',
+        next: 'View the next solution',
         fit: 'A good fit when',
         help: 'How we help',
         output: 'What you receive',
@@ -91,26 +108,61 @@ const copy =
 <section class="solutions-directory bg-paper-warm text-ink" data-solutions-directory>
   <div class="shell-wide solutions-directory__inner">
     <header class="solutions-directory__chapter" data-reveal="line">
-      <p>02 / DIRECTORY</p><small>{copy.hint} ↓</small>
+      <div>
+        <p>{copy.directoryChapter}</p>
+        <small>{copy.hint}</small>
+      </div>
+      <div class="solutions-directory__controls">
+        <button type="button" aria-label={copy.previous} data-solution-previous>
+          <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" aria-label={copy.next} data-solution-next>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </header>
 
-    <div class="solutions-directory__list">
-      {
-        solutions.map((entry, index) => {
-          const relatedProject = relatedProjects.find(
-            (project) =>
-              project.data.entryType === 'case-study' &&
-              project.data.relatedSolution === entry.data.routeSlug,
-          );
-          return (
-            <details
-              class="solution-directory-row"
-              id={entry.data.routeSlug}
-              data-solution-detail
-              data-solution-slug={entry.data.routeSlug}
+    <nav class="solutions-directory__slider" aria-label={copy.selectorLabel} data-solution-tabs>
+      <div class="solutions-directory__track">
+        {
+          solutionItems.map(({ entry, index }) => (
+            <a
+              class="solution-directory-tab"
+              href={`#${entry.data.routeSlug}`}
+              id={`solution-tab-${entry.data.routeSlug}`}
+              aria-controls={entry.data.routeSlug}
+              data-solution-tab
+              data-solution-index={index}
+              data-active={index === 0 ? 'true' : 'false'}
             >
-              <summary>
-                <span class="solution-directory-row__number">
+              <span class="solution-directory-tab__number">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <small>{entry.data.eyebrow}</small>
+              <strong>{entry.data.title}</strong>
+              <span class="solution-directory-tab__arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+
+    <div class="solutions-directory__stage" data-solution-stage>
+      {
+        solutionItems.map(({ entry, index, relatedProject }) => {
+          return (
+            <article
+              class="solution-directory-panel"
+              id={entry.data.routeSlug}
+              aria-labelledby={`solution-tab-${entry.data.routeSlug}`}
+              data-solution-panel
+              data-solution-index={index}
+              data-active={index === 0 ? 'true' : 'false'}
+            >
+              <header class="solution-directory-panel__heading">
+                <span class="solution-directory-panel__number">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div>
@@ -118,15 +170,12 @@ const copy =
                   <h2>{entry.data.title}</h2>
                 </div>
                 <p>{entry.data.summary}</p>
-                <span class="solution-directory-row__toggle" aria-hidden="true">
-                  +
-                </span>
-              </summary>
+              </header>
 
-              <div class="solution-directory-row__detail">
-                <div class="solution-directory-row__lead">
+              <div class="solution-directory-panel__detail">
+                <div class="solution-directory-panel__lead">
                   <p class="eyebrow text-indigo-deep">{copy.start}</p>
-                  <p class="solution-directory-row__problem">{entry.data.problem}</p>
+                  <p class="solution-directory-panel__problem">{entry.data.problem}</p>
                   <strong>{entry.data.start}</strong>
                   <a
                     class="button-primary bg-paper! text-ink!"
@@ -139,7 +188,7 @@ const copy =
                   </a>
                 </div>
 
-                <div class="solution-directory-row__facts">
+                <div class="solution-directory-panel__facts">
                   <section>
                     <h3>{copy.fit}</h3>
                     <ul>
@@ -171,7 +220,7 @@ const copy =
                 </div>
 
                 {relatedProject && (
-                  <aside class="solution-directory-row__proof">
+                  <aside class="solution-directory-panel__proof">
                     <div>
                       <p class="eyebrow text-indigo-deep">{copy.proof}</p>
                       <strong>{relatedProject.data.title}</strong>
@@ -191,7 +240,7 @@ const copy =
                   </aside>
                 )}
               </div>
-            </details>
+            </article>
           );
         })
       }
@@ -238,10 +287,14 @@ const copy =
   }
   .solutions-directory__chapter {
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .solutions-directory__chapter > div:first-child {
+    display: grid;
+    gap: 0.35rem;
   }
   .solutions-directory__chapter p,
   .solutions-directory__chapter small {
@@ -252,89 +305,170 @@ const copy =
     letter-spacing: 0.09em;
     text-transform: uppercase;
   }
-  .solutions-directory__list {
-    border-top: 1px solid rgba(11, 13, 16, 0.17);
-  }
-  .solution-directory-row {
-    border-bottom: 1px solid rgba(11, 13, 16, 0.17);
-    scroll-margin-top: 6rem;
-  }
-  .solution-directory-row summary {
-    display: grid;
-    grid-template-columns: 2.5rem minmax(12rem, 0.75fr) minmax(0, 1.25fr) 2rem;
-    gap: 1.25rem;
-    align-items: center;
-    min-height: 3.9rem;
-    cursor: pointer;
-    list-style: none;
-  }
-  .solution-directory-row summary::-webkit-details-marker {
+  .solutions-directory__controls {
     display: none;
+    gap: 0.55rem;
   }
-  .solution-directory-row__number {
-    color: rgba(11, 13, 16, 0.62);
+  [data-solutions-directory][data-ready='true'] .solutions-directory__controls {
+    display: flex;
+  }
+  .solutions-directory__controls button {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      background-color 220ms ease,
+      color 220ms ease,
+      transform 220ms var(--ease-out);
+  }
+  .solutions-directory__controls button:hover {
+    background: var(--color-indigo-deep);
+    color: var(--color-paper);
+    transform: translateY(-2px);
+  }
+  .solutions-directory__slider {
+    overflow: hidden;
+    border-block: 1px solid var(--border-strong);
+  }
+  .solutions-directory__track {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 1px;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: rgba(18, 26, 47, 0.32) transparent;
+    scrollbar-width: thin;
+  }
+  .solutions-directory__track::-webkit-scrollbar {
+    height: 0.3rem;
+  }
+  .solutions-directory__track::-webkit-scrollbar-thumb {
+    background: rgba(18, 26, 47, 0.32);
+  }
+  .solution-directory-tab {
+    display: grid;
+    min-height: clamp(10.5rem, 16vw, 13.5rem);
+    flex: 0 0 clamp(17rem, 27vw, 24rem);
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.65rem 0.8rem;
+    padding: clamp(1.25rem, 2.3vw, 1.8rem);
+    border-right: 1px solid var(--border-subtle);
+    color: var(--color-ink);
+    scroll-snap-align: start;
+    text-decoration: none;
+    transition:
+      background-color 360ms var(--ease-out),
+      color 360ms var(--ease-out);
+  }
+  .solution-directory-tab:first-child {
+    border-left: 1px solid var(--border-subtle);
+  }
+  .solution-directory-tab:hover {
+    background: var(--color-paper-soft);
+  }
+  .solution-directory-tab[data-active='true'] {
+    background: var(--color-indigo-deep);
+    color: var(--color-paper);
+  }
+  .solution-directory-tab__number,
+  .solution-directory-tab small {
     font-size: 0.6rem;
     font-weight: 700;
   }
-  .solution-directory-row summary small {
-    color: rgba(11, 13, 16, 0.62);
+  .solution-directory-tab__number {
+    color: var(--text-soft);
+  }
+  .solution-directory-tab small {
+    align-self: center;
+    color: var(--text-muted);
     font-size: 0.56rem;
-    font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
-  .solution-directory-row h2 {
-    margin: 0.18rem 0 0;
+  .solution-directory-tab strong {
+    align-self: end;
+    grid-row: 2;
+    grid-column: 1 / -1;
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 2vw, 1.85rem);
+    font-size: clamp(1.3rem, 2vw, 1.85rem);
     font-weight: 555;
+    line-height: 1.05;
     letter-spacing: -0.04em;
   }
-  .solution-directory-row summary > p {
-    margin: 0;
-    color: rgba(11, 13, 16, 0.62);
-    font-size: 0.77rem;
-    line-height: 1.55;
+  .solution-directory-tab__arrow {
+    align-self: end;
+    grid-row: 3;
+    grid-column: 3;
+    transition: transform 280ms var(--ease-out);
   }
-  .solution-directory-row__toggle {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border: 0;
-    transition:
-      transform 220ms ease,
-      background-color 220ms ease,
-      color 220ms ease;
+  .solution-directory-tab:hover .solution-directory-tab__arrow,
+  .solution-directory-tab[data-active='true'] .solution-directory-tab__arrow {
+    transform: translate(0.18rem, -0.18rem);
   }
-  .solution-directory-row[open] .solution-directory-row__toggle {
-    transform: rotate(45deg);
+  .solution-directory-tab[data-active='true'] .solution-directory-tab__number,
+  .solution-directory-tab[data-active='true'] small {
+    color: rgba(255, 255, 255, 0.62);
   }
-  .solution-directory-row[open] > summary {
-    border-bottom: 1px solid rgba(11, 13, 16, 0.12);
+  .solutions-directory__stage {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .solution-directory-panel {
+    margin-inline: calc(50% - 50vw);
+    padding: clamp(2.4rem, 5vw, 4.5rem) max(calc(50vw - 44rem), clamp(0.75rem, 3vw, 2.5rem));
     background: #eef0fa;
     color: var(--color-ink);
-    margin-inline: calc(50% - 50vw);
-    padding-inline: calc(50vw - 50%);
+    scroll-margin-top: 6rem;
   }
-  .solution-directory-row[open] summary small,
-  .solution-directory-row[open] summary > p,
-  .solution-directory-row[open] .solution-directory-row__number {
-    color: rgba(11, 13, 16, 0.52);
+  .solution-directory-panel + .solution-directory-panel {
+    border-top: 1px solid rgba(11, 13, 16, 0.14);
   }
-  .solution-directory-row[open] .solution-directory-row__toggle {
-    color: var(--color-ink);
+  .solution-directory-panel__heading {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(14rem, 0.85fr) minmax(0, 1.15fr);
+    gap: 1.25rem;
+    align-items: end;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.16);
+    padding-bottom: clamp(1.75rem, 3vw, 2.5rem);
   }
-  .solution-directory-row__detail {
+  .solution-directory-panel__number,
+  .solution-directory-panel__heading small {
+    color: rgba(11, 13, 16, 0.54);
+    font-size: 0.58rem;
+    font-weight: 720;
+  }
+  .solution-directory-panel__heading small {
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .solution-directory-panel__heading h2 {
+    max-width: 18ch;
+    margin: 0.35rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.6vw, 3.7rem);
+    font-weight: 550;
+    line-height: 0.99;
+    letter-spacing: -0.052em;
+  }
+  .solution-directory-panel__heading > p {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.87rem;
+    line-height: 1.65;
+  }
+  .solution-directory-panel__detail {
     display: grid;
     gap: clamp(2.5rem, 5vw, 4.5rem);
-    margin-inline: calc(50% - 50vw);
-    padding: clamp(3rem, 6vw, 5rem) max(calc(50vw - 44rem), clamp(0.75rem, 3vw, 2.5rem));
-    background: #eef0fa;
-    color: var(--color-ink);
-    animation: directory-detail-in 440ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    padding-top: clamp(2.5rem, 4vw, 3.75rem);
   }
-  .solution-directory-row__problem {
+  .solution-directory-panel__problem {
     max-width: 38rem;
     margin: 1.15rem 0 0;
     font-family: var(--font-display);
@@ -343,7 +477,7 @@ const copy =
     line-height: 1.28;
     letter-spacing: -0.035em;
   }
-  .solution-directory-row__lead > strong {
+  .solution-directory-panel__lead > strong {
     display: block;
     max-width: 35rem;
     margin: 1.15rem 0 0;
@@ -352,18 +486,18 @@ const copy =
     font-weight: 550;
     line-height: 1.65;
   }
-  .solution-directory-row__lead a {
+  .solution-directory-panel__lead a {
     margin-top: 1.5rem;
   }
-  .solution-directory-row__facts {
+  .solution-directory-panel__facts {
     display: grid;
     border-top: 1px solid rgba(11, 13, 16, 0.16);
   }
-  .solution-directory-row__facts section {
+  .solution-directory-panel__facts section {
     border-bottom: 1px solid rgba(11, 13, 16, 0.16);
     padding: 1.25rem 0;
   }
-  .solution-directory-row__facts h3 {
+  .solution-directory-panel__facts h3 {
     margin: 0 0 0.8rem;
     color: var(--color-indigo-deep);
     font-size: 0.61rem;
@@ -371,28 +505,28 @@ const copy =
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  .solution-directory-row__facts ul {
+  .solution-directory-panel__facts ul {
     display: grid;
     gap: 0.55rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .solution-directory-row__facts li,
-  .solution-directory-row__facts p {
+  .solution-directory-panel__facts li,
+  .solution-directory-panel__facts p {
     margin: 0;
     color: rgba(11, 13, 16, 0.62);
     font-size: 0.78rem;
     line-height: 1.55;
   }
-  .solution-directory-row__proof {
+  .solution-directory-panel__proof {
     display: grid;
     gap: 1.25rem;
     grid-column: 1 / -1;
     border-top: 1px solid rgba(11, 13, 16, 0.16);
     padding-top: 1.5rem;
   }
-  .solution-directory-row__proof > div > strong {
+  .solution-directory-panel__proof > div > strong {
     display: block;
     margin-top: 0.45rem;
     font-size: 1rem;
@@ -443,28 +577,18 @@ const copy =
     font-weight: 550;
     letter-spacing: -0.038em;
   }
-  @keyframes directory-detail-in {
-    from {
-      clip-path: inset(0 0 100% 0);
-      opacity: 0;
-    }
-    to {
-      clip-path: inset(0);
-      opacity: 1;
-    }
-  }
   @media (min-width: 900px) {
-    .solution-directory-row__detail {
+    .solution-directory-panel__detail {
       grid-template-columns: 0.85fr 1.15fr;
     }
-    .solution-directory-row__facts {
+    .solution-directory-panel__facts {
       grid-template-columns: repeat(2, 1fr);
     }
-    .solution-directory-row__facts section:nth-child(odd) {
+    .solution-directory-panel__facts section:nth-child(odd) {
       padding-right: 1.5rem;
       border-right: 1px solid rgba(11, 13, 16, 0.16);
     }
-    .solution-directory-row__facts section:nth-child(even) {
+    .solution-directory-panel__facts section:nth-child(even) {
       padding-left: 1.5rem;
     }
     .solutions-decision__inner {
@@ -473,23 +597,25 @@ const copy =
     }
   }
   @media (max-width: 760px) {
-    .solution-directory-row summary {
-      grid-template-columns: 2rem minmax(0, 1fr) 2rem;
-      gap: 0.75rem;
-      padding-block: 1rem;
+    .solution-directory-tab {
+      min-height: 10.5rem;
+      flex-basis: min(82vw, 20rem);
     }
-    .solution-directory-row summary > p {
+    .solution-directory-panel__heading {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+    .solution-directory-panel__heading > p {
       grid-column: 2;
     }
-    .solution-directory-row__toggle {
-      grid-row: 1 / span 2;
-      grid-column: 3;
+    .solution-directory-panel__heading h2 {
+      font-size: clamp(2rem, 9.5vw, 3rem);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .solution-directory-row__toggle,
-    .solution-directory-row__detail {
-      animation: none;
+    .solutions-directory__controls button,
+    .solution-directory-tab,
+    .solution-directory-tab__arrow {
       transition: none;
     }
   }
@@ -497,27 +623,209 @@ const copy =
 
 <script>
   import { track } from '@/lib/analytics/client';
+
+  type ActivationOptions = {
+    updateHash?: boolean;
+    focusTab?: boolean;
+    trackView?: boolean;
+    direction?: -1 | 1;
+  };
+
   const setupSolutionsDirectory = () => {
     const directory = document.querySelector<HTMLElement>('[data-solutions-directory]');
     if (!directory || directory.dataset.ready === 'true') return;
-    directory.dataset.ready = 'true';
-    const rows = [...directory.querySelectorAll<HTMLDetailsElement>('[data-solution-detail]')];
-    const openRow = (row: HTMLDetailsElement, updateHash = true) => {
-      rows.forEach((other) => {
-        if (other !== row) other.open = false;
+
+    const tablist = directory.querySelector<HTMLElement>('[data-solution-tabs]');
+    const stage = directory.querySelector<HTMLElement>('[data-solution-stage]');
+    const previous = directory.querySelector<HTMLButtonElement>('[data-solution-previous]');
+    const next = directory.querySelector<HTMLButtonElement>('[data-solution-next]');
+    const tabs = [...directory.querySelectorAll<HTMLAnchorElement>('[data-solution-tab]')];
+    const panels = [...directory.querySelectorAll<HTMLElement>('[data-solution-panel]')];
+    if (!tablist || !stage || !previous || !next || tabs.length !== panels.length) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activeIndex = 0;
+    let transitioning = false;
+    let queuedActivation: { index: number; options: ActivationOptions } | null = null;
+
+    const normalizeIndex = (index: number) => (index + tabs.length) % tabs.length;
+    const slugAt = (index: number) => panels[index]?.id ?? '';
+
+    const commitSelection = (index: number) => {
+      activeIndex = normalizeIndex(index);
+      tabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === activeIndex;
+        tab.dataset.active = String(selected);
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
       });
-      if (!row.open) return;
-      const slug = row.dataset.solutionSlug ?? '';
-      if (updateHash) history.replaceState(null, '', `#${slug}`);
-      track('service_view', { slug });
+      panels.forEach((panel, panelIndex) => {
+        const selected = panelIndex === activeIndex;
+        panel.dataset.active = String(selected);
+        panel.hidden = !selected;
+      });
     };
-    rows.forEach((row) => row.addEventListener('toggle', () => openRow(row)));
+
+    const completeActivation = (index: number, options: ActivationOptions) => {
+      const selectedTab = tabs[index];
+      const slug = slugAt(index);
+      if (options.updateHash !== false && slug) history.replaceState(null, '', `#${slug}`);
+      if (options.focusTab) selectedTab?.focus({ preventScroll: true });
+      selectedTab?.scrollIntoView({
+        behavior: motionPreference.matches ? 'auto' : 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+      if (options.trackView && slug) track('service_view', { slug });
+    };
+
+    const activate = async (requestedIndex: number, options: ActivationOptions = {}) => {
+      const index = normalizeIndex(requestedIndex);
+      if (index === activeIndex) {
+        completeActivation(index, { ...options, trackView: false });
+        return;
+      }
+      if (transitioning) {
+        queuedActivation = { index, options };
+        return;
+      }
+
+      transitioning = true;
+      const previousIndex = activeIndex;
+      const outgoingPanel = panels[previousIndex];
+      const incomingPanel = panels[index];
+      const direction = options.direction ?? (index > previousIndex ? 1 : -1);
+      const previousHeight = stage.getBoundingClientRect().height;
+
+      try {
+        if (!motionPreference.matches && typeof outgoingPanel?.animate === 'function') {
+          const exitAnimation = outgoingPanel.animate(
+            [
+              { opacity: 1, transform: 'translateX(0)' },
+              { opacity: 0, transform: `translateX(${-direction * 0.75}rem)` },
+            ],
+            { duration: 150, easing: 'ease-out', fill: 'forwards' },
+          );
+          await exitAnimation.finished.catch(() => undefined);
+          exitAnimation.cancel();
+        }
+
+        commitSelection(index);
+        const nextHeight = stage.getBoundingClientRect().height;
+
+        if (!motionPreference.matches && typeof incomingPanel?.animate === 'function') {
+          stage.style.height = `${previousHeight}px`;
+          stage.style.overflow = 'hidden';
+
+          const heightAnimation = stage.animate(
+            [{ height: `${previousHeight}px` }, { height: `${nextHeight}px` }],
+            { duration: 520, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+          );
+          const enterAnimation = incomingPanel.animate(
+            [
+              { opacity: 0, transform: `translateX(${direction * 1.25}rem)` },
+              { opacity: 1, transform: 'translateX(0)' },
+            ],
+            { duration: 520, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+          );
+          await Promise.all([
+            heightAnimation.finished.catch(() => undefined),
+            enterAnimation.finished.catch(() => undefined),
+          ]);
+          stage.style.height = '';
+          stage.style.overflow = '';
+        }
+
+        completeActivation(index, options);
+      } finally {
+        stage.style.height = '';
+        stage.style.overflow = '';
+        transitioning = false;
+        const queued = queuedActivation;
+        queuedActivation = null;
+        if (queued && queued.index !== activeIndex) void activate(queued.index, queued.options);
+      }
+    };
+
+    tablist.setAttribute('role', 'tablist');
+    tablist.setAttribute('aria-orientation', 'horizontal');
+    tabs.forEach((tab, index) => {
+      tab.setAttribute('role', 'tab');
+      tab.addEventListener(
+        'click',
+        (event) => {
+          event.preventDefault();
+          void activate(index, { updateHash: true, trackView: true });
+        },
+        { signal },
+      );
+      tab.addEventListener(
+        'keydown',
+        (event) => {
+          let targetIndex: number | null = null;
+          let direction: -1 | 1 | undefined;
+          if (event.key === 'ArrowRight') {
+            targetIndex = index + 1;
+            direction = 1;
+          } else if (event.key === 'ArrowLeft') {
+            targetIndex = index - 1;
+            direction = -1;
+          } else if (event.key === 'Home') {
+            targetIndex = 0;
+            direction = -1;
+          } else if (event.key === 'End') {
+            targetIndex = tabs.length - 1;
+            direction = 1;
+          }
+          if (targetIndex === null || direction === undefined) return;
+          event.preventDefault();
+          void activate(targetIndex, {
+            updateHash: true,
+            focusTab: true,
+            trackView: true,
+            direction,
+          });
+        },
+        { signal },
+      );
+    });
+    panels.forEach((panel) => panel.setAttribute('role', 'tabpanel'));
+
+    previous.addEventListener(
+      'click',
+      () => void activate(activeIndex - 1, { updateHash: true, trackView: true, direction: -1 }),
+      { signal },
+    );
+    next.addEventListener(
+      'click',
+      () => void activate(activeIndex + 1, { updateHash: true, trackView: true, direction: 1 }),
+      { signal },
+    );
+
     const hash = decodeURIComponent(location.hash.slice(1));
-    const target = rows.find((row) => row.id === hash);
-    if (target) {
-      target.open = true;
-      requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+    const initialIndex = panels.findIndex((panel) => panel.id === hash);
+    commitSelection(initialIndex >= 0 ? initialIndex : 0);
+    directory.dataset.ready = 'true';
+    if (initialIndex >= 0) {
+      track('service_view', { slug: hash });
+      requestAnimationFrame(() => directory.scrollIntoView({ block: 'start' }));
     }
+
+    window.addEventListener(
+      'hashchange',
+      () => {
+        const nextHash = decodeURIComponent(location.hash.slice(1));
+        const nextIndex = panels.findIndex((panel) => panel.id === nextHash);
+        if (nextIndex >= 0) void activate(nextIndex, { updateHash: false, trackView: true });
+      },
+      { signal },
+    );
+    document.addEventListener('astro:before-swap', () => controller.abort(), {
+      once: true,
+      signal,
+    });
   };
   setupSolutionsDirectory();
   document.addEventListener('astro:page-load', setupSolutionsDirectory);

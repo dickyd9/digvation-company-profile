@@ -29,7 +29,7 @@ Projects, solutions, and campaigns use typed Astro Content Collections. Page com
 
 The homepage reads featured projects from the Work collection. Solution details can surface a related published project through the solution relationship in Work content, so proof stays content-driven and disappears cleanly when no valid match exists.
 
-Solution details open inline on `/solutions` and `/en/solutions`. Historical detail URLs are permanently redirected to the matching fragment.
+Solution details use a selectable horizontal rail with one active inline panel on `/solutions` and `/en/solutions`. Without JavaScript, selector links still lead to the complete stacked content. Historical detail URLs are permanently redirected to the matching fragment, which selects the corresponding panel when enhanced.
 
 Campaign routes are `/campaign/[slug]` and `/en/campaign/[slug]`. They are not included in primary navigation. Each entry controls its publication status and `noindex` value.
 
