@@ -8,6 +8,7 @@ export type HomeCopy = {
     body: string;
     primaryCta: string;
     secondaryCta: string;
+    ctaNote: string;
     commitmentsLabel: string;
     commitments: string[];
   };
@@ -48,6 +49,9 @@ export type HomeCopy = {
     title: string;
     body: string;
     linkLabel: string;
+    fromLabel: string;
+    toLabel: string;
+    note: string;
     items: Array<{ title: string; body: string }>;
   };
   finalCta: { eyebrow: string; title: string; body: string; button: string; note: string };
@@ -57,15 +61,16 @@ const id: HomeCopy = {
   hero: {
     eyebrow: 'Your Digitalization Partner',
     titleLead: 'Partner digital',
-    titleRest: 'agar bisnis lebih mudah dijalankan.',
-    body: 'Ceritakan apa yang belum berjalan sebagaimana mestinya. Kami bantu memahami masalahnya, menentukan langkah digital yang tepat, lalu membangun dan mendampingi solusinya sampai benar-benar digunakan.',
-    primaryCta: 'Ceritakan kebutuhan Anda',
-    secondaryCta: 'Lihat hasil kerja',
+    titleRest: 'untuk solusi bisnis yang benar-benar bekerja.',
+    body: 'Ketika proses lambat, pekerjaan manual menumpuk, data sulit dipantau, atau pengalaman pelanggan belum bekerja, Digvation membantu menemukan akar masalah, menentukan prioritas, lalu membangun solusinya sampai benar-benar digunakan.',
+    primaryCta: 'Petakan masalah bisnis',
+    secondaryCta: 'Lihat bukti kerja',
+    ctaNote: 'Tidak perlu brief teknis. Mulai dari yang sedang terjadi.',
     commitmentsLabel: 'Cara Digvation mendampingi bisnis Anda',
     commitments: [
-      'Pahami bisnisnya dulu',
-      'Bangun sampai benar-benar dipakai',
-      'Tetap terlibat saat bisnis berkembang',
+      'Masalah bisnis sebelum teknologi',
+      'Batas, prioritas, dan risiko dibuat jelas',
+      'Dampingan sampai solusi digunakan',
     ],
   },
   shift: {
@@ -149,7 +154,7 @@ const id: HomeCopy = {
   process: {
     eyebrow: 'Cara kami bekerja',
     title: 'Pahami dulu. Bangun yang tepat.',
-    body: 'Anda paling memahami bisnisnya. Kami membantu mengubah kebutuhannya menjadi langkah digital yang jelas.',
+    body: 'Anda tetap melihat alasan di balik keputusan, progres yang berjalan, dan apa yang perlu divalidasi berikutnya.',
     linkLabel: 'Lihat cara kerja lengkap',
     items: [
       { title: 'Pahami', body: 'Mendengarkan cara kerja dan masalah yang sebenarnya.' },
@@ -161,35 +166,38 @@ const id: HomeCopy = {
     ],
   },
   partner: {
-    eyebrow: 'Arti sebuah partner',
-    title: 'Tidak berhenti saat sistem selesai dibuat.',
-    body: 'Digvation tetap melihat bagaimana solusi digunakan, apa yang berubah, dan apa yang perlu ditingkatkan berikutnya.',
-    linkLabel: 'Kenal Digvation lebih dekat',
+    eyebrow: 'Cara paling aman untuk mulai',
+    title: 'Pastikan langkah digitalnya jelas sebelum budget pembangunan dipakai.',
+    body: 'Digital Discovery memetakan akar masalah, proses, pihak, sistem, data, dan prioritas—lalu menyusun arah solusi, tahapan, serta kisaran biaya yang masuk akal.',
+    linkLabel: 'Lihat Digital Discovery',
+    fromLabel: 'Yang Anda bawa · masalah nyata',
+    toLabel: 'Yang kita putuskan · langkah digital',
+    note: 'Jika kebutuhannya sudah jelas, kita bisa langsung membahas delivery. Jika belum, kami tidak akan mendorong Anda membangun terlalu cepat.',
     items: [
       {
-        title: 'Pahami bisnisnya',
-        body: 'Proses, orang, data, dan hambatan dibaca sebelum bentuk solusi diputuskan.',
+        title: 'Akar masalah, bukan gejalanya',
+        body: 'Proses, pihak, sistem, data, dan ketergantungan dipetakan dalam konteks yang sama.',
       },
       {
-        title: 'Tentukan langkah bersama',
-        body: 'Prioritas, batas kerja, dan risiko dibahas dengan bahasa yang sama selama proses berjalan.',
+        title: 'Prioritas yang layak dikerjakan',
+        body: 'Peluang perbaikan dipilah berdasarkan kegunaan, risiko, dan kondisi bisnis saat ini.',
       },
       {
-        title: 'Dampingi penggunaannya',
-        body: 'Solusi dinilai dari pekerjaan nyata, bukan hanya dari hari peluncuran.',
+        title: 'Arah solusi dan tahapannya',
+        body: 'Bentuk solusi serta urutan implementasi dibuat jelas sebelum delivery dimulai.',
       },
       {
-        title: 'Tingkatkan saat perlu',
-        body: 'Ketika bisnis bergerak, solusi dapat ikut dibenahi dan dikembangkan.',
+        title: 'Batas kebutuhan dan kisaran biaya',
+        body: 'Keputusan awal memiliki ruang kerja dan gambaran investasi yang dapat dibahas.',
       },
     ],
   },
   finalCta: {
-    eyebrow: 'Mulai dari masalahnya',
-    title: 'Ada yang seharusnya bisa berjalan lebih baik?',
-    body: 'Ceritakan situasinya. Kami bantu mengurai langkah pertama bersama Anda.',
-    button: 'Mulai percakapan',
-    note: 'Percakapan dimulai dari bisnis Anda, bukan dari daftar teknologi.',
+    eyebrow: 'Mulai tanpa brief teknis',
+    title: 'Bawa masalahnya. Kami bantu menentukan apa yang layak dibangun.',
+    body: 'Ceritakan proses yang lambat, manual, sulit dipantau, atau belum memberi pengalaman yang bisnis Anda butuhkan.',
+    button: 'Petakan masalah bisnis',
+    note: 'Jika kebutuhannya cocok, langkah, batas kerja, dan kisaran biayanya dibuat jelas bersama.',
   },
 };
 
@@ -197,15 +205,16 @@ const en: HomeCopy = {
   hero: {
     eyebrow: 'Your Digitalization Partner',
     titleLead: 'A digital partner',
-    titleRest: 'for a business that is easier to run.',
-    body: 'Tell us what is not working as it should. We help clarify the problem, choose the right digital step, then build and support the solution through real use.',
-    primaryCta: 'Tell us what you need',
-    secondaryCta: 'See the work',
+    titleRest: 'for business solutions that work in real use.',
+    body: 'When processes are slow, manual work piles up, data is hard to monitor, or the customer experience falls short, Digvation finds the root problem, sets the priority, and builds the solution through real use.',
+    primaryCta: 'Map the business problem',
+    secondaryCta: 'See the proof',
+    ctaNote: 'No technical brief needed. Start with what is happening today.',
     commitmentsLabel: 'How Digvation supports your business',
     commitments: [
-      'Understand the business first',
-      'Build through real use',
-      'Stay involved as the business grows',
+      'Business problem before technology',
+      'Clear boundaries, priorities, and risks',
+      'Support through real use',
     ],
   },
   shift: {
@@ -289,7 +298,7 @@ const en: HomeCopy = {
   process: {
     eyebrow: 'How we work',
     title: 'Understand first. Build the right thing.',
-    body: 'You know the business best. We help turn the need into a clear digital next step.',
+    body: 'You keep visibility into the reasoning, the progress, and what needs to be validated next.',
     linkLabel: 'See the full process',
     items: [
       { title: 'Understand', body: 'Listen to how the work runs and what is getting in the way.' },
@@ -301,35 +310,38 @@ const en: HomeCopy = {
     ],
   },
   partner: {
-    eyebrow: 'What partnership means',
-    title: 'It does not stop when the system is built.',
-    body: 'Digvation keeps looking at how the solution is used, what has changed, and what should improve next.',
-    linkLabel: 'Get to know Digvation',
+    eyebrow: 'The safest way to begin',
+    title: 'Make the digital direction clear before committing the build budget.',
+    body: 'Digital Discovery maps the root problem, process, stakeholders, systems, data, and priorities—then shapes a sensible solution direction, roadmap, and budget range.',
+    linkLabel: 'Explore Digital Discovery',
+    fromLabel: 'What you bring · a real problem',
+    toLabel: 'What we decide · a digital next step',
+    note: 'If the need is already clear, we can discuss delivery directly. If it is not, we will not push you to build too early.',
     items: [
       {
-        title: 'Understand the business',
-        body: 'Process, people, data, and friction come before the shape of the solution.',
+        title: 'Root cause, not just symptoms',
+        body: 'Process, stakeholders, systems, data, and dependencies are mapped in one context.',
       },
       {
-        title: 'Choose the next step together',
-        body: 'Priorities, boundaries, and risks stay clear in language everyone can follow.',
+        title: 'A priority worth pursuing',
+        body: 'Improvement opportunities are weighed against usefulness, risk, and current business conditions.',
       },
       {
-        title: 'Support real use',
-        body: 'The solution is judged by daily work, not only by launch day.',
+        title: 'Solution direction and roadmap',
+        body: 'The shape of the solution and implementation sequence are clear before delivery starts.',
       },
       {
-        title: 'Improve when needed',
-        body: 'As the business changes, the solution can be refined and extended.',
+        title: 'Need boundaries and budget range',
+        body: 'The initial decision has a working boundary and investment range to discuss.',
       },
     ],
   },
   finalCta: {
-    eyebrow: 'Start with the problem',
-    title: 'Something should be working better?',
-    body: 'Tell us the situation. We will help make the first step clear with you.',
-    button: 'Start a conversation',
-    note: 'The conversation starts with your business, not a list of technologies.',
+    eyebrow: 'Start without a technical brief',
+    title: 'Bring the problem. We will help decide what is worth building.',
+    body: 'Tell us about a process that is slow, manual, hard to monitor, or not delivering the experience your business needs.',
+    button: 'Map the business problem',
+    note: 'If the need fits, we make the next step, working boundaries, and budget range clear together.',
   },
 };
 

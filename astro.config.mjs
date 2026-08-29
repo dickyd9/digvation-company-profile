@@ -6,7 +6,7 @@ export default defineConfig({
   site: 'https://digvation.id',
   output: 'static',
   trailingSlash: 'never',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !page.includes('/campaign/') })],
   vite: { plugins: [tailwindcss()] },
   i18n: {
     locales: ['id', 'en'],

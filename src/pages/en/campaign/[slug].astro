@@ -20,6 +20,7 @@ const { entry } = Astro.props;
   image={entry.data.seo.ogImage}
   noindex={entry.data.noindex}
   hasAlternate={false}
+  minimalHeader
 >
   <CampaignPage locale={locale} entry={entry} />
 </BaseLayout>
