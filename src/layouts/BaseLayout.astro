@@ -22,6 +22,7 @@ type Props = {
   type?: 'website' | 'article';
   noindex?: boolean;
   hasAlternate?: boolean;
+  minimalHeader?: boolean;
   structuredData?: Array<Record<string, unknown> | null>;
 };
 const {
@@ -32,6 +33,7 @@ const {
   type = 'website',
   noindex = false,
   hasAlternate = true,
+  minimalHeader = false,
   structuredData = [],
 } = Astro.props;
 const resolvedTitle = resolvePageTitle(title);
@@ -118,7 +120,7 @@ const faviconDark = brandConfig.assets.markWhite;
       class="bg-ink text-paper fixed top-4 left-4 z-[100] -translate-y-[180%] rounded-full px-4 py-3 transition-transform focus:translate-y-0"
       href="#main-content">{locale === 'id' ? 'Lewati ke konten' : 'Skip to content'}</a
     >
-    <SiteHeader locale={locale} showLanguageSwitch={hasAlternate} />
+    <SiteHeader locale={locale} showLanguageSwitch={hasAlternate} minimal={minimalHeader} />
     <main id="main-content"><slot /></main>
     <SiteFooter locale={locale} />
     <BackToTop locale={locale} />

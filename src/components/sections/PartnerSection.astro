@@ -16,23 +16,40 @@ const { locale, copy } = Astro.props;
       <h2>{copy.title}</h2>
       <div>
         <p>{copy.body}</p>
-        <a class="text-link" href={getLocalizedPath(locale, '/about')}>
-          {copy.linkLabel}<span aria-hidden="true">↗</span>
-        </a>
       </div>
     </header>
 
-    <ol class="partner-section__path" data-reveal-group>
-      {
-        copy.items.map((item, index) => (
-          <li data-reveal="line">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </li>
-        ))
-      }
-    </ol>
+    <div class="partner-section__offer" data-reveal="line">
+      <div class="partner-section__direction" aria-hidden="true">
+        <span>{copy.fromLabel}</span>
+        <i></i>
+        <span>{copy.toLabel}</span>
+      </div>
+
+      <ol class="partner-section__path" data-reveal-group>
+        {
+          copy.items.map((item, index) => (
+            <li data-reveal="line">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <footer class="partner-section__footer">
+        <p>{copy.note}</p>
+        <a
+          class="button-primary"
+          href={`${getLocalizedPath(locale, '/solutions')}#digital-discovery`}
+          data-track-event="service_view"
+          data-track-label="digital-discovery"
+        >
+          {copy.linkLabel}<span aria-hidden="true">↗</span>
+        </a>
+      </footer>
+    </div>
   </div>
 </section>
 
@@ -47,7 +64,7 @@ const { locale, copy } = Astro.props;
     display: grid;
     gap: 2rem;
     align-items: end;
-    margin-bottom: clamp(4.5rem, 8vw, 7.5rem);
+    margin-bottom: clamp(3.5rem, 7vw, 6rem);
   }
   .partner-section h2 {
     max-width: 15ch;
@@ -65,14 +82,45 @@ const { locale, copy } = Astro.props;
     font-size: 0.92rem;
     line-height: 1.72;
   }
-  .partner-section__intro .text-link {
-    margin-top: 1.75rem;
+  .partner-section__offer {
+    border: 1px solid rgba(18, 26, 47, 0.17);
+    background: linear-gradient(135deg, rgba(223, 228, 255, 0.58), rgba(255, 255, 255, 0.82));
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  .partner-section__direction {
+    display: grid;
+    grid-template-columns: auto minmax(2rem, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(18, 26, 47, 0.17);
+    padding-bottom: 1.15rem;
+    color: rgba(11, 13, 16, 0.52);
+    font-size: 0.58rem;
+    font-weight: 780;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .partner-section__direction i {
+    position: relative;
+    height: 1px;
+    background: rgba(18, 26, 47, 0.23);
+  }
+  .partner-section__direction i::after {
+    position: absolute;
+    top: -0.18rem;
+    right: 0;
+    width: 0.36rem;
+    height: 0.36rem;
+    border-top: 1px solid rgba(18, 26, 47, 0.45);
+    border-right: 1px solid rgba(18, 26, 47, 0.45);
+    content: '';
+    transform: rotate(45deg);
   }
   .partner-section__path {
     display: grid;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--border-strong);
+    border-top: 0;
     list-style: none;
   }
   .partner-section__path li {
@@ -80,7 +128,7 @@ const { locale, copy } = Astro.props;
     grid-template-columns: 2.5rem minmax(0, 0.8fr) minmax(0, 1.2fr);
     gap: 1.25rem;
     border-bottom: 1px solid var(--border-subtle);
-    padding: clamp(1.65rem, 3vw, 2.4rem) 0;
+    padding: clamp(1.5rem, 3vw, 2.15rem) 0;
   }
   .partner-section__path li > span {
     color: var(--text-soft);
@@ -103,18 +151,55 @@ const { locale, copy } = Astro.props;
     font-size: 0.84rem;
     line-height: 1.68;
   }
+  .partner-section__footer {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .partner-section__footer p {
+    max-width: 47rem;
+    margin: 0;
+    color: rgba(11, 13, 16, 0.62);
+    font-size: 0.78rem;
+    line-height: 1.66;
+  }
+  .partner-section__footer .button-primary {
+    width: fit-content;
+  }
   @media (min-width: 900px) {
     .partner-section__intro {
       grid-template-columns: 0.25fr 0.9fr 0.62fr;
     }
+    .partner-section__footer {
+      grid-template-columns: 1fr auto;
+    }
   }
   @media (max-width: 680px) {
+    .partner-section__direction {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+    .partner-section__direction i {
+      width: 1px;
+      height: 1.35rem;
+      margin-left: 0.2rem;
+    }
+    .partner-section__direction i::after {
+      top: auto;
+      right: -0.18rem;
+      bottom: 0;
+      transform: rotate(135deg);
+    }
     .partner-section__path li {
       grid-template-columns: 2rem 1fr;
     }
     .partner-section__path h3,
     .partner-section__path p {
       grid-column: 2;
+    }
+    .partner-section__footer .button-primary {
+      width: 100%;
     }
   }
 </style>

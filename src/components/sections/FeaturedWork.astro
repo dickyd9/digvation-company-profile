@@ -14,6 +14,9 @@ const copy =
         eyebrow: 'Bukti, bukan klaim',
         title: 'Lihat yang sudah berjalan.',
         intro: 'Kebutuhannya berbeda. Solusinya dibangun untuk benar-benar digunakan.',
+        challenge: 'Tantangan',
+        delivered: 'Yang diwujudkan',
+        outcome: 'Yang sekarang tersedia',
         caseStudy: 'Lihat cerita project',
         live: 'Buka project live',
         all: 'Lihat seluruh hasil kerja',
@@ -22,6 +25,9 @@ const copy =
         eyebrow: 'Proof, not promises',
         title: 'See what is already live.',
         intro: 'Different needs. Each solution was built to be genuinely used.',
+        challenge: 'Challenge',
+        delivered: 'What we delivered',
+        outcome: 'What now exists',
         caseStudy: 'Read the project story',
         live: 'Open the live project',
         all: 'See all work',
@@ -113,6 +119,22 @@ const copy =
                     )}
                   </div>
                 </div>
+                {entry.data.entryType === 'case-study' && (
+                  <dl class="featured-project__proof">
+                    <div>
+                      <dt>{copy.challenge}</dt>
+                      <dd>{entry.data.challenge}</dd>
+                    </div>
+                    <div>
+                      <dt>{copy.delivered}</dt>
+                      <dd>{entry.data.solution}</dd>
+                    </div>
+                    <div>
+                      <dt>{copy.outcome}</dt>
+                      <dd>{entry.data.outcome}</dd>
+                    </div>
+                  </dl>
+                )}
               </div>
             </article>
           );
@@ -226,6 +248,32 @@ const copy =
     font-size: 0.9rem;
     line-height: 1.72;
   }
+  .featured-project__proof {
+    display: grid;
+    grid-column: 1 / -1;
+    gap: 0;
+    margin: 0.75rem 0 0;
+    border-top: 1px solid rgba(11, 13, 16, 0.13);
+  }
+  .featured-project__proof > div {
+    min-width: 0;
+    border-bottom: 1px solid rgba(11, 13, 16, 0.13);
+    padding: 1.25rem 0;
+  }
+  .featured-project__proof dt {
+    color: rgba(11, 13, 16, 0.44);
+    font-size: 0.57rem;
+    font-weight: 780;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
+  }
+  .featured-project__proof dd {
+    max-width: 29rem;
+    margin: 0.65rem 0 0;
+    color: rgba(11, 13, 16, 0.67);
+    font-size: 0.78rem;
+    line-height: 1.64;
+  }
   .featured-project__links {
     display: flex;
     flex-wrap: wrap;
@@ -269,6 +317,21 @@ const copy =
     .featured-project__copy {
       grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.72fr);
       padding-top: 1.8rem;
+    }
+    .featured-project__proof {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .featured-project__proof > div {
+      border-right: 1px solid rgba(11, 13, 16, 0.13);
+      border-bottom: 0;
+      padding: 1.35rem clamp(1rem, 2vw, 1.75rem);
+    }
+    .featured-project__proof > div:first-child {
+      padding-left: 0;
+    }
+    .featured-project__proof > div:last-child {
+      border-right: 0;
+      padding-right: 0;
     }
   }
   @media (max-width: 640px) {

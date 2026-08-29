@@ -10,6 +10,7 @@
 - Central WhatsApp configuration and starter message.
 - Configurable pricing UI that remains disabled without approved values.
 - Content-driven campaign routes with draft and `noindex` controls.
+- A published, `noindex` B2B website campaign page using Poseidon Filter as real proof.
 - Canonical, hreflang, sitemap, robots, Open Graph, Twitter cards, structured data, and a noindex 404.
 - Security headers, payload limits, honeypot support, and optional Turnstile verification.
 
@@ -24,8 +25,8 @@
 
 ## Before paid campaigns
 
-1. Publish a campaign entry with a real audience, offer, and proof.
-2. Keep paid duplicate pages `noindex`.
+1. Review and approve the B2B website campaign offer before sending paid traffic.
+2. Keep paid duplicate pages `noindex` and outside the sitemap.
 3. Submit a test inquiry with UTM and click attribution.
 4. Confirm `contact_success` reaches each configured provider once.
 5. Verify form delivery, Turnstile, consent, and privacy masking on the authorized production target.

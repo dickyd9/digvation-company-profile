@@ -4,10 +4,10 @@ import LanguageSwitch from '@/components/layout/LanguageSwitch.astro';
 import { getLocalizedPath, getNavigation } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 
-type Props = { locale: Locale; showLanguageSwitch?: boolean };
-const { locale, showLanguageSwitch = true } = Astro.props;
+type Props = { locale: Locale; showLanguageSwitch?: boolean; minimal?: boolean };
+const { locale, showLanguageSwitch = true, minimal = false } = Astro.props;
 const navigation = getNavigation(locale);
-const contactHref = getLocalizedPath(locale, '/contact');
+const contactHref = minimal ? '#campaign-contact' : getLocalizedPath(locale, '/contact');
 const homeHref = getLocalizedPath(locale, '/');
 const alternateHref =
   locale === 'id'
@@ -25,29 +25,35 @@ const isActive = (href: string) =>
   <div class="shell-wide flex min-h-[4.5rem] items-center gap-5 max-sm:min-h-[4.25rem]">
     <BrandLogo locale={locale} tone="brand" />
 
-    <nav
-      class="nav:flex ml-auto hidden items-center gap-5"
-      aria-label={locale === 'id' ? 'Navigasi utama' : 'Main navigation'}
-    >
-      {
-        navigation.map((item) => (
-          <a
-            class:list={[
-              'after:bg-indigo-deep relative py-2 text-[.78rem] font-semibold no-underline transition-colors after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:origin-left after:scale-x-0 after:transition-transform',
-              isActive(item.href)
-                ? 'text-ink after:scale-x-100'
-                : 'text-dark-muted hover:text-ink hover:after:scale-x-100',
-            ]}
-            href={item.href}
-            aria-current={isActive(item.href) ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
+    {
+      !minimal && (
+        <nav
+          class="nav:flex ml-auto hidden items-center gap-5"
+          aria-label={locale === 'id' ? 'Navigasi utama' : 'Main navigation'}
+        >
+          {navigation.map((item) => (
+            <a
+              class:list={[
+                'after:bg-indigo-deep relative py-2 text-[.78rem] font-semibold no-underline transition-colors after:absolute after:right-0 after:bottom-0 after:left-0 after:h-px after:origin-left after:scale-x-0 after:transition-transform',
+                isActive(item.href)
+                  ? 'text-ink after:scale-x-100'
+                  : 'text-dark-muted hover:text-ink hover:after:scale-x-100',
+              ]}
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )
+    }
 
-    <div class="nav:flex hidden items-center gap-3">
+    <div
+      class:list={[
+        minimal ? 'ml-auto flex items-center gap-3' : 'nav:flex hidden items-center gap-3',
+      ]}
+    >
       {showLanguageSwitch && <LanguageSwitch locale={locale} href={alternateHref} compact />}
       <a
         class="header-cta"
@@ -55,79 +61,86 @@ const isActive = (href: string) =>
         data-track-event="cta_click"
         data-track-label="header"
       >
-        {locale === 'id' ? 'Mari Berdiskusi' : "Let's Talk"}
+        {locale === 'id' ? 'Petakan Masalah' : 'Map the Problem'}
         <span aria-hidden="true">↗</span>
       </a>
     </div>
 
-    <button
-      class="menu-toggle border-line-light bg-paper text-ink hover:border-line-strong hover:bg-paper-warm nav:hidden ml-auto grid size-10 place-items-center rounded-full border transition-[background-color,border-color,transform] duration-200 active:scale-95"
-      type="button"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      data-menu-button
-    >
-      <span
-        class="sr-only"
-        data-menu-label
-        data-open-label={locale === 'id' ? 'Buka menu' : 'Open menu'}
-        data-close-label={locale === 'id' ? 'Tutup menu' : 'Close menu'}
-        >{locale === 'id' ? 'Buka menu' : 'Open menu'}</span
-      >
-      <span class="menu-icon relative block h-4 w-4" aria-hidden="true">
-        <i class="absolute top-[5px] left-0 block h-px w-4 bg-current"></i>
-        <i class="absolute top-[11px] left-0 block h-px w-4 bg-current"></i>
-      </span>
-    </button>
-  </div>
-
-  <div
-    id="mobile-menu"
-    class="mobile-menu border-line-light bg-paper/98 text-ink nav:hidden absolute top-[calc(100%+.45rem)] right-4 z-50 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[.3rem] border shadow-[0_24px_70px_rgba(11,13,16,.14)] backdrop-blur-xl"
-    data-mobile-menu
-    data-state="closed"
-    aria-hidden="true"
-  >
-    <div class="p-2.5">
-      <nav class="grid" aria-label={locale === 'id' ? 'Navigasi mobile' : 'Mobile navigation'}>
-        {
-          navigation.map((item) => (
-            <a
-              class:list={[
-                'group text-ink hover:bg-paper-warm focus-visible:bg-paper-warm flex items-center justify-between rounded-xl px-4 py-3.5 text-[.98rem] font-semibold no-underline transition-colors',
-                isActive(item.href) ? 'bg-paper-soft' : '',
-              ]}
-              href={item.href}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
-              <span>{item.label}</span>
-              <span
-                class="text-dark-muted translate-x-0 text-sm transition-transform group-hover:translate-x-1"
-                aria-hidden="true"
-              >
-                →
-              </span>
-            </a>
-          ))
-        }
-      </nav>
-
-      <div class="bg-line-light my-2 h-px"></div>
-
-      <div class="grid gap-2">
-        <a
-          class="header-cta w-full justify-center"
-          href={contactHref}
-          data-track-event="cta_click"
-          data-track-label="mobile-header"
+    {
+      !minimal && (
+        <button
+          class="menu-toggle border-line-light bg-paper text-ink hover:border-line-strong hover:bg-paper-warm nav:hidden ml-auto grid size-10 place-items-center rounded-full border transition-[background-color,border-color,transform] duration-200 active:scale-95"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          data-menu-button
         >
-          {locale === 'id' ? 'Mari Berdiskusi' : "Let's Talk"}
-          <span aria-hidden="true">↗</span>
-        </a>
-        {showLanguageSwitch && <LanguageSwitch locale={locale} href={alternateHref} />}
-      </div>
-    </div>
+          <span
+            class="sr-only"
+            data-menu-label
+            data-open-label={locale === 'id' ? 'Buka menu' : 'Open menu'}
+            data-close-label={locale === 'id' ? 'Tutup menu' : 'Close menu'}
+          >
+            {locale === 'id' ? 'Buka menu' : 'Open menu'}
+          </span>
+          <span class="menu-icon relative block h-4 w-4" aria-hidden="true">
+            <i class="absolute top-[5px] left-0 block h-px w-4 bg-current" />
+            <i class="absolute top-[11px] left-0 block h-px w-4 bg-current" />
+          </span>
+        </button>
+      )
+    }
   </div>
+
+  {
+    !minimal && (
+      <div
+        id="mobile-menu"
+        class="mobile-menu border-line-light bg-paper/98 text-ink nav:hidden absolute top-[calc(100%+.45rem)] right-4 z-50 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[.3rem] border shadow-[0_24px_70px_rgba(11,13,16,.14)] backdrop-blur-xl"
+        data-mobile-menu
+        data-state="closed"
+        aria-hidden="true"
+      >
+        <div class="p-2.5">
+          <nav class="grid" aria-label={locale === 'id' ? 'Navigasi mobile' : 'Mobile navigation'}>
+            {navigation.map((item) => (
+              <a
+                class:list={[
+                  'group text-ink hover:bg-paper-warm focus-visible:bg-paper-warm flex items-center justify-between rounded-xl px-4 py-3.5 text-[.98rem] font-semibold no-underline transition-colors',
+                  isActive(item.href) ? 'bg-paper-soft' : '',
+                ]}
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                <span>{item.label}</span>
+                <span
+                  class="text-dark-muted translate-x-0 text-sm transition-transform group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </a>
+            ))}
+          </nav>
+
+          <div class="bg-line-light my-2 h-px" />
+
+          <div class="grid gap-2">
+            <a
+              class="header-cta w-full justify-center"
+              href={contactHref}
+              data-track-event="cta_click"
+              data-track-label="mobile-header"
+            >
+              {locale === 'id' ? 'Petakan Masalah' : 'Map the Problem'}
+              <span aria-hidden="true">↗</span>
+            </a>
+            {showLanguageSwitch && <LanguageSwitch locale={locale} href={alternateHref} />}
+          </div>
+        </div>
+      </div>
+    )
+  }
 </header>
 
 <style>

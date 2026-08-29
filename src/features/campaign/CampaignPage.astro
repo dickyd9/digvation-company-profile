@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import InquiryForm from '@/components/inquiry/InquiryForm.astro';
 import ProjectFrame from '@/components/work/ProjectFrame.astro';
-import { getLocalizedPath } from '@/config/navigation';
 import type { Locale } from '@/config/site';
 import { getWorkEntries } from '@/lib/content/catalog';
 
@@ -10,6 +10,32 @@ const { locale, entry } = Astro.props;
 const proof = entry.data.proofProject
   ? (await getWorkEntries(locale)).find((item) => item.data.routeSlug === entry.data.proofProject)
   : undefined;
+const copy =
+  locale === 'id'
+    ? {
+        problem: 'Masalah yang dikenali',
+        proof: 'Bukti yang relevan',
+        challenge: 'Tantangan',
+        delivered: 'Yang diwujudkan',
+        outcome: 'Yang sekarang tersedia',
+        solution: 'Yang Digvation bantu',
+        contactEyebrow: 'Mulai tanpa brief teknis',
+        contactTitle: 'Ceritakan bagian yang belum membantu bisnis Anda.',
+        contactBody:
+          'Kami bantu menilai masalahnya, menentukan prioritas, lalu membuat langkah awal dan batas kerjanya jelas.',
+      }
+    : {
+        problem: 'The problem',
+        proof: 'Relevant proof',
+        challenge: 'Challenge',
+        delivered: 'What we delivered',
+        outcome: 'What now exists',
+        solution: 'How Digvation helps',
+        contactEyebrow: 'Start without a technical brief',
+        contactTitle: 'Tell us what is not helping the business yet.',
+        contactBody:
+          'We will assess the problem, set the priority, and make the first step and working boundaries clear.',
+      };
 ---
 
 <article
@@ -21,12 +47,24 @@ const proof = entry.data.proofProject
       <p class="eyebrow text-indigo-deep">{entry.data.eyebrow}</p>
       <h1>{entry.data.headline}</h1>
       <p>{entry.data.description}</p>
-      <a
-        class="button-primary"
-        href="#campaign-contact"
-        data-track-event="cta_click"
-        data-track-label="campaign-hero">{entry.data.primaryCta} ↘</a
-      >
+      <div class="campaign-hero__actions">
+        <a
+          class="button-primary"
+          href="#campaign-contact"
+          data-track-event="cta_click"
+          data-track-label="campaign-hero">{entry.data.primaryCta} ↘</a
+        >
+        {
+          entry.data.secondaryCta && (
+            <a
+              class="campaign-hero__secondary"
+              href={proof ? '#campaign-proof' : '#campaign-solution'}
+            >
+              {entry.data.secondaryCta} ↓
+            </a>
+          )
+        }
+      </div>
     </div>
   </section>
 
@@ -34,7 +72,7 @@ const proof = entry.data.proofProject
     <div class="shell section-pad campaign-split">
       <div>
         <p class="eyebrow text-indigo-deep">
-          {locale === 'id' ? 'Masalah yang dikenali' : 'The problem'}
+          {copy.problem}
         </p><h2>{entry.data.problem[0]}</h2>
       </div>
       <ul>{entry.data.problem.slice(1).map((item) => <li>{item}</li>)}</ul>
@@ -43,27 +81,46 @@ const proof = entry.data.proofProject
 
   {
     proof?.data.coverImage && (
-      <section class="campaign-proof bg-ink text-paper">
+      <section class="campaign-proof bg-ink text-paper" id="campaign-proof">
         <div class="shell-wide section-pad">
-          <p class="eyebrow text-accent">
-            {locale === 'id' ? 'Bukti yang relevan' : 'Relevant proof'}
-          </p>
-          <h2>{proof.data.title}</h2>
+          <header class="campaign-proof__header">
+            <div>
+              <p class="eyebrow text-accent">{copy.proof}</p>
+              <h2>{proof.data.title}</h2>
+            </div>
+            <p>{proof.data.summary}</p>
+          </header>
           <ProjectFrame
             image={proof.data.coverImage}
             alt={`${proof.data.title}. ${proof.data.summary}`}
             url={proof.data.liveUrl ? new URL(proof.data.liveUrl).hostname : undefined}
           />
+          {proof.data.entryType === 'case-study' && (
+            <dl class="campaign-proof__facts">
+              <div>
+                <dt>{copy.challenge}</dt>
+                <dd>{proof.data.challenge}</dd>
+              </div>
+              <div>
+                <dt>{copy.delivered}</dt>
+                <dd>{proof.data.solution}</dd>
+              </div>
+              <div>
+                <dt>{copy.outcome}</dt>
+                <dd>{proof.data.outcome}</dd>
+              </div>
+            </dl>
+          )}
         </div>
       </section>
     )
   }
 
-  <section class="campaign-solution bg-paper-warm text-ink">
+  <section class="campaign-solution bg-paper-warm text-ink" id="campaign-solution">
     <div class="shell section-pad campaign-split">
       <div>
         <p class="eyebrow text-indigo-deep">
-          {locale === 'id' ? 'Yang Digvation bantu' : 'How Digvation helps'}
+          {copy.solution}
         </p><h2>{entry.data.solution[0]}</h2>
       </div>
       <ul>{entry.data.solution.slice(1).map((item) => <li>{item}</li>)}</ul>
@@ -88,17 +145,14 @@ const proof = entry.data.proofProject
 
   <section class="campaign-contact bg-indigo-deep text-paper" id="campaign-contact">
     <div class="shell campaign-contact__inner">
-      <div>
-        <p class="eyebrow text-accent">
-          {locale === 'id' ? 'Mulai dari konteksnya' : 'Start with the context'}
-        </p><h2>{entry.data.description}</h2>
+      <div class="campaign-contact__copy">
+        <p class="eyebrow text-accent">{copy.contactEyebrow}</p>
+        <h2>{copy.contactTitle}</h2>
+        <p>{copy.contactBody}</p>
       </div>
-      <a
-        class="button-primary bg-paper! text-ink!"
-        href={getLocalizedPath(locale, '/contact')}
-        data-track-event="cta_click"
-        data-track-label="campaign-final">{entry.data.primaryCta} ↗</a
-      >
+      <div class="campaign-contact__form">
+        <InquiryForm locale={locale} />
+      </div>
     </div>
   </section>
 </article>
@@ -122,6 +176,21 @@ const proof = entry.data.proofProject
     margin: 1.75rem auto;
     color: rgba(11, 13, 16, 0.62);
     line-height: 1.75;
+  }
+  .campaign-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+  .campaign-hero__secondary {
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.2rem;
+    color: rgba(11, 13, 16, 0.64);
+    font-size: 0.78rem;
+    font-weight: 750;
+    text-decoration: none;
   }
   .campaign-split {
     display: grid;
@@ -150,8 +219,41 @@ const proof = entry.data.proofProject
     font-size: 0.88rem;
     font-weight: 650;
   }
-  .campaign-proof h2 {
-    margin-bottom: 2rem;
+  .campaign-proof__header {
+    display: grid;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+  }
+  .campaign-proof__header > p {
+    max-width: 34rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
+  .campaign-proof__facts {
+    display: grid;
+    margin: 2.5rem 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.17);
+  }
+  .campaign-proof__facts > div {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.17);
+    padding: 1.4rem 0;
+  }
+  .campaign-proof__facts dt {
+    color: rgba(147, 166, 255, 0.82);
+    font-size: 0.57rem;
+    font-weight: 780;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .campaign-proof__facts dd {
+    max-width: 29rem;
+    margin: 0.65rem 0 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    line-height: 1.65;
   }
   .campaign-faq details {
     border-top: 1px solid rgba(11, 13, 16, 0.16);
@@ -168,14 +270,56 @@ const proof = entry.data.proofProject
   }
   .campaign-contact__inner {
     display: grid;
-    gap: 2rem;
-    align-items: end;
+    gap: clamp(3rem, 7vw, 6rem);
+    align-items: start;
     padding-block: clamp(4rem, 7vw, 6rem);
+  }
+  .campaign-contact__copy {
+    position: sticky;
+    top: 7rem;
+  }
+  .campaign-contact__copy > p:last-child {
+    max-width: 31rem;
+    margin: 1.5rem 0 0;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .campaign-contact__form {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0.4rem;
+    padding: clamp(1.35rem, 3vw, 2.5rem);
+    background: var(--color-paper-warm);
+    color: var(--color-ink);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.18);
   }
   @media (min-width: 900px) {
     .campaign-split,
     .campaign-contact__inner {
       grid-template-columns: 1fr 1fr;
+    }
+    .campaign-proof__header {
+      grid-template-columns: 1fr 0.7fr;
+    }
+    .campaign-proof__facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .campaign-proof__facts > div {
+      border-right: 1px solid rgba(255, 255, 255, 0.17);
+      border-bottom: 0;
+      padding: 1.45rem clamp(1rem, 2vw, 1.75rem);
+    }
+    .campaign-proof__facts > div:first-child {
+      padding-left: 0;
+    }
+    .campaign-proof__facts > div:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+  }
+  @media (max-width: 899px) {
+    .campaign-contact__copy {
+      position: static;
     }
   }
 </style>
